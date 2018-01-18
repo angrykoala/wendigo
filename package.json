@@ -1,0 +1,37 @@
+{
+  "name": "ghoul",
+  "version": "0.1.0",
+  "description": "A proper monster for front-end testing ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angrykoala/ghoul.git"
+  },
+  "keywords": [
+    "headless",
+    "test",
+    "frontend",
+    "browser",
+    "automation",
+    "phantomjs"
+  ],
+  "author": "angrykoala <angrykoala@outlook.es>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/angrykoala/ghoul/issues"
+  },
+  "homepage": "https://github.com/angrykoala/ghoul#readme",
+  "dependencies": {
+    "phantom": "^4.0.11"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.13.1",
+    "express": "^4.16.2",
+    "mocha": "^4.0.1"
+  }
+}

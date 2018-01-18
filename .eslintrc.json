@@ -1,0 +1,76 @@
+{
+    "env": {
+        "mocha": true,
+        "node": true,
+        "browser": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "script"
+    },
+    "plugins": [],
+    "globals": {},
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules": {
+        "camelcase": "error",
+        "prefer-arrow-callback": "error",
+        "eqeqeq": ["error", "always", {
+            "null": "ignore"
+        }],
+        "strict": ["error", "global"],
+        "complexity": ["warn", 6],
+        "space-infix-ops": "warn",
+        "max-depth": ["error", 6],
+        "no-empty": "error",
+        "no-extend-native": "error",
+        "no-new": "error",
+        "no-sequences": "error",
+        "no-template-curly-in-string": "warn",
+        "no-use-before-define": "error",
+        "no-var": "error",
+        "no-eval": "error",
+        "no-extra-bind": "error",
+        "no-console": ["warn", {
+            "allow": ["warn", "error"]
+        }],
+        "no-floating-decimal": "error",
+        "no-implicit-coercion": "warn",
+        "no-labels": "error",
+        "no-multi-spaces": "error",
+        "no-new-wrappers": "error",
+        "no-with": "error",
+        "prefer-template": "error",
+        "brace-style": ["error", "1tbs"],
+        "comma-dangle": ["error", "never"],
+        "comma-spacing": ["error", {
+            "before": false,
+            "after": true
+        }],
+        "comma-style": ["error", "last"],
+        "indent": ["error", 4, {
+            "SwitchCase": 1
+        }],
+        "key-spacing": ["error", {
+            "beforeColon": false,
+            "afterColon": true
+        }],
+        "lines-between-class-members": ["warn", "always"],
+        "max-lines": ["error", 300],
+        "max-len": ["off", 140],
+        "max-params": ["error", 4],
+        "max-nested-callbacks": ["error", 6],
+        "new-cap": "error",
+        "new-parens": "error",
+        "no-trailing-spaces": "error",
+        "spaced-comment": "warn",
+        "object-curly-spacing": ["warn", "never"],
+        "space-before-blocks": "warn",
+        "no-new-require": "error",
+        "no-mixed-requires": "warn",
+        "semi": ["error", "always"],
+        "arrow-spacing": "warn"
+    }
+}
