@@ -26,7 +26,8 @@
   },
   "homepage": "https://github.com/angrykoala/ghoul#readme",
   "dependencies": {
-    "phantom": "^4.0.11"
+    "phantom": "^4.0.11",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "chai": "^4.1.2",
