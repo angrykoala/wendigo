@@ -27,4 +27,27 @@ describe("Assert", () => {
         });
     });
 
+    it("Text", async () => {
+        await browser.open("http://localhost:3456/index.html");
+        await browser.assert.text("h1", "Main Title");
+    });
+    it("Multiple Texts", async () => {
+        await browser.open("http://localhost:3456/index.html");
+        await browser.assert.text("p", "My first paragraph");
+        await browser.assert.text("p", "My second paragraph");
+    });
+
+    it("Text Throws", async () => {
+        await browser.open("http://localhost:3456/index.html");
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("h1", "My first paragraph");
+        });
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("h2", "My first paragraph");
+        });
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text(".container p", "My seconds paragraph");
+        });
+    });
+
 });
