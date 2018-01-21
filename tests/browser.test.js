@@ -3,7 +3,7 @@
 const Ghoul = require('../lib/ghoul');
 const assert = require('assert');
 
-describe("Browser Base", () => {
+describe("Browser", () => {
     let browser;
 
     beforeEach(async () => {
@@ -25,7 +25,7 @@ describe("Browser Base", () => {
     });
 
     it("Html", async () => {
-        await browser.open("http://localhost:3456/html_test.html");
+        await browser.open("http://localhost:3456/html_simple.html");
         const expectedHtml = `<!DOCTYPE html><html><head></head><body>
 <p>html_test</p>
 
@@ -33,5 +33,17 @@ describe("Browser Base", () => {
 </body></html>`;
         const html = await browser.html();
         assert.strictEqual(html, expectedHtml);
+    });
+
+    it("Title", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        const title = await browser.title();
+        assert.strictEqual(title, "Index Test");
+    });
+
+    it("Default Title", async() => {
+        await browser.open("http://localhost:3456/html_simple.html");
+        const title = await browser.title();
+        assert.strictEqual(title, "");
     });
 });

@@ -1,6 +1,6 @@
 "use strict";
 
-
+const assert = require('assert');
 const Ghoul = require('../lib/ghoul');
 const utils = require('./utils');
 
@@ -50,6 +50,7 @@ describe("Assert", () => {
     });
 
     it("Is Visible", async() => {
+        assert(browser.assert.visible);
         await browser.open("http://localhost:3456/index.html");
         await browser.assert.visible("h1");
         await browser.assert.visible(".container p");
@@ -58,13 +59,15 @@ describe("Assert", () => {
 
     it("Is Visible Throws", async() => {
         await browser.open("http://localhost:3456/index.html");
+        assert(browser.assert.visible);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.visible(".hidden-text");
         });
     });
 
-    it("Is Visible Styled", async() => {
+    it("Is Visible When Styled Hidden", async() => {
         await browser.open("http://localhost:3456/index.html");
+        assert(browser.assert.visible);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.visible(".hidden-text2");
         });
@@ -72,8 +75,31 @@ describe("Assert", () => {
 
     it("Is Visible When Element Not Exists", async() => {
         await browser.open("http://localhost:3456/index.html");
+        assert(browser.assert.visible);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.visible(".not-exists");
+        });
+    });
+
+    it("Title", async() => {
+        assert(browser.assert.title);
+        await browser.open("http://localhost:3456/index.html");
+        await browser.assert.title("Index Test");
+    });
+
+    it("Title Default", async() => {
+        await browser.open("http://localhost:3456/html_simple.html");
+        await browser.assert.title("");
+    });
+
+    it("Title Throws", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        assert(browser.assert.title);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.title("Index Test 2");
+        });
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.title("");
         });
     });
 
