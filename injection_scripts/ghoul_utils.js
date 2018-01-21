@@ -19,5 +19,10 @@ window.GhoulUtils = {
         if (style.display === 'none') return false;
         if (style.visibility === 'hidden') return false;
         else return true;
+    },
+    click: function(element) {
+        var event = document.createEvent( 'MouseEvents' ); // eslint-disable-line
+        event.initMouseEvent( 'click', true, true, window, 1, 0, 0 );
+        element.dispatchEvent( event );
     }
 };

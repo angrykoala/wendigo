@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="btn" onclick="switchText()">click me</button>
+    <button class="btn2" onclick="switchTextDelay()">click me delay</button>
+    <p id="switch" class="on">On</p>
+
+    <script>
+        function switchText() {
+            var elem = document.querySelector("#switch");
+            if (elem.textContent == "On") {
+                elem.textContent = "Off";
+                elem.classList.add("off");
+                elem.classList.remove("on");
+            } else {
+                elem.textContent = "On";
+                elem.classList.add("on");
+                elem.classList.remove("off");
+            }
+        }
+
+        function switchTextDelay() {
+            setTimeout(function() {
+                switchText();
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
