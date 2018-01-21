@@ -12,5 +12,12 @@ window.GhoulUtils = {
             result.push(this.serializeDom(elements[i]));
         }
         return result;
+    },
+    isVisible: function(element) {
+        if(!element) return false;
+        var style = window.getComputedStyle(element, ""); // eslint-disable-line
+        if (style.display === 'none') return false;
+        if (style.visibility === 'hidden') return false;
+        else return true;
     }
 };

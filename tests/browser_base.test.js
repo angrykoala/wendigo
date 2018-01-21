@@ -1,7 +1,5 @@
 "use strict";
 
-
-
 const Ghoul = require('../lib/ghoul');
 const assert = require('assert');
 
@@ -32,6 +30,7 @@ describe("Browser Base", () => {
         assert.strictEqual(elements[0].textContent, "My first paragraph");
         assert.strictEqual(elements[1].textContent, "My second paragraph");
     });
+
     it("QueryAll One Element", async () => {
         await browser.open("http://localhost:3456/index.html");
         const elements = await browser.queryAll(".container p");

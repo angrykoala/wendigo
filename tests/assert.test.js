@@ -1,6 +1,5 @@
 "use strict";
 
-// const assert = require('assert');
 
 const Ghoul = require('../lib/ghoul');
 const utils = require('./utils');
@@ -47,6 +46,34 @@ describe("Assert", () => {
         });
         await utils.assertThrowsAsync(async () => {
             await browser.assert.text(".container p", "My seconds paragraph");
+        });
+    });
+
+    it("Is Visible", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        await browser.assert.visible("h1");
+        await browser.assert.visible(".container p");
+        await browser.assert.visible("p");
+    });
+
+    it("Is Visible Throws", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.visible(".hidden-text");
+        });
+    });
+
+    it("Is Visible Styled", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.visible(".hidden-text2");
+        });
+    });
+
+    it("Is Visible When Element Not Exists", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.visible(".not-exists");
         });
     });
 
