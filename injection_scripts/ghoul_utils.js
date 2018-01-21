@@ -21,8 +21,8 @@ window.GhoulUtils = {
         else return true;
     },
     click: function(element) {
-        var event = document.createEvent( 'MouseEvents' ); // eslint-disable-line
-        event.initMouseEvent( 'click', true, true, window, 1, 0, 0 );
-        element.dispatchEvent( event );
+        var event = document.createEvent('MouseEvents'); // eslint-disable-line
+        event.initMouseEvent('click', true, true, window, 1, 0, 0);
+        element.dispatchEvent(event);
     }
 };
