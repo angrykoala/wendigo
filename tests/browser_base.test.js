@@ -1,12 +1,12 @@
 "use strict";
 
-const Ghoul = require('../lib/ghoul');
+const Wendigo = require('../lib/wendigo');
 const assert = require('assert');
 
 describe("Browser Base", () => {
     let browser;
     beforeEach(async () => {
-        browser = await Ghoul.createBrowser({log: true});
+        browser = await Wendigo.createBrowser({log: true});
     });
 
     it("Query", async () => {

@@ -1,13 +1,13 @@
 "use strict";
 
-const Ghoul = require('../lib/ghoul');
+const Wendigo = require('../lib/wendigo');
 const utils = require('./utils');
 
 describe("Browser Interactions", () => {
     let browser;
 
     beforeEach(async () => {
-        browser = await Ghoul.createBrowser();
+        browser = await Wendigo.createBrowser();
     });
 
     it("Click", async() => {

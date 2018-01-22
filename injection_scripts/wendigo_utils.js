@@ -1,6 +1,6 @@
 "use strict";
 
-window.GhoulUtils = {
+window.WendigoUtils = {
     _serializer: new XMLSerializer(),
     serializeDom: function(domElement) {
         if(!domElement) return null;

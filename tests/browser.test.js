@@ -1,13 +1,13 @@
 "use strict";
 
 const assert = require('assert');
-const Ghoul = require('../lib/ghoul');
+const Wendigo = require('../lib/wendigo');
 
 describe("Browser", () => {
     let browser;
 
     beforeEach(async () => {
-        browser = await Ghoul.createBrowser();
+        browser = await Wendigo.createBrowser();
     });
 
     it("Text", async() => {
