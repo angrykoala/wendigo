@@ -1,7 +1,7 @@
 "use strict";
 
-const Ghoul = require('../lib/ghoul');
 const assert = require('assert');
+const Ghoul = require('../lib/ghoul');
 
 describe("Browser", () => {
     let browser;
