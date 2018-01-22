@@ -24,5 +24,15 @@ window.GhoulUtils = {
         var event = document.createEvent('MouseEvents'); // eslint-disable-line
         event.initMouseEvent('click', true, true, window, 1, 0, 0);
         element.dispatchEvent(event);
+    },
+    xPathQuery: function(xPath) {
+        var xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);// eslint-disable-line
+        var result = [];// eslint-disable-line
+        var r=xPathResult.iterateNext(); // eslint-disable-line
+        while(r !== null) {
+            result.push(r);
+            r = xPathResult.iterateNext();
+        }
+        return result;
     }
 };

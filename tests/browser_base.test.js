@@ -6,7 +6,7 @@ const assert = require('assert');
 describe("Browser Base", () => {
     let browser;
     beforeEach(async () => {
-        browser = await Ghoul.createBrowser();
+        browser = await Ghoul.createBrowser({log: true});
     });
 
     it("Query", async () => {
@@ -34,6 +34,13 @@ describe("Browser Base", () => {
     it("QueryAll One Element", async () => {
         await browser.open("http://localhost:3456/index.html");
         const elements = await browser.queryAll(".container p");
+        assert.strictEqual(elements.length, 1);
+        assert.strictEqual(elements[0].textContent, "My first paragraph");
+    });
+
+    it("XPath Query", async() => {
+        await browser.open("http://localhost:3456/index.html");
+        const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
         assert.strictEqual(elements.length, 1);
         assert.strictEqual(elements[0].textContent, "My first paragraph");
     });
