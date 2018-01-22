@@ -34,5 +34,12 @@ window.GhoulUtils = {
             r = xPathResult.iterateNext();
         }
         return result;
+    },
+    getParentNodes: function(nodeList) {
+        var res = [];// eslint-disable-line
+        for(var i=0;i<nodeList.length;i++){// eslint-disable-line
+            res.push(nodeList[i].parentNode);
+        }
+        return res;
     }
 };
