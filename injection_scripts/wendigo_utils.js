@@ -2,28 +2,23 @@
 
 window.WendigoUtils = {
     _serializer: new XMLSerializer(),
-    serializeDom: function(domElement) {
+    serializeDom(domElement) {
         if(!domElement) return null;
         return this._serializer.serializeToString(domElement);
     },
-    serializeNodeList: function(elements) {
-        var result = [];  // eslint-disable-line
-        for (var i = 0; i < elements.length; i++) { // eslint-disable-line
+    serializeNodeList(elements) {
+        let result = [];
+        for (let i = 0; i < elements.length; i++) {
             result.push(this.serializeDom(elements[i]));
         }
         return result;
     },
-    isVisible: function(element) {
+    isVisible(element) {
         if(!element) return false;
-        var style = window.getComputedStyle(element, ""); // eslint-disable-line
+        let style = window.getComputedStyle(element, "");
         if (style.display === 'none') return false;
         if (style.visibility === 'hidden') return false;
         else return true;
-    },
-    click: function(element) {
-        var event = document.createEvent('MouseEvents'); // eslint-disable-line
-        event.initMouseEvent('click', true, true, window, 1, 0, 0);
-        element.dispatchEvent(event);
     },
     xPathQuery: function(xPath) {
         var xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);// eslint-disable-line

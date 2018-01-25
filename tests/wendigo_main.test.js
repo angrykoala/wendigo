@@ -11,6 +11,7 @@ describe("Wendigo Main", () => {
         assert(Wendigo.createBrowser);
         assert(Wendigo.stop);
     });
+
     it("Wendigo Create Browser", async () => {
         assert(Wendigo.createBrowser);
         const browser = await Wendigo.createBrowser();
@@ -19,6 +20,7 @@ describe("Wendigo Main", () => {
         assert(browser.assert);
         assert(Wendigo.instance);
     });
+
     it("Wendigo Stop", async () => {
         await Wendigo.stop();
         assert.strictEqual(Wendigo.instance, null);

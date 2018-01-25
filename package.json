@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A proper monster for front-end testing",
   "main": "lib/wendigo.js",
   "scripts": {
@@ -25,7 +25,6 @@
   },
   "homepage": "https://github.com/angrykoala/wendigo#readme",
   "dependencies": {
-    "phantom": "^4.0.11",
     "puppeteer": "^1.0.0",
     "xmldom": "^0.1.27"
   },
