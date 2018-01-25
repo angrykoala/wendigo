@@ -19,6 +19,7 @@ describe("Wendigo Main", () => {
         assert(browser.page);
         assert(browser.assert);
         assert(Wendigo.instance);
+        await browser.close();
     });
 
     it("Wendigo Stop", async () => {

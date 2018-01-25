@@ -21,9 +21,9 @@ window.WendigoUtils = {
         else return true;
     },
     xPathQuery: function(xPath) {
-        var xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);// eslint-disable-line
-        var result = [];// eslint-disable-line
-        var r=xPathResult.iterateNext(); // eslint-disable-line
+        let xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
+        let result = [];
+        let r = xPathResult.iterateNext();
         while(r !== null) {
             result.push(r);
             r = xPathResult.iterateNext();
@@ -31,8 +31,8 @@ window.WendigoUtils = {
         return result;
     },
     getParentNodes: function(nodeList) {
-        var res = [];// eslint-disable-line
-        for(var i=0;i<nodeList.length;i++){// eslint-disable-line
+        let res = [];
+        for(let i = 0;i < nodeList.length;i++) {
             res.push(nodeList[i].parentNode);
         }
         return res;
