@@ -5,8 +5,12 @@ const assert = require('assert');
 
 describe("Browser Base", () => {
     let browser;
-    beforeEach(async () => {
+    before(async () => {
         browser = await Wendigo.createBrowser({log: true});
+    });
+
+    after(async() => {
+        browser.close();
     });
 
     it("Query", async () => {

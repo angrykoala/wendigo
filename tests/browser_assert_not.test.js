@@ -6,8 +6,13 @@ const utils = require('./utils');
 
 describe("Assert", () => {
     let browser;
-    beforeEach(async () => {
-        browser = await Wendigo.createBrowser();
+
+    before(async () => {
+        browser = await Wendigo.createBrowser({log: true});
+    });
+
+    after(async() => {
+        browser.close();
     });
 
     it("Not Exists", async () => {
