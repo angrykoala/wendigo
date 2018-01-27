@@ -9,3 +9,10 @@ node_js:
 sudo: false
 script:
     - npm test
+
+cache:
+  directories:
+    - node_modules
+
+addons:
+    chrome: stable
