@@ -1,0 +1,8 @@
+{
+    "urls":{
+        "index": "http://localhost:3456/index.html",
+        "click": "http://localhost:3456/click.html",
+        "simple": "http://localhost:3456/html_simple.html"
+    }
+
+}

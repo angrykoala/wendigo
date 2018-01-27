@@ -2,6 +2,7 @@
 
 const Wendigo = require('../lib/wendigo');
 const utils = require('./utils');
+const configUrls = require('./config.json').urls;
 
 describe("Browser Interactions", () => {
     let browser;
@@ -15,19 +16,19 @@ describe("Browser Interactions", () => {
     });
 
     it("Click", async() => {
-        await browser.open("http://localhost:3456/click.html");
+        await browser.open(configUrls.click);
         await browser.assert.text("#switch", "On");
         await browser.click(".btn");
         await browser.assert.text("#switch", "Off");
     });
 
     it("Button Text", async() => {
-        await browser.open("http://localhost:3456/click.html");
+        await browser.open(configUrls.click);
         await browser.assert.text(".btn", "click me");
     });
 
     it("Wait", async() => {
-        await browser.open("http://localhost:3456/click.html");
+        await browser.open(configUrls.click);
         await browser.click(".btn2");
         await browser.assert.text("#switch", "On");
         await browser.wait(10);
@@ -38,7 +39,7 @@ describe("Browser Interactions", () => {
     });
 
     it("Wait For", async () => {
-        await browser.open("http://localhost:3456/click.html");
+        await browser.open(configUrls.click);
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
         await browser.click(".btn2");
@@ -49,7 +50,7 @@ describe("Browser Interactions", () => {
     });
 
     it("Wait For Timeout", async() => {
-        await browser.open("http://localhost:3456/click.html");
+        await browser.open(configUrls.click);
         await browser.assert.exists("#switch.on");
         await browser.click(".btn2");
         await utils.assertThrowsAsync(async () => {

@@ -2,11 +2,12 @@
 
 const Wendigo = require('../lib/wendigo');
 const assert = require('assert');
+const configUrls = require('./config.json').urls;
 
 describe("Browser Base", () => {
     let browser;
     before(async () => {
-        browser = await Wendigo.createBrowser({log: true});
+        browser = await Wendigo.createBrowser();
     });
 
     after(async() => {
@@ -14,21 +15,21 @@ describe("Browser Base", () => {
     });
 
     it("Query", async () => {
-        await browser.open("http://localhost:3456/index.html");
+        await browser.open(configUrls.index);
         const element = await browser.query("h1");
         assert(element);
         assert.strictEqual(element.textContent, "Main Title");
     });
 
     it("Query Multiple Elements", async () => {
-        await browser.open("http://localhost:3456/index.html");
+        await browser.open(configUrls.index);
         const element = await browser.query("p");
         assert(element);
         assert.strictEqual(element.textContent, "My first paragraph");
     });
 
     it("QueryAll", async () => {
-        await browser.open("http://localhost:3456/index.html");
+        await browser.open(configUrls.index);
         const elements = await browser.queryAll("p");
         assert.strictEqual(elements.length, 2);
         assert.strictEqual(elements[0].textContent, "My first paragraph");
@@ -36,14 +37,14 @@ describe("Browser Base", () => {
     });
 
     it("QueryAll One Element", async () => {
-        await browser.open("http://localhost:3456/index.html");
+        await browser.open(configUrls.index);
         const elements = await browser.queryAll(".container p");
         assert.strictEqual(elements.length, 1);
         assert.strictEqual(elements[0].textContent, "My first paragraph");
     });
 
     it("XPath Query", async() => {
-        await browser.open("http://localhost:3456/index.html");
+        await browser.open(configUrls.index);
         const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
         assert.strictEqual(elements.length, 1);
         assert.strictEqual(elements[0].textContent, "My first paragraph");
