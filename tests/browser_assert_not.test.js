@@ -5,7 +5,7 @@ const Wendigo = require('../lib/wendigo');
 const utils = require('./utils');
 const configUrls = require('./config.json').urls;
 
-describe("Assert", () => {
+describe("Not Assertions", () => {
     let browser;
 
     before(async () => {
@@ -26,10 +26,10 @@ describe("Assert", () => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.exists("h1");
-        });
+        }, `Expected element "h1" to not exists`);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.exists(".container");
-        });
+        }, `Expected element ".container" to not exists`);
     });
 
     it("Not Text", async () => {
@@ -51,10 +51,10 @@ describe("Assert", () => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.text("p", "My first paragraph");
-        });
+        }, `Expected element "p" not to have text "My first paragraph"`);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.text("p", "My second paragraph");
-        });
+        }, `Expected element "p" not to have text "My second paragraph"`);
     });
 
     it("Not Is Visible", async() => {
@@ -75,10 +75,10 @@ describe("Assert", () => {
         assert(browser.assert.not.visible);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.visible("p");
-        });
+        }, `Expected element "p" to not be visible`);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.visible("h1");
-        });
+        }, `Expected element "h1" to not be visible`);
     });
 
     it("Not Title", async() => {
@@ -97,7 +97,7 @@ describe("Assert", () => {
         assert(browser.assert.not.title);
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.title("Index Test");
-        });
+        }, `Expected page title not to be "Index Test"`);
     });
 
 });

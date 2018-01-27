@@ -11,7 +11,11 @@ module.exports = {
                 throw e;
             };
         } finally {
-            assert.throws(f, expected);
+            assert.throws(f, (err) => {
+                if(expected) {
+                    return err.toString() === `AssertionError [ERR_ASSERTION]: ${expected}`;
+                } else return true;
+            });
         }
     }
 };

@@ -11,7 +11,7 @@ describe("Browser Base", () => {
     });
 
     after(async() => {
-        browser.close();
+        await browser.close();
     });
 
     it("Query", async () => {
