@@ -31,6 +31,7 @@ describe("Assertions", () => {
             await browser.assert.exists(".not_container");
         }, `Expected element ".not_container" to exists`);
     });
+    it("Exists Throws With Custom Message");
 
     it("Text", async () => {
         await browser.open(configUrls.index);
@@ -54,6 +55,8 @@ describe("Assertions", () => {
             await browser.assert.text(".container p", "My second paragraph");
         }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
     });
+
+    it("Text Throws With Custom Message");
 
     it("Is Visible", async() => {
         assert(browser.assert.visible);
@@ -87,6 +90,8 @@ describe("Assertions", () => {
         }, `Expected element ".not-exists" to be visible`);
     });
 
+    it("Is Visible Throws With Custom Message");
+
     it("Title", async() => {
         assert(browser.assert.title);
         await browser.open(configUrls.index);
@@ -108,5 +113,7 @@ describe("Assertions", () => {
             await browser.assert.title("");
         }, `Expected page title to be "", "Index Test" found`);
     });
+
+    it("Title Throws With Custom Message");
 
 });

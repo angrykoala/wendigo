@@ -32,6 +32,8 @@ describe("Not Assertions", () => {
         }, `Expected element ".container" to not exists`);
     });
 
+    it("Not Exists Throws With Custom Message");
+
     it("Not Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.not.text("h1", "Not Main Title");
@@ -57,20 +59,22 @@ describe("Not Assertions", () => {
         }, `Expected element "p" not to have text "My second paragraph"`);
     });
 
-    it("Not Is Visible", async() => {
+    it("Not Text Throws With Custom Message");
+
+    it("Not Visible", async() => {
         assert(browser.assert.not.visible);
         await browser.open(configUrls.index);
         await browser.assert.not.visible(".hidden-text");
         await browser.assert.not.visible(".hidden-text2");
     });
 
-    it("Not Is Visible Not Exists", async() => {
+    it("Not Visible Not Exists", async() => {
         assert(browser.assert.not.visible);
         await browser.open(configUrls.index);
         await browser.assert.not.visible(".imaginary-text");
     });
 
-    it("Not Is Visible Throws", async() => {
+    it("Not Visible Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.visible);
         await utils.assertThrowsAsync(async () => {
@@ -80,6 +84,8 @@ describe("Not Assertions", () => {
             await browser.assert.not.visible("h1");
         }, `Expected element "h1" to not be visible`);
     });
+
+    it("Not Visible Throws With Custom Message");
 
     it("Not Title", async() => {
         assert(browser.assert.not.title);
@@ -99,5 +105,7 @@ describe("Not Assertions", () => {
             await browser.assert.not.title("Index Test");
         }, `Expected page title not to be "Index Test"`);
     });
+
+    it("Not Title Throws With Custom Message");
 
 });
