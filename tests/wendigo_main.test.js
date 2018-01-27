@@ -4,8 +4,8 @@ const assert = require('assert');
 const Wendigo = require('../lib/wendigo'); // Load from package.json
 
 
-describe("Wendigo Main", () => {
-
+describe("Wendigo Main", function() {
+    this.timeout(5000);
     it("Wendigo Load", () => {
         assert(Wendigo);
         assert(Wendigo.createBrowser);
