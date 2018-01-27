@@ -1,4 +1,4 @@
-0.2.0 / --
+0.2.0 / 2018-01-27
 ==================
 
   * Using chrome headless and puppeteer instead of Phantomjs
