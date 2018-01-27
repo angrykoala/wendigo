@@ -13,7 +13,7 @@ describe("Assert", () => {
     });
 
     after(async() => {
-        browser.close();
+        await browser.close();
     });
 
     it("Not Exists", async () => {

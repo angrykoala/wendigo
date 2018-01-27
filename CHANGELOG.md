@@ -2,6 +2,8 @@
 ==================
 
   * Using chrome headless and puppeteer instead of Phantomjs
+  * "not" assertions reimplemented
+  * Added default assertion error messages
 
 0.1.0 / 2018-01-22
 ==================

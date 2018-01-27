@@ -15,8 +15,7 @@
     "test",
     "frontend",
     "browser",
-    "automation",
-    "phantomjs"
+    "automation"
   ],
   "author": "angrykoala <angrykoala@outlook.es>",
   "license": "GPL-3.0",
