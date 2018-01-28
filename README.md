@@ -31,12 +31,12 @@ await browser.assert.text("#my-modal", "Button Clicked");
 > **Warning:** Wendigo is under early stages of development and its interface may change
 
 **Contents**
-* [Api](#Api)
-    * [Wendigo](#Wendigo)
-    * [Browser](#Browser)
-    * [Assert](#Assert)
-* [Examples](#Examples)
-* [Troubleshooting](#Troubleshooting)
+* [Api](#api)
+    * [Wendigo](#wendigo)
+    * [Browser](#browser)
+    * [Assert](#assert)
+* [Examples](#examples)
+* [Troubleshooting](#troubleshooting)
 
 # Api
 
@@ -110,14 +110,14 @@ elements.length; // 2
 elements[0].textContent; // "Main Title"
 ```
 
-**queryXPath(xPathSelector)**
+**queryXPath(xPathSelector)**   
 Returns an array with the DOM elements matching the xPath selector
 ```js
 const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
 elements[0].textContent; // "My first paragraph"
 ```
 
-**class(selector)**
+**class(selector)**   
 Returns and array with the classes of the first element returned from the given css selector.
 ```js
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
