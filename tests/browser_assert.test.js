@@ -32,7 +32,13 @@ describe("Assertions", function() {
             await browser.assert.exists(".not_container");
         }, `Expected element ".not_container" to exists`);
     });
-    it("Exists Throws With Custom Message");
+
+    it("Exists Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.exists("h2", "test failed");
+        }, `test failed`);
+    });
 
     it("Text", async () => {
         await browser.open(configUrls.index);
@@ -57,7 +63,12 @@ describe("Assertions", function() {
         }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
     });
 
-    it("Text Throws With Custom Message");
+    it("Text Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("h1", "My first paragraph", "text failed");
+        }, `text failed`);
+    });
 
     it("Is Visible", async() => {
         assert(browser.assert.visible);
@@ -91,7 +102,13 @@ describe("Assertions", function() {
         }, `Expected element ".not-exists" to be visible`);
     });
 
-    it("Is Visible Throws With Custom Message");
+    it("Is Visible Throws With Custom Message", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.visible);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.visible(".hidden-text", "visible test failed");
+        }, `visible test failed`);
+    });
 
     it("Title", async() => {
         assert(browser.assert.title);
@@ -115,6 +132,12 @@ describe("Assertions", function() {
         }, `Expected page title to be "", "Index Test" found`);
     });
 
-    it("Title Throws With Custom Message");
+    it("Title Throws With Custom Message", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.title);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.title("Index Test 2", "title test failed");
+        }, `title test failed`);
+    });
 
 });

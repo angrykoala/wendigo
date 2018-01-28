@@ -33,7 +33,12 @@ describe("Not Assertions", function() {
         }, `Expected element ".container" to not exists`);
     });
 
-    it("Not Exists Throws With Custom Message");
+    it("Not Exists Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.exists("h1", "not exists failed");
+        }, `not exists failed`);
+    });
 
     it("Not Text", async () => {
         await browser.open(configUrls.index);
@@ -60,7 +65,12 @@ describe("Not Assertions", function() {
         }, `Expected element "p" not to have text "My second paragraph"`);
     });
 
-    it("Not Text Throws With Custom Message");
+    it("Not Text Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.text("p", "My first paragraph", "not text failed");
+        }, `not text failed`);
+    });
 
     it("Not Visible", async() => {
         assert(browser.assert.not.visible);
@@ -86,7 +96,12 @@ describe("Not Assertions", function() {
         }, `Expected element "h1" to not be visible`);
     });
 
-    it("Not Visible Throws With Custom Message");
+    it("Not Visible Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.visible("p", "not visible failed");
+        }, `not visible failed`);
+    });
 
     it("Not Title", async() => {
         assert(browser.assert.not.title);
@@ -107,6 +122,13 @@ describe("Not Assertions", function() {
         }, `Expected page title not to be "Index Test"`);
     });
 
-    it("Not Title Throws With Custom Message");
+    it("Not Title Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.not.title);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.title("Index Test", "not title failed");
+        }, `not title failed`);
+
+    });
 
 });
