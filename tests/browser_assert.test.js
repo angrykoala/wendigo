@@ -170,4 +170,25 @@ describe("Assertions", function() {
         }, `class failed`);
     });
 
+    it("Url", async() => {
+        await browser.open(configUrls.index);
+        await browser.assert.url(configUrls.index);
+    });
+
+    it("Url Throws", async() => {
+        const invalidUrl = "http://localhost/not_the_url";
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.url(invalidUrl);
+        }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`);
+    });
+
+    it("Url Throws With Custom Message", async() => {
+        const invalidUrl = "http://localhost/not_the_url";
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.url(invalidUrl, "invalid url");
+        }, `invalid url`);
+    });
+
 });
