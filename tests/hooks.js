@@ -7,7 +7,7 @@ before(() => {
     return dummyServer(3456);
 });
 
-after(() => {
-    Wendigo.stop();
+after(async () => {
+    await Wendigo.stop();
     dummyServer.close();
 });

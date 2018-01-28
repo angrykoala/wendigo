@@ -1,8 +1,9 @@
 0.2.1 / ####-##-##
 ==================
 
-  * Added browser.class and browser.assert.class
-  * Added url getters and assertions
+  * Browser.class and browser.assert.class
+  * Url getters and assertions
+  * Documentation in the readme file
 
 0.2.0 / 2018-01-27
 ==================
