@@ -1,4 +1,4 @@
-0.2.1 / ####-##-##
+0.2.1 / 2018-01-29
 ==================
 
   * Browser.class and browser.assert.class
