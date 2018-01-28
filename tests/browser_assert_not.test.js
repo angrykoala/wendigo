@@ -128,7 +128,28 @@ describe("Not Assertions", function() {
         await utils.assertThrowsAsync(async () => {
             await browser.assert.not.title("Index Test", "not title failed");
         }, `not title failed`);
+    });
 
+    it("Not Url", async() => {
+        const invalidUrl = "http://localhost/invalid_url";
+        await browser.open(configUrls.index);
+        await browser.assert.not.url(invalidUrl);
+    });
+
+    it("Not Url Throws", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.not.url);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.url(configUrls.index);
+        }, `Expected url not to be "${configUrls.index}"`);
+    });
+
+    it("Not Url Throws With Custom Message", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.not.url);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.url(configUrls.index, "not url failed");
+        }, `not url failed`);
     });
 
 });

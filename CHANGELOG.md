@@ -2,7 +2,7 @@
 ==================
 
   * Added browser.class and browser.assert.class
-  * Added browser.url and browser.assert.url
+  * Added url getters and assertions
 
 0.2.0 / 2018-01-27
 ==================
