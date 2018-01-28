@@ -44,8 +44,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 ## Wendigo
 Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
 
-**static createBrowser(settings)**
-
+**static createBrowser(settings)**   
 Will create and return a [Browser](#Browser) instance. It will automatically launch and connect puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
@@ -57,8 +56,7 @@ const Wendigo=require('wendigo');
 const browser=Wendigo.createBrowser(); // Using default options
 ```
 
-**static stop()**
-
+**static stop()**   
 Will stop and disconnect all the browsers. It should be called after finishing all the tests.
 
 ## Browser
@@ -97,14 +95,14 @@ Example:
 await browser.close();
 ```
 
-**query(selector)**    
+**query(selector)**   
 Queries the given css selector and returns a serialized DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 ```js
 const element = await browser.query("h1");
 element.textContent; // "Main Title"
 ```
 
-**queryAll(selector)**
+**queryAll(selector)**   
 Returns an array with all the DOM elements that match the given css selector
 ```js
 const elements = await browser.queryAll("h1");
@@ -139,7 +137,7 @@ Clicks all the elements with the matching css selector
 await browser.click("button.btn");
 ```
 
-**title()**  
+**title()**   
 Returns the page title
 
 **html()**   
@@ -158,7 +156,7 @@ Waits for given css selector to exists, with the given timeout in milliseconds.
 await browser.waitFor(".popup");
 ```
 
-**findByText(text)**
+**findByText(text)**   
 Returns an array with the elements with text content matching the given text.  
 
 ```js
@@ -166,7 +164,7 @@ const elements=await browser.findByText("My First Paragraph");
 elements.length; // 1
 ```
 
-**findByTextContaining(text)**   
+**findByTextContaining(text)**    
 Returns an array with all the elements with a text that contains the given text.
 
 ```js
@@ -177,64 +175,64 @@ elements.length; // 2
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
-**exists(selector, msg)**
+**exists(selector, msg)**   
 Asserts that at least one element with given css exists
 
 ```js
 await browser.assert.exists("h1.main-title");
 ```
 
-**visible(selector, msg)**
+**visible(selector, msg)**   
 Asserts that the first element matching the selector is visible.
 
 An element will considered visible if:
 * Exists
 * The computed style doesn't contain display: none or visibility: hidden
 
-**text(selector, expected, msg)**
+**text(selector, expected, msg)**   
 Asserts that at least one element matching the given selector has the expected text.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
 ```
 
-**title(expected, msg)**
+**title(expected, msg)**   
 Asserts that the page title matches the expected string.
 
-**class(selector, expected, msg)**
+**class(selector, expected, msg)**   
 Asserts that the first element matching the selector contains the expected class.
 
 ```js
 await browser.assert.class("div.container.main-div", "container");
 ```
 
-**url(expected, msg)**
+**url(expected, msg)**   
 Asserts that the current url matches the given string.
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
 
-**not.exists(selector, msg)**
+**not.exists(selector, msg)**   
 Asserts that no element matching given selector exists.
 
 ```js
 await browser.not.exists("h1.foo.bar");
 ```
 
-**not.visible(selector, msg)**
+**not.visible(selector, msg)**   
 Asserts that the first element with given selector is not visible. If no element matches, it will be considered as not visible as well.
 
-**not.text(selector, expected, msg)**
+**not.text(selector, expected, msg)**   
 Asserts that no element matching the given selector matches the expected text.
 
 ```
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
-**not.title(expected, msg)**
+**not.title(expected, msg)**   
 Asserts that the title of the page is not the expected string.
 
-**not.url(expected, msgs)**
+**not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.
 
 ## Examples
