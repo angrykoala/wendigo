@@ -1,9 +1,9 @@
 {
   "name": "wendigo",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A proper monster for front-end testing",
   "engines" : {
-    "node" : ">=8.9.4" 
+    "node" : ">=8.9.4"
   },
   "main": "lib/wendigo.js",
   "scripts": {
