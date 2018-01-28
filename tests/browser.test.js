@@ -18,13 +18,13 @@ describe("Browser", function() {
 
     it("Text", async() => {
         await browser.open(configUrls.index);
-        const titleText = await browser.findText("h1");
+        const titleText = await browser.text("h1");
         assert.strictEqual(titleText[0], "Main Title");
     });
 
     it("Multiple Texts", async() => {
         await browser.open(configUrls.index);
-        const texts = await browser.findText("p");
+        const texts = await browser.text("p");
         assert.strictEqual(texts.length, 2);
         assert.strictEqual(texts[0], "My first paragraph");
         assert.strictEqual(texts[1], "My second paragraph");

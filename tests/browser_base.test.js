@@ -30,6 +30,12 @@ describe("Browser Base", function() {
         assert.strictEqual(element.textContent, "My first paragraph");
     });
 
+    it("Query Not Element Found", async() => {
+        await browser.open(configUrls.index);
+        const element = await browser.query("div.not-exists");
+        assert.strictEqual(element, null);
+    });
+
     it("QueryAll", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.queryAll("p");
