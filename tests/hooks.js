@@ -1,6 +1,6 @@
 "use strict";
 
-const dummyServer = require('../dummy_server/index.js');
+const dummyServer = require('./dummy_server/index.js');
 const Wendigo = require('../lib/wendigo');
 
 before(() => {

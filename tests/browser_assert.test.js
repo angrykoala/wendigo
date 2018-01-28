@@ -140,4 +140,34 @@ describe("Assertions", function() {
         }, `title test failed`);
     });
 
+    it("Class", async() => {
+        await browser.open(configUrls.index);
+        await browser.assert.class("div", "container");
+        await browser.assert.class("div", "extra-class");
+    });
+
+    it("Class Throws", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.class);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.class("div", "not-my-class");
+        }, `Expected element "div" to contain class "not-my-class", "container extra-class" found`);
+    });
+
+    it("Class Throws Element Not Found", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.class);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.class("div.not-exists", "not-my-class");
+        }, `Expected element "div.not-exists" to contain class "not-my-class", no classes found`);
+    });
+
+    it("Class Throws With Custom Message", async() => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.class);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.class("div", "not-my-class", "class failed");
+        }, `class failed`);
+    });
+
 });

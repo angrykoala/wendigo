@@ -1,6 +1,7 @@
 0.2.1 / ####-##-##
 ==================
 
+  * Added browser.class and browser.assert.class
 
 0.2.0 / 2018-01-27
 ==================

@@ -52,5 +52,26 @@ describe("Browser Base", function() {
         assert.strictEqual(elements[0].textContent, "My first paragraph");
     });
 
+    it("Class", async() => {
+        await browser.open(configUrls.index);
+        const elements = await browser.class('div');
+        assert.strictEqual(elements.length, 2);
+        assert.strictEqual(elements[0], "container");
+        assert.strictEqual(elements[1], "extra-class");
+    });
+
+    it("Class With Multiple Elements", async() => {
+        await browser.open(configUrls.index);
+        const elements = await browser.class('b');
+        assert.strictEqual(elements.length, 1);
+        assert.strictEqual(elements[0], "hidden-text2");
+    });
+
+    it("Class Element Doesn't Exists", async() => {
+        await browser.open(configUrls.index);
+        const elements = await browser.class('div.not-exists');
+        assert.strictEqual(elements.length, 0);
+    });
+
 
 });
