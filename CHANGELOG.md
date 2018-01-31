@@ -1,8 +1,9 @@
 0.2.2 / ####-##-##
 ==================
 
-  * Added assertion value
-  * Added browser methods value, clearValue and type
+  * Value assertion
+  * Element and elements assetions
+  * Browser methods value, clearValue and type
   * Node version set in package.json
 
 0.2.1 / 2018-01-29
