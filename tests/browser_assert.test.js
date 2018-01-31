@@ -191,4 +191,43 @@ describe("Assertions", function() {
         }, `invalid url`);
     });
 
+    it("Elements", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.elements("p", 2);
+        await browser.assert.elements("p", {equal: 2});
+        await browser.assert.elements("p.not-exists", 0);
+        await browser.assert.elements("p", {atLeast: 1});
+        await browser.assert.elements("p", {atLeast: 2});
+        await browser.assert.elements("p", {atMost: 3});
+        await browser.assert.elements("p", {atMost: 2});
+        await browser.assert.elements("p", {atLeast: 1, atMost: 3});
+        await browser.assert.elements("p", {atLeast: 1, equal: 2, atMost: 3});
+    });
+
+    it("Elements Throws", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", 3);
+        }, `Expected selector "p" to find exactly 3 elements, 2 found`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", {atLeast: 3});
+        }, `Expected selector "p" to find at least 3 elements, 2 found`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", {atMost: 1});
+        }, `Expected selector "p" to find up to 1 elements, 2 found`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", {atMost: 4, atLeast: 3});
+        }, `Expected selector "p" to find between 3 and 4 elements, 2 found`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", {atMost: 1, atLeast: 0});
+        }, `Expected selector "p" to find between 0 and 1 elements, 2 found`);
+    });
+
+    it("Elements Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.elements("p", 3, "elements failed");
+        }, `elements failed`);
+    });
+
 });

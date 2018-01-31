@@ -270,7 +270,7 @@ Asserts that the title of the page is not the expected string.
 Asserts that the url of the page doesn't match the expected string.
 
 **not.value(selector, expected, msg)**
-Asserts that the first element with the given selector doesn't have the expected value
+Asserts that the first element with the given selector doesn't have the expected value.
 
 
 ## Examples
