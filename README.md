@@ -83,27 +83,29 @@ All the methods in Browser return a Promise than can easily be handled by using 
 
 **open(url)**    
 Opens the given url in the browser.
-Example:
+
 ```js
 await browser.open("http://localhost:8000");
 ```
 
 **close()**    
 Close the opened page in the browser.
-Example:
+
 ```js
 await browser.close();
 ```
 
 **query(selector)**   
 Queries the given css selector and returns a serialized DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+
 ```js
 const element = await browser.query("h1");
 element.textContent; // "Main Title"
 ```
 
 **queryAll(selector)**   
-Returns an array with all the DOM elements that match the given css selector
+Returns an array with all the DOM elements that match the given css selector.
+
 ```js
 const elements = await browser.queryAll("h1");
 elements.length; // 2
@@ -111,7 +113,8 @@ elements[0].textContent; // "Main Title"
 ```
 
 **queryXPath(xPathSelector)**   
-Returns an array with the DOM elements matching the xPath selector
+Returns an array with the DOM elements matching the xPath selector.
+
 ```js
 const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
 elements[0].textContent; // "My first paragraph"
@@ -119,8 +122,16 @@ elements[0].textContent; // "My first paragraph"
 
 **class(selector)**   
 Returns and array with the classes of the first element returned from the given css selector.
+
 ```js
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
+```
+
+**value(selector)**
+Returns the value of the first element with given selector. Returns _null_ if no element or value found.
+
+```js
+const value=await browser.value("input.my-input");
 ```
 
 **text(selector)**   
@@ -172,6 +183,21 @@ const elements=await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
+**type(selector, text)**
+Types given text in the selector element (input). If text is already present in the element, the typed text will be added _before_. If multiple elements exists, only the first one will be changed.
+
+
+```js
+await browser.type("input.my-input", "My Input");
+```
+
+**clearValue(selector)**
+Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
+
+```js
+await browser.clearValue("input.my-input");
+```
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
@@ -209,6 +235,41 @@ await browser.assert.class("div.container.main-div", "container");
 **url(expected, msg)**   
 Asserts that the current url matches the given string.
 
+**value(selector, expected, msg)**
+Asserts that the first element matching the selector has the expected value.
+
+```js
+await browser.type("input.my-input", "Dont Panic");
+await browser.assert.value("input.my-input", "Dont Panic");
+```
+
+**element(selector, msg)**
+Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
+
+**elements(selector, count, msg)**
+Asserts the number of element that matches given selector.
+
+The count parameter can be a number of the exact number of elements expected or an object with the following properties:
+    * _atLeast_: Expects at least the given number of elements.
+    * _atMost_: Expects up to the given number of elements.
+    * _equal_: Expects the exact number of elements.
+
+```html
+<p>Paragraph 1</p>
+<p class="second">Paragraph 2</p>
+```
+
+```js
+browser.assert.elements("p", 2); // Ok
+browser.assert.elements("p", {equal: 2}); // Ok
+browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
+browser.assert.elements("p.first", 0); //Ok
+
+browser.assert.elements("p.second", 2); // Fails
+browser.assert.elements("p.second", {atLeast: 1}); // Ok
+```
+
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
 
@@ -234,6 +295,10 @@ Asserts that the title of the page is not the expected string.
 
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.
+
+**not.value(selector, expected, msg)**
+Asserts that the first element with the given selector doesn't have the expected value.
+
 
 ## Examples
 

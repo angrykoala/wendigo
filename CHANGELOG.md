@@ -1,3 +1,11 @@
+0.2.2 / 2018-02-01
+==================
+
+  * Value assertion
+  * Element and elements assertions
+  * Browser methods value, clearValue and type
+  * Node version set in package.json
+
 0.2.1 / 2018-01-29
 ==================
 
