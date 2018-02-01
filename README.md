@@ -243,6 +243,33 @@ await browser.type("input.my-input", "Dont Panic");
 await browser.assert.value("input.my-input", "Dont Panic");
 ```
 
+**element(selector, msg)**
+Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
+
+**elements(selector, count, msg)**
+Asserts the number of element that matches given selector.
+
+The count parameter can be a number of the exact number of elements expected or an object with the following properties:
+    * _atLeast_: Expects at least the given number of elements.
+    * _atMost_: Expects up to the given number of elements.
+    * _equal_: Expects the exact number of elements.
+
+```html
+<p>Paragraph 1</p>
+<p class="second">Paragraph 2</p>
+```
+
+```js
+browser.assert.elements("p", 2); // Ok
+browser.assert.elements("p", {equal: 2}); // Ok
+browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
+browser.assert.elements("p.first", 0); //Ok
+
+browser.assert.elements("p.second", 2); // Fails
+browser.assert.elements("p.second", {atLeast: 1}); // Ok
+```
+
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
 
