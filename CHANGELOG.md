@@ -2,7 +2,7 @@
 ==================
 
   * Value assertion
-  * Element and elements assetions
+  * Element and elements assertions
   * Browser methods value, clearValue and type
   * Node version set in package.json
 
