@@ -3,6 +3,8 @@
 
   * Click now supports index and clicks all elements
   * Added "headless" option to set headless mode
+  * All query methods now return a puppeteer's DOMElement
+  * Removed jsdom dependency
 
 0.2.2 / 2018-02-01
 ==================
