@@ -48,7 +48,8 @@ Wendigo is the main static class exported by the package. It provides the method
 Will create and return a [Browser](#Browser) instance. It will automatically launch and connect puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
-    * `log (false)`: If true, it will log all the console events of the browser.
+    * `log: false`: If true, it will log all the console events of the browser.
+    * `headless: true`: If true, the browser will run on headless mode.
 
 Example:
 ```js
@@ -141,8 +142,8 @@ Returns an array with all text contents of the elements matching the css selecto
 const texts=await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
-**click(selector)**   
-Clicks all the elements with the matching css selector
+**click(selector, index)**   
+Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked.
 
 ```js
 await browser.click("button.btn");

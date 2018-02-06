@@ -2,6 +2,7 @@
 ==================
 
   * Click now supports index and clicks all elements
+  * Added "headless" option to set headless mode
 
 0.2.2 / 2018-02-01
 ==================
