@@ -23,6 +23,31 @@ describe("Browser Interactions", function() {
         await browser.assert.text("#switch", "Off");
     });
 
+    it("Click Multiple Elements", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await browser.click("button");
+        await browser.assert.text("#switch", "Off");
+        await browser.waitFor("#switch.on", 600);
+    });
+
+    it("Click With Index", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await browser.click("button", 1);
+        await browser.assert.text("#switch", "On");
+        await browser.waitFor("#switch.off", 600);
+    });
+
+    it("Click With Invalid Index", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await utils.assertThrowsAsync(async () => {
+            await browser.click("button", 10);
+        }); // TODO: check text
+        await browser.assert.text("#switch", "On");
+    });
+
     it("Button Text", async() => {
         await browser.open(configUrls.click);
         await browser.assert.text(".btn", "click me");
