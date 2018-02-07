@@ -152,4 +152,33 @@ describe("Not Assertions", function() {
         }, `not url failed`);
     });
 
+    it("Not Text Contains", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.not.textContains(".container p", "My second paragraph");
+        await browser.assert.not.textContains(".container p", "My second");
+    });
+
+    it("Not Text Contains Multiple Elements", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.not.textContains("p", "My paragraph");
+    });
+
+    it("Not Text Contains Throws", async () => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.not.textContains);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.textContains("p", "My second");
+        }, `Expected element "p" not to contain text "My second"`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.textContains("p", "My first");
+        }, `Expected element "p" not to contain text "My first"`);
+    });
+
+    it("Not Text Contains Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.textContains(".container p", "My second", "text contains fails");
+        }, `text contains fails`);
+    });
+
 });

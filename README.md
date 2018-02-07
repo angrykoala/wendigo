@@ -229,6 +229,13 @@ Asserts that at least one element matching the given selector has the expected t
 await browser.assert.text("p", "My First Paragraph");
 ```
 
+**textContains(selector, expected, msg)**   
+Asserts that at least one element matching the given selector contains the expected text.
+
+```js
+await browser.assert.text("p", "My First");
+```
+
 **title(expected, msg)**   
 Asserts that the page title matches the expected string.
 
