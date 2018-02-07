@@ -97,11 +97,10 @@ await browser.close();
 ```
 
 **query(selector)**   
-Queries the given css selector and returns a serialized DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
-element.textContent; // "Main Title"
 ```
 
 **queryAll(selector)**   
@@ -110,8 +109,9 @@ Returns an array with all the DOM elements that match the given css selector.
 ```js
 const elements = await browser.queryAll("h1");
 elements.length; // 2
-elements[0].textContent; // "Main Title"
 ```
+
+> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions
 
 **queryXPath(xPathSelector)**   
 Returns an array with the DOM elements matching the xPath selector.
@@ -126,6 +126,12 @@ Returns and array with the classes of the first element returned from the given 
 
 ```js
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
+```
+
+Using a dom node:
+```js
+const node=await browser.query("div.container.main");
+const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
 ```
 
 **value(selector)**
