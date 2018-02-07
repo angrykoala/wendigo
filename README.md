@@ -37,6 +37,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Assert](#assert)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
+* [Acknowledgements](#acknowledgements)
 
 # Api
 
@@ -350,6 +351,51 @@ describe("My Tests", function() {
         await browser.assert.visible(".menu");
     });
 });
+```
+
+## Troubleshooting
+
+### Running Tests With Travis CI
+Running tests using puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
+
+```ỳml
+language: node_js
+os:
+    - linux
+node_js:
+    - "stable"
+sudo: false
+env:
+  - NO_SANDBOX=true
+
+script:
+    - npm test
+
+cache:
+  directories:
+    - node_modules
+```
+_Example of travis.yml file_
+
+### Running Tests With Gitlab CI
+
+Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`:
+
+```yml
+image: node:8.9.4
+
+variables:
+  NO_SANDBOX: "true"
+
+before_script:
+    - apt-get update
+    - apt-get install -y -q gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+    - npm install
+
+test:
+  stage: test
+  script:
+    - npm test
 ```
 
 ## Acknowledgements
