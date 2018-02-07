@@ -48,7 +48,8 @@ Wendigo is the main static class exported by the package. It provides the method
 Will create and return a [Browser](#Browser) instance. It will automatically launch and connect puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
-    * `log (false)`: If true, it will log all the console events of the browser.
+    * `log: false`: If true, it will log all the console events of the browser.
+    * `headless: true`: If true, the browser will run on headless mode.
 
 Example:
 ```js
@@ -96,11 +97,10 @@ await browser.close();
 ```
 
 **query(selector)**   
-Queries the given css selector and returns a serialized DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
-element.textContent; // "Main Title"
 ```
 
 **queryAll(selector)**   
@@ -109,8 +109,9 @@ Returns an array with all the DOM elements that match the given css selector.
 ```js
 const elements = await browser.queryAll("h1");
 elements.length; // 2
-elements[0].textContent; // "Main Title"
 ```
+
+> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions
 
 **queryXPath(xPathSelector)**   
 Returns an array with the DOM elements matching the xPath selector.
@@ -127,6 +128,12 @@ Returns and array with the classes of the first element returned from the given 
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
 ```
 
+Using a dom node:
+```js
+const node=await browser.query("div.container.main");
+const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
+```
+
 **value(selector)**
 Returns the value of the first element with given selector. Returns _null_ if no element or value found.
 
@@ -141,8 +148,8 @@ Returns an array with all text contents of the elements matching the css selecto
 const texts=await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
-**click(selector)**   
-Clicks all the elements with the matching css selector
+**click(selector, index)**   
+Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked.
 
 ```js
 await browser.click("button.btn");
@@ -184,7 +191,7 @@ elements.length; // 2
 ```
 
 **type(selector, text)**
-Types given text in the selector element (input). If text is already present in the element, the typed text will be added _before_. If multiple elements exists, only the first one will be changed.
+Types given text (as element value) in all the elements (input) with given selector. If a value is already present, appends the new text at the end.
 
 
 ```js
@@ -220,6 +227,13 @@ Asserts that at least one element matching the given selector has the expected t
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
+```
+
+**textContains(selector, expected, msg)**   
+Asserts that at least one element matching the given selector contains the expected text.
+
+```js
+await browser.assert.text("p", "My First");
 ```
 
 **title(expected, msg)**   

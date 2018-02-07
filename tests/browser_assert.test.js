@@ -40,10 +40,24 @@ describe("Assertions", function() {
         }, `test failed`);
     });
 
+    it("Exists From Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.exists(node);
+        await browser.assert.exists(".container");
+    });
+
     it("Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("h1", "Main Title");
     });
+
+    it("Text From Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.text(node, "Main Title");
+    });
+
     it("Multiple Texts", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("p", "My first paragraph");
@@ -61,6 +75,13 @@ describe("Assertions", function() {
         await utils.assertThrowsAsync(async () => {
             await browser.assert.text(".container p", "My second paragraph");
         }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
+    });
+
+    it("Multiple Text Throws", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("p", "My paragraph");
+        }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Throws With Custom Message", async () => {
@@ -108,6 +129,13 @@ describe("Assertions", function() {
         await utils.assertThrowsAsync(async () => {
             await browser.assert.visible(".hidden-text", "visible test failed");
         }, `visible test failed`);
+    });
+
+    it("Is Visible From Node", async() => {
+        assert(browser.assert.visible);
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.visible(node);
     });
 
     it("Title", async() => {
@@ -168,6 +196,13 @@ describe("Assertions", function() {
         await utils.assertThrowsAsync(async () => {
             await browser.assert.class("div", "not-my-class", "class failed");
         }, `class failed`);
+    });
+
+    it("Class From Node", async() => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("div");
+        await browser.assert.class(node, "container");
+        await browser.assert.class(node, "extra-class");
     });
 
     it("Url", async() => {
@@ -252,4 +287,40 @@ describe("Assertions", function() {
         }, `element failed`);
     });
 
+    it("Text Contains", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.textContains(".container p", "My first paragraph");
+        await browser.assert.textContains(".container p", "My first");
+    });
+
+    it("Text Contains Multiple Elements", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.textContains("p", "My first paragraph");
+        await browser.assert.textContains("p", "My second paragraph");
+        await browser.assert.textContains("p", "My second");
+        await browser.assert.textContains("p", "My first");
+    });
+
+    it("Text Contains From Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query(".container p");
+        await browser.assert.textContains(node, "My first");
+    });
+
+    it("Text Contains Throws", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.textContains(".container p", "My second");
+        }, `Expected element ".container p" to contain text "My second", "My first paragraph" found`);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.textContains("p", "My paragraph");
+        }, `Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
+    });
+
+    it("Text Contains Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.textContains(".container p", "My second", "text contains fails");
+        }, `text contains fails`);
+    });
 });
