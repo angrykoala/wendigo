@@ -13,6 +13,13 @@ window.WendigoUtils = {
             return document.querySelector(selector);
         } else return selector;
     },
+    queryAll(selector) {
+        if(typeof selector === 'string') {
+            return document.querySelectorAll(selector);
+        } else if(!Array.isArray(selector)) {
+            return [selector];
+        } else return selector;
+    },
     xPathQuery: function(xPath) {
         let xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
         let result = [];

@@ -39,10 +39,23 @@ describe("Browser Forms", function() {
         assert.strictEqual(value, null);
     });
 
+    it("Get Value From Node", async() => {
+        await browser.open(configUrls.forms);
+        const node = await browser.query("input.input2");
+        const value = await browser.value(node);
+        assert.strictEqual(value, "default value");
+    });
+
     it("Assert Value", async() => {
         await browser.open(configUrls.forms);
         await browser.assert.value("input.input1", "");
         await browser.assert.value("input.input2", "default value");
+    });
+
+    it("Assert Value With Node", async() => {
+        await browser.open(configUrls.forms);
+        const node = await browser.query("input.input2");
+        await browser.assert.value(node, "default value");
     });
 
     it("Assert Null Value", async() => {
@@ -80,6 +93,12 @@ describe("Browser Forms", function() {
         await browser.assert.not.value("h1", "");
     });
 
+    it("Assert Not Value From Node", async() => {
+        await browser.open(configUrls.forms);
+        const node = await browser.query("input.input1");
+        await browser.assert.not.value(node, "a value");
+    });
+
     it("Assert Not Value Throws", async() => {
         await browser.open(configUrls.forms);
         await utils.assertThrowsAsync(async () => {
@@ -110,11 +129,26 @@ describe("Browser Forms", function() {
         await browser.assert.value("input.input2", "secondTextdefault value");
     });
 
+    it("Type Node", async () => {
+        await browser.open(configUrls.forms);
+        const node = await browser.query("input.input1");
+
+        await browser.type(node, "firstText");
+        await browser.assert.value("input.input1", "firstText");
+    });
+
     it("Clear Input", async() => {
         await browser.open(configUrls.forms);
         await browser.clearValue("input.input1");
         await browser.clearValue("input.input2");
         await browser.assert.value("input.input1", "");
-        await browser.assert.value("input.input1", "");
+        await browser.assert.value("input.input2", "");
+    });
+
+    it("Clear Input From Node", async() => {
+        await browser.open(configUrls.forms);
+        const node = await browser.query("input.input2");
+        await browser.clearValue(node);
+        await browser.assert.value("input.input2", "");
     });
 });

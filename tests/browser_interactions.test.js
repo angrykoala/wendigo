@@ -39,6 +39,13 @@ describe("Browser Interactions", function() {
         await browser.waitFor("#switch.off", 600);
     });
 
+    it("Click From Node", async() => {
+        await browser.open(configUrls.click);
+        const node = await browser.query(".btn");
+        await browser.click(node);
+        await browser.assert.text("#switch", "Off");
+    });
+
     it("Click With Invalid Index", async() => {
         await browser.open(configUrls.click);
         await browser.assert.text("#switch", "On");

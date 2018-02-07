@@ -22,6 +22,13 @@ describe("Browser", function() {
         assert.strictEqual(titleText[0], "Main Title");
     });
 
+    it("Text From Node", async() => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        const titleText = await browser.text(node);
+        assert.strictEqual(titleText[0], "Main Title");
+    });
+
     it("Multiple Texts", async() => {
         await browser.open(configUrls.index);
         const texts = await browser.text("p");

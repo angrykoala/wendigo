@@ -40,10 +40,24 @@ describe("Assertions", function() {
         }, `test failed`);
     });
 
+    it("Exists From Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.exists(node);
+        await browser.assert.exists(".container");
+    });
+
     it("Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("h1", "Main Title");
     });
+
+    it("Text From Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.text(node, "Main Title");
+    });
+
     it("Multiple Texts", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("p", "My first paragraph");
@@ -110,6 +124,13 @@ describe("Assertions", function() {
         }, `visible test failed`);
     });
 
+    it("Is Visible From Node", async() => {
+        assert(browser.assert.visible);
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.visible(node);
+    });
+
     it("Title", async() => {
         assert(browser.assert.title);
         await browser.open(configUrls.index);
@@ -168,6 +189,13 @@ describe("Assertions", function() {
         await utils.assertThrowsAsync(async () => {
             await browser.assert.class("div", "not-my-class", "class failed");
         }, `class failed`);
+    });
+
+    it("Class From Node", async() => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("div");
+        await browser.assert.class(node, "container");
+        await browser.assert.class(node, "extra-class");
     });
 
     it("Url", async() => {

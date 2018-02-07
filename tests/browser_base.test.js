@@ -79,5 +79,12 @@ describe("Browser Base", function() {
         assert.strictEqual(elements.length, 0);
     });
 
-
+    it("Class From Node", async() => {
+        await browser.open(configUrls.index);
+        const node = await browser.query('div');
+        const classes = await browser.class(node);
+        assert.strictEqual(classes.length, 2);
+        assert.strictEqual(classes[0], "container");
+        assert.strictEqual(classes[1], "extra-class");
+    });
 });
