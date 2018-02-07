@@ -126,7 +126,14 @@ describe("Browser Forms", function() {
         await browser.type("input.input1", "firstText");
         await browser.type("input.input2", "secondText");
         await browser.assert.value("input.input1", "firstText");
-        await browser.assert.value("input.input2", "secondTextdefault value");
+        await browser.assert.value("input.input2", "default valuesecondText");
+    });
+
+    it("Type Multiple Elements", async () => {
+        await browser.open(configUrls.forms);
+        await browser.type("input", "firstText");
+        await browser.assert.value("input.input1", "firstText");
+        await browser.assert.value("input.input2", "default valuefirstText");
     });
 
     it("Type Node", async () => {

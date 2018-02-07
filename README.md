@@ -191,7 +191,7 @@ elements.length; // 2
 ```
 
 **type(selector, text)**
-Types given text in the selector element (input). If text is already present in the element, the typed text will be added _before_. If multiple elements exists, only the first one will be changed.
+Types given text (as element value) in all the elements (input) with given selector. If a value is already present, appends the new text at the end.
 
 
 ```js
