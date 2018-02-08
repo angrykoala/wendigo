@@ -156,6 +156,13 @@ Clicks all the elements with the matching css selector, if the index parameter i
 await browser.click("button.btn");
 ```
 
+**clickText(text)**   
+Clicks all the elements matching given text.
+
+```js
+await browser.clickText("Click Me!");
+```
+
 **title()**   
 Returns the page title
 
