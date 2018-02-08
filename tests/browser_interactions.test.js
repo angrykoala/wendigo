@@ -93,4 +93,26 @@ describe("Browser Interactions", function() {
         await browser.assert.exists("#switch.on");
         await browser.assert.text("#switch", "On");
     });
+
+    it("Click Text", async() => {
+        await browser.open(configUrls.click);
+        await browser.clickText("click me");
+        await browser.assert.text("#switch", "Off");
+        await browser.clickText("click me");
+        await browser.assert.text("#switch", "On");
+    });
+
+    it("Click Invalid Text", async() => {
+        await browser.open(configUrls.click);
+        await browser.clickText("not click me");
+        await browser.assert.text("#switch", "On");
+    });
+
+    it("Find By Text Containing And Click", async() => {
+        await browser.open(configUrls.click);
+        const elements = await browser.findByTextContaining("click");
+        await browser.click(elements);
+        await browser.assert.text("#switch", "Off");
+        await browser.waitFor("#switch.on", 600);
+    });
 });

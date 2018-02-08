@@ -1,3 +1,10 @@
+0.3.1 / ####-##-##
+==================
+
+  * Method browser.clickText
+  * Find by text fixed to return valid html elements
+
+
 0.3.0 / 2018-02-07
 ==================
 
