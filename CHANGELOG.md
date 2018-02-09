@@ -11,7 +11,7 @@
   * Support for DOM Node as selector in all methods
   * Assert textContains
   * Click now supports index and clicks all elements
-  * Headless" option to set browser's headless mode
+  * Headless option to set browser's headless mode
   * All query methods now return a puppeteer's DOM Node
   * browser.type types on all elements and apending the value
   * Removed jsdom dependency
