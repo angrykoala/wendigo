@@ -25,17 +25,17 @@ describe("Not Assertions", function() {
 
     it("Not Exists Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.exists("h1");
         }, `Expected element "h1" to not exists`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.exists(".container");
         }, `Expected element ".container" to not exists`);
     });
 
     it("Not Exists Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.exists("h1", "not exists failed");
         }, `not exists failed`);
     });
@@ -57,17 +57,17 @@ describe("Not Assertions", function() {
 
     it("Not Multiple Texts Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.text("p", "My first paragraph");
         }, `Expected element "p" not to have text "My first paragraph"`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.text("p", "My second paragraph");
         }, `Expected element "p" not to have text "My second paragraph"`);
     });
 
     it("Not Text Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.text("p", "My first paragraph", "not text failed");
         }, `not text failed`);
     });
@@ -88,17 +88,17 @@ describe("Not Assertions", function() {
     it("Not Visible Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.visible);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.visible("p");
         }, `Expected element "p" to not be visible`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.visible("h1");
         }, `Expected element "h1" to not be visible`);
     });
 
     it("Not Visible Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.visible("p", "not visible failed");
         }, `not visible failed`);
     });
@@ -117,7 +117,7 @@ describe("Not Assertions", function() {
     it("Not Title Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.title);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.title("Index Test");
         }, `Expected page title not to be "Index Test"`);
     });
@@ -125,7 +125,7 @@ describe("Not Assertions", function() {
     it("Not Title Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.title);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.title("Index Test", "not title failed");
         }, `not title failed`);
     });
@@ -139,7 +139,7 @@ describe("Not Assertions", function() {
     it("Not Url Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.url);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.url(configUrls.index);
         }, `Expected url not to be "${configUrls.index}"`);
     });
@@ -147,7 +147,7 @@ describe("Not Assertions", function() {
     it("Not Url Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.url);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.url(configUrls.index, "not url failed");
         }, `not url failed`);
     });
@@ -166,17 +166,17 @@ describe("Not Assertions", function() {
     it("Not Text Contains Throws", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.not.textContains);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.textContains("p", "My second");
         }, `Expected element "p" not to contain text "My second"`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.textContains("p", "My first");
         }, `Expected element "p" not to contain text "My first"`);
     });
 
     it("Not Text Contains Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.textContains(".container p", "My second", "text contains fails");
         }, `text contains fails`);
     });

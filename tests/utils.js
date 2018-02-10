@@ -2,6 +2,9 @@
 const assert = require('assert');
 
 module.exports = {
+    async assertThrowsAssertionAsync(fn, expected) {
+        return this.assertThrowsAsync(fn, `AssertionError [ERR_ASSERTION]: ${expected}`);
+    },
     async assertThrowsAsync(fn, expected) {
         let f = () => {};
         try {
@@ -13,7 +16,7 @@ module.exports = {
         } finally {
             assert.throws(f, (err) => {
                 if(expected) {
-                    return err.toString() === `AssertionError [ERR_ASSERTION]: ${expected}`;
+                    return err.toString() === expected;
                 } else return true;
             });
         }
