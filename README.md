@@ -50,7 +50,11 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
-    * `headless: true`: If true, the browser will run on headless mode.
+    * Any settings that can be passed to puppeteer can be passed in createdBrowser, for example:
+        * `headless: true`: If true, the browser will run on headless mode.
+        * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
+
+> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again 
 
 Example:
 ```js

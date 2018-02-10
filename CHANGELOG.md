@@ -1,9 +1,13 @@
+0.3.2 / ####-##-##
+==================
+
+  * Puppeteer settings are now passed down in createBrowser, including slowMo
+
 0.3.1 / 2018-02-09
 ==================
 
   * Method browser.clickText
   * Find by text fixed to return valid html elements
-
 
 0.3.0 / 2018-02-07
 ==================
