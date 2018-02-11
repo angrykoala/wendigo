@@ -17,36 +17,6 @@ describe("Assertions", function() {
         await browser.close();
     });
 
-    it("Exists", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.exists("h1");
-        await browser.assert.exists(".container");
-    });
-
-    it("Exists Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.exists("h2");
-        }, `Expected element "h2" to exists`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.exists(".not_container");
-        }, `Expected element ".not_container" to exists`);
-    });
-
-    it("Exists Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.exists("h2", "test failed");
-        }, `test failed`);
-    });
-
-    it("Exists From Node", async () => {
-        await browser.open(configUrls.index);
-        const node = await browser.query("h1");
-        await browser.assert.exists(node);
-        await browser.assert.exists(".container");
-    });
-
     it("Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("h1", "Main Title");

@@ -17,29 +17,6 @@ describe("Not Assertions", function() {
         await browser.close();
     });
 
-    it("Not Exists", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.exists("h2");
-        await browser.assert.not.exists(".not-container");
-    });
-
-    it("Not Exists Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.exists("h1");
-        }, `Expected element "h1" to not exists`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.exists(".container");
-        }, `Expected element ".container" to not exists`);
-    });
-
-    it("Not Exists Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.exists("h1", "not exists failed");
-        }, `not exists failed`);
-    });
-
     it("Not Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.not.text("h1", "Not Main Title");

@@ -54,7 +54,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
-> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again 
+> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
 
 Example:
 ```js
@@ -143,7 +143,18 @@ const classes=await browser.class(node); // Returns ["container", "main", "anoth
 Returns the value of the first element with given selector. Returns _null_ if no element or value found.
 
 ```js
-const value=await browser.value("input.my-input");
+const value = await browser.value("input.my-input");
+```
+
+**attribute(selector, attributeName)**
+Return the attribute value of the first element found with given selector. Throws if no element is found. Returns `""` if the attribute is set but no value is given and `null` if the attribute doesn't exists.
+
+```js
+const classAttribute = await browser.attribute(".my-element", "class"); // Returns "my-element another-class"
+
+const hiddentAttr = await browser.attribute(".my-hidden-element", "hidden"); // Returns ""
+const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); // Returns null
+
 ```
 
 **text(selector)**   

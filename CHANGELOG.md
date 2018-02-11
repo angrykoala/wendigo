@@ -1,6 +1,7 @@
 0.3.2 / ####-##-##
 ==================
 
+  * browser.attribute method
   * browser.click and browser.clickText throws if no element is found, return the number of elements
   * Puppeteer settings are now passed down in createBrowser, including slowMo
   * Minor improvements in assertion messages
