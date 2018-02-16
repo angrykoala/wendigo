@@ -17,36 +17,6 @@ describe("Assertions", function() {
         await browser.close();
     });
 
-    it("Exists", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.exists("h1");
-        await browser.assert.exists(".container");
-    });
-
-    it("Exists Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
-            await browser.assert.exists("h2");
-        }, `Expected element "h2" to exists`);
-        await utils.assertThrowsAsync(async () => {
-            await browser.assert.exists(".not_container");
-        }, `Expected element ".not_container" to exists`);
-    });
-
-    it("Exists Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
-            await browser.assert.exists("h2", "test failed");
-        }, `test failed`);
-    });
-
-    it("Exists From Node", async () => {
-        await browser.open(configUrls.index);
-        const node = await browser.query("h1");
-        await browser.assert.exists(node);
-        await browser.assert.exists(".container");
-    });
-
     it("Text", async () => {
         await browser.open(configUrls.index);
         await browser.assert.text("h1", "Main Title");
@@ -66,27 +36,27 @@ describe("Assertions", function() {
 
     it("Text Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text("h1", "My first paragraph");
         }, `Expected element "h1" to have text "My first paragraph", "Main Title" found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text("h2", "My first paragraph");
         }, `Expected element "h2" to have text "My first paragraph", no text found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text(".container p", "My second paragraph");
         }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
     });
 
     it("Multiple Text Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text("p", "My paragraph");
         }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text("h1", "My first paragraph", "text failed");
         }, `text failed`);
     });
@@ -102,7 +72,7 @@ describe("Assertions", function() {
     it("Is Visible Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.visible(".hidden-text");
         }, `Expected element ".hidden-text" to be visible`);
     });
@@ -110,7 +80,7 @@ describe("Assertions", function() {
     it("Is Visible When Styled Hidden", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.visible(".hidden-text2");
         }, `Expected element ".hidden-text2" to be visible`);
     });
@@ -118,7 +88,7 @@ describe("Assertions", function() {
     it("Is Visible When Element Not Exists", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.visible(".not-exists");
         }, `Expected element ".not-exists" to be visible`);
     });
@@ -126,7 +96,7 @@ describe("Assertions", function() {
     it("Is Visible Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.visible(".hidden-text", "visible test failed");
         }, `visible test failed`);
     });
@@ -152,10 +122,10 @@ describe("Assertions", function() {
     it("Title Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.title);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.title("Index Test 2");
         }, `Expected page title to be "Index Test 2", "Index Test" found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.title("");
         }, `Expected page title to be "", "Index Test" found`);
     });
@@ -163,7 +133,7 @@ describe("Assertions", function() {
     it("Title Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.title);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.title("Index Test 2", "title test failed");
         }, `title test failed`);
     });
@@ -177,7 +147,7 @@ describe("Assertions", function() {
     it("Class Throws", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.class);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.class("div", "not-my-class");
         }, `Expected element "div" to contain class "not-my-class", "container extra-class" found`);
     });
@@ -185,7 +155,7 @@ describe("Assertions", function() {
     it("Class Throws Element Not Found", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.class);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.class("div.not-exists", "not-my-class");
         }, `Expected element "div.not-exists" to contain class "not-my-class", no classes found`);
     });
@@ -193,7 +163,7 @@ describe("Assertions", function() {
     it("Class Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         assert(browser.assert.class);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.class("div", "not-my-class", "class failed");
         }, `class failed`);
     });
@@ -213,7 +183,7 @@ describe("Assertions", function() {
     it("Url Throws", async() => {
         const invalidUrl = "http://localhost/not_the_url";
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.url(invalidUrl);
         }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`);
     });
@@ -221,7 +191,7 @@ describe("Assertions", function() {
     it("Url Throws With Custom Message", async() => {
         const invalidUrl = "http://localhost/not_the_url";
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.url(invalidUrl, "invalid url");
         }, `invalid url`);
     });
@@ -241,26 +211,26 @@ describe("Assertions", function() {
 
     it("Elements Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", 3);
         }, `Expected selector "p" to find exactly 3 elements, 2 found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", {atLeast: 3});
         }, `Expected selector "p" to find at least 3 elements, 2 found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", {atMost: 1});
         }, `Expected selector "p" to find up to 1 elements, 2 found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", {atMost: 4, atLeast: 3});
         }, `Expected selector "p" to find between 3 and 4 elements, 2 found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", {atMost: 1, atLeast: 0});
         }, `Expected selector "p" to find between 0 and 1 elements, 2 found`);
     });
 
     it("Elements Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.elements("p", 3, "elements failed");
         }, `elements failed`);
     });
@@ -272,17 +242,17 @@ describe("Assertions", function() {
 
     it("Element Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.element("p.not-exist");
         }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.element("p");
         }, `Expected selector "p" to find exactly 1 elements, 2 found`);
     });
 
     it("Element Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.element("p", "element failed");
         }, `element failed`);
     });
@@ -309,17 +279,17 @@ describe("Assertions", function() {
 
     it("Text Contains Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.textContains(".container p", "My second");
         }, `Expected element ".container p" to contain text "My second", "My first paragraph" found`);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.textContains("p", "My paragraph");
         }, `Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Contains Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.textContains(".container p", "My second", "text contains fails");
         }, `text contains fails`);
     });

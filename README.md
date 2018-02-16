@@ -50,7 +50,11 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
-    * `headless: true`: If true, the browser will run on headless mode.
+    * Any settings that can be passed to puppeteer can be passed in createdBrowser, for example:
+        * `headless: true`: If true, the browser will run on headless mode.
+        * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
+
+> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
 
 Example:
 ```js
@@ -139,7 +143,18 @@ const classes=await browser.class(node); // Returns ["container", "main", "anoth
 Returns the value of the first element with given selector. Returns _null_ if no element or value found.
 
 ```js
-const value=await browser.value("input.my-input");
+const value = await browser.value("input.my-input");
+```
+
+**attribute(selector, attributeName)**
+Return the attribute value of the first element found with given selector. Throws if no element is found. Returns `""` if the attribute is set but no value is given and `null` if the attribute doesn't exists.
+
+```js
+const classAttribute = await browser.attribute(".my-element", "class"); // Returns "my-element another-class"
+
+const hiddentAttr = await browser.attribute(".my-hidden-element", "hidden"); // Returns ""
+const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); // Returns null
+
 ```
 
 **text(selector)**   
@@ -241,7 +256,7 @@ await browser.assert.text("p", "My First Paragraph");
 Asserts that at least one element matching the given selector contains the expected text.
 
 ```js
-await browser.assert.text("p", "My First");
+await browser.assert.textContains("p", "My First");
 ```
 
 **title(expected, msg)**   
@@ -291,6 +306,20 @@ browser.assert.elements("p.second", 2); // Fails
 browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
+**attribute(selector, attribute, expected, msg)**
+Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
+
+```js
+browser.assert.attribute(".hidden-class", "class", "hidden-class");
+browser.assert.attribute(".hidden-class", "hidden");
+```
+
+To pass a custom message without specifying an expected value, you can pass null:
+```js
+browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+```
+
+If the element doesn't exists, the assertion will fail.
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
@@ -308,7 +337,7 @@ Asserts that the first element with given selector is not visible. If no element
 **not.text(selector, expected, msg)**   
 Asserts that no element matching the given selector matches the expected text.
 
-```
+```js
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
@@ -321,6 +350,19 @@ Asserts that the url of the page doesn't match the expected string.
 **not.value(selector, expected, msg)**
 Asserts that the first element with the given selector doesn't have the expected value.
 
+**not.attribute(selector, attribute, expected, msg)**
+Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
+
+```js
+browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
+browser.assert.not.attribute(".not-hidden-class", "hidden");
+```
+
+To pass a custom message without specifying an expected value, you can pass null:
+```js
+browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
+```
+If the element doesn't exists, the assertion will fail.
 
 ## Examples
 
@@ -365,7 +407,7 @@ describe("My Tests", function() {
 ### Running Tests With Travis CI
 Running tests using puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
 
-```ỳml
+```yml
 language: node_js
 os:
     - linux

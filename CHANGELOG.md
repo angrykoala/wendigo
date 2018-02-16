@@ -1,9 +1,17 @@
+0.3.2 / 2018-02-16
+==================
+
+  * Attribute and not attribute assertions
+  * browser.attribute method
+  * browser.click and browser.clickText throws if no element is found, return the number of elements
+  * Puppeteer settings are now passed down in createBrowser, including slowMo
+  * Minor improvements in assertion messages
+
 0.3.1 / 2018-02-09
 ==================
 
   * Method browser.clickText
   * Find by text fixed to return valid html elements
-
 
 0.3.0 / 2018-02-07
 ==================
