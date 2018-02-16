@@ -56,10 +56,18 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 > **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
 
-Example:
+Examples:
 ```js
 const Wendigo=require('wendigo');
 const browser=Wendigo.createBrowser(); // Using default options
+```
+
+```js
+const Wendigo=require('wendigo');
+const browser=Wendigo.createBrowser({
+    headless: false,
+    slowMo: 500
+}); // Using options to see what's happening
 ```
 
 **static stop()**   
@@ -446,6 +454,8 @@ test:
   script:
     - npm test
 ```
+
+> Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
 ## Acknowledgements
 

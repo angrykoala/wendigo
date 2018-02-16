@@ -1,7 +1,7 @@
 0.3.3 / ####-##-##
 ==================
 
-  * Minor fixes in readme example code
+  * Readme improvements
 
 0.3.2 / 2018-02-16
 ==================
