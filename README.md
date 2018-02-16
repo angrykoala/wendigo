@@ -256,7 +256,7 @@ await browser.assert.text("p", "My First Paragraph");
 Asserts that at least one element matching the given selector contains the expected text.
 
 ```js
-await browser.assert.text("p", "My First");
+await browser.assert.textContains("p", "My First");
 ```
 
 **title(expected, msg)**   
