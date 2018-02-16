@@ -454,6 +454,7 @@ test:
   script:
     - npm test
 ```
+_Example of .gitlab-ci.yml_
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
