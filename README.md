@@ -201,7 +201,7 @@ await browser.waitFor(".popup");
 Returns an array with the elements with text content matching the given text.  
 
 ```js
-const elements=await browser.findByText("My First Paragraph");
+const elements = await browser.findByText("My First Paragraph");
 elements.length; // 1
 ```
 
@@ -209,7 +209,7 @@ elements.length; // 1
 Returns an array with all the elements with a text that contains the given text.
 
 ```js
-const elements=await browser.findByTextContaining("Paragraph");
+const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
@@ -297,26 +297,26 @@ The count parameter can be a number of the exact number of elements expected or 
 ```
 
 ```js
-browser.assert.elements("p", 2); // Ok
-browser.assert.elements("p", {equal: 2}); // Ok
-browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
-browser.assert.elements("p.first", 0); //Ok
+await browser.assert.elements("p", 2); // Ok
+await browser.assert.elements("p", {equal: 2}); // Ok
+await browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
+await browser.assert.elements("p.first", 0); //Ok
 
-browser.assert.elements("p.second", 2); // Fails
-browser.assert.elements("p.second", {atLeast: 1}); // Ok
+await browser.assert.elements("p.second", 2); // Fails
+await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
 **attribute(selector, attribute, expected, msg)**
 Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
 
 ```js
-browser.assert.attribute(".hidden-class", "class", "hidden-class");
-browser.assert.attribute(".hidden-class", "hidden");
+await browser.assert.attribute(".hidden-class", "class", "hidden-class");
+await browser.assert.attribute(".hidden-class", "hidden");
 ```
 
 To pass a custom message without specifying an expected value, you can pass null:
 ```js
-browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
 ```
 
 If the element doesn't exists, the assertion will fail.
@@ -354,13 +354,13 @@ Asserts that the first element with the given selector doesn't have the expected
 Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
-browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
-browser.assert.not.attribute(".not-hidden-class", "hidden");
+await browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
+await browser.assert.not.attribute(".not-hidden-class", "hidden");
 ```
 
 To pass a custom message without specifying an expected value, you can pass null:
 ```js
-browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
+await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
 ```
 If the element doesn't exists, the assertion will fail.
 
