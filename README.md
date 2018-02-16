@@ -256,7 +256,7 @@ await browser.assert.text("p", "My First Paragraph");
 Asserts that at least one element matching the given selector contains the expected text.
 
 ```js
-await browser.assert.text("p", "My First");
+await browser.assert.textContains("p", "My First");
 ```
 
 **title(expected, msg)**   
@@ -307,7 +307,19 @@ browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
 **attribute(selector, attribute, expected, msg)**
-> TO DO
+Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
+
+```js
+browser.assert.attribute(".hidden-class", "class", "hidden-class");
+browser.assert.attribute(".hidden-class", "hidden");
+```
+
+To pass a custom message without specifying an expected value, you can pass null:
+```js
+browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+```
+
+If the element doesn't exists, the assertion will fail.
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
@@ -325,7 +337,7 @@ Asserts that the first element with given selector is not visible. If no element
 **not.text(selector, expected, msg)**   
 Asserts that no element matching the given selector matches the expected text.
 
-```
+```js
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
@@ -339,7 +351,18 @@ Asserts that the url of the page doesn't match the expected string.
 Asserts that the first element with the given selector doesn't have the expected value.
 
 **not.attribute(selector, attribute, expected, msg)**
-> TO DO
+Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
+
+```js
+browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
+browser.assert.not.attribute(".not-hidden-class", "hidden");
+```
+
+To pass a custom message without specifying an expected value, you can pass null:
+```js
+browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
+```
+If the element doesn't exists, the assertion will fail.
 
 ## Examples
 
@@ -384,7 +407,7 @@ describe("My Tests", function() {
 ### Running Tests With Travis CI
 Running tests using puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
 
-```ỳml
+```yml
 language: node_js
 os:
     - linux

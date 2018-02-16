@@ -4,7 +4,7 @@ const Wendigo = require('../../lib/wendigo');
 const utils = require('../utils');
 const configUrls = require('../config.json').urls;
 
-describe.only("Assert Attribute", function() {
+describe("Assert Attribute", function() {
     this.timeout(5000);
     let browser;
 
@@ -97,7 +97,7 @@ describe.only("Assert Attribute", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.attribute(".not-element", "hidden");
-        }, `Expected element ".hidden-text" not to have attribute "hidden". Element not found`);
+        }, `Expected element ".not-element" not to have attribute "hidden", no element found.`);
     });
 
     it("Not Attribute From Node", async() => {
@@ -112,7 +112,7 @@ describe.only("Assert Attribute", function() {
             await browser.assert.not.attribute(".hidden-text", "class", "hidden-text", "custom msg");
         }, `custom msg`);
         await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.attribute(".hidden-text", "hidden", "custom msg 2");
+            await browser.assert.not.attribute(".hidden-text", "hidden", null, "custom msg 2");
         }, `custom msg 2`);
     });
 });

@@ -1,4 +1,4 @@
-0.3.2 / ####-##-##
+0.3.2 / 2018-02-16
 ==================
 
   * Attribute and not attribute assertions
