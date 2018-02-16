@@ -306,6 +306,8 @@ browser.assert.elements("p.second", 2); // Fails
 browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
+**attribute(selector, attribute, expected, msg)**
+> TO DO
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
@@ -336,6 +338,8 @@ Asserts that the url of the page doesn't match the expected string.
 **not.value(selector, expected, msg)**
 Asserts that the first element with the given selector doesn't have the expected value.
 
+**not.attribute(selector, attribute, expected, msg)**
+> TO DO
 
 ## Examples
 
