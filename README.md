@@ -134,7 +134,7 @@ const elements = await browser.queryXPath('//p[contains(text(),"My first paragra
 elements[0].textContent; // "My first paragraph"
 ```
 
-**class(selector)**   
+**class(selector)**    
 Returns and array with the classes of the first element returned from the given css selector.
 
 ```js
@@ -147,14 +147,14 @@ const node=await browser.query("div.container.main");
 const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
 ```
 
-**value(selector)**
+**value(selector)**   
 Returns the value of the first element with given selector. Returns _null_ if no element or value found.
 
 ```js
 const value = await browser.value("input.my-input");
 ```
 
-**attribute(selector, attributeName)**
+**attribute(selector, attributeName)**   
 Return the attribute value of the first element found with given selector. Throws if no element is found. Returns `""` if the attribute is set but no value is given and `null` if the attribute doesn't exists.
 
 ```js
@@ -221,7 +221,7 @@ const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
-**type(selector, text)**
+**type(selector, text)**   
 Types given text (as element value) in all the elements (input) with given selector. If a value is already present, appends the new text at the end.
 
 
@@ -229,7 +229,7 @@ Types given text (as element value) in all the elements (input) with given selec
 await browser.type("input.my-input", "My Input");
 ```
 
-**clearValue(selector)**
+**clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 
 ```js
@@ -280,7 +280,7 @@ await browser.assert.class("div.container.main-div", "container");
 **url(expected, msg)**   
 Asserts that the current url matches the given string.
 
-**value(selector, expected, msg)**
+**value(selector, expected, msg)**   
 Asserts that the first element matching the selector has the expected value.
 
 ```js
@@ -288,10 +288,10 @@ await browser.type("input.my-input", "Dont Panic");
 await browser.assert.value("input.my-input", "Dont Panic");
 ```
 
-**element(selector, msg)**
+**element(selector, msg)**   
 Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
 
-**elements(selector, count, msg)**
+**elements(selector, count, msg)**   
 Asserts the number of element that matches given selector.
 
 The count parameter can be a number of the exact number of elements expected or an object with the following properties:
@@ -314,7 +314,7 @@ await browser.assert.elements("p.second", 2); // Fails
 await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
-**attribute(selector, attribute, expected, msg)**
+**attribute(selector, attribute, expected, msg)**   
 Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
 
 ```js
@@ -355,10 +355,10 @@ Asserts that the title of the page is not the expected string.
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.
 
-**not.value(selector, expected, msg)**
+**not.value(selector, expected, msg)**    
 Asserts that the first element with the given selector doesn't have the expected value.
 
-**not.attribute(selector, attribute, expected, msg)**
+**not.attribute(selector, attribute, expected, msg)**    
 Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
