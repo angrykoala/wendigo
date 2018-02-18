@@ -222,7 +222,7 @@ elements.length; // 2
 ```
 
 **type(selector, text)**   
-Types given text (as element value) in all the elements (input) with given selector. If a value is already present, appends the new text at the end.
+Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
 
 
 ```js

@@ -1,6 +1,8 @@
-0.3.3 / ####-##-##
+0.4.0 / ####-##-##
 ==================
 
+  * Type will trigger the keyboard events
+  * Type behaviour changed
   * Readme improvements
 
 0.3.2 / 2018-02-16

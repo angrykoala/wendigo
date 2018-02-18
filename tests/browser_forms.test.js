@@ -120,42 +120,4 @@ describe("Browser Forms", function() {
             await browser.assert.not.value("input.input1", "", "not value failed");
         }, `not value failed`);
     });
-
-    it("Type", async () => {
-        await browser.open(configUrls.forms);
-        await browser.type("input.input1", "firstText");
-        await browser.type("input.input2", "secondText");
-        await browser.assert.value("input.input1", "firstText");
-        await browser.assert.value("input.input2", "default valuesecondText");
-    });
-
-    it("Type Multiple Elements", async () => {
-        await browser.open(configUrls.forms);
-        await browser.type("input", "firstText");
-        await browser.assert.value("input.input1", "firstText");
-        await browser.assert.value("input.input2", "default valuefirstText");
-    });
-
-    it("Type Node", async () => {
-        await browser.open(configUrls.forms);
-        const node = await browser.query("input.input1");
-
-        await browser.type(node, "firstText");
-        await browser.assert.value("input.input1", "firstText");
-    });
-
-    it("Clear Input", async() => {
-        await browser.open(configUrls.forms);
-        await browser.clearValue("input.input1");
-        await browser.clearValue("input.input2");
-        await browser.assert.value("input.input1", "");
-        await browser.assert.value("input.input2", "");
-    });
-
-    it("Clear Input From Node", async() => {
-        await browser.open(configUrls.forms);
-        const node = await browser.query("input.input2");
-        await browser.clearValue(node);
-        await browser.assert.value("input.input2", "");
-    });
 });

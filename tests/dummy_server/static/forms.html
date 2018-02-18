@@ -7,6 +7,13 @@
         First Input: <input class="input1" name="firstname">
         Last Input: <input class="input2" name="lastname" value="default value">
     </form>
+    <p id="value-input"></p>
+
+    <script>
+    document.querySelector(".input1").onkeypress = function(ev) {
+        document.getElementById("value-input").textContent=String.fromCharCode(ev.charCode)
+    };
+    </script>
 
 </body>
 
