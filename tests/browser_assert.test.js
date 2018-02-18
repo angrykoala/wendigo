@@ -108,6 +108,13 @@ describe("Assertions", function() {
         await browser.assert.visible(node);
     });
 
+    it("Multiple Assertions From Same Node", async () => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        await browser.assert.text(node, "Main Title");
+        await browser.assert.visible(node);
+    });
+
     it("Title", async() => {
         assert(browser.assert.title);
         await browser.open(configUrls.index);
