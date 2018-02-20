@@ -49,6 +49,4 @@ describe("Browser Base", function() {
         const styles = await browser.styles(node);
         assert.strictEqual(styles.color, "rgb(255, 0, 0)");
     });
-    it("Styles With PseudoSelector");
-
 });

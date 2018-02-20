@@ -164,7 +164,7 @@ const hiddentAttr = await browser.attribute(".my-hidden-element", "hidden"); // 
 const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); // Returns null
 ```
 
-**styles(selector, pseudoSelector)**    
+**styles(selector)**    
 Returns an object with all the computed css styles of the first element matching the given selector.
 
 ```js

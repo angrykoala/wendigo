@@ -33,8 +33,8 @@ window.WendigoUtils = {
         }
         return result;
     },
-    getStyles(element, pseudoSelector) {
-        const rawStyles = getComputedStyle(element, pseudoSelector);
+    getStyles(element) {
+        const rawStyles = getComputedStyle(element);
         const result = {};
         for(let i = 0;i < rawStyles.length;i++) {
             const name = rawStyles[i];
