@@ -3,6 +3,7 @@
 const Wendigo = require('../../lib/wendigo');
 const assert = require('assert');
 const configUrls = require('../config.json').urls;
+const utils = require('../utils');
 
 describe("Browser Base", function() {
     this.timeout(5000);
@@ -35,8 +36,19 @@ describe("Browser Base", function() {
         assert.strictEqual(styles["color"], "rgb(0, 0, 0)");
     });
 
-    it("Styles On Invalid Element");
-    it("Styles From Node Element");
+    it("Styles On Invalid Element", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async () => {
+            await browser.styles("#not-an-element");
+        }, `Error: Element "#not-an-element" not found when trying to get styles.`);
+    });
+
+    it("Styles From Node Element", async() => {
+        await browser.open(configUrls.index);
+        const node = await browser.query("h1");
+        const styles = await browser.styles(node);
+        assert.strictEqual(styles.color, "rgb(255, 0, 0)");
+    });
     it("Styles With PseudoSelector");
 
 });
