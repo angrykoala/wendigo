@@ -162,7 +162,14 @@ const classAttribute = await browser.attribute(".my-element", "class"); // Retur
 
 const hiddentAttr = await browser.attribute(".my-hidden-element", "hidden"); // Returns ""
 const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); // Returns null
+```
 
+**styles(selector, pseudoSelector)**    
+Returns an object with all the computed css styles of the first element matching the given selector.
+
+```js
+const styles=await browser.styles("h1.my-title");
+styles.color; // 'rgb(255, 0, 0)'
 ```
 
 **text(selector)**   

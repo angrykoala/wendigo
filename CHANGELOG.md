@@ -1,6 +1,7 @@
 0.4.0 / ####-##-##
 ==================
 
+  * browser.styles will return the computed css styles
   * Type will trigger the keyboard events
   * Type behaviour changed
   * Readme improvements
