@@ -336,7 +336,7 @@ await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class do
 
 If the element doesn't exists, the assertion will fail.
 
-**style(selector, style, expected, msg)**
+**style(selector, style, expected, msg)**   
 Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
 
 ```js
@@ -386,7 +386,7 @@ await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class 
 ```
 If the element doesn't exists, the assertion will fail.
 
-**not.style(selector, style, expected, msg)**
+**not.style(selector, style, expected, msg)**   
 Asserts the first element matching the selector doesn't has a style with given value.
 
 ## Examples
