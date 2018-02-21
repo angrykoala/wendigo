@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="btn" onclick="switchUrl()">click me</button>
+
+    <script>
+        // let originalUrl = window.location.href;
+
+        function switchUrl() {
+            window.history.pushState({},"","/new-url");
+        }
+    </script>
+</body>
+
+</html>

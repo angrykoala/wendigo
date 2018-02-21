@@ -76,21 +76,4 @@ describe("Browser", function() {
         const elements = await browser.findByTextContaining("paragraph");
         assert.strictEqual(elements.length, 2);
     });
-
-    it("Url", async() => {
-        await browser.open(configUrls.index);
-        assert.strictEqual(await browser.url(), "http://localhost:3456/index.html");
-    });
-
-    it("Changing Url", async() => {
-        await browser.open(configUrls.index);
-        assert.strictEqual(await browser.url(), "http://localhost:3456/index.html");
-        await browser.open(configUrls.click);
-        assert.strictEqual(await browser.url(), "http://localhost:3456/click.html");
-    });
-
-    it("Url Before Opening", async() => {
-        const browser2 = await Wendigo.createBrowser();
-        assert.strictEqual(await browser2.url(), null);
-    });
 });

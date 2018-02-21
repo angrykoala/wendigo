@@ -1,6 +1,7 @@
 0.4.1 / ####-##-##
 ==================
 
+  * Fixed bug where url wasn't updated by window history
 
 0.4.0 / 2018-02-21
 ==================
