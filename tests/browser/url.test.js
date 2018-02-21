@@ -41,4 +41,11 @@ describe("Url", function() {
         await browser.click(".btn");
         assert.strictEqual(await browser.url(), "http://localhost:3456/new-url");
     });
+
+    it("Click Link And Url Update", async() => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await browser.wait();
+        await browser.assert.url(configUrls.simple);
+    });
 });

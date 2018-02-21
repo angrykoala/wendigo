@@ -343,8 +343,18 @@ Asserts that the first element matching the given selector has an style with the
 await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
 ```
 
+**href(selector, expected, msg)**   
+Asserts that the first element matching the given selector contains an attribute href with expected value.
+
+```js
+browser.assert.href("a", "foo.html");
+browser.assert.href("link", "styles.css");
+```
+
+> Same as `browser.assert.attribute(selector, "href", expected, msg)`
+
 ### Negative assertions
-Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
+Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
 **not.exists(selector, msg)**   
 Asserts that no element matching given selector exists.
@@ -388,6 +398,11 @@ If the element doesn't exists, the assertion will fail.
 
 **not.style(selector, style, expected, msg)**   
 Asserts the first element matching the selector doesn't has a style with given value.
+
+**href(selector, expected, msg)**   
+Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
+
+> Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
 
 ## Examples
 
