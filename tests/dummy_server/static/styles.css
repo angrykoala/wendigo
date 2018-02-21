@@ -1,3 +1,16 @@
 .hidden-text2 {
     visibility: hidden;
 }
+
+h1 {
+    color: red;
+}
+
+.on{
+    background-color: blue;
+}
+
+.off{
+    background-color: red;
+
+}

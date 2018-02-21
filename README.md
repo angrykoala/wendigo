@@ -56,10 +56,18 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 > **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
 
-Example:
+Examples:
 ```js
 const Wendigo=require('wendigo');
 const browser=Wendigo.createBrowser(); // Using default options
+```
+
+```js
+const Wendigo=require('wendigo');
+const browser=Wendigo.createBrowser({
+    headless: false,
+    slowMo: 500
+}); // Using options to see what's happening
 ```
 
 **static stop()**   
@@ -126,7 +134,7 @@ const elements = await browser.queryXPath('//p[contains(text(),"My first paragra
 elements[0].textContent; // "My first paragraph"
 ```
 
-**class(selector)**   
+**class(selector)**    
 Returns and array with the classes of the first element returned from the given css selector.
 
 ```js
@@ -139,14 +147,14 @@ const node=await browser.query("div.container.main");
 const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
 ```
 
-**value(selector)**
+**value(selector)**   
 Returns the value of the first element with given selector. Returns _null_ if no element or value found.
 
 ```js
 const value = await browser.value("input.my-input");
 ```
 
-**attribute(selector, attributeName)**
+**attribute(selector, attributeName)**   
 Return the attribute value of the first element found with given selector. Throws if no element is found. Returns `""` if the attribute is set but no value is given and `null` if the attribute doesn't exists.
 
 ```js
@@ -154,7 +162,14 @@ const classAttribute = await browser.attribute(".my-element", "class"); // Retur
 
 const hiddentAttr = await browser.attribute(".my-hidden-element", "hidden"); // Returns ""
 const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); // Returns null
+```
 
+**styles(selector)**    
+Returns an object with all the computed css styles of the first element matching the given selector.
+
+```js
+const styles=await browser.styles("h1.my-title");
+styles.color; // 'rgb(255, 0, 0)'
 ```
 
 **text(selector)**   
@@ -201,7 +216,7 @@ await browser.waitFor(".popup");
 Returns an array with the elements with text content matching the given text.  
 
 ```js
-const elements=await browser.findByText("My First Paragraph");
+const elements = await browser.findByText("My First Paragraph");
 elements.length; // 1
 ```
 
@@ -209,19 +224,19 @@ elements.length; // 1
 Returns an array with all the elements with a text that contains the given text.
 
 ```js
-const elements=await browser.findByTextContaining("Paragraph");
+const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
-**type(selector, text)**
-Types given text (as element value) in all the elements (input) with given selector. If a value is already present, appends the new text at the end.
+**type(selector, text)**   
+Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
 
 
 ```js
 await browser.type("input.my-input", "My Input");
 ```
 
-**clearValue(selector)**
+**clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 
 ```js
@@ -272,7 +287,7 @@ await browser.assert.class("div.container.main-div", "container");
 **url(expected, msg)**   
 Asserts that the current url matches the given string.
 
-**value(selector, expected, msg)**
+**value(selector, expected, msg)**   
 Asserts that the first element matching the selector has the expected value.
 
 ```js
@@ -280,10 +295,10 @@ await browser.type("input.my-input", "Dont Panic");
 await browser.assert.value("input.my-input", "Dont Panic");
 ```
 
-**element(selector, msg)**
+**element(selector, msg)**   
 Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
 
-**elements(selector, count, msg)**
+**elements(selector, count, msg)**   
 Asserts the number of element that matches given selector.
 
 The count parameter can be a number of the exact number of elements expected or an object with the following properties:
@@ -297,29 +312,36 @@ The count parameter can be a number of the exact number of elements expected or 
 ```
 
 ```js
-browser.assert.elements("p", 2); // Ok
-browser.assert.elements("p", {equal: 2}); // Ok
-browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
-browser.assert.elements("p.first", 0); //Ok
+await browser.assert.elements("p", 2); // Ok
+await browser.assert.elements("p", {equal: 2}); // Ok
+await browser.assert.elements("p", {atLeast: 1, atMost:3}); // Ok
+await browser.assert.elements("p.first", 0); //Ok
 
-browser.assert.elements("p.second", 2); // Fails
-browser.assert.elements("p.second", {atLeast: 1}); // Ok
+await browser.assert.elements("p.second", 2); // Fails
+await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
-**attribute(selector, attribute, expected, msg)**
+**attribute(selector, attribute, expected, msg)**   
 Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
 
 ```js
-browser.assert.attribute(".hidden-class", "class", "hidden-class");
-browser.assert.attribute(".hidden-class", "hidden");
+await browser.assert.attribute(".hidden-class", "class", "hidden-class");
+await browser.assert.attribute(".hidden-class", "hidden");
 ```
 
 To pass a custom message without specifying an expected value, you can pass null:
 ```js
-browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
 ```
 
 If the element doesn't exists, the assertion will fail.
+
+**style(selector, style, expected, msg)**
+Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
+
+```js
+await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
+```
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
@@ -347,22 +369,25 @@ Asserts that the title of the page is not the expected string.
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.
 
-**not.value(selector, expected, msg)**
+**not.value(selector, expected, msg)**    
 Asserts that the first element with the given selector doesn't have the expected value.
 
-**not.attribute(selector, attribute, expected, msg)**
+**not.attribute(selector, attribute, expected, msg)**    
 Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
-browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
-browser.assert.not.attribute(".not-hidden-class", "hidden");
+await browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
+await browser.assert.not.attribute(".not-hidden-class", "hidden");
 ```
 
 To pass a custom message without specifying an expected value, you can pass null:
 ```js
-browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
+await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
 ```
 If the element doesn't exists, the assertion will fail.
+
+**not.style(selector, style, expected, msg)**
+Asserts the first element matching the selector doesn't has a style with given value.
 
 ## Examples
 
@@ -446,6 +471,9 @@ test:
   script:
     - npm test
 ```
+_Example of .gitlab-ci.yml_
+
+> Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
 ## Acknowledgements
 

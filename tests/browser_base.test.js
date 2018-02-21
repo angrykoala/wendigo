@@ -21,14 +21,12 @@ describe("Browser Base", function() {
         await browser.open(configUrls.index);
         const element = await browser.query("h1");
         assert(element);
-        // assert.strictEqual(element.textContent, "Main Title");
     });
 
     it("Query Multiple Elements", async () => {
         await browser.open(configUrls.index);
         const element = await browser.query("p");
         assert(element);
-        // assert.strictEqual(element.textContent, "My first paragraph");
     });
 
     it("Query Not Element Found", async() => {
@@ -37,26 +35,29 @@ describe("Browser Base", function() {
         assert.strictEqual(element, null);
     });
 
+    it("Query Node", async () => {
+        await browser.open(configUrls.index);
+        const element = await browser.query("h1");
+        const element2 = await browser.query(element);
+        assert(element2);
+    });
+
     it("QueryAll", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.queryAll("p");
         assert.strictEqual(elements.length, 2);
-        // assert.strictEqual(elements[0].textContent, "My first paragraph");
-        // assert.strictEqual(elements[1].textContent, "My second paragraph");
     });
 
     it("QueryAll One Element", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.queryAll(".container p");
         assert.strictEqual(elements.length, 1);
-        // assert.strictEqual(elements[0].textContent, "My first paragraph");
     });
 
     it("XPath Query", async() => {
         await browser.open(configUrls.index);
         const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
         assert.strictEqual(elements.length, 1);
-        // assert.strictEqual(elements[0].textContent, "My first paragraph");
     });
 
     it("Class", async() => {

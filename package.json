@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A proper monster for front-end testing",
   "engines": {
     "node": ">=8.9.4"
@@ -33,6 +33,6 @@
   "devDependencies": {
     "eslint": "^4.13.1",
     "express": "^4.16.2",
-    "mocha": "^4.0.1"
+    "mocha": "^5.0.1"
   }
 }

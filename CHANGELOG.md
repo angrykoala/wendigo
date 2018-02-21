@@ -1,3 +1,12 @@
+0.4.0 / 2018-02-21
+==================
+
+  * Browser style and not style assertions
+  * browser.styles will return the computed css styles
+  * Type will trigger the keyboard events
+  * Type behaviour changed
+  * Readme improvements
+
 0.3.2 / 2018-02-16
 ==================
 

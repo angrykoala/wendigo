@@ -17,94 +17,10 @@ describe("Assertions", function() {
         await browser.close();
     });
 
-    it("Text", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.text("h1", "Main Title");
-    });
-
-    it("Text From Node", async () => {
+    it("Multiple Assertions From Same Node", async () => {
         await browser.open(configUrls.index);
         const node = await browser.query("h1");
         await browser.assert.text(node, "Main Title");
-    });
-
-    it("Multiple Texts", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.text("p", "My first paragraph");
-        await browser.assert.text("p", "My second paragraph");
-    });
-
-    it("Text Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.text("h1", "My first paragraph");
-        }, `Expected element "h1" to have text "My first paragraph", "Main Title" found`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.text("h2", "My first paragraph");
-        }, `Expected element "h2" to have text "My first paragraph", no text found`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.text(".container p", "My second paragraph");
-        }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
-    });
-
-    it("Multiple Text Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.text("p", "My paragraph");
-        }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
-    });
-
-    it("Text Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.text("h1", "My first paragraph", "text failed");
-        }, `text failed`);
-    });
-
-    it("Is Visible", async() => {
-        assert(browser.assert.visible);
-        await browser.open(configUrls.index);
-        await browser.assert.visible("h1");
-        await browser.assert.visible(".container p");
-        await browser.assert.visible("p");
-    });
-
-    it("Is Visible Throws", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.visible(".hidden-text");
-        }, `Expected element ".hidden-text" to be visible`);
-    });
-
-    it("Is Visible When Styled Hidden", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.visible(".hidden-text2");
-        }, `Expected element ".hidden-text2" to be visible`);
-    });
-
-    it("Is Visible When Element Not Exists", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.visible(".not-exists");
-        }, `Expected element ".not-exists" to be visible`);
-    });
-
-    it("Is Visible Throws With Custom Message", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.visible(".hidden-text", "visible test failed");
-        }, `visible test failed`);
-    });
-
-    it("Is Visible From Node", async() => {
-        assert(browser.assert.visible);
-        await browser.open(configUrls.index);
-        const node = await browser.query("h1");
         await browser.assert.visible(node);
     });
 
