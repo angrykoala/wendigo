@@ -49,4 +49,10 @@ describe("Browser Base", function() {
         const styles = await browser.styles(node);
         assert.strictEqual(styles.color, "rgb(255, 0, 0)");
     });
+
+    it("Style Multiple Elements", async() => {
+        await browser.open(configUrls.index);
+        const styles = await browser.styles("b");
+        assert.strictEqual(styles.visibility, "hidden");
+    });
 });

@@ -336,6 +336,13 @@ await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class do
 
 If the element doesn't exists, the assertion will fail.
 
+**style(selector, style, expected, msg)**
+Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
+
+```js
+await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
 
