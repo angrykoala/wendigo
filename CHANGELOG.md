@@ -1,4 +1,4 @@
-0.4.0 / ####-##-##
+0.4.0 / 2018-02-21
 ==================
 
   * Browser style and not style assertions
