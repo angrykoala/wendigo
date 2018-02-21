@@ -1,6 +1,7 @@
 0.4.0 / ####-##-##
 ==================
 
+  * Browser style and not style assertions
   * browser.styles will return the computed css styles
   * Type will trigger the keyboard events
   * Type behaviour changed

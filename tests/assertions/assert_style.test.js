@@ -54,10 +54,36 @@ describe("Assert Style", function() {
         }, `style fails`);
     });
 
-    it("Not Style");
-    it("Not Style Multiple Elements");
-    it("Not Style From Node");
-    it("Not Style Throws");
-    it("Not Style Element Not Found");
-    it("Not Style Throws Custom Message");
+    it("Not Style", async() => {
+        await browser.assert.not.style("h1", "color", "rgb(0, 0, 0)");
+        await browser.assert.not.style("p", "color", "not-color");
+    });
+
+    it("Not Style Multiple Elements", async() => {
+        await browser.assert.not.style("b", "visibility", "visible");
+    });
+
+    it("Not Style From Node", async() => {
+        const node = await browser.query("h1");
+        await browser.assert.not.style(node, "color", "rgb(0, 0, 0)");
+    });
+    it("Not Style Throws", async() => {
+        assert(browser.assert.not.style);
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.style("h1", "color", "rgb(255, 0, 0)");
+        }, `Expected element "h1" not to have style "color" with value "rgb(255, 0, 0)".`);
+    });
+
+    it("Not Style Element Not Found", async() => {
+        assert(browser.assert.not.style);
+        await utils.assertThrowsAsync(async() => {
+            await browser.assert.not.style(".not-element", "color", "rgb(0, 0, 0)");
+        }, `Error: Element ".not-element" not found when trying to assert style.`);
+    });
+
+    it("Not Style Throws Custom Message", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.style("h1", "color", "rgb(255, 0, 0)", "not style fails");
+        }, `not style fails`);
+    });
 });

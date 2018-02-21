@@ -386,6 +386,9 @@ await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class 
 ```
 If the element doesn't exists, the assertion will fail.
 
+**not.style(selector, style, expected, msg)**
+Asserts the first element matching the selector doesn't has a style with given value.
+
 ## Examples
 
 **Testing a simple page with Mocha and Wendigo**
