@@ -1,4 +1,4 @@
-0.4.1 / ####-##-##
+0.4.1 / 2018-02-23
 ==================
 
   * browser.waitUntilNotVisible method
