@@ -206,10 +206,17 @@ Returns the current url of the page
 Waits for the given milliseconds.
 
 **waitFor(selector, timeout=500)**   
-Waits for given css selector to exists, with the given timeout in milliseconds.
+Waits for given selector to exists and be visible, with the given timeout in milliseconds.
 
 ```js
 await browser.waitFor(".popup");
+```
+
+**WaitUntilNotVisible(selector, timeout=500)**   
+Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
+
+```js
+await browser.waitUntilNotVisible(".toast");
 ```
 
 **findByText(text)**   
@@ -336,15 +343,25 @@ await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class do
 
 If the element doesn't exists, the assertion will fail.
 
-**style(selector, style, expected, msg)**
+**style(selector, style, expected, msg)**   
 Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
 
 ```js
 await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
 ```
 
+**href(selector, expected, msg)**   
+Asserts that the first element matching the given selector contains an attribute href with expected value.
+
+```js
+browser.assert.href("a", "foo.html");
+browser.assert.href("link", "styles.css");
+```
+
+> Same as `browser.assert.attribute(selector, "href", expected, msg)`
+
 ### Negative assertions
-Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the behaviours of the "not" assertions are simply the inverse of the positive version.
+Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
 **not.exists(selector, msg)**   
 Asserts that no element matching given selector exists.
@@ -386,8 +403,13 @@ await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class 
 ```
 If the element doesn't exists, the assertion will fail.
 
-**not.style(selector, style, expected, msg)**
+**not.style(selector, style, expected, msg)**   
 Asserts the first element matching the selector doesn't has a style with given value.
+
+**href(selector, expected, msg)**   
+Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
+
+> Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
 
 ## Examples
 

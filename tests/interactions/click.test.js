@@ -1,4 +1,3 @@
-
 "use strict";
 
 const assert = require('assert');
@@ -21,6 +20,7 @@ describe("Click", function() {
     after(async() => {
         await browser.close();
     });
+
     it("Click", async() => {
         await browser.assert.text("#switch", "On");
         const clickedElements = await browser.click(".btn");

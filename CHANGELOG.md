@@ -1,3 +1,11 @@
+0.4.1 / 2018-02-23
+==================
+
+  * browser.waitUntilNotVisible method
+  * href and not href assertions
+  * waitfor now waits until the element is visible
+  * Fixed bug where url wasn't updated by window history
+
 0.4.0 / 2018-02-21
 ==================
 
