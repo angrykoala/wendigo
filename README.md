@@ -206,10 +206,17 @@ Returns the current url of the page
 Waits for the given milliseconds.
 
 **waitFor(selector, timeout=500)**   
-Waits for given css selector to exists, with the given timeout in milliseconds.
+Waits for given selector to exists and be visible, with the given timeout in milliseconds.
 
 ```js
 await browser.waitFor(".popup");
+```
+
+**WaitUntilNotVisible(selector, timeout=500)**   
+Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
+
+```js
+await browser.waitUntilNotVisible(".toast");
 ```
 
 **findByText(text)**   

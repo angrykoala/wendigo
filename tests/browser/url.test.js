@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
-const configUrls = require('.././config.json').urls;
+const configUrls = require('../config.json').urls;
 
 describe("Url", function() {
     this.timeout(5000);

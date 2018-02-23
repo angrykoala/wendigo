@@ -1,6 +1,7 @@
 0.4.1 / ####-##-##
 ==================
 
+  * browser.waitUntilNotVisible method
   * href and not href assertions
   * waitfor now waits until the element is visible
   * Fixed bug where url wasn't updated by window history
