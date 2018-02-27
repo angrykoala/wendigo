@@ -336,10 +336,12 @@ await browser.assert.attribute(".hidden-class", "class", "hidden-class");
 await browser.assert.attribute(".hidden-class", "hidden");
 ```
 
-To pass a custom message without specifying an expected value, you can pass null:
+To pass a custom message without specifying an expected value, you can pass `undefined`:
 ```js
-await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+await browser.assert.attribute(".hidden-class", "hidden", undefined, "hidden-class doesn't have attribute hidden");
 ```
+
+You can check an attribute doesn't exists passing `null` as expected argument or using `assert.not.attribute`
 
 If the element doesn't exists, the assertion will fail.
 

@@ -2,7 +2,7 @@
 ==================
 
   * Puppeteer updated to 1.1.0
-
+  * assert.attribute now allows using null as expected value
 
 0.4.1 / 2018-02-23
 ==================

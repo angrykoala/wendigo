@@ -61,14 +61,18 @@ describe("Assert Attribute", function() {
             await browser.assert.attribute(".hidden-text", "class", "hidden", "attribute error");
         }, `attribute error`);
         await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.attribute(".hidden-text", "href", null, "attribute error 2");
+            await browser.assert.attribute(".hidden-text", "href", undefined, "attribute error 2");
         }, `attribute error 2`);
+    });
+
+    it("Attribute Equals Null", async() => {
+        await browser.open(configUrls.index);
+        await browser.assert.attribute(".hidden-text", "href", null);
     });
 
     it("Not Attribute", async() => {
         await browser.open(configUrls.index);
         await browser.assert.not.attribute(".hidden-text", "class", "not-hidden-text");
-        await browser.assert.not.attribute(".hidden-text", "hidden", "something");
     });
 
     it("Not Attribute Without Value", async() => {
