@@ -1,6 +1,7 @@
 0.4.2 / ####-##-##
 ==================
 
+  * browser.uploadFile method
   * Puppeteer updated to 1.1.0
   * assert.attribute now allows using null as expected value
 
