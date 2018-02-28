@@ -62,13 +62,11 @@ describe("Input", function() {
 
     it("File Input Set Path", async() => {
         await browser.uploadFile(".input3", "dummy_file");
-        await browser.query(".input3");
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
 
     it("File Input Set Absolute Path", async() => {
         await browser.uploadFile(".input3", "dummy_file");
-        await browser.query(".input3");
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
 

@@ -244,7 +244,7 @@ await browser.type("input.my-input", "My Input");
 ```
 
 **uploadFile(selector, path)**
-Sets the value of an input file element matching given selector.
+Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
 
 
 ```js
