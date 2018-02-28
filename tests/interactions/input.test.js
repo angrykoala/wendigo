@@ -59,4 +59,9 @@ describe("Input", function() {
         await browser.assert.text("#value-input", "c");
     });
 
+    it("File Input Set Path", async() => {
+        await browser.uploadFile(".input3", "./tests/dummy_server/static/dummy_file");
+        const element = await browser.query(".input3");
+        await browser.assert.value(element, "C:\\fakepath\\dummy_file");
+    });
 });
