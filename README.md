@@ -243,6 +243,14 @@ Types given text in the first element matching given selector. If a value is alr
 await browser.type("input.my-input", "My Input");
 ```
 
+**uploadFile(selector, path)**
+Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
+
+
+```js
+await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
+```
+
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 
