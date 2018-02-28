@@ -2,6 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
+const utils = require('../utils.js');
 
 describe("Input", function() {
     this.timeout(5000);
@@ -60,8 +61,20 @@ describe("Input", function() {
     });
 
     it("File Input Set Path", async() => {
-        await browser.uploadFile(".input3", "./tests/dummy_server/static/dummy_file");
-        const element = await browser.query(".input3");
-        await browser.assert.value(element, "C:\\fakepath\\dummy_file");
+        await browser.uploadFile(".input3", "dummy_file");
+        await browser.query(".input3");
+        await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
+    });
+
+    it("File Input Set Absolute Path", async() => {
+        await browser.uploadFile(".input3", "dummy_file");
+        await browser.query(".input3");
+        await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
+    });
+
+    it("File Input Missing Element", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.uploadFile(".missing", "dummy_file");
+        }, `Error: Selector ".missing" doesn't match any element.`);
     });
 });

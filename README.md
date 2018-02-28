@@ -248,7 +248,7 @@ Sets the value of an input file element matching given selector.
 
 
 ```js
-await browser.uploadFile("input.my-file-input", "My File Path");
+await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
 ```
 
 **clearValue(selector)**   
