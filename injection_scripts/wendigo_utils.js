@@ -1,3 +1,4 @@
+/* global WendigoQuery */
 "use strict";
 
 window.WendigoUtils = {
@@ -9,29 +10,13 @@ window.WendigoUtils = {
         else return true;
     },
     queryElement(selector) {
-        if(typeof selector === 'string') {
-            return document.querySelector(selector);
-        } else return selector;
+        return WendigoQuery.query(selector);
     },
     queryAll(selector) {
-        if(typeof selector === 'string') {
-            return document.querySelectorAll(selector);
-        } else{
-            if(!Array.isArray(selector)) {
-                selector = [selector];
-            }
-            return selector;
-        }
+        return WendigoQuery.queryAll(selector);
     },
-    xPathQuery: function(xPath) {
-        let xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
-        let result = [];
-        let r = xPathResult.iterateNext();
-        while(r !== null) {
-            result.push(r);
-            r = xPathResult.iterateNext();
-        }
-        return result;
+    xPathQuery(xPath) {
+        return WendigoQuery.queryXPathAll(xPath);
     },
     getStyles(element) {
         const rawStyles = getComputedStyle(element);
