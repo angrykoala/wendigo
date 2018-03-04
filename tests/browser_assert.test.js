@@ -24,36 +24,6 @@ describe("Assertions", function() {
         await browser.assert.visible(node);
     });
 
-    it("Title", async() => {
-        assert(browser.assert.title);
-        await browser.open(configUrls.index);
-        await browser.assert.title("Index Test");
-    });
-
-    it("Title Default", async() => {
-        await browser.open(configUrls.simple);
-        await browser.assert.title("");
-    });
-
-    it("Title Throws", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("Index Test 2");
-        }, `Expected page title to be "Index Test 2", "Index Test" found`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("");
-        }, `Expected page title to be "", "Index Test" found`);
-    });
-
-    it("Title Throws With Custom Message", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("Index Test 2", "title test failed");
-        }, `title test failed`);
-    });
-
     it("Class", async() => {
         await browser.open(configUrls.index);
         await browser.assert.class("div", "container");

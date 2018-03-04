@@ -276,7 +276,7 @@ An element will considered visible if:
 * The computed style doesn't contain display: none or visibility: hidden
 
 **text(selector, expected, msg)**   
-Asserts that at least one element matching the given selector has the expected text.
+Asserts that at least one element matching the given selector has the expected string or regex.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
@@ -290,7 +290,7 @@ await browser.assert.textContains("p", "My First");
 ```
 
 **title(expected, msg)**   
-Asserts that the page title matches the expected string.
+Asserts that the page title matches the expected string or regex.
 
 **class(selector, expected, msg)**   
 Asserts that the first element matching the selector contains the expected class.
