@@ -6,7 +6,7 @@
   * Class method now throws if no element is found
   * Injected query method now accepts xpath,
   * browser.uploadFile method
-  * Puppeteer updated to 1.1.0
+  * Puppeteer updated to 1.1.1
   * assert.attribute now allows using null as expected value
 
 0.4.1 / 2018-02-23
