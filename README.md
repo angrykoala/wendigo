@@ -135,7 +135,7 @@ elements[0].textContent; // "My first paragraph"
 ```
 
 **class(selector)**    
-Returns and array with the classes of the first element returned from the given css selector.
+Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
 
 ```js
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
@@ -390,8 +390,18 @@ Asserts that no element matching the given selector matches the expected text.
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
+**textContains(selector, expected, msg)**   
+Asserts that no elements matching the given selector contain the expected text.
+
+```js
+await browser.assert.not.textContains("p", "doesn't exis");
+```
+
 **not.title(expected, msg)**   
 Asserts that the title of the page is not the expected string.
+
+**not.class(selector, expected, msg)**   
+Asserts that the first element matching the selector doesn't contain the expected class. It will throw if the element is not found.
 
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.

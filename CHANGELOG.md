@@ -1,7 +1,9 @@
-0.4.2 / ####-##-##
+0.5.0 / ####-##-##
 ==================
 
   * Text and title assertions now support regex expectations
+  * Not class assertion
+  * Class method now throws if no element is found
   * Injected query method now accepts xpath,
   * browser.uploadFile method
   * Puppeteer updated to 1.1.0

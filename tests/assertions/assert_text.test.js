@@ -42,7 +42,6 @@ describe("Assert Text", function() {
         await browser.assert.text("h1", /Main\sTitle/);
     });
 
-
     it("Text Throws", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.text("h1", "My first paragraph");
