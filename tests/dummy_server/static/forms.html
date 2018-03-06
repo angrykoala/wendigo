@@ -10,6 +10,20 @@
     <p id="value-input"></p>
     <input type="file" class="input3" name="file-input">
 
+    <select id="normal-select">
+     <option value="value1" selected>Value 1</option>
+     <option value="value2">Value 2</option>
+     <option value="value3" disabled>Value 3</option>
+     <option>Value 4</option>
+    </select>
+
+    <select id="multiple-select" multiple>
+     <option value="value1" selected>Value 1</option>
+     <option value="value2">Value 2</option>
+     <option value="value3" disabled>Value 3</option>
+     <option value="value4">Value 4</option>
+    </select>
+
     <script>
     document.querySelector(".input1").onkeypress = function(ev) {
         document.getElementById("value-input").textContent=String.fromCharCode(ev.charCode)

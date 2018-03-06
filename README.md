@@ -251,6 +251,28 @@ Sets the value of an input file element matching given selector. Path can be abs
 await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
 ```
 
+**select(selector, value)**
+Will select the given value in the _select_ tag of the first element matching the given selector, removing all previous selections. Returns an array with the values that could be selected correctly.
+
+Value can be a string or an array. If the select is multiple all elements in value will be selected, if not only the first element in the select options will.
+
+Will throw if no elements were found.
+
+```js
+await browser.select("select.language-select", ["spanish", "english"]); // Returns ["spanish", "english"]
+```
+
+If the option doesn't have a value, the text should be provided.
+
+> Only Css Selectors supported
+
+**selectedOptions(selector)**
+Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
+
+Will throw if no element is found.
+
+> Css, Xpath and Dom Selectors supported
+
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 

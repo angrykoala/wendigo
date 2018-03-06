@@ -1,6 +1,7 @@
 0.5.0 / ####-##-##
 ==================
 
+  * Select and selectedOptions methods
   * Text and title assertions now support regex expectations
   * Not class assertion
   * Class method now throws if no element is found
