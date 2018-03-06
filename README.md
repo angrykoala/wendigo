@@ -135,7 +135,7 @@ elements[0].textContent; // "My first paragraph"
 ```
 
 **class(selector)**    
-Returns and array with the classes of the first element returned from the given css selector.
+Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
 
 ```js
 const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
@@ -243,6 +243,36 @@ Types given text in the first element matching given selector. If a value is alr
 await browser.type("input.my-input", "My Input");
 ```
 
+**uploadFile(selector, path)**   
+Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
+
+
+```js
+await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
+```
+
+**select(selector, value)**
+Will select the given value in the _select_ tag of the first element matching the given selector, removing all previous selections. Returns an array with the values that could be selected correctly.
+
+Value can be a string or an array. If the select is multiple all elements in value will be selected, if not only the first element in the select options will.
+
+Will throw if no elements were found.
+
+```js
+await browser.select("select.language-select", ["spanish", "english"]); // Returns ["spanish", "english"]
+```
+
+If the option doesn't have a value, the text should be provided.
+
+> Only Css Selectors supported
+
+**selectedOptions(selector)**
+Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
+
+Will throw if no element is found.
+
+> Css, Xpath and Dom Selectors supported
+
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 
@@ -268,7 +298,7 @@ An element will considered visible if:
 * The computed style doesn't contain display: none or visibility: hidden
 
 **text(selector, expected, msg)**   
-Asserts that at least one element matching the given selector has the expected text.
+Asserts that at least one element matching the given selector has the expected string or regex.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
@@ -282,7 +312,7 @@ await browser.assert.textContains("p", "My First");
 ```
 
 **title(expected, msg)**   
-Asserts that the page title matches the expected string.
+Asserts that the page title matches the expected string or regex.
 
 **class(selector, expected, msg)**   
 Asserts that the first element matching the selector contains the expected class.
@@ -336,10 +366,12 @@ await browser.assert.attribute(".hidden-class", "class", "hidden-class");
 await browser.assert.attribute(".hidden-class", "hidden");
 ```
 
-To pass a custom message without specifying an expected value, you can pass null:
+To pass a custom message without specifying an expected value, you can pass `undefined`:
 ```js
-await browser.assert.attribute(".hidden-class", "hidden", null, "hidden-class doesn't have attribute hidden");
+await browser.assert.attribute(".hidden-class", "hidden", undefined, "hidden-class doesn't have attribute hidden");
 ```
+
+You can check an attribute doesn't exists passing `null` as expected argument or using `assert.not.attribute`
 
 If the element doesn't exists, the assertion will fail.
 
@@ -380,8 +412,18 @@ Asserts that no element matching the given selector matches the expected text.
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
+**textContains(selector, expected, msg)**   
+Asserts that no elements matching the given selector contain the expected text.
+
+```js
+await browser.assert.not.textContains("p", "doesn't exis");
+```
+
 **not.title(expected, msg)**   
 Asserts that the title of the page is not the expected string.
+
+**not.class(selector, expected, msg)**   
+Asserts that the first element matching the selector doesn't contain the expected class. It will throw if the element is not found.
 
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.

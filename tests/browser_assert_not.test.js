@@ -17,38 +17,6 @@ describe("Not Assertions", function() {
         await browser.close();
     });
 
-    it("Not Text", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.text("h1", "Not Main Title");
-    });
-
-    it("Not Text Not Exists", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.text("h2", "Not Main Title");
-    });
-
-    it("Not Multiple Texts", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.text("p", "not a paragraph");
-    });
-
-    it("Not Multiple Texts Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.text("p", "My first paragraph");
-        }, `Expected element "p" not to have text "My first paragraph"`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.text("p", "My second paragraph");
-        }, `Expected element "p" not to have text "My second paragraph"`);
-    });
-
-    it("Not Text Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.text("p", "My first paragraph", "not text failed");
-        }, `not text failed`);
-    });
-
     it("Not Visible", async() => {
         assert(browser.assert.not.visible);
         await browser.open(configUrls.index);
@@ -80,33 +48,6 @@ describe("Not Assertions", function() {
         }, `not visible failed`);
     });
 
-    it("Not Title", async() => {
-        assert(browser.assert.not.title);
-        await browser.open(configUrls.index);
-        await browser.assert.not.title("Not Index Test");
-    });
-
-    it("Not Title Default", async() => {
-        await browser.open(configUrls.simple);
-        await browser.assert.not.title("Test title");
-    });
-
-    it("Not Title Throws", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.not.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.title("Index Test");
-        }, `Expected page title not to be "Index Test"`);
-    });
-
-    it("Not Title Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.not.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.title("Index Test", "not title failed");
-        }, `not title failed`);
-    });
-
     it("Not Url", async() => {
         const invalidUrl = "http://localhost/invalid_url";
         await browser.open(configUrls.index);
@@ -127,35 +68,6 @@ describe("Not Assertions", function() {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.url(configUrls.index, "not url failed");
         }, `not url failed`);
-    });
-
-    it("Not Text Contains", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.textContains(".container p", "My second paragraph");
-        await browser.assert.not.textContains(".container p", "My second");
-    });
-
-    it("Not Text Contains Multiple Elements", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.not.textContains("p", "My paragraph");
-    });
-
-    it("Not Text Contains Throws", async () => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.not.textContains);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.textContains("p", "My second");
-        }, `Expected element "p" not to contain text "My second"`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.not.textContains("p", "My first");
-        }, `Expected element "p" not to contain text "My first"`);
-    });
-
-    it("Not Text Contains Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.textContains(".container p", "My second", "text contains fails");
-        }, `text contains fails`);
     });
 
 });

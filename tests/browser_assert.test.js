@@ -1,6 +1,5 @@
 "use strict";
 
-const assert = require('assert');
 const Wendigo = require('../lib/wendigo');
 const utils = require('./utils');
 const configUrls = require('./config.json').urls;
@@ -22,73 +21,6 @@ describe("Assertions", function() {
         const node = await browser.query("h1");
         await browser.assert.text(node, "Main Title");
         await browser.assert.visible(node);
-    });
-
-    it("Title", async() => {
-        assert(browser.assert.title);
-        await browser.open(configUrls.index);
-        await browser.assert.title("Index Test");
-    });
-
-    it("Title Default", async() => {
-        await browser.open(configUrls.simple);
-        await browser.assert.title("");
-    });
-
-    it("Title Throws", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("Index Test 2");
-        }, `Expected page title to be "Index Test 2", "Index Test" found`);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("");
-        }, `Expected page title to be "", "Index Test" found`);
-    });
-
-    it("Title Throws With Custom Message", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.title);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.title("Index Test 2", "title test failed");
-        }, `title test failed`);
-    });
-
-    it("Class", async() => {
-        await browser.open(configUrls.index);
-        await browser.assert.class("div", "container");
-        await browser.assert.class("div", "extra-class");
-    });
-
-    it("Class Throws", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.class);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.class("div", "not-my-class");
-        }, `Expected element "div" to contain class "not-my-class", "container extra-class" found`);
-    });
-
-    it("Class Throws Element Not Found", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.class);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.class("div.not-exists", "not-my-class");
-        }, `Expected element "div.not-exists" to contain class "not-my-class", no classes found`);
-    });
-
-    it("Class Throws With Custom Message", async() => {
-        await browser.open(configUrls.index);
-        assert(browser.assert.class);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.class("div", "not-my-class", "class failed");
-        }, `class failed`);
-    });
-
-    it("Class From Node", async() => {
-        await browser.open(configUrls.index);
-        const node = await browser.query("div");
-        await browser.assert.class(node, "container");
-        await browser.assert.class(node, "extra-class");
     });
 
     it("Url", async() => {
