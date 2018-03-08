@@ -64,5 +64,34 @@ describe("Assert Visible", function() {
         await browser.assert.visible(node);
     });
 
+    it("Not Visible", async () => {
+        assert(browser.assert.not.visible);
+        await browser.open(configUrls.index);
+        await browser.assert.not.visible(".hidden-text");
+        await browser.assert.not.visible(".hidden-text2");
+    });
 
+    it("Not Visible Not Exists", async () => {
+        assert(browser.assert.not.visible);
+        await browser.open(configUrls.index);
+        await browser.assert.not.visible(".imaginary-text");
+    });
+
+    it("Not Visible Throws", async () => {
+        await browser.open(configUrls.index);
+        assert(browser.assert.not.visible);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.visible("p");
+        }, `Expected element "p" to not be visible`);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.visible("h1");
+        }, `Expected element "h1" to not be visible`);
+    });
+
+    it("Not Visible Throws With Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.visible("p", "not visible failed");
+        }, `not visible failed`);
+    });
 });

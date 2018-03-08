@@ -3,6 +3,7 @@
 
   * Added browser.innerHtml and assertions
   * Assert text and not text now support arrays of expected strings
+  * Minor tests cleanup
 
 0.4.2 / 2018-03-06
 ==================

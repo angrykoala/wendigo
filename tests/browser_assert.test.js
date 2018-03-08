@@ -23,27 +23,6 @@ describe("Assertions", function() {
         await browser.assert.visible(node);
     });
 
-    it("Url", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.url(configUrls.index);
-    });
-
-    it("Url Throws", async () => {
-        const invalidUrl = "http://localhost/not_the_url";
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.url(invalidUrl);
-        }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`);
-    });
-
-    it("Url Throws With Custom Message", async () => {
-        const invalidUrl = "http://localhost/not_the_url";
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.url(invalidUrl, "invalid url");
-        }, `invalid url`);
-    });
-
     it("Elements", async () => {
         await browser.open(configUrls.index);
         await browser.assert.elements("p", 2);
