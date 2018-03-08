@@ -299,6 +299,7 @@ An element will considered visible if:
 
 **text(selector, expected, msg)**   
 Asserts that at least one element matching the given selector has the expected string or regex.
+If expected is an array, all texts in it should match.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
@@ -407,6 +408,7 @@ Asserts that the first element with given selector is not visible. If no element
 
 **not.text(selector, expected, msg)**   
 Asserts that no element matching the given selector matches the expected text.
+If expected is an array, no element in it should match any element with given selector
 
 ```js
 await browser.assert.not.text("p", "This text doesn't exists");

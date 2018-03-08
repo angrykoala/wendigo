@@ -67,7 +67,7 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
     });
 
-    it("Click Invalid Text", async() => {
+    it("Click Text Invalid Text", async() => {
         await utils.assertThrowsAsync(async () => {
             await browser.clickText("not click me");
         }, `Error: No element with text "not click me" found when trying to click.`);
@@ -79,5 +79,4 @@ describe("Click", function() {
             await browser.click("#not-an-element");
         }, `Error: No element "#not-an-element" found when trying to click.`);
     });
-
 });

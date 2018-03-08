@@ -1,6 +1,8 @@
 5.0.0 / ####-##-##
 ==================
 
+  * Assert text and not text now support arrays of expected strings
+
 0.4.2 / 2018-03-06
 ==================
 

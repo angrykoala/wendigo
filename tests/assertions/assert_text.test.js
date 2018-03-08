@@ -72,6 +72,12 @@ describe("Assert Text", function() {
         }, `text failed`);
     });
 
+    it("Text Without Expected Parameter Throws", async () => {
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("h1");
+        }, `Error: Missing expected text for assertion`);
+    });
+
     it("Not Text", async () => {
         await browser.assert.not.text("h1", "Not Main Title");
     });
@@ -97,6 +103,44 @@ describe("Assert Text", function() {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.not.text("p", "My first paragraph", "not text failed");
         }, `not text failed`);
+    });
+
+    it("Multiple Texts in Array", async() => {
+        await browser.assert.text("p", ["My first paragraph", "My second paragraph"]);
+        await browser.assert.text("p", ["My first paragraph"]);
+    });
+
+    it("Multiple Texts in Array With Regex", async() => {
+        await browser.assert.text("p", ["My first paragraph", /My\ssecond\sparagraph/]);
+        await browser.assert.text("p", ["My first paragraph"]);
+    });
+
+    it("Multiple Texts in Array Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async () => {
+            await browser.assert.text("p", ["My first paragraph", "My paragraph"]);
+        }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
+    });
+
+    it("Not Multiple Texts in Array", async() => {
+        await browser.assert.not.text("p", ["not a correct text", "another incorrect text"]);
+    });
+
+    it("Not Multiple Texts in Array Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async () => {
+            await browser.assert.not.text("p", ["My first paragraph", "not a correct text"]);
+        }, `Expected element "p" not to have text "My first paragraph"`);
+    });
+
+    it("Text With Empty Parameter Array Throws", async () => {
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.text("h1", []);
+        }, `Error: Missing expected text for assertion`);
+    });
+
+    it("Not Text With Empty Parameter Array Throws", async () => {
+        await utils.assertThrowsAsync(async () => {
+            await browser.assert.not.text("h1", []);
+        }, `Error: Missing expected text for assertion`);
     });
 
 });
