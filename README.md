@@ -212,7 +212,7 @@ Waits for given selector to exists and be visible, with the given timeout in mil
 await browser.waitFor(".popup");
 ```
 
-**WaitUntilNotVisible(selector, timeout=500)**   
+**waitUntilNotVisible(selector, timeout=500)**   
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
 
 ```js
