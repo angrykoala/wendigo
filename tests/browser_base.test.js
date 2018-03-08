@@ -13,7 +13,7 @@ describe("Browser Base", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -29,7 +29,7 @@ describe("Browser Base", function() {
         assert(element);
     });
 
-    it("Query Not Element Found", async() => {
+    it("Query Not Element Found", async () => {
         await browser.open(configUrls.index);
         const element = await browser.query("div.not-exists");
         assert.strictEqual(element, null);
@@ -54,44 +54,44 @@ describe("Browser Base", function() {
         assert.strictEqual(elements.length, 1);
     });
 
-    it("XPath Query", async() => {
+    it("XPath Query", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
         assert.strictEqual(elements.length, 1);
     });
 
-    it("Attribute", async() => {
+    it("Attribute", async () => {
         await browser.open(configUrls.index);
         const classAttribute = await browser.attribute(".container", "class");
         assert.strictEqual(classAttribute, "container extra-class");
     });
 
-    it("Attribute With Multiple Elements", async() => {
+    it("Attribute With Multiple Elements", async () => {
         await browser.open(configUrls.index);
         const classAttribute = await browser.attribute("b", "class");
         assert.strictEqual(classAttribute, "hidden-text2");
     });
 
-    it("Empty Attribute", async() => {
+    it("Empty Attribute", async () => {
         await browser.open(configUrls.index);
         const hiddenAttribute = await browser.attribute(".hidden-text", "hidden");
         assert.strictEqual(hiddenAttribute, "");
     });
 
-    it("Non Existing Attribute", async() => {
+    it("Non Existing Attribute", async () => {
         await browser.open(configUrls.index);
         const hiddenAttribute = await browser.attribute(".container", "hidden");
         assert.strictEqual(hiddenAttribute, null);
     });
 
-    it("Attribute With Non Existing Element", async() => {
+    it("Attribute With Non Existing Element", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.attribute(".not-element", "class");
         }, `Error: Element ".not-element" not found when trying to get attribute "class".`);
     });
 
-    it("Attribute From Node", async() => {
+    it("Attribute From Node", async () => {
         await browser.open(configUrls.index);
         const node = await browser.query('.container');
         const classAttribute = await browser.attribute(node, "class");

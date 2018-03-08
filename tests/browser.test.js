@@ -12,7 +12,7 @@ describe("Browser", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -27,30 +27,30 @@ describe("Browser", function() {
         assert.strictEqual(html, expectedHtml);
     });
 
-    it("Title", async() => {
+    it("Title", async () => {
         await browser.open(configUrls.index);
         const title = await browser.title();
         assert.strictEqual(title, "Index Test");
     });
 
-    it("Default Title", async() => {
+    it("Default Title", async () => {
         await browser.open(configUrls.simple);
         const title = await browser.title();
         assert.strictEqual(title, "");
     });
 
-    it("Find By Text", async() => {
+    it("Find By Text", async () => {
         await browser.open(configUrls.index);
         const headerElement = await browser.findByText("Main Title");
         assert.strictEqual(headerElement.length, 1);
     });
-    it("Find By Text Empty", async() => {
+    it("Find By Text Empty", async () => {
         await browser.open(configUrls.index);
         const headerElement = await browser.findByText("Not title");
         assert.strictEqual(headerElement.length, 0);
     });
 
-    it("Find By Text Containing", async() => {
+    it("Find By Text Containing", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.findByTextContaining("paragraph");
         assert.strictEqual(elements.length, 2);

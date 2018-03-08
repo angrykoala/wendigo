@@ -12,11 +12,11 @@ describe("Assert Text", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         await browser.open(configUrls.index);
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -43,37 +43,37 @@ describe("Assert Text", function() {
     });
 
     it("Text Throws", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("h1", "My first paragraph");
         }, `Expected element "h1" to have text "My first paragraph", "Main Title" found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("h2", "My first paragraph");
         }, `Expected element "h2" to have text "My first paragraph", no text found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text(".container p", "My second paragraph");
         }, `Expected element ".container p" to have text "My second paragraph", "My first paragraph" found`);
     });
 
     it("Text Regex Throws", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("h1", /My\sfirst\sparagraph/);
         }, `Expected element "h1" to have text "/My\\sfirst\\sparagraph/", "Main Title" found`);
     });
 
     it("Multiple Text Throws", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("p", "My paragraph");
         }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Throws With Custom Message", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("h1", "My first paragraph", "text failed");
         }, `text failed`);
     });
 
     it("Text Without Expected Parameter Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.assert.text("h1");
         }, `Error: Missing expected text for assertion`);
     });
@@ -91,54 +91,54 @@ describe("Assert Text", function() {
     });
 
     it("Not Multiple Texts Throws", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.text("p", "My first paragraph");
         }, `Expected element "p" not to have text "My first paragraph"`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.text("p", "My second paragraph");
         }, `Expected element "p" not to have text "My second paragraph"`);
     });
 
     it("Not Text Throws With Custom Message", async () => {
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.text("p", "My first paragraph", "not text failed");
         }, `not text failed`);
     });
 
-    it("Multiple Texts in Array", async() => {
+    it("Multiple Texts in Array", async () => {
         await browser.assert.text("p", ["My first paragraph", "My second paragraph"]);
         await browser.assert.text("p", ["My first paragraph"]);
     });
 
-    it("Multiple Texts in Array With Regex", async() => {
+    it("Multiple Texts in Array With Regex", async () => {
         await browser.assert.text("p", ["My first paragraph", /My\ssecond\sparagraph/]);
         await browser.assert.text("p", ["My first paragraph"]);
     });
 
-    it("Multiple Texts in Array Throws", async() => {
-        await utils.assertThrowsAssertionAsync(async () => {
+    it("Multiple Texts in Array Throws", async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.text("p", ["My first paragraph", "My paragraph"]);
         }, `Expected element "p" to have text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
-    it("Not Multiple Texts in Array", async() => {
+    it("Not Multiple Texts in Array", async () => {
         await browser.assert.not.text("p", ["not a correct text", "another incorrect text"]);
     });
 
-    it("Not Multiple Texts in Array Throws", async() => {
-        await utils.assertThrowsAssertionAsync(async () => {
+    it("Not Multiple Texts in Array Throws", async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.text("p", ["My first paragraph", "not a correct text"]);
         }, `Expected element "p" not to have text "My first paragraph"`);
     });
 
     it("Text With Empty Parameter Array Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.assert.text("h1", []);
         }, `Error: Missing expected text for assertion`);
     });
 
     it("Not Text With Empty Parameter Array Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.assert.not.text("h1", []);
         }, `Error: Missing expected text for assertion`);
     });

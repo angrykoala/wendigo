@@ -13,17 +13,17 @@ describe("Browser Styles", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
-    it("Get Styles", async() => {
+    it("Get Styles", async () => {
         await browser.open(configUrls.index);
         const styles = await browser.styles("h1");
         assert.strictEqual(styles.color, "rgb(255, 0, 0)");
     });
 
-    it("Get Dynamic Styles", async() => {
+    it("Get Dynamic Styles", async () => {
         await browser.open(configUrls.click);
         const styles = await browser.styles("#switch");
         assert.strictEqual(styles["background-color"], "rgb(0, 0, 255)");
@@ -36,21 +36,21 @@ describe("Browser Styles", function() {
         assert.strictEqual(styles["color"], "rgb(0, 0, 0)");
     });
 
-    it("Styles On Invalid Element", async() => {
+    it("Styles On Invalid Element", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.styles("#not-an-element");
         }, `Error: Element "#not-an-element" not found when trying to get styles.`);
     });
 
-    it("Styles From Node Element", async() => {
+    it("Styles From Node Element", async () => {
         await browser.open(configUrls.index);
         const node = await browser.query("h1");
         const styles = await browser.styles(node);
         assert.strictEqual(styles.color, "rgb(255, 0, 0)");
     });
 
-    it("Style Multiple Elements", async() => {
+    it("Style Multiple Elements", async () => {
         await browser.open(configUrls.index);
         const styles = await browser.styles("b");
         assert.strictEqual(styles.visibility, "hidden");

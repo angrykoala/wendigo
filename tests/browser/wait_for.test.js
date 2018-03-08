@@ -12,7 +12,7 @@ describe("Wait For", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -27,11 +27,11 @@ describe("Wait For", function() {
         await browser.assert.not.exists("#switch.on");
     });
 
-    it("Wait For Timeout", async() => {
+    it("Wait For Timeout", async () => {
         await browser.open(configUrls.click);
         await browser.assert.exists("#switch.on");
         await browser.click(".btn2");
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.waitFor("#switch.off", 10);
         }, `Error: Waiting for element "#switch.off" failed, timeout of 10ms exceeded`);
         await browser.assert.not.exists("#switch.off");
@@ -47,10 +47,10 @@ describe("Wait For", function() {
         await browser.assert.exists("#switch.on");
     });
 
-    it("Wait For Fails With Invisible Element", async() => {
+    it("Wait For Fails With Invisible Element", async () => {
         await browser.open(configUrls.index);
         await browser.assert.exists(".hidden-text2");
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.waitFor(".hidden-text2", 10);
         });
     });

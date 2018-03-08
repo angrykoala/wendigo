@@ -271,7 +271,7 @@ Returns all the selected options of the first element matching the given selecto
 
 Will throw if no element is found.
 
-> Css, Xpath and Dom Selectors supported
+> Css, Xpath and Dom selectors supported
 
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
@@ -280,7 +280,17 @@ Clears any value that exists in any of the elements matched by the given selecto
 await browser.clearValue("input.my-input");
 ```
 
-## Assert
+**innerHtml(selector)**
+Returns an array with the innerHtml strings of all the elements matching the given selector
+
+```js
+await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
+```
+
+> Css, Xpath and Dom selectors supported
+
+
+## Assertions
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
 **exists(selector, msg)**   
@@ -393,6 +403,18 @@ browser.assert.href("link", "styles.css");
 
 > Same as `browser.assert.attribute(selector, "href", expected, msg)`
 
+**innerHtml(selector, expected, msg)**
+Asserts that at least one element matching the given selector has the expected innerHtml.
+The expected html can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
+```
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -454,6 +476,18 @@ Asserts the first element matching the selector doesn't has a style with given v
 Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
+
+**not.innerHtml(selector, expected, msg)**
+Asserts that at least no element matching the given selector has the expected innerHtml.
+The expected html can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
+```
+
+> Css, Xpath and Dom selectors supported
 
 ## Examples
 

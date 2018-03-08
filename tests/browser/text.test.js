@@ -12,30 +12,30 @@ describe("Browser", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
-    it("Text", async() => {
+    it("Text", async () => {
         await browser.open(configUrls.index);
         const titleText = await browser.text("h1");
         assert.strictEqual(titleText[0], "Main Title");
     });
 
-    it("Text From Node", async() => {
+    it("Text From Node", async () => {
         await browser.open(configUrls.index);
         const node = await browser.query("h1");
         const titleText = await browser.text(node);
         assert.strictEqual(titleText[0], "Main Title");
     });
 
-    it("Text From Xpath", async() => {
+    it("Text From Xpath", async () => {
         await browser.open(configUrls.index);
         const titleText = await browser.text("//h1");
         assert.strictEqual(titleText[0], "Main Title");
     });
 
-    it("Multiple Texts", async() => {
+    it("Multiple Texts", async () => {
         await browser.open(configUrls.index);
         const texts = await browser.text("p");
         assert.strictEqual(texts.length, 2);

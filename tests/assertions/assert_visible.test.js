@@ -13,11 +13,11 @@ describe("Assert Visible", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
-    it("Is Visible", async() => {
+    it("Is Visible", async () => {
         assert(browser.assert.visible);
         await browser.open(configUrls.index);
         await browser.assert.visible("h1");
@@ -25,39 +25,39 @@ describe("Assert Visible", function() {
         await browser.assert.visible("p");
     });
 
-    it("Is Visible Throws", async() => {
+    it("Is Visible Throws", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text");
         }, `Expected element ".hidden-text" to be visible`);
     });
 
-    it("Is Visible When Styled Hidden", async() => {
+    it("Is Visible When Styled Hidden", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text2");
         }, `Expected element ".hidden-text2" to be visible`);
     });
 
-    it("Is Visible When Element Not Exists", async() => {
+    it("Is Visible When Element Not Exists", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".not-exists");
         }, `Expected element ".not-exists" to be visible`);
     });
 
-    it("Is Visible Throws With Custom Message", async() => {
+    it("Is Visible Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
         assert(browser.assert.visible);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text", "visible test failed");
         }, `visible test failed`);
     });
 
-    it("Is Visible From Node", async() => {
+    it("Is Visible From Node", async () => {
         assert(browser.assert.visible);
         await browser.open(configUrls.index);
         const node = await browser.query("h1");

@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "0.5.0",
+  "version": "0.4.3",
   "description": "A proper monster for front-end testing",
   "engines": {
     "node": ">=8.9.4"
