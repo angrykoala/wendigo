@@ -1,6 +1,3 @@
-
-
-
 "use strict";
 
 const Wendigo = require('../../lib/wendigo');

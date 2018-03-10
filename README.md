@@ -116,6 +116,8 @@ Queries the given css selector and returns a DOM node. If multiple elements are 
 const element = await browser.query("h1");
 ```
 
+Optionally, query supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
+
 **queryAll(selector)**   
 Returns an array with all the DOM elements that match the given css selector.
 
@@ -124,7 +126,9 @@ const elements = await browser.queryAll("h1");
 elements.length; // 2
 ```
 
-> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions
+Optionally, queryAll supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
+
+> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions.
 
 **queryXPath(xPathSelector)**   
 Returns an array with the DOM elements matching the xPath selector.

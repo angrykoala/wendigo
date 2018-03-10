@@ -17,43 +17,6 @@ describe("Browser Base", function() {
         await browser.close();
     });
 
-    it("Query", async () => {
-        await browser.open(configUrls.index);
-        const element = await browser.query("h1");
-        assert(element);
-    });
-
-    it("Query Multiple Elements", async () => {
-        await browser.open(configUrls.index);
-        const element = await browser.query("p");
-        assert(element);
-    });
-
-    it("Query Not Element Found", async () => {
-        await browser.open(configUrls.index);
-        const element = await browser.query("div.not-exists");
-        assert.strictEqual(element, null);
-    });
-
-    it("Query Node", async () => {
-        await browser.open(configUrls.index);
-        const element = await browser.query("h1");
-        const element2 = await browser.query(element);
-        assert(element2);
-    });
-
-    it("QueryAll", async () => {
-        await browser.open(configUrls.index);
-        const elements = await browser.queryAll("p");
-        assert.strictEqual(elements.length, 2);
-    });
-
-    it("QueryAll One Element", async () => {
-        await browser.open(configUrls.index);
-        const elements = await browser.queryAll(".container p");
-        assert.strictEqual(elements.length, 1);
-    });
-
     it("XPath Query", async () => {
         await browser.open(configUrls.index);
         const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');

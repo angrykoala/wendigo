@@ -7,7 +7,7 @@
   },
   "main": "lib/wendigo.js",
   "scripts": {
-    "test": "mocha tests --recursive"
+    "test": "mocha tests --recursive --retries 2"
   },
   "repository": {
     "type": "git",
