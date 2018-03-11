@@ -1,6 +1,7 @@
 0.4.3 / ####-##-##
 ==================
 
+  * Added localStore submodule
   * Added browser.innerHtml and assertions
   * Query and QueryAll support optionally 2 parameters for subqueries
   * Assert text and not text now support arrays of expected strings

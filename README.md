@@ -35,6 +35,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Wendigo](#wendigo)
     * [Browser](#browser)
     * [Assert](#assert)
+    * [LocalStore](#localstore)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -492,6 +493,36 @@ await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 ```
 
 > Css, Xpath and Dom selectors supported
+
+## LocalStore
+The module `browser.localStore` provides a simple wrapper around the browser localStorage. All the methods return promises.
+
+**getItem(key)**    
+Returns the item with the given key. If no item exists return null.
+
+```js
+const value=await browser.localStore.getItem("my-key"); // returns my-value
+```
+
+**setItem(key, value)**    
+Sets the given key with the given value.
+
+```js
+await browser.localStore.setItem("my-key", "my-value");
+```
+
+**removeItem(key)**
+Removes the item with given key.
+
+**clear()**   
+Removes all the items on the store.
+
+**length()**   
+Returns the number of items in the store.
+
+```js
+const itemsLength = await browser.localStore.length(); // 3
+```
 
 ## Examples
 
