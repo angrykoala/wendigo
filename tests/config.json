@@ -4,6 +4,7 @@
         "click": "http://localhost:3456/click.html",
         "simple": "http://localhost:3456/html_simple.html",
         "forms": "http://localhost:3456/forms.html",
-        "url": "http://localhost:3456/url_history.html"
+        "url": "http://localhost:3456/url_history.html",
+        "requests": "http://localhost:3456/request_interception.html"
     }
 }
