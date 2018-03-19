@@ -1,4 +1,4 @@
-0.4.3 / ####-##-##
+0.4.3 / 2018-03-19
 ==================
 
   * Added localStore submodule
@@ -6,6 +6,7 @@
   * Query and QueryAll support optionally 2 parameters for subqueries
   * Assert text and not text now support arrays of expected strings
   * Minor tests cleanup
+  * Puppeteer updated to 1.2.0
 
 0.4.2 / 2018-03-06
 ==================
