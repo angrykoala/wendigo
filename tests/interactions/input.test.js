@@ -12,11 +12,11 @@ describe("Input", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         await browser.open(configUrls.forms);
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -42,36 +42,36 @@ describe("Input", function() {
         await browser.assert.value("input.input1", "firstText");
     });
 
-    it("Clear Input", async() => {
+    it("Clear Input", async () => {
         await browser.clearValue("input.input1");
         await browser.clearValue("input.input2");
         await browser.assert.value("input.input1", "");
         await browser.assert.value("input.input2", "");
     });
 
-    it("Clear Input From Node", async() => {
+    it("Clear Input From Node", async () => {
         const node = await browser.query("input.input2");
         await browser.clearValue(node);
         await browser.assert.value("input.input2", "");
     });
 
-    it("Type With Keypress Event", async() => {
+    it("Type With Keypress Event", async () => {
         await browser.type(".input1", "dontpanic");
         await browser.assert.text("#value-input", "c");
     });
 
-    it("File Input Set Relative Path", async() => {
+    it("File Input Set Relative Path", async () => {
         await browser.uploadFile(".input3", "dummy_file");
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
 
-    it("File Input Set Absolute Path", async() => {
+    it("File Input Set Absolute Path", async () => {
         await browser.uploadFile(".input3", "/directory/dummy_file");
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
 
-    it("File Input Missing Element", async() => {
-        await utils.assertThrowsAsync(async() => {
+    it("File Input Missing Element", async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.uploadFile(".missing", "dummy_file");
         }, `Error: Selector ".missing" doesn't match any element.`);
     });

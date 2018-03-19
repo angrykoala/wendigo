@@ -11,17 +11,17 @@ describe("Browser Interactions", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
 
-    it("Button Text", async() => {
+    it("Button Text", async () => {
         await browser.open(configUrls.click);
         await browser.assert.text(".btn", "click me");
     });
 
-    it("Wait", async() => {
+    it("Wait", async () => {
         await browser.open(configUrls.click);
         await browser.click(".btn2");
         await browser.assert.text("#switch", "On");
@@ -32,7 +32,7 @@ describe("Browser Interactions", function() {
         await browser.assert.text("#switch", "Off");
     });
 
-    it("Find By Text Containing And Click", async() => {
+    it("Find By Text Containing And Click", async () => {
         await browser.open(configUrls.click);
         const elements = await browser.findByTextContaining("click");
         await browser.click(elements);

@@ -2,10 +2,10 @@
 const assert = require('assert');
 
 module.exports = {
-    async assertThrowsAssertionAsync(fn, expected) {
-        return this.assertThrowsAsync(fn, `AssertionError [ERR_ASSERTION]: ${expected}`);
+    async assertThrowsAssertionAsync (fn, expected) {
+        return this.assertThrowsAsync (fn, `AssertionError [ERR_ASSERTION]: ${expected}`);
     },
-    async assertThrowsAsync(fn, expected) {
+    async assertThrowsAsync (fn, expected) {
         let f = () => {};
         try {
             await fn();

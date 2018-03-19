@@ -35,6 +35,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Wendigo](#wendigo)
     * [Browser](#browser)
     * [Assert](#assert)
+    * [LocalStore](#localstore)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -116,6 +117,8 @@ Queries the given css selector and returns a DOM node. If multiple elements are 
 const element = await browser.query("h1");
 ```
 
+Optionally, query supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
+
 **queryAll(selector)**   
 Returns an array with all the DOM elements that match the given css selector.
 
@@ -124,7 +127,9 @@ const elements = await browser.queryAll("h1");
 elements.length; // 2
 ```
 
-> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions
+Optionally, queryAll supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
+
+> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions.
 
 **queryXPath(xPathSelector)**   
 Returns an array with the DOM elements matching the xPath selector.
@@ -212,7 +217,7 @@ Waits for given selector to exists and be visible, with the given timeout in mil
 await browser.waitFor(".popup");
 ```
 
-**WaitUntilNotVisible(selector, timeout=500)**   
+**waitUntilNotVisible(selector, timeout=500)**   
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
 
 ```js
@@ -271,7 +276,7 @@ Returns all the selected options of the first element matching the given selecto
 
 Will throw if no element is found.
 
-> Css, Xpath and Dom Selectors supported
+> Css, Xpath and Dom selectors supported
 
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
@@ -280,7 +285,17 @@ Clears any value that exists in any of the elements matched by the given selecto
 await browser.clearValue("input.my-input");
 ```
 
-## Assert
+**innerHtml(selector)**
+Returns an array with the innerHtml strings of all the elements matching the given selector
+
+```js
+await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
+```
+
+> Css, Xpath and Dom selectors supported
+
+
+## Assertions
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
 **exists(selector, msg)**   
@@ -299,6 +314,7 @@ An element will considered visible if:
 
 **text(selector, expected, msg)**   
 Asserts that at least one element matching the given selector has the expected string or regex.
+If expected is an array, all texts in it should match.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
@@ -392,6 +408,18 @@ browser.assert.href("link", "styles.css");
 
 > Same as `browser.assert.attribute(selector, "href", expected, msg)`
 
+**innerHtml(selector, expected, msg)**
+Asserts that at least one element matching the given selector has the expected innerHtml.
+The expected html can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
+```
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -407,6 +435,7 @@ Asserts that the first element with given selector is not visible. If no element
 
 **not.text(selector, expected, msg)**   
 Asserts that no element matching the given selector matches the expected text.
+If expected is an array, no element in it should match any element with given selector
 
 ```js
 await browser.assert.not.text("p", "This text doesn't exists");
@@ -452,6 +481,48 @@ Asserts the first element matching the selector doesn't has a style with given v
 Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
+
+**not.innerHtml(selector, expected, msg)**
+Asserts that at least no element matching the given selector has the expected innerHtml.
+The expected html can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
+```
+
+> Css, Xpath and Dom selectors supported
+
+## LocalStore
+The module `browser.localStore` provides a simple wrapper around the browser localStorage. All the methods return promises.
+
+**getItem(key)**    
+Returns the item with the given key. If no item exists return null.
+
+```js
+const value=await browser.localStore.getItem("my-key"); // returns my-value
+```
+
+**setItem(key, value)**    
+Sets the given key with the given value.
+
+```js
+await browser.localStore.setItem("my-key", "my-value");
+```
+
+**removeItem(key)**
+Removes the item with given key.
+
+**clear()**   
+Removes all the items on the store.
+
+**length()**   
+Returns the number of items in the store.
+
+```js
+const itemsLength = await browser.localStore.length(); // 3
+```
 
 ## Examples
 

@@ -5,7 +5,7 @@ const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 const utils = require('../utils');
 
-describe("Browser", function() {
+describe("Select", function() {
     this.timeout(5000);
     let browser;
 
@@ -13,11 +13,11 @@ describe("Browser", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         await browser.open(configUrls.forms);
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -88,20 +88,20 @@ describe("Browser", function() {
         assert.strictEqual(selectedOptions.length, 0);
     });
 
-    it("Select Non Existant Values", async() => {
+    it("Select Non Existant Values", async () => {
         await browser.select("#normal-select", "value5");
         const selectedOptions = await browser.selectedOptions("#normal-select");
         assert.strictEqual(selectedOptions.length, 0);
     });
 
-    it("Select Non Existant Element", async() => {
-        await utils.assertThrowsAsync(async () => {
+    it("Select Non Existant Element", async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.select("#not-exists", "value1");
         }, `Error: Element "#not-exists" not found when trying to select value.`);
     });
 
     it("Selected Options With Not Element", async () => {
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.selectedOptions("#not-exists");
         }, `Error: Element "#not-exists" not found when trying to get selected options.`);
     });

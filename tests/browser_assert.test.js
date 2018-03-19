@@ -12,7 +12,7 @@ describe("Assertions", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -21,27 +21,6 @@ describe("Assertions", function() {
         const node = await browser.query("h1");
         await browser.assert.text(node, "Main Title");
         await browser.assert.visible(node);
-    });
-
-    it("Url", async() => {
-        await browser.open(configUrls.index);
-        await browser.assert.url(configUrls.index);
-    });
-
-    it("Url Throws", async() => {
-        const invalidUrl = "http://localhost/not_the_url";
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.url(invalidUrl);
-        }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`);
-    });
-
-    it("Url Throws With Custom Message", async() => {
-        const invalidUrl = "http://localhost/not_the_url";
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
-            await browser.assert.url(invalidUrl, "invalid url");
-        }, `invalid url`);
     });
 
     it("Elements", async () => {
@@ -59,26 +38,26 @@ describe("Assertions", function() {
 
     it("Elements Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", 3);
         }, `Expected selector "p" to find exactly 3 elements, 2 found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", {atLeast: 3});
         }, `Expected selector "p" to find at least 3 elements, 2 found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", {atMost: 1});
         }, `Expected selector "p" to find up to 1 elements, 2 found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", {atMost: 4, atLeast: 3});
         }, `Expected selector "p" to find between 3 and 4 elements, 2 found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", {atMost: 1, atLeast: 0});
         }, `Expected selector "p" to find between 0 and 1 elements, 2 found`);
     });
 
     it("Elements Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", 3, "elements failed");
         }, `elements failed`);
     });
@@ -90,17 +69,17 @@ describe("Assertions", function() {
 
     it("Element Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p.not-exist");
         }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p");
         }, `Expected selector "p" to find exactly 1 elements, 2 found`);
     });
 
     it("Element Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p", "element failed");
         }, `element failed`);
     });
@@ -127,17 +106,17 @@ describe("Assertions", function() {
 
     it("Text Contains Throws", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.textContains(".container p", "My second");
         }, `Expected element ".container p" to contain text "My second", "My first paragraph" found`);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.textContains("p", "My paragraph");
         }, `Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Contains Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync(async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.textContains(".container p", "My second", "text contains fails");
         }, `text contains fails`);
     });

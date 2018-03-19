@@ -12,7 +12,7 @@ describe("Wait Until Not Visible", function() {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
@@ -30,10 +30,10 @@ describe("Wait Until Not Visible", function() {
         await browser.assert.not.exists(".not-exists");
     });
 
-    it("Wait Until Not Visible Timeout", async() => {
+    it("Wait Until Not Visible Timeout", async () => {
         await browser.open(configUrls.click);
         await browser.click(".btn2");
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.waitUntilNotVisible("#switch.on", 10);
         }, `Error: Waiting for element "#switch.on" not to be visible, timeout of 10ms exceeded`);
         await browser.assert.not.exists("#switch.off");

@@ -1,6 +1,3 @@
-
-
-
 "use strict";
 
 const Wendigo = require('../../lib/wendigo');
@@ -20,31 +17,31 @@ describe("Browser Class", function() {
         await browser.open(configUrls.index);
     });
 
-    after(async() => {
+    after(async () => {
         await browser.close();
     });
 
 
-    it("Class", async() => {
+    it("Class", async () => {
         const elements = await browser.class('div');
         assert.strictEqual(elements.length, 2);
         assert.strictEqual(elements[0], "container");
         assert.strictEqual(elements[1], "extra-class");
     });
 
-    it("Class With Multiple Elements", async() => {
+    it("Class With Multiple Elements", async () => {
         const elements = await browser.class('b');
         assert.strictEqual(elements.length, 1);
         assert.strictEqual(elements[0], "hidden-text2");
     });
 
-    it("Class Element Doesn't Exists", async() => {
-        await utils.assertThrowsAsync(async () => {
+    it("Class Element Doesn't Exists", async () => {
+        await utils.assertThrowsAsync (async () => {
             await browser.class('div.not-exists');
         }, `Error: Selector "div.not-exists" doesn't match any elements.`);
     });
 
-    it("Class From Node", async() => {
+    it("Class From Node", async () => {
         const node = await browser.query('div');
         const classes = await browser.class(node);
         assert.strictEqual(classes.length, 2);
@@ -52,7 +49,7 @@ describe("Browser Class", function() {
         assert.strictEqual(classes[1], "extra-class");
     });
 
-    it("Class From Xpath", async() => {
+    it("Class From Xpath", async () => {
         const elements = await browser.class('//div');
         assert.strictEqual(elements.length, 2);
         assert.strictEqual(elements[0], "container");

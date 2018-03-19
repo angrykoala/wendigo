@@ -75,5 +75,5 @@ window.WendigoQuery = {
         if(selector.length === 0) return null;
         if(selector[0] === "/") return this.selectorTypes.xpath;
         else return this.selectorTypes.css;
-    },
+    }
 };
