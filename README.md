@@ -304,7 +304,7 @@ This method won't trigger certain events, use `type` and `select` when possible.
 
 > Css, Xpath and Dom selectors supported
 
-## Assertions
+## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
 **exists(selector, msg)**   
