@@ -76,9 +76,14 @@ describe("Requests Filter", function() {
         }).length, 1);
     });
 
-    it.only("Requests Filter By OK", async () => {
-        assert.strictEqual(await browser.requests.filter.ok(false).length, 2);
+    it("Requests Filter By OK", async () => {
+        assert.strictEqual(await browser.requests.filter.ok(false).length, 0);
+        assert.strictEqual(await browser.requests.filter.ok().length, 2);
         await browser.clickText("click me");
-        assert.strictEqual(await browser.requests.filter.ok().length, 1);
+        try {
+            assert.strictEqual(await browser.requests.filter.ok(false).length, 1);
+        } catch (error) {
+            assert.strictEqual(await browser.requests.filter.ok().length, 3);
+        }
     });
 });
