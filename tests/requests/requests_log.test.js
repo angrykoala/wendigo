@@ -18,7 +18,6 @@ describe("Requests Log", function() {
 
     it("Requests Are Intercepted", async () => {
         await browser.open(configUrls.requests);
-        // html, css
         assert.strictEqual(await browser.requests.all.length, 2);
         await browser.clickText("click me");
         await browser.wait(10);
