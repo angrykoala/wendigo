@@ -564,6 +564,11 @@ describe("My Tests", function() {
 
 ## Troubleshooting
 
+### Error: Failed to launch chrome! No usable sandbox!
+This error may appear when running wendigo on certain systems and in most CI services. The sandbox setup can be bypassed by setting the environment variable `NO_SANDBOX=true`.
+
+For example `NO_SANDBOX=true npm test`.
+
 ### Running Tests With Travis CI
 Running tests using puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
 
