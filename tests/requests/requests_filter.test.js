@@ -5,11 +5,11 @@ const assert = require('assert');
 const configUrls = require('../config.json').urls;
 
 describe("Requests Filter", function() {
-    this.timeout(500000);
+    this.timeout(5000);
     let browser;
 
     before(async () => {
-        browser = await Wendigo.createBrowser({headless: false});
+        browser = await Wendigo.createBrowser();
     });
 
     after(async() => {
@@ -24,7 +24,7 @@ describe("Requests Filter", function() {
         await Wendigo.stop();
         browser = await Wendigo.createBrowser();
         await browser.open(configUrls.requests);
-        assert.strictEqual(await browser.requests.filter.url(/favicon/).length, 1);
+        assert.strictEqual(await browser.requests.filter.url(/favicon/).length, 0); // 0 if headless, else 1
         await browser.open(configUrls.requests);
         assert.strictEqual(await browser.requests.filter.url(/favicon/).length, 0);
     });
@@ -79,11 +79,5 @@ describe("Requests Filter", function() {
     it("Requests Filter By OK", async () => {
         assert.strictEqual(await browser.requests.filter.ok(false).length, 0);
         assert.strictEqual(await browser.requests.filter.ok().length, 2);
-        await browser.clickText("click me");
-        try {
-            assert.strictEqual(await browser.requests.filter.ok(false).length, 1);
-        } catch (error) {
-            assert.strictEqual(await browser.requests.filter.ok().length, 3);
-        }
     });
 });
