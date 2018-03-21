@@ -18,34 +18,6 @@ describe("Browser Forms", function() {
         await browser.close();
     });
 
-    it("Get Value", async () => {
-        await browser.open(configUrls.forms);
-        const value1 = await browser.value("input.input1");
-        const value2 = await browser.value("input.input2");
-        assert.strictEqual(value1, "");
-        assert.strictEqual(value2, "default value");
-    });
-
-    it("Get Value Element Doesn't Exist", async () => {
-        await browser.open(configUrls.forms);
-        const value = await browser.value("input.not-exists");
-        assert.strictEqual(value, null);
-    });
-
-    it("Get Value Element Not Input", async () => {
-        await browser.open(configUrls.forms);
-        await browser.assert.exists("h1");
-        const value = await browser.value("h1");
-        assert.strictEqual(value, null);
-    });
-
-    it("Get Value From Node", async () => {
-        await browser.open(configUrls.forms);
-        const node = await browser.query("input.input2");
-        const value = await browser.value(node);
-        assert.strictEqual(value, "default value");
-    });
-
     it("Assert Value", async () => {
         await browser.open(configUrls.forms);
         await browser.assert.value("input.input1", "");

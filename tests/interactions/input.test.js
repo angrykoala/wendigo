@@ -42,19 +42,6 @@ describe("Input", function() {
         await browser.assert.value("input.input1", "firstText");
     });
 
-    it("Clear Input", async () => {
-        await browser.clearValue("input.input1");
-        await browser.clearValue("input.input2");
-        await browser.assert.value("input.input1", "");
-        await browser.assert.value("input.input2", "");
-    });
-
-    it("Clear Input From Node", async () => {
-        const node = await browser.query("input.input2");
-        await browser.clearValue(node);
-        await browser.assert.value("input.input2", "");
-    });
-
     it("Type With Keypress Event", async () => {
         await browser.type(".input1", "dontpanic");
         await browser.assert.text("#value-input", "c");

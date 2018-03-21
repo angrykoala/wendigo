@@ -294,6 +294,15 @@ await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
 
 > Css, Xpath and Dom selectors supported
 
+**setValue(selector, value)**
+Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
+```js
+await browser.setValue("input", "new val"); // Returns 1
+await browser.assert.value("input", "new val");
+```
+This method won't trigger certain events, use `type` and `select` when possible.
+
+> Css, Xpath and Dom selectors supported
 
 ## Assertions
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
