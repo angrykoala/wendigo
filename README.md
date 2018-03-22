@@ -110,6 +110,18 @@ Close the opened page in the browser.
 await browser.close();
 ```
 
+**evaluate(cb, ...args)**    
+Evaluates given callback in the browser, passing n arguments. Returns the puppeteer's result of the evaluation.
+
+```js
+const selector = "h1";
+const elementText = await browser.evaluate((s) => {
+    return document.querySelector(s).textContent;
+}, selector); // My Title
+```
+
+> This is a wrapper around browser.page.evaluate
+
 **query(selector)**   
 Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 

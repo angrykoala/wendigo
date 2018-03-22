@@ -1,6 +1,7 @@
 0.4.4 / ####-##-##
 ==================
 
+  * browser.evaluate
   * localStorage assertions
   * browser.setValue
 
