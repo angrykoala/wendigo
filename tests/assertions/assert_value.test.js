@@ -1,17 +1,20 @@
 "use strict";
 
-const Wendigo = require('../lib/wendigo');
-const assert = require('assert');
-const configUrls = require('./config.json').urls;
-const utils = require('./utils');
+const Wendigo = require('../../lib/wendigo');
+const utils = require('../utils');
+const configUrls = require('../config.json').urls;
 
 
-describe("Browser Forms", function() {
+describe("Assert Url", function() {
     this.timeout(5000);
-
     let browser;
+
     before(async () => {
         browser = await Wendigo.createBrowser();
+    });
+
+    beforeEach(async () => {
+        await browser.open(configUrls.index);
     });
 
     after(async () => {
@@ -92,4 +95,5 @@ describe("Browser Forms", function() {
             await browser.assert.not.value("input.input1", "", "not value failed");
         }, `not value failed`);
     });
+
 });

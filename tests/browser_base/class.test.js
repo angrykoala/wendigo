@@ -21,7 +21,6 @@ describe("Browser Class", function() {
         await browser.close();
     });
 
-
     it("Class", async () => {
         const elements = await browser.class('div');
         assert.strictEqual(elements.length, 2);
