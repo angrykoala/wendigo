@@ -64,7 +64,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(await browser.requests.filter.fromCache(false)._requests.length, 2);
     });
 
-    it("Requests Filter By FromCache", async () => {
+    it("Requests Filter By Headers", async () => {
         assert.strictEqual(await browser.requests.filter.headers({
             'content-type': /html/,
             'content-length': '312'

@@ -15,7 +15,7 @@ describe("Local Storage", function() {
     beforeEach(async () => {
         await browser.open(configUrls.localStorage);
     });
-    afterEach(async() => {
+    afterEach(async () => {
         await browser.localStorage.clear();
     });
 
@@ -30,7 +30,7 @@ describe("Local Storage", function() {
         assert.strictEqual(length, 1);
     });
 
-    it("Set New Item", async() => {
+    it("Set New Item", async () => {
         await browser.localStorage.setItem("marvin", "paranoid");
         const value = await browser.localStorage.getItem("marvin");
         assert.strictEqual(value, "paranoid");
@@ -38,7 +38,7 @@ describe("Local Storage", function() {
         assert.strictEqual(length, 2);
     });
 
-    it("Update Item", async() => {
+    it("Update Item", async () => {
         await browser.localStorage.setItem("arthur", "panic");
         const value = await browser.localStorage.getItem("arthur");
         assert.strictEqual(value, "panic");
@@ -46,12 +46,12 @@ describe("Local Storage", function() {
         assert.strictEqual(length, 1);
     });
 
-    it("Get Invalid Item", async() => {
+    it("Get Invalid Item", async () => {
         const value = await browser.localStorage.getItem("invalid");
         assert.strictEqual(value, null);
     });
 
-    it("Remove Item", async() => {
+    it("Remove Item", async () => {
         await browser.localStorage.removeItem("arthur");
         const value = await browser.localStorage.getItem("arthur");
         assert.strictEqual(value, null);
@@ -59,19 +59,19 @@ describe("Local Storage", function() {
         assert.strictEqual(length, 0);
     });
 
-    it("Remove Invalid Item", async() => {
+    it("Remove Invalid Item", async () => {
         await browser.localStorage.removeItem("not-and-item");
         const length = await browser.localStorage.length();
         assert.strictEqual(length, 1);
     });
 
-    it("Clear", async() => {
+    it("Clear", async () => {
         await browser.localStorage.clear();
         const length = await browser.localStorage.length();
         assert.strictEqual(length, 0);
     });
 
-    it("Set And Get Item Between Sessions", async() => {
+    it("Set And Get Item Between Sessions", async () => {
         await browser.localStorage.clear();
         await browser.localStorage.setItem("marvin", "paranoid");
         const length1 = await browser.localStorage.length();

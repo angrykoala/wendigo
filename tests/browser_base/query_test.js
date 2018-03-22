@@ -59,4 +59,9 @@ describe("Query", function() {
             await browser.query(".container", "b");
         }, "Error: Invalid parent element for query");
     });
+
+    it("XPath Query", async () => {
+        const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
+        assert.strictEqual(elements.length, 1);
+    });
 });

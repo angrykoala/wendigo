@@ -1,49 +1,24 @@
 "use strict";
 
-const Wendigo = require('../lib/wendigo');
-const assert = require('assert');
-const configUrls = require('./config.json').urls;
-const utils = require('./utils');
+const Wendigo = require('../../lib/wendigo');
+const utils = require('../utils');
+const configUrls = require('../config.json').urls;
 
 
-describe("Browser Forms", function() {
+describe("Assert Url", function() {
     this.timeout(5000);
-
     let browser;
+
     before(async () => {
         browser = await Wendigo.createBrowser();
     });
 
+    beforeEach(async () => {
+        await browser.open(configUrls.index);
+    });
+
     after(async () => {
         await browser.close();
-    });
-
-    it("Get Value", async () => {
-        await browser.open(configUrls.forms);
-        const value1 = await browser.value("input.input1");
-        const value2 = await browser.value("input.input2");
-        assert.strictEqual(value1, "");
-        assert.strictEqual(value2, "default value");
-    });
-
-    it("Get Value Element Doesn't Exist", async () => {
-        await browser.open(configUrls.forms);
-        const value = await browser.value("input.not-exists");
-        assert.strictEqual(value, null);
-    });
-
-    it("Get Value Element Not Input", async () => {
-        await browser.open(configUrls.forms);
-        await browser.assert.exists("h1");
-        const value = await browser.value("h1");
-        assert.strictEqual(value, null);
-    });
-
-    it("Get Value From Node", async () => {
-        await browser.open(configUrls.forms);
-        const node = await browser.query("input.input2");
-        const value = await browser.value(node);
-        assert.strictEqual(value, "default value");
     });
 
     it("Assert Value", async () => {
@@ -120,4 +95,5 @@ describe("Browser Forms", function() {
             await browser.assert.not.value("input.input1", "", "not value failed");
         }, `not value failed`);
     });
+
 });

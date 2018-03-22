@@ -4,7 +4,7 @@ const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 const utils = require('../utils.js');
 
-describe("Input", function() {
+describe("Type", function() {
     this.timeout(5000);
     let browser;
 
@@ -42,37 +42,29 @@ describe("Input", function() {
         await browser.assert.value("input.input1", "firstText");
     });
 
-    it("Clear Input", async () => {
-        await browser.clearValue("input.input1");
-        await browser.clearValue("input.input2");
-        await browser.assert.value("input.input1", "");
-        await browser.assert.value("input.input2", "");
-    });
-
-    it("Clear Input From Node", async () => {
-        const node = await browser.query("input.input2");
-        await browser.clearValue(node);
-        await browser.assert.value("input.input2", "");
-    });
-
     it("Type With Keypress Event", async () => {
         await browser.type(".input1", "dontpanic");
         await browser.assert.text("#value-input", "c");
     });
 
-    it("File Input Set Relative Path", async () => {
-        await browser.uploadFile(".input3", "dummy_file");
-        await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
+    it("KeyPress", async () => {
+        await browser.click(".input1");
+        await browser.keyPress("KeyA");
+        await browser.assert.value(".input1", "a");
+        await browser.assert.text("#value-input", "a");
     });
 
-    it("File Input Set Absolute Path", async () => {
-        await browser.uploadFile(".input3", "/directory/dummy_file");
-        await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
+    it("KeyPress Multiple Keys", async () => {
+        await browser.click(".input1");
+        await browser.keyPress(["KeyA", "KeyB", "KeyC"]);
+        await browser.assert.value(".input1", "abc");
+        await browser.assert.text("#value-input", "c");
     });
 
-    it("File Input Missing Element", async () => {
-        await utils.assertThrowsAsync (async () => {
-            await browser.uploadFile(".missing", "dummy_file");
-        }, `Error: Selector ".missing" doesn't match any element.`);
+    it("KeyPress Invalud Input", async () => {
+        await browser.click(".input1");
+        utils.assertThrowsAsync(async () => {
+            await browser.keyPress("NotAKey");
+        }, `Error: Unknown key: "NotAKey"`);
     });
 });

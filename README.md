@@ -35,7 +35,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Wendigo](#wendigo)
     * [Browser](#browser)
     * [Assert](#assert)
-    * [LocalStore](#localstore)
+    * [LocalStorage](#localstorage)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -109,6 +109,18 @@ Close the opened page in the browser.
 ```js
 await browser.close();
 ```
+
+**evaluate(cb, ...args)**    
+Evaluates given callback in the browser, passing n arguments. Returns the puppeteer's result of the evaluation.
+
+```js
+const selector = "h1";
+const elementText = await browser.evaluate((s) => {
+    return document.querySelector(s).textContent;
+}, selector); // My Title
+```
+
+> This is a wrapper around browser.page.evaluate
 
 **query(selector)**   
 Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
@@ -248,6 +260,15 @@ Types given text in the first element matching given selector. If a value is alr
 await browser.type("input.my-input", "My Input");
 ```
 
+**keyPress(key)**    
+Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
+
+```js
+await browser.keyPress("Enter");
+```
+
+If an array is passed, all the keys will be pressed consecutively.
+
 **uploadFile(selector, path)**   
 Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
 
@@ -294,6 +315,24 @@ await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
 
 > Css, Xpath and Dom selectors supported
 
+**setValue(selector, value)**
+Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
+```js
+await browser.setValue("input", "new val"); // Returns 1
+await browser.assert.value("input", "new val");
+```
+This method won't trigger certain events, use `type` and `select` when possible.
+
+> Css, Xpath and Dom selectors supported
+
+**options(selector)**
+Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
+
+```js
+const options=await browser.options("selector.my-selector"); // ["value1", "value2"]
+```
+
+> Css, Xpath and Dom selectors supported
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
@@ -477,7 +516,7 @@ If the element doesn't exists, the assertion will fail.
 **not.style(selector, style, expected, msg)**   
 Asserts the first element matching the selector doesn't has a style with given value.
 
-**href(selector, expected, msg)**   
+**not.href(selector, expected, msg)**   
 Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
@@ -494,21 +533,23 @@ await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 
 > Css, Xpath and Dom selectors supported
 
-## LocalStore
-The module `browser.localStore` provides a simple wrapper around the browser localStorage. All the methods return promises.
+> Assertions related to LocalStorage can be found under LocalStorage section
+
+## LocalStorage
+The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return promises.
 
 **getItem(key)**    
 Returns the item with the given key. If no item exists return null.
 
 ```js
-const value=await browser.localStore.getItem("my-key"); // returns my-value
+const value=await browser.localStorage.getItem("my-key"); // returns my-value
 ```
 
 **setItem(key, value)**    
 Sets the given key with the given value.
 
 ```js
-await browser.localStore.setItem("my-key", "my-value");
+await browser.localStorage.setItem("my-key", "my-value");
 ```
 
 **removeItem(key)**
@@ -521,8 +562,42 @@ Removes all the items on the store.
 Returns the number of items in the store.
 
 ```js
-const itemsLength = await browser.localStore.length(); // 3
+const itemsLength = await browser.localStorage.length(); // 3
 ```
+
+### LocalStorage Assertions
+Assertions related local storage can be accessed through `browser.assert.localStorage`.
+
+**exist(key, msg)**    
+Asserts that the item with given key exists in the localStorage (i.e. not null).
+
+```js
+browser.assert.localStorage.exist("my-key");
+```
+
+Alternatively, if an array is passed as key, all the elements will be checked.
+
+**value(key, expected, msg)**    
+Asserts that the item with given key has the expected value.
+
+```js
+browser.assert.localStorage.value("arthur", "dontpanic");
+```
+
+Alternatively, an object can be passed instead of key/expected with the elements that should be checked:
+
+```js
+browser.assert.localStorage.value({arthur: "dontpanic", marvin:"the paranoid"});
+```
+
+**length(expected, msg)**    
+Asserts that the localStorage has the expected length.
+
+**empty(msg)**    
+Asserts that the localStorage is empty (i.e. length>0)
+
+> All these assertions have the negative `browser.assert.localStorage.not`.
+
 
 ## Examples
 
