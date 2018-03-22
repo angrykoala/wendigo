@@ -43,4 +43,9 @@ describe("Text", function() {
         assert.strictEqual(texts[1], "My second paragraph");
     });
 
+    it("Button Text", async () => {
+        await browser.open(configUrls.click);
+        await browser.assert.text(".btn", "click me");
+    });
+
 });
