@@ -35,7 +35,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Wendigo](#wendigo)
     * [Browser](#browser)
     * [Assert](#assert)
-    * [LocalStore](#localstore)
+    * [LocalStorage](#localstorage)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -486,7 +486,7 @@ If the element doesn't exists, the assertion will fail.
 **not.style(selector, style, expected, msg)**   
 Asserts the first element matching the selector doesn't has a style with given value.
 
-**href(selector, expected, msg)**   
+**not.href(selector, expected, msg)**   
 Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
@@ -503,21 +503,23 @@ await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 
 > Css, Xpath and Dom selectors supported
 
-## LocalStore
-The module `browser.localStore` provides a simple wrapper around the browser localStorage. All the methods return promises.
+> Assertions related to LocalStorage can be found under LocalStorage section
+
+## LocalStorage
+The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return promises.
 
 **getItem(key)**    
 Returns the item with the given key. If no item exists return null.
 
 ```js
-const value=await browser.localStore.getItem("my-key"); // returns my-value
+const value=await browser.localStorage.getItem("my-key"); // returns my-value
 ```
 
 **setItem(key, value)**    
 Sets the given key with the given value.
 
 ```js
-await browser.localStore.setItem("my-key", "my-value");
+await browser.localStorage.setItem("my-key", "my-value");
 ```
 
 **removeItem(key)**
@@ -530,8 +532,42 @@ Removes all the items on the store.
 Returns the number of items in the store.
 
 ```js
-const itemsLength = await browser.localStore.length(); // 3
+const itemsLength = await browser.localStorage.length(); // 3
 ```
+
+### LocalStorage Assertions
+Assertions related local storage can be accessed through `browser.assert.localStorage`.
+
+**exist(key, msg)**    
+Asserts that the item with given key exists in the localStorage (i.e. not null).
+
+```js
+browser.assert.localStorage.exist("my-key");
+```
+
+Alternatively, if an array is passed as key, all the elements will be checked.
+
+**value(key, expected, msg)**    
+Asserts that the item with given key has the expected value.
+
+```js
+browser.assert.localStorage.value("arthur", "dontpanic");
+```
+
+Alternatively, an object can be passed instead of key/expected with the elements that should be checked:
+
+```js
+browser.assert.localStorage.value({arthur: "dontpanic", marvin:"the paranoid"});
+```
+
+**length(expected, msg)**    
+Asserts that the localStorage has the expected length.
+
+**empty(msg)**    
+Asserts that the localStorage is empty (i.e. length>0)
+
+> All these assertions have the negative `browser.assert.localStorage.not`.
+
 
 ## Examples
 
