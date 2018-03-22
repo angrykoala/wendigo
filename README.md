@@ -260,6 +260,15 @@ Types given text in the first element matching given selector. If a value is alr
 await browser.type("input.my-input", "My Input");
 ```
 
+**keyPress(key)**    
+Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
+
+```js
+await browser.keyPress("Enter");
+```
+
+If an array is passed, all the keys will be pressed consecutively.
+
 **uploadFile(selector, path)**   
 Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
 
