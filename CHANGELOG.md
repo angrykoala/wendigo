@@ -1,7 +1,8 @@
-0.4.4 / ####-##-##
+0.4.4 / 2018-03-23
 ==================
 
   * Browser.evaluate
+  * Options and selectedOptions assertions
   * Browser.options
   * Browser.keyPress
   * LocalStorage assertions
