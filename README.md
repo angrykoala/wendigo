@@ -277,7 +277,7 @@ Sets the value of an input file element matching given selector. Path can be abs
 await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
 ```
 
-**select(selector, value)**
+**select(selector, value)**   
 Will select the given value in the _select_ tag of the first element matching the given selector, removing all previous selections. Returns an array with the values that could be selected correctly.
 
 Value can be a string or an array. If the select is multiple all elements in value will be selected, if not only the first element in the select options will.
@@ -299,7 +299,7 @@ Clears any value that exists in any of the elements matched by the given selecto
 await browser.clearValue("input.my-input");
 ```
 
-**innerHtml(selector)**
+**innerHtml(selector)**    
 Returns an array with the innerHtml strings of all the elements matching the given selector
 
 ```js
@@ -308,7 +308,7 @@ await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
 
 > Css, Xpath and Dom selectors supported
 
-**setValue(selector, value)**
+**setValue(selector, value)**    
 Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
 ```js
 await browser.setValue("input", "new val"); // Returns 1
@@ -318,7 +318,7 @@ This method won't trigger certain events, use `type` and `select` when possible.
 
 > Css, Xpath and Dom selectors supported
 
-**options(selector)**
+**options(selector)**    
 Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
 
 ```js
@@ -572,7 +572,7 @@ Sets the given key with the given value.
 await browser.localStorage.setItem("my-key", "my-value");
 ```
 
-**removeItem(key)**
+**removeItem(key)**   
 Removes the item with given key.
 
 **clear()**   
