@@ -14,15 +14,15 @@ describe("Requests Filter", function() {
     });
 
     beforeEach(async() => {
-        browser = await Wendigo.createBrowser({headless: true});
+        browser = await Wendigo.createBrowser();
         await browser.open(configUrls.requests);
     });
 
     it("Favicon Loads Only On First Open", async() => {
         await Wendigo.stop();
-        browser = await Wendigo.createBrowser({headless: false});
+        browser = await Wendigo.createBrowser();
         await browser.open(configUrls.requests);
-        assert.strictEqual(await browser.requests.filter.url(/favicon/)._requests.length, 1); // 0 if headless, else 1
+        assert.strictEqual(await browser.requests.filter.url(/favicon/)._requests.length, 0); // 0 if headless, else 1 (favicon is not loaded on headless)
         await browser.open(configUrls.requests);
         assert.strictEqual(await browser.requests.filter.url(/favicon/)._requests.length, 0);
     });
