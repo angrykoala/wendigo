@@ -5,7 +5,8 @@ const Wendigo = require('../../lib/wendigo');
 const utils = require('../utils');
 const configUrls = require('../config.json').urls;
 
-describe("Assert Text", function() {
+
+describe("Assert Title", function() {
     this.timeout(5000);
     let browser;
 

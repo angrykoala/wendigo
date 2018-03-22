@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 
-describe("FInd By Text", function() {
+describe("Find By Text", function() {
     this.timeout(5000);
     let browser;
 

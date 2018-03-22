@@ -5,7 +5,7 @@ const utils = require('../utils');
 const configUrls = require('../config.json').urls;
 
 
-describe("Assert Url", function() {
+describe("Assert Value", function() {
     this.timeout(5000);
     let browser;
 

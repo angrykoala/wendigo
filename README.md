@@ -292,13 +292,6 @@ If the option doesn't have a value, the text should be provided.
 
 > Only Css Selectors supported
 
-**selectedOptions(selector)**
-Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
-
-Will throw if no element is found.
-
-> Css, Xpath and Dom selectors supported
-
 **clearValue(selector)**   
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
 
@@ -333,6 +326,14 @@ const options=await browser.options("selector.my-selector"); // ["value1", "valu
 ```
 
 > Css, Xpath and Dom selectors supported
+
+**selectedOptions(selector)**
+Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
+
+Will throw if no element is found.
+
+> Css, Xpath and Dom selectors supported
+
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
@@ -459,6 +460,20 @@ await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
 
 > Css, Xpath and Dom selectors supported
 
+**options(selector, expected, msg)**    
+Assets that the first element with given selector has the expected options value. Expected can be a string, if only one option is given, or an array if multiple options are given. All expected options must match in the same order.
+
+```js
+await browser.assert.options("select.my-select", ["value1", "value2"]);
+```
+
+> Css, Xpath and Dom selectors supported
+
+**selectedOptions(selector, expected, msg)**   
+Assert that the first element with given selector has the expected options selected. Expected can be a string, if only one option is given or an array. All the selected options must match the expected options in the same order.
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -530,6 +545,11 @@ The assertion will throw if no element is found.
 ```js
 await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 ```
+
+> Css, Xpath and Dom selectors supported
+
+**not.selectedOptions(selector, expected, msg)**   
+Assert that the first element with given selector doesn't have the expected options selected. Expected can be a string, if only one option is given or an array. The assertion will only fail if all the expected options match the selected options in the same order.
 
 > Css, Xpath and Dom selectors supported
 
