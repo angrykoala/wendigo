@@ -16,6 +16,17 @@ describe("Wait For", function() {
         await browser.close();
     });
 
+    it("Wait", async () => {
+        await browser.open(configUrls.click);
+        await browser.click(".btn2");
+        await browser.assert.text("#switch", "On");
+        await browser.wait(10);
+        await browser.assert.text("#switch", "On");
+        await browser.wait();
+        await browser.wait();
+        await browser.assert.text("#switch", "Off");
+    });
+
     it("Wait For", async () => {
         await browser.open(configUrls.click);
         await browser.assert.not.exists("#switch.off");

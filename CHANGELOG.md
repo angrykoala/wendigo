@@ -1,8 +1,18 @@
+0.4.4 / 2018-03-23
+==================
+
+  * Browser.evaluate
+  * Options and selectedOptions assertions
+  * Browser.options
+  * Browser.keyPress
+  * LocalStorage assertions
+  * Browser.setValue
+
 0.4.3 / 2018-03-19
 ==================
 
-  * Added localStore submodule
-  * Added browser.innerHtml and assertions
+  * LocalStorage submodule
+  * Browser.innerHtml and assertions
   * Query and QueryAll support optionally 2 parameters for subqueries
   * Assert text and not text now support arrays of expected strings
   * Minor tests cleanup
@@ -16,23 +26,23 @@
   * Not class assertion
   * Class method now throws if no element is found
   * Injected query method now accepts xpath,
-  * browser.uploadFile method
+  * Browser.uploadFile method
   * Puppeteer updated to 1.1.1
-  * assert.attribute now allows using null as expected value
+  * Assert.attribute now allows using null as expected value
 
 0.4.1 / 2018-02-23
 ==================
 
-  * browser.waitUntilNotVisible method
-  * href and not href assertions
-  * waitfor now waits until the element is visible
+  * Browser.waitUntilNotVisible method
+  * Href and not href assertions
+  * Waitfor now waits until the element is visible
   * Fixed bug where url wasn't updated by window history
 
 0.4.0 / 2018-02-21
 ==================
 
   * Browser style and not style assertions
-  * browser.styles will return the computed css styles
+  * Browser.styles will return the computed css styles
   * Type will trigger the keyboard events
   * Type behaviour changed
   * Readme improvements
@@ -41,8 +51,8 @@
 ==================
 
   * Attribute and not attribute assertions
-  * browser.attribute method
-  * browser.click and browser.clickText throws if no element is found, return the number of elements
+  * Browser.attribute method
+  * Browser.click and browser.clickText throws if no element is found, return the number of elements
   * Puppeteer settings are now passed down in createBrowser, including slowMo
   * Minor improvements in assertion messages
 
@@ -60,7 +70,7 @@
   * Click now supports index and clicks all elements
   * Headless option to set browser's headless mode
   * All query methods now return a puppeteer's DOM Node
-  * browser.type types on all elements and apending the value
+  * Browser.type types on all elements and apending the value
   * Removed jsdom dependency
 
 0.2.2 / 2018-02-01

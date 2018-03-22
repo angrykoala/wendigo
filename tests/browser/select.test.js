@@ -105,4 +105,24 @@ describe("Select", function() {
             await browser.selectedOptions("#not-exists");
         }, `Error: Element "#not-exists" not found when trying to get selected options.`);
     });
+
+    it("All Options", async () => {
+        const options = await browser.options("#normal-select");
+        assert.strictEqual(options.length, 4);
+        assert.strictEqual(options[0], "value1");
+        assert.strictEqual(options[1], "value2");
+        assert.strictEqual(options[2], "value3");
+        assert.strictEqual(options[3], "Value 4");
+    });
+
+    it("Empty Options", async () => {
+        const options = await browser.options("#value-input");
+        assert.strictEqual(options.length, 0);
+    });
+
+    it("Options Invalid Element", async () => {
+        utils.assertThrowsAsync(async () => {
+            await browser.options("#not-element");
+        }, `Error: Element "#not-element" not found when trying to get options.`);
+    });
 });

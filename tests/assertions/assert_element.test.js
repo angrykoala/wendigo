@@ -1,10 +1,10 @@
 "use strict";
 
-const Wendigo = require('../lib/wendigo');
-const utils = require('./utils');
-const configUrls = require('./config.json').urls;
+const Wendigo = require('../../lib/wendigo');
+const utils = require('../utils');
+const configUrls = require('../config.json').urls;
 
-describe("Assertions", function() {
+describe("Assert Element", function() {
     this.timeout(5000);
     let browser;
 
@@ -12,19 +12,16 @@ describe("Assertions", function() {
         browser = await Wendigo.createBrowser();
     });
 
+    beforeEach(async () => {
+        await browser.open(configUrls.index);
+    });
+
     after(async () => {
         await browser.close();
     });
 
-    it("Multiple Assertions From Same Node", async () => {
-        await browser.open(configUrls.index);
-        const node = await browser.query("h1");
-        await browser.assert.text(node, "Main Title");
-        await browser.assert.visible(node);
-    });
 
     it("Elements", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.elements("p", 2);
         await browser.assert.elements("p", {equal: 2});
         await browser.assert.elements("p.not-exists", 0);
@@ -37,7 +34,6 @@ describe("Assertions", function() {
     });
 
     it("Elements Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", 3);
         }, `Expected selector "p" to find exactly 3 elements, 2 found`);
@@ -56,19 +52,16 @@ describe("Assertions", function() {
     });
 
     it("Elements Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", 3, "elements failed");
         }, `elements failed`);
     });
 
     it("Element", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.element("h1");
     });
 
     it("Element Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p.not-exist");
         }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`);
@@ -78,46 +71,9 @@ describe("Assertions", function() {
     });
 
     it("Element Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p", "element failed");
         }, `element failed`);
     });
 
-    it("Text Contains", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.textContains(".container p", "My first paragraph");
-        await browser.assert.textContains(".container p", "My first");
-    });
-
-    it("Text Contains Multiple Elements", async () => {
-        await browser.open(configUrls.index);
-        await browser.assert.textContains("p", "My first paragraph");
-        await browser.assert.textContains("p", "My second paragraph");
-        await browser.assert.textContains("p", "My second");
-        await browser.assert.textContains("p", "My first");
-    });
-
-    it("Text Contains From Node", async () => {
-        await browser.open(configUrls.index);
-        const node = await browser.query(".container p");
-        await browser.assert.textContains(node, "My first");
-    });
-
-    it("Text Contains Throws", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.textContains(".container p", "My second");
-        }, `Expected element ".container p" to contain text "My second", "My first paragraph" found`);
-        await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.textContains("p", "My paragraph");
-        }, `Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
-    });
-
-    it("Text Contains Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-        await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.textContains(".container p", "My second", "text contains fails");
-        }, `text contains fails`);
-    });
 });

@@ -1,10 +1,10 @@
 "use strict";
 
 const assert = require('assert');
-const Wendigo = require('../lib/wendigo');
-const configUrls = require('./config.json').urls;
+const Wendigo = require('../../lib/wendigo');
+const configUrls = require('../config.json').urls;
 
-describe("Browser", function() {
+describe("Properties", function() {
     this.timeout(5000);
     let browser;
 
@@ -12,9 +12,14 @@ describe("Browser", function() {
         browser = await Wendigo.createBrowser();
     });
 
+    beforeEach(async () => {
+        await browser.open(configUrls.forms);
+    });
+
     after(async () => {
         await browser.close();
     });
+
 
     it("Html", async () => {
         await browser.open(configUrls.simple);
@@ -39,20 +44,4 @@ describe("Browser", function() {
         assert.strictEqual(title, "");
     });
 
-    it("Find By Text", async () => {
-        await browser.open(configUrls.index);
-        const headerElement = await browser.findByText("Main Title");
-        assert.strictEqual(headerElement.length, 1);
-    });
-    it("Find By Text Empty", async () => {
-        await browser.open(configUrls.index);
-        const headerElement = await browser.findByText("Not title");
-        assert.strictEqual(headerElement.length, 0);
-    });
-
-    it("Find By Text Containing", async () => {
-        await browser.open(configUrls.index);
-        const elements = await browser.findByTextContaining("paragraph");
-        assert.strictEqual(elements.length, 2);
-    });
 });
