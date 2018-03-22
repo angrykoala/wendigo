@@ -54,7 +54,7 @@ describe("Type", function() {
         await browser.assert.text("#value-input", "a");
     });
 
-    it("KeyPress Multiple Keys", async() => {
+    it("KeyPress Multiple Keys", async () => {
         await browser.click(".input1");
         await browser.keyPress(["KeyA", "KeyB", "KeyC"]);
         await browser.assert.value(".input1", "abc");

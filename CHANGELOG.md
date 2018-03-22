@@ -2,6 +2,7 @@
 ==================
 
   * Browser.evaluate
+  * Browser.options
   * Browser.keyPress
   * LocalStorage assertions
   * Browser.setValue

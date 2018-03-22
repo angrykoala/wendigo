@@ -325,6 +325,15 @@ This method won't trigger certain events, use `type` and `select` when possible.
 
 > Css, Xpath and Dom selectors supported
 
+**options(selector)**
+Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
+
+```js
+const options=await browser.options("selector.my-selector"); // ["value1", "value2"]
+```
+
+> Css, Xpath and Dom selectors supported
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
 
