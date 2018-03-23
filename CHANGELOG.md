@@ -4,6 +4,7 @@
   * Browser.assert.global
   * Added custom errors
   * Assertion error improvements
+  * Open error handled
   * Dependencies update
 
 0.4.4 / 2018-03-23

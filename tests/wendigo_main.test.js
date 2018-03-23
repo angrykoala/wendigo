@@ -31,7 +31,7 @@ describe("Wendigo Main", function() {
     it("Wendigo Errors", () => {
         assert(Wendigo.Errors.AssertionError, "AssertionError not accesible.");
         assert(Wendigo.Errors.QueryError, "QueryError not accesible.");
-        assert(Wendigo.Errors.EngineError, "EngineError not accesible.");
+        assert(Wendigo.Errors.FatalError, "FatalError not accesible.");
     });
 
 });
