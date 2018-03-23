@@ -640,6 +640,9 @@ Same as Node.js Assertion Error. It will be throw for any assertion.
 **QueryError**    
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
+**EngineError**
+Defines a Fatal Error with puppeteer (e.g. a connection error)
+
 ## Examples
 
 **Testing a simple page with Mocha and Wendigo**
