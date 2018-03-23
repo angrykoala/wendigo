@@ -44,7 +44,7 @@ describe("Assert Class", function() {
         assert(browser.assert.class);
         await utils.assertThrowsAsync (async () => {
             await browser.assert.class("div.not-exists", "not-my-class");
-        }, `Error: Selector "div.not-exists" doesn't match any elements.`);
+        }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
     });
 
     it("Class Throws With Custom Message", async () => {
@@ -80,7 +80,7 @@ describe("Assert Class", function() {
         assert(browser.assert.not.class);
         await utils.assertThrowsAsync (async () => {
             await browser.assert.not.class("div.not-exists", "not-my-class");
-        }, `Error: Selector "div.not-exists" doesn't match any elements.`);
+        }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
     });
 
 });

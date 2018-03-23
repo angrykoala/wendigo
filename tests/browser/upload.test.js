@@ -33,6 +33,6 @@ describe("Type", function() {
     it("File Input Missing Element", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.uploadFile(".missing", "dummy_file");
-        }, `Error: Selector ".missing" doesn't match any element.`);
+        }, `QueryError: Selector ".missing" doesn't match any element to upload file.`);
     });
 });

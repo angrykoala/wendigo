@@ -71,7 +71,7 @@ describe("Value", function() {
     it("Set Value From Non-existing Element", async () => {
         await utils.assertThrowsAsync(async () => {
             await browser.setValue(".not-element", "my-val");
-        }, `Error: Element ".not-element" not found when trying to set value "my-val".`);
+        }, `QueryError: Element ".not-element" not found when trying to set value "my-val".`);
     });
 
     it("Clear Value", async () => {

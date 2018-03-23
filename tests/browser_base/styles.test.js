@@ -40,7 +40,7 @@ describe("Browser Styles", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync (async () => {
             await browser.styles("#not-an-element");
-        }, `Error: Element "#not-an-element" not found when trying to get styles.`);
+        }, `QueryError: Element "#not-an-element" not found when trying to get styles.`);
     });
 
     it("Styles From Node Element", async () => {

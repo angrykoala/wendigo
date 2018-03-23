@@ -55,7 +55,7 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
         await utils.assertThrowsAsync (async () => {
             await browser.click("button", 10);
-        }, `Error: browser.click, invalid index "10" for selector "button", 2 elements found.`);
+        }, `QueryError: browser.click, invalid index "10" for selector "button", 2 elements found.`);
         await browser.assert.text("#switch", "On");
     });
 
@@ -70,13 +70,13 @@ describe("Click", function() {
     it("Click Text Invalid Text", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.clickText("not click me");
-        }, `Error: No element with text "not click me" found when trying to click.`);
+        }, `QueryError: No element with text "not click me" found when trying to click.`);
         await browser.assert.text("#switch", "On");
     });
 
     it("Click Invalid Element", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.click("#not-an-element");
-        }, `Error: No element "#not-an-element" found when trying to click.`);
+        }, `QueryError: No element "#not-an-element" found when trying to click.`);
     });
 });
