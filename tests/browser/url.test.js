@@ -29,12 +29,6 @@ describe("Url", function() {
         assert.strictEqual(await browser.url(), "http://localhost:3456/click.html");
     });
 
-    it("Url Before Opening", async () => {
-        const browser2 = await Wendigo.createBrowser();
-        assert.strictEqual(await browser2.url(), null);
-        browser2.close();
-    });
-
     it("Dynamic Url Update", async () => {
         await browser.open(configUrls.url);
         assert.strictEqual(await browser.url(), "http://localhost:3456/url_history.html");

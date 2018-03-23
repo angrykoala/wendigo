@@ -4,6 +4,7 @@
   * Browser.assert.global
   * Added custom errors
   * Assertion error improvements
+  * Error when trying to perform actions before opening url
   * Open error handled
   * Dependencies update
 

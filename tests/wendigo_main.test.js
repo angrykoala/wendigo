@@ -17,9 +17,12 @@ describe("Wendigo Main", function() {
         const browser = await Wendigo.createBrowser();
         assert(browser);
         assert(browser.page);
-        assert(browser.assert);
+        assert(browser._assert);
+        assert(browser._localStorage);
         assert(Wendigo.instance);
+        assert.strictEqual(browser._loaded, false);
         await browser.close();
+        assert.strictEqual(browser._loaded, false);
     });
 
     it("Wendigo Stop", async () => {
