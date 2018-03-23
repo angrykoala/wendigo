@@ -1,11 +1,11 @@
-0.4.5 / ####-##-##
+0.4.5 / 2018-03-24
 ==================
 
   * Added selector support for findByText and clickText
   * Browser.assert.global
   * Added custom errors
   * Assertion error improvements
-  * Error when trying to perform actions before opening url
+  * Error thrown when trying to perform actions before opening url
   * Open error handled
   * Dependencies update
 
