@@ -474,6 +474,14 @@ Assert that the first element with given selector has the expected options selec
 
 > Css, Xpath and Dom selectors supported
 
+**global(key, value, msg)**
+Asserts that the global object (window) has the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key exists with a not undefined value.
+
+```js
+browser.assert.global("localStorage");
+browser.assert.global("my-val", "dontpanic");
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -552,6 +560,10 @@ await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 Assert that the first element with given selector doesn't have the expected options selected. Expected can be a string, if only one option is given or an array. The assertion will only fail if all the expected options match the selected options in the same order.
 
 > Css, Xpath and Dom selectors supported
+
+**not.global(key, value, msg)**
+Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
+
 
 > Assertions related to LocalStorage can be found under LocalStorage section
 

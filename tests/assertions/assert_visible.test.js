@@ -13,20 +13,22 @@ describe("Assert Visible", function() {
         browser = await Wendigo.createBrowser();
     });
 
+    beforeEach(async() => {
+        await browser.open(configUrls.index);
+    });
+
     after(async () => {
         await browser.close();
     });
 
     it("Is Visible", async () => {
         assert(browser.assert.visible);
-        await browser.open(configUrls.index);
         await browser.assert.visible("h1");
         await browser.assert.visible(".container p");
         await browser.assert.visible("p");
     });
 
     it("Is Visible Throws", async () => {
-        await browser.open(configUrls.index);
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text");
@@ -34,7 +36,6 @@ describe("Assert Visible", function() {
     });
 
     it("Is Visible When Styled Hidden", async () => {
-        await browser.open(configUrls.index);
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text2");
@@ -42,7 +43,6 @@ describe("Assert Visible", function() {
     });
 
     it("Is Visible When Element Not Exists", async () => {
-        await browser.open(configUrls.index);
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".not-exists");
@@ -50,7 +50,6 @@ describe("Assert Visible", function() {
     });
 
     it("Is Visible Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text", "visible test failed");
@@ -59,26 +58,22 @@ describe("Assert Visible", function() {
 
     it("Is Visible From Node", async () => {
         assert(browser.assert.visible);
-        await browser.open(configUrls.index);
         const node = await browser.query("h1");
         await browser.assert.visible(node);
     });
 
     it("Not Visible", async () => {
         assert(browser.assert.not.visible);
-        await browser.open(configUrls.index);
         await browser.assert.not.visible(".hidden-text");
         await browser.assert.not.visible(".hidden-text2");
     });
 
     it("Not Visible Not Exists", async () => {
         assert(browser.assert.not.visible);
-        await browser.open(configUrls.index);
         await browser.assert.not.visible(".imaginary-text");
     });
 
     it("Not Visible Throws", async () => {
-        await browser.open(configUrls.index);
         assert(browser.assert.not.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.visible("p");
@@ -89,7 +84,6 @@ describe("Assert Visible", function() {
     });
 
     it("Not Visible Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.visible("p", "not visible failed");
         }, `not visible failed`);

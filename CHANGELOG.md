@@ -1,6 +1,7 @@
 0.4.5 / ####-##-##
 ==================
 
+  * Browser.assert.global
   * Dependencies update
 
 0.4.4 / 2018-03-23
