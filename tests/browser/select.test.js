@@ -97,13 +97,13 @@ describe("Select", function() {
     it("Select Non Existant Element", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.select("#not-exists", "value1");
-        }, `Error: Element "#not-exists" not found when trying to select value.`);
+        }, `QueryError: Element "#not-exists" not found when trying to select value.`);
     });
 
-    it("Selected Options With Not Element", async () => {
+    it("Selected Options With No Element", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.selectedOptions("#not-exists");
-        }, `Error: Element "#not-exists" not found when trying to get selected options.`);
+        }, `QueryError: Element "#not-exists" not found when trying to get selected options.`);
     });
 
     it("All Options", async () => {
@@ -123,6 +123,6 @@ describe("Select", function() {
     it("Options Invalid Element", async () => {
         utils.assertThrowsAsync(async () => {
             await browser.options("#not-element");
-        }, `Error: Element "#not-element" not found when trying to get options.`);
+        }, `QueryError: Element "#not-element" not found when trying to get options.`);
     });
 });

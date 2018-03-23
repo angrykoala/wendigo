@@ -61,7 +61,7 @@ describe("Assert Inner Html", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync (async () => {
             await browser.assert.innerHtml(".not-element", "some-html");
-        }, `Error: Element ".not-element" not found.`);
+        }, `QueryError: Element ".not-element" not found.`);
     });
 
     it("InnerHtml Throws Invalid Expect", async () => {
@@ -108,7 +108,7 @@ describe("Assert Inner Html", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync (async () => {
             await browser.assert.not.innerHtml(".not-element", "some-html");
-        }, `Error: Element ".not-element" not found.`);
+        }, `QueryError: Element ".not-element" not found.`);
     });
 
     it("Not InnerHtml Throws Invalid Expect", async () => {

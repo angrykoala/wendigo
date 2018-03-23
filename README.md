@@ -36,6 +36,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Browser](#browser)
     * [Assert](#assert)
     * [LocalStorage](#localstorage)
+    * [Errors](#errors)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -203,12 +204,14 @@ Clicks all the elements with the matching css selector, if the index parameter i
 await browser.click("button.btn");
 ```
 
-**clickText(text)**   
+**clickText(selector?, text)**   
 Clicks all the elements matching given text.
 
 ```js
 await browser.clickText("Click Me!");
 ```
+
+Optionally a selector can be passed as first argument to only click elements under the given selector.
 
 **title()**   
 Returns the page title
@@ -236,13 +239,15 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 await browser.waitUntilNotVisible(".toast");
 ```
 
-**findByText(text)**   
+**findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
 
 ```js
 const elements = await browser.findByText("My First Paragraph");
 elements.length; // 1
 ```
+
+Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
 **findByTextContaining(text)**    
 Returns an array with all the elements with a text that contains the given text.
@@ -336,23 +341,23 @@ Will throw if no element is found.
 
 
 ## Assert
-The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg) to define a custom assertion message.
+The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
-**exists(selector, msg)**   
+**exists(selector, msg?)**   
 Asserts that at least one element with given css exists
 
 ```js
 await browser.assert.exists("h1.main-title");
 ```
 
-**visible(selector, msg)**   
+**visible(selector, msg?)**   
 Asserts that the first element matching the selector is visible.
 
 An element will considered visible if:
 * Exists
 * The computed style doesn't contain display: none or visibility: hidden
 
-**text(selector, expected, msg)**   
+**text(selector, expected, msg?)**   
 Asserts that at least one element matching the given selector has the expected string or regex.
 If expected is an array, all texts in it should match.
 
@@ -360,27 +365,27 @@ If expected is an array, all texts in it should match.
 await browser.assert.text("p", "My First Paragraph");
 ```
 
-**textContains(selector, expected, msg)**   
+**textContains(selector, expected, msg?)**   
 Asserts that at least one element matching the given selector contains the expected text.
 
 ```js
 await browser.assert.textContains("p", "My First");
 ```
 
-**title(expected, msg)**   
+**title(expected, msg?)**   
 Asserts that the page title matches the expected string or regex.
 
-**class(selector, expected, msg)**   
+**class(selector, expected, msg?)**   
 Asserts that the first element matching the selector contains the expected class.
 
 ```js
 await browser.assert.class("div.container.main-div", "container");
 ```
 
-**url(expected, msg)**   
+**url(expected, msg?)**   
 Asserts that the current url matches the given string.
 
-**value(selector, expected, msg)**   
+**value(selector, expected, msg?)**   
 Asserts that the first element matching the selector has the expected value.
 
 ```js
@@ -388,10 +393,10 @@ await browser.type("input.my-input", "Dont Panic");
 await browser.assert.value("input.my-input", "Dont Panic");
 ```
 
-**element(selector, msg)**   
+**element(selector, msg?)**   
 Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
 
-**elements(selector, count, msg)**   
+**elements(selector, count, msg?)**   
 Asserts the number of element that matches given selector.
 
 The count parameter can be a number of the exact number of elements expected or an object with the following properties:
@@ -414,7 +419,7 @@ await browser.assert.elements("p.second", 2); // Fails
 await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
-**attribute(selector, attribute, expected, msg)**   
+**attribute(selector, attribute, expected?, msg?)**   
 Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
 
 ```js
@@ -431,14 +436,14 @@ You can check an attribute doesn't exists passing `null` as expected argument or
 
 If the element doesn't exists, the assertion will fail.
 
-**style(selector, style, expected, msg)**   
+**style(selector, style, expected, msg?)**   
 Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
 
 ```js
 await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
 ```
 
-**href(selector, expected, msg)**   
+**href(selector, expected, msg?)**   
 Asserts that the first element matching the given selector contains an attribute href with expected value.
 
 ```js
@@ -446,9 +451,9 @@ browser.assert.href("a", "foo.html");
 browser.assert.href("link", "styles.css");
 ```
 
-> Same as `browser.assert.attribute(selector, "href", expected, msg)`
+> Same as `browser.assert.attribute(selector, "href", expected, msg?)`
 
-**innerHtml(selector, expected, msg)**
+**innerHtml(selector, expected, msg?)**    
 Asserts that at least one element matching the given selector has the expected innerHtml.
 The expected html can be either a _string_ or a _Regex_ value.
 
@@ -460,7 +465,7 @@ await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
 
 > Css, Xpath and Dom selectors supported
 
-**options(selector, expected, msg)**    
+**options(selector, expected, msg?)**    
 Assets that the first element with given selector has the expected options value. Expected can be a string, if only one option is given, or an array if multiple options are given. All expected options must match in the same order.
 
 ```js
@@ -469,25 +474,33 @@ await browser.assert.options("select.my-select", ["value1", "value2"]);
 
 > Css, Xpath and Dom selectors supported
 
-**selectedOptions(selector, expected, msg)**   
+**selectedOptions(selector, expected, msg?)**   
 Assert that the first element with given selector has the expected options selected. Expected can be a string, if only one option is given or an array. All the selected options must match the expected options in the same order.
 
 > Css, Xpath and Dom selectors supported
 
+**global(key, value?, msg?)**    
+Asserts that the global object (window) has the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key exists with a not undefined value.
+
+```js
+browser.assert.global("localStorage");
+browser.assert.global("my-val", "dontpanic");
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
-**not.exists(selector, msg)**   
+**not.exists(selector, msg?)**   
 Asserts that no element matching given selector exists.
 
 ```js
 await browser.not.exists("h1.foo.bar");
 ```
 
-**not.visible(selector, msg)**   
+**not.visible(selector, msg?)**   
 Asserts that the first element with given selector is not visible. If no element matches, it will be considered as not visible as well.
 
-**not.text(selector, expected, msg)**   
+**not.text(selector, expected, msg?)**   
 Asserts that no element matching the given selector matches the expected text.
 If expected is an array, no element in it should match any element with given selector
 
@@ -495,26 +508,26 @@ If expected is an array, no element in it should match any element with given se
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
-**textContains(selector, expected, msg)**   
+**textContains(selector, expected, msg?)**   
 Asserts that no elements matching the given selector contain the expected text.
 
 ```js
 await browser.assert.not.textContains("p", "doesn't exis");
 ```
 
-**not.title(expected, msg)**   
+**not.title(expected, msg?)**   
 Asserts that the title of the page is not the expected string.
 
-**not.class(selector, expected, msg)**   
+**not.class(selector, expected, msg?)**   
 Asserts that the first element matching the selector doesn't contain the expected class. It will throw if the element is not found.
 
 **not.url(expected, msgs)**   
 Asserts that the url of the page doesn't match the expected string.
 
-**not.value(selector, expected, msg)**    
+**not.value(selector, expected, msg?)**    
 Asserts that the first element with the given selector doesn't have the expected value.
 
-**not.attribute(selector, attribute, expected, msg)**    
+**not.attribute(selector, attribute, expected?, msg?)**    
 Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
@@ -528,15 +541,15 @@ await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class 
 ```
 If the element doesn't exists, the assertion will fail.
 
-**not.style(selector, style, expected, msg)**   
+**not.style(selector, style, expected, msg?)**   
 Asserts the first element matching the selector doesn't has a style with given value.
 
-**not.href(selector, expected, msg)**   
+**not.href(selector, expected, msg?)**   
 Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
 
-> Same as `browser.assert.not.attribute(selector, "href", expected, msg)`
+> Same as `browser.assert.not.attribute(selector, "href", expected, msg?)`
 
-**not.innerHtml(selector, expected, msg)**
+**not.innerHtml(selector, expected, msg?)**    
 Asserts that at least no element matching the given selector has the expected innerHtml.
 The expected html can be either a _string_ or a _Regex_ value.
 
@@ -548,10 +561,14 @@ await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 
 > Css, Xpath and Dom selectors supported
 
-**not.selectedOptions(selector, expected, msg)**   
+**not.selectedOptions(selector, expected, msg?)**   
 Assert that the first element with given selector doesn't have the expected options selected. Expected can be a string, if only one option is given or an array. The assertion will only fail if all the expected options match the selected options in the same order.
 
 > Css, Xpath and Dom selectors supported
+
+**not.global(key, value?, msg?)**    
+Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
+
 
 > Assertions related to LocalStorage can be found under LocalStorage section
 
@@ -588,7 +605,7 @@ const itemsLength = await browser.localStorage.length(); // 3
 ### LocalStorage Assertions
 Assertions related local storage can be accessed through `browser.assert.localStorage`.
 
-**exist(key, msg)**    
+**exist(key, msg?)**    
 Asserts that the item with given key exists in the localStorage (i.e. not null).
 
 ```js
@@ -597,7 +614,7 @@ browser.assert.localStorage.exist("my-key");
 
 Alternatively, if an array is passed as key, all the elements will be checked.
 
-**value(key, expected, msg)**    
+**value(key, expected, msg?)**    
 Asserts that the item with given key has the expected value.
 
 ```js
@@ -610,14 +627,25 @@ Alternatively, an object can be passed instead of key/expected with the elements
 browser.assert.localStorage.value({arthur: "dontpanic", marvin:"the paranoid"});
 ```
 
-**length(expected, msg)**    
+**length(expected, msg?)**    
 Asserts that the localStorage has the expected length.
 
-**empty(msg)**    
+**empty(msg?)**    
 Asserts that the localStorage is empty (i.e. length>0)
 
 > All these assertions have the negative `browser.assert.localStorage.not`.
 
+### Errors
+Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
+
+**AssertionError**   
+Same as Node.js Assertion Error. It will be throw for any assertion.
+
+**QueryError**    
+Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
+
+**FatalError**    
+Defines a Fatal Error with puppeteer (e.g. a connection error)
 
 ## Examples
 
