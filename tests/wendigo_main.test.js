@@ -28,4 +28,9 @@ describe("Wendigo Main", function() {
         await Wendigo.stop();
     });
 
+    it("Wendigo Errors", () => {
+        assert(Wendigo.Errors.AssertionError, "AssertionError not accesible.");
+        assert(Wendigo.Errors.QueryError, "QueryError not accesible.");
+    });
+
 });

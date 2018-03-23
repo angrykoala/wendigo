@@ -36,6 +36,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Browser](#browser)
     * [Assert](#assert)
     * [LocalStorage](#localstorage)
+    * [Errors](#errors)
 * [Examples](#examples)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
@@ -630,6 +631,14 @@ Asserts that the localStorage is empty (i.e. length>0)
 
 > All these assertions have the negative `browser.assert.localStorage.not`.
 
+### Errors
+Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
+
+**AssertionError**   
+Same as Node.js Assertion Error. It will be throw for any assertion.
+
+**QueryError**    
+Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
 ## Examples
 

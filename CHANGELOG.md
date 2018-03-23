@@ -2,6 +2,7 @@
 ==================
 
   * Browser.assert.global
+  * Added Custom Errors
   * Dependencies update
 
 0.4.4 / 2018-03-23
