@@ -453,7 +453,7 @@ browser.assert.href("link", "styles.css");
 
 > Same as `browser.assert.attribute(selector, "href", expected, msg?)`
 
-**innerHtml(selector, expected, msg?)**
+**innerHtml(selector, expected, msg?)**    
 Asserts that at least one element matching the given selector has the expected innerHtml.
 The expected html can be either a _string_ or a _Regex_ value.
 
@@ -479,7 +479,7 @@ Assert that the first element with given selector has the expected options selec
 
 > Css, Xpath and Dom selectors supported
 
-**global(key, value?, msg?)**
+**global(key, value?, msg?)**    
 Asserts that the global object (window) has the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key exists with a not undefined value.
 
 ```js
@@ -549,7 +549,7 @@ Asserts that the first element matching the given selector doesn't contain an at
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg?)`
 
-**not.innerHtml(selector, expected, msg?)**
+**not.innerHtml(selector, expected, msg?)**    
 Asserts that at least no element matching the given selector has the expected innerHtml.
 The expected html can be either a _string_ or a _Regex_ value.
 
@@ -566,7 +566,7 @@ Assert that the first element with given selector doesn't have the expected opti
 
 > Css, Xpath and Dom selectors supported
 
-**not.global(key, value?, msg?)**
+**not.global(key, value?, msg?)**    
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
 
@@ -644,7 +644,7 @@ Same as Node.js Assertion Error. It will be throw for any assertion.
 **QueryError**    
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
-**FatalError**
+**FatalError**    
 Defines a Fatal Error with puppeteer (e.g. a connection error)
 
 ## Examples
