@@ -74,6 +74,19 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
     });
 
+    it("Click Text SubQuery", async () => {
+        const clickedElements = await browser.clickText("body", "click me");
+        assert.strictEqual(clickedElements, 1);
+        await browser.assert.text("#switch", "Off");
+    });
+
+    it("Click Text SubQuery Fails", async () => {
+        await utils.assertThrowsAsync (async () => {
+            await browser.clickText("#switch", "click me");
+        }, `QueryError: No element with text "click me" found when trying to click.`);
+        await browser.assert.text("#switch", "On");
+    });
+
     it("Click Invalid Element", async () => {
         await utils.assertThrowsAsync (async () => {
             await browser.click("#not-an-element");

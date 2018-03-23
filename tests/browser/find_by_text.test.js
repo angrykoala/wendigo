@@ -25,9 +25,17 @@ describe("Find By Text", function() {
         const headerElement = await browser.findByText("Main Title");
         assert.strictEqual(headerElement.length, 1);
     });
+
     it("Find By Text Empty", async () => {
         const headerElement = await browser.findByText("Not title");
         assert.strictEqual(headerElement.length, 0);
+    });
+
+    it("Find By Text SubQuery", async () => {
+        const paragraphElement = await browser.findByText(".container", "My first paragraph");
+        assert.strictEqual(paragraphElement.length, 1);
+        const titleElement = await browser.findByText(".container", "Main Title");
+        assert.strictEqual(titleElement.length, 0);
     });
 
     it("Find By Text Containing", async () => {

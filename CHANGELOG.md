@@ -1,6 +1,7 @@
 0.4.5 / ####-##-##
 ==================
 
+  * Added selector support for findByText and clickText
   * Browser.assert.global
   * Added custom errors
   * Assertion error improvements
