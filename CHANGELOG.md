@@ -1,6 +1,7 @@
 0.4.6 / ####-##-##
 ==================
 
+  * Browser.assert.cookie
   * Cookies submodule
 
 0.4.5 / 2018-03-24

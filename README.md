@@ -488,6 +488,16 @@ browser.assert.global("localStorage");
 browser.assert.global("my-val", "dontpanic");
 ```
 
+> Assertions related to LocalStorage can be found under each section
+
+**cookie(name, expected?, msg?)**   
+Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
+
+```js
+browser.assert.cookie("username");
+browser.assert.cookie("username", "arthur_dent");
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -570,8 +580,15 @@ Assert that the first element with given selector doesn't have the expected opti
 **not.global(key, value?, msg?)**    
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
+**not.cookie(name, expected?, msg?)**    
+Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
-> Assertions related to LocalStorage and Cookies can be found under each section
+```js
+browser.assert.not.cookie("not-a-cookie");
+browser.assert.not.cookie("username", "not-user");
+```
+
+> Assertions related to LocalStorage can be found under each section
 
 ## Cookies
 The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.

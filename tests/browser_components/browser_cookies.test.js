@@ -18,7 +18,6 @@ describe("Cookies", function() {
     });
 
     afterEach(async () => {
-        await browser.localStorage.clear();
         await browser.cookies.clear();
     });
 
