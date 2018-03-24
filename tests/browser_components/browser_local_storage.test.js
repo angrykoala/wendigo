@@ -13,7 +13,7 @@ describe("Local Storage", function() {
     });
 
     beforeEach(async () => {
-        await browser.open(configUrls.localStorage);
+        await browser.open(configUrls.storage);
     });
     afterEach(async () => {
         await browser.localStorage.clear();
@@ -76,7 +76,7 @@ describe("Local Storage", function() {
         await browser.localStorage.setItem("marvin", "paranoid");
         const length1 = await browser.localStorage.length();
         assert.strictEqual(length1, 1);
-        await browser.open(configUrls.localStorage);
+        await browser.open(configUrls.storage);
         const length2 = await browser.localStorage.length();
         assert.strictEqual(length2, 2); // Added by the web
         const value = await browser.localStorage.getItem("marvin");

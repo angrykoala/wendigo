@@ -14,7 +14,7 @@ describe("Assert Local Storage", function() {
     });
 
     beforeEach(async () => {
-        await browser.open(configUrls.localStorage);
+        await browser.open(configUrls.storage);
     });
 
     afterEach(async () => {
