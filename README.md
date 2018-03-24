@@ -333,7 +333,7 @@ const options=await browser.options("selector.my-selector"); // ["value1", "valu
 
 > Css, Xpath and Dom selectors supported
 
-**selectedOptions(selector)**
+**selectedOptions(selector)**    
 Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
 
 Will throw if no element is found.
