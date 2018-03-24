@@ -1,3 +1,10 @@
+0.4.6 / 2018-03-24
+==================
+
+  * Browser.assert.cookie
+  * Cookies submodule
+  * Remove default assertions errors
+
 0.4.5 / 2018-03-24
 ==================
 

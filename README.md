@@ -8,7 +8,7 @@ _by @angrykoala_
 
 **Wendigo** is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
 
-Consider the following example of a test using puppeteer:
+Consider the following example of a test using Puppeteer:
 
 ```javascript
 await page.click(".my-btn");
@@ -35,6 +35,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Wendigo](#wendigo)
     * [Browser](#browser)
     * [Assert](#assert)
+    * [Cookies](#cookies)
     * [LocalStorage](#localstorage)
     * [Errors](#errors)
 * [Examples](#examples)
@@ -48,11 +49,11 @@ await browser.assert.text("#my-modal", "Button Clicked");
 Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
 
 **static createBrowser(settings)**   
-Will create and return a [Browser](#Browser) instance. It will automatically launch and connect puppeteer and Chrome if an instance is not running.
+Will create and return a [Browser](#Browser) instance. It will automatically launch and connect Puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
-    * Any settings that can be passed to puppeteer can be passed in createdBrowser, for example:
+    * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
@@ -76,11 +77,11 @@ const browser=Wendigo.createBrowser({
 Will stop and disconnect all the browsers. It should be called after finishing all the tests.
 
 ## Browser
-The Browser instance is and interface with the `page` class of puppeteer.
+The Browser instance is and interface with the `page` class of Puppeteer.
 
 ### Attributes
 **page**   
-Puppeteer [page class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), allows access to puppeteer API if needed.
+Puppeteer [page class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), allows access to Puppeteer API if needed.
 
 ```js
 await browser.page.evaluate(()=>{
@@ -112,7 +113,7 @@ await browser.close();
 ```
 
 **evaluate(cb, ...args)**    
-Evaluates given callback in the browser, passing n arguments. Returns the puppeteer's result of the evaluation.
+Evaluates given callback in the browser, passing n arguments. Returns the Puppeteer's result of the evaluation.
 
 ```js
 const selector = "h1";
@@ -332,7 +333,7 @@ const options=await browser.options("selector.my-selector"); // ["value1", "valu
 
 > Css, Xpath and Dom selectors supported
 
-**selectedOptions(selector)**
+**selectedOptions(selector)**    
 Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
 
 Will throw if no element is found.
@@ -487,6 +488,16 @@ browser.assert.global("localStorage");
 browser.assert.global("my-val", "dontpanic");
 ```
 
+> Assertions related to LocalStorage can be found under each section
+
+**cookie(name, expected?, msg?)**   
+Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
+
+```js
+browser.assert.cookie("username");
+browser.assert.cookie("username", "arthur_dent");
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -569,11 +580,57 @@ Assert that the first element with given selector doesn't have the expected opti
 **not.global(key, value?, msg?)**    
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
+**not.cookie(name, expected?, msg?)**    
+Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
-> Assertions related to LocalStorage can be found under LocalStorage section
+```js
+browser.assert.not.cookie("not-a-cookie");
+browser.assert.not.cookie("username", "not-user");
+```
+
+> Assertions related to LocalStorage can be found under each section
+
+## Cookies
+The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
+
+**all()**    
+Returns all the cookies in the current page as an object
+
+```js
+const cookies = await browser.cookies.all(); // {username: "arthur_dent", email: "arthur@dent.com"}
+```
+
+**get(name)**    
+Returns the value of the cookie with given name. Returns undefined if the cookie doesn't exists
+
+```js
+const cookie = await browser.cookies.get("username"); // "arthur_dent"
+```
+
+**set(name, value)**    
+Sets the value of the cookie with given name. If it already exists it will be replaced.
+
+```js
+await browser.cookies.set("username", "marvin");
+```
+
+**delete(name)**   
+Deletes the cookie with given name if exists. Optionally an array can be passed and all the cookies will be removed. Won't do anything if the cookie doesn't exists.
+
+```js
+await browser.cookies.delete("username");
+await browser.cookies.delete(["username", "email"]);
+```
+
+**clear()**    
+Deletes all the cookies of the current page.
+
+```js
+await browser.cookies.clear()
+```
 
 ## LocalStorage
-The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return promises.
+The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return Promises.
 
 **getItem(key)**    
 Returns the item with the given key. If no item exists return null.
@@ -645,7 +702,7 @@ Same as Node.js Assertion Error. It will be throw for any assertion.
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
 **FatalError**    
-Defines a Fatal Error with puppeteer (e.g. a connection error)
+Defines a Fatal Error with Puppeteer (e.g. a connection error)
 
 ## Examples
 
@@ -693,7 +750,7 @@ This error may appear when running wendigo on certain systems and in most CI ser
 For example `NO_SANDBOX=true npm test`.
 
 ### Running Tests With Travis CI
-Running tests using puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
+Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
 
 ```yml
 language: node_js
