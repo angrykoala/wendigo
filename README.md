@@ -4,7 +4,7 @@ _by @angrykoala_
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
 
-> A proper monster for front-end testing
+> A proper monster for front-end automated testing
 
 **Wendigo** is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
 
@@ -340,6 +340,15 @@ Will throw if no element is found.
 
 > Css, Xpath and Dom selectors supported
 
+**back()**     
+Navigates to previous page in history.
+
+**forward()**     
+Navigates to next page in history.
+
+
+**refresh()**     
+Reloads current page.
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
