@@ -43,6 +43,13 @@ describe("Find By Text", function() {
         assert.strictEqual(elements.length, 2);
     });
 
+    it("Find By Text Containing SubQuery", async () => {
+        const paragraphElement = await browser.findByTextContaining(".container", "first paragraph");
+        assert.strictEqual(paragraphElement.length, 1);
+        const titleElement = await browser.findByTextContaining(".container", "Title");
+        assert.strictEqual(titleElement.length, 0);
+    });
+
     it("Find By Text Containing And Click", async () => {
         await browser.open(configUrls.click);
         const elements = await browser.findByTextContaining("click");

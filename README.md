@@ -250,13 +250,15 @@ elements.length; // 1
 
 Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
-**findByTextContaining(text)**    
+**findByTextContaining(selector?, text)**    
 Returns an array with all the elements with a text that contains the given text.
 
 ```js
 const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
+
+Otionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
 **type(selector, text)**   
 Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
