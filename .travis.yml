@@ -3,7 +3,7 @@ os:
     - linux
 node_js:
     - "stable"
-    - "8.9.4"
+    - "8.0.0"
 sudo: false
 env:
   - NO_SANDBOX=true

@@ -3,6 +3,7 @@
 
   * Added optional selector to findByTextContaining
   * Back, forward and refresh methods
+  * Support for node 8.0.0
   * Major code refactor
 
 0.4.6 / 2018-03-24
