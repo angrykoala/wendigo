@@ -2,7 +2,7 @@
 ==================
 
   * Added optional selector to findByTextContaining
-  * back, forward and refresh methods
+  * Back, forward and refresh methods
 
 0.4.6 / 2018-03-24
 ==================
