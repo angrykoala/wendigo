@@ -1,8 +1,9 @@
-0.4.7 / ####-##-##
+0.5.0 / ####-##-##
 ==================
 
   * Added optional selector to findByTextContaining
   * Back, forward and refresh methods
+  * Major code refactor
 
 0.4.6 / 2018-03-24
 ==================
