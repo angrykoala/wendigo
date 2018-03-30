@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/angrykoala/wendigo#readme",
   "dependencies": {
+    "mixwith": "^0.1.1",
     "puppeteer": "^1.2.0"
   },
   "devDependencies": {
