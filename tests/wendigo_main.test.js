@@ -17,8 +17,8 @@ describe("Wendigo Main", function() {
         const browser = await Wendigo.createBrowser();
         assert(browser);
         assert(browser.page);
-        assert(browser._assert);
-        assert(browser._localStorage);
+        assert(browser.assert);
+        assert(browser.localStorage);
         assert(Wendigo.instance);
         assert.strictEqual(browser._loaded, false);
         await browser.close();
@@ -35,6 +35,15 @@ describe("Wendigo Main", function() {
         assert(Wendigo.Errors.AssertionError, "AssertionError not accesible.");
         assert(Wendigo.Errors.QueryError, "QueryError not accesible.");
         assert(Wendigo.Errors.FatalError, "FatalError not accesible.");
+    });
+
+    it("Change Browser Settings", async () => {
+        const browser1 = await Wendigo.createBrowser();
+        assert.strictEqual(browser1._settings.slowMo, 0);
+        assert.strictEqual(Wendigo._lastSettings.slowMo, 0);
+        const browser2 = await Wendigo.createBrowser({slowMo: 1});
+        assert.strictEqual(browser2._settings.slowMo, 1);
+        assert.strictEqual(Wendigo._lastSettings.slowMo, 1);
     });
 
 });

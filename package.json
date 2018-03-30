@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/angrykoala/wendigo#readme",
   "dependencies": {
+    "compositer": "^0.1.0",
+    "deep-equal": "^1.0.1",
     "mixwith": "^0.1.1",
     "puppeteer": "^1.2.0"
   },
