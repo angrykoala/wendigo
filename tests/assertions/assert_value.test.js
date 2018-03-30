@@ -43,22 +43,22 @@ describe("Assert Value", function() {
         await browser.open(configUrls.forms);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.value("input.input1", "False Text");
-        }, `Expected element "input.input1" to have value "False Text", "" found`);
+        }, `Expected element "input.input1" to have value "False Text", "" found`, "", "False Text");
 
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.value("input.input2", "False Text");
-        }, `Expected element "input.input2" to have value "False Text", "default value" found`);
+        }, `Expected element "input.input2" to have value "False Text", "default value" found`, "default value", "False Text");
 
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.value("input.not-exists", "False Text");
-        }, `Expected element "input.not-exists" to have value "False Text", no value found`);
+        }, `Expected element "input.not-exists" to have value "False Text", no value found`, null, "False Text");
     });
 
     it("Assert Value Throws Custom Message", async () => {
         await browser.open(configUrls.forms);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.value("input.input1", "False Text", "value failed");
-        }, `value failed`);
+        }, `value failed`, "", "False Text");
     });
 
     it("Assert Not Value", async () => {

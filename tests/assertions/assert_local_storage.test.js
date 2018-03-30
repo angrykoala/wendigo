@@ -116,13 +116,13 @@ describe("Assert Local Storage", function() {
     it("Storage Length Throws", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.localStorage.length(4);
-        }, `Expected localStorage to have 4 items, 1 found.`);
+        }, `Expected localStorage to have 4 items, 1 found.`, "1", "4");
     });
 
     it("Storage Length Throws Custom Message", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.localStorage.length(4, "length fails");
-        }, "length fails");
+        }, "length fails", "1", "4");
     });
 
     it("Storage Empty", async () => {

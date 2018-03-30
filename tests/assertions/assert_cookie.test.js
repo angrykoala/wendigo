@@ -35,13 +35,13 @@ describe("Assert Cookie", function() {
     it("Assert Cookie Throws Invalid Value", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.cookie("username", "marvin");
-        }, `Expected cookie "username" to have value "marvin", "arthur_dent" found.`);
+        }, `Expected cookie "username" to have value "marvin", "arthur_dent" found.`, "arthur_dent", "marvin");
     });
 
     it("Assert Cookie Throws Custom Message", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.cookie("username", "marvin", "cookie fails");
-        }, `cookie fails`);
+        }, `cookie fails`, "arthur_dent", "marvin");
     });
 
     it("Assert Not Cookie", async () => {

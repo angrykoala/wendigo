@@ -34,7 +34,7 @@ describe("Assert Global", function() {
     it("Global Assert Throws", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.global("dummyQuery", "not-dummy");
-        }, `Expected "dummyQuery" to be defined as global variable with value "not-dummy", "dummy" found.`);
+        }, `Expected "dummyQuery" to be defined as global variable with value "not-dummy", "dummy" found.`, "dummy", "not-dummy");
     });
 
     it("Global Assert Throws Not Defined", async () => {

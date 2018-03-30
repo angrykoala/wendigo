@@ -2,10 +2,14 @@
 const assert = require('assert');
 
 module.exports = {
-    async assertThrowsAssertionAsync (fn, expectedMsg) {
-        return this.assertThrowsAsync (fn, `AssertionError [ERR_ASSERTION]: ${expectedMsg}`);
+    async assertThrowsAssertionAsync (fn, expectedMsg, actual, expected) {
+        return this.assertThrowsAsync (fn, `AssertionError [ERR_ASSERTION]: ${expectedMsg}`, (err) => {
+            const expectedCheck = expected ? err.expected === expected : true;
+            const actualCheck = actual ? err.actual === actual : true;
+            return expectedCheck && actualCheck;
+        });
     },
-    async assertThrowsAsync (fn, expected) {
+    async assertThrowsAsync (fn, expectedError, cb) {
         let f = () => {};
         try {
             await fn();
@@ -15,9 +19,9 @@ module.exports = {
             };
         } finally {
             assert.throws(f, (err) => {
-                if(expected) {
-                    return err.toString() === expected;
-                } else return true;
+                const errorCheck = expectedError ? err.toString() === expectedError : true;
+                const cbCheck = cb ? cb(err) : true;
+                return errorCheck && cbCheck;
             });
         }
     }

@@ -4,6 +4,7 @@
   * Added optional selector to findByTextContaining
   * Back, forward and refresh methods
   * Settings updated if changed between browser creation
+  * Fixed bug with error messages expect and actual values
   * Support for node 8.0.0
   * Remove unnecessary files from pack
   * Major code refactor

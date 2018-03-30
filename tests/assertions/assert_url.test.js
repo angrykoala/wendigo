@@ -28,7 +28,7 @@ describe("Assert Url", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.url(invalidUrl);
-        }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`);
+        }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`, configUrls.index, invalidUrl);
     });
 
     it("Url Throws With Custom Message", async () => {
@@ -36,7 +36,7 @@ describe("Assert Url", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.url(invalidUrl, "invalid url");
-        }, `invalid url`);
+        }, `invalid url`, configUrls.index, invalidUrl);
     });
 
     it("Not Url", async () => {
