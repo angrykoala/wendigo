@@ -5,6 +5,7 @@
   * Back, forward and refresh methods
   * Settings updated if changed between browser creation
   * Support for node 8.0.0
+  * Remove unnecessary files from pack
   * Major code refactor
   * Mixwith, compositer and deep-equal dependencies added
 

@@ -5,6 +5,11 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "files":[
+      "injection_scripts",
+      "lib",
+      "config.js"
+  ],
   "main": "lib/wendigo.js",
   "scripts": {
     "test": "mocha tests --recursive --retries 2",
