@@ -1,4 +1,4 @@
-0.5.0 / ####-##-##
+0.5.0 / 2018-03-31
 ==================
 
   * Added optional selector to findByTextContaining
