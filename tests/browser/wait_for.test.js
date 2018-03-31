@@ -38,6 +38,15 @@ describe("Wait For", function() {
         await browser.assert.not.exists("#switch.on");
     });
 
+    it("Wait For XPath", async () => {
+        await browser.open(configUrls.click);
+        await browser.click(".btn2");
+        await browser.waitFor("//*[@id='switch' and @class='off']", 600);
+        await browser.assert.exists("#switch.off");
+        await browser.assert.text("#switch", "Off");
+        await browser.assert.not.exists("#switch.on");
+    });
+
     it("Wait For Timeout", async () => {
         await browser.open(configUrls.click);
         await browser.assert.exists("#switch.on");
@@ -64,5 +73,19 @@ describe("Wait For", function() {
         await utils.assertThrowsAsync (async () => {
             await browser.waitFor(".hidden-text2", 10);
         });
+    });
+
+    it("Wait For With Function", async () => {
+        await browser.open(configUrls.click);
+        await browser.assert.not.exists("#switch.off");
+        await browser.assert.exists("#switch.on");
+        await browser.click(".btn2");
+        await browser.waitFor((s) => {
+            const docs = document.querySelectorAll(s);
+            return docs.length > 0;
+        }, 600, "#switch.off");
+        await browser.assert.exists("#switch.off");
+        await browser.assert.text("#switch", "Off");
+        await browser.assert.not.exists("#switch.on");
     });
 });

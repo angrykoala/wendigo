@@ -226,12 +226,16 @@ Returns the current url of the page
 **wait(ms=250)**   
 Waits for the given milliseconds.
 
-**waitFor(selector, timeout=500)**   
+**waitFor(selector, timeout=500, ...args?)**   
 Waits for given selector to exists and be visible, with the given timeout in milliseconds.
 
 ```js
 await browser.waitFor(".popup");
 ```
+
+If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
+
+> Css and Xpath selectors supported
 
 **waitUntilNotVisible(selector, timeout=500)**   
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.

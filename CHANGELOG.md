@@ -2,6 +2,7 @@
 ==================
 
   * Added optional selector to findByTextContaining
+  * WaitFor support for functions and xPath
   * Back, forward and refresh methods
   * Settings updated if changed between browser creation
   * Fixed bug with error messages expect and actual values
