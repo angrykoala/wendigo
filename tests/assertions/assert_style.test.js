@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
-const utils = require('../utils');
+const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
 describe("Assert Style", function() {

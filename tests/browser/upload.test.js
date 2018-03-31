@@ -2,7 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
-const utils = require('../utils.js');
+const utils = require('../test_utils');
 
 describe("Upload", function() {
     this.timeout(5000);

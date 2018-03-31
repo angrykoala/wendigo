@@ -3,7 +3,7 @@
 const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
-const utils = require('../utils');
+const utils = require('../test_utils');
 
 describe("Select", function() {
     this.timeout(5000);

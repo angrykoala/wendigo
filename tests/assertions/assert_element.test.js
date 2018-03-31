@@ -1,7 +1,7 @@
 "use strict";
 
 const Wendigo = require('../../lib/wendigo');
-const utils = require('../utils');
+const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
 describe("Assert Element", function() {
