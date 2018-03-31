@@ -1,14 +1,14 @@
 {
   "name": "wendigo",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
   },
-  "files":[
-      "injection_scripts",
-      "lib",
-      "config.js"
+  "files": [
+    "injection_scripts",
+    "lib",
+    "config.js"
   ],
   "main": "lib/wendigo.js",
   "scripts": {
