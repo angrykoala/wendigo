@@ -35,7 +35,7 @@ describe("Wait Until Not Visible", function() {
         await browser.click(".btn2");
         await utils.assertThrowsAsync (async () => {
             await browser.waitUntilNotVisible("#switch.on", 10);
-        }, `Error: Waiting for element "#switch.on" not to be visible, timeout of 10ms exceeded`);
+        }, `Error: Waiting for element "#switch.on" not to be visible, timeout of 10ms exceeded.`);
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
     });
