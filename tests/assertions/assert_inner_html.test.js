@@ -2,7 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
-const utils = require('../utils');
+const utils = require('../test_utils');
 
 describe("Assert Inner Html", function() {
     this.timeout(5000);
@@ -47,14 +47,14 @@ describe("Assert Inner Html", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.innerHtml("b", "not-text");
-        }, `Expected element "b" to have inner html "not-text", "Hidden text " found.`);
+        }, `Expected element "b" to have inner html "not-text", "Hidden text " found.`, "Hidden text,", "not-text");
     });
 
     it("InnerHtml Throws With Custom Message", async () => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.innerHtml("b", "not-text", "html fails");
-        }, "html fails");
+        }, "html fails", "Hidden text,", "not-text");
     });
 
     it("InnerHtml Throws Element Not Found", async () => {

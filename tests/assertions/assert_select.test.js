@@ -1,7 +1,7 @@
 "use strict";
 
 const Wendigo = require('../../lib/wendigo');
-const utils = require('../utils');
+const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
 
@@ -28,13 +28,13 @@ describe("Assert Select", function() {
     it("Assert Select Options Throws", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.options("#normal-select", ["value1", "value3", "Value 4"]);
-        }, `Expected element "#normal-select" to have options "value1, value3, Value 4", "value1, value2, value3, Value 4" found.`);
+        }, `Expected element "#normal-select" to have options "value1, value3, Value 4", "value1, value2, value3, Value 4" found.`, "value1,value2,value3,Value 4", "value1,value3,Value 4");
     });
 
     it("Assert Select Options Throws Custom Message", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.options("#normal-select", ["value1", "value3", "Value 4"], "options fails");
-        }, "options fails");
+        }, "options fails", "value1,value2,value3,Value 4", "value1,value3,Value 4");
     });
 
     it("Assert Selected Options", async () => {
@@ -49,17 +49,17 @@ describe("Assert Select", function() {
     it("Assert Selected Options Throws", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.selectedOptions("#normal-select", "value3");
-        }, `Expected element "#normal-select" to have options "value3" selected, "value1" found.`);
+        }, `Expected element "#normal-select" to have options "value3" selected, "value1" found.`, "value1", "value3");
         await browser.select("#multiple-select", ["value1", "value2"]);
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.selectedOptions("#multiple-select", ["value2"]);
-        }, `Expected element "#multiple-select" to have options "value2" selected, "value1, value2" found.`);
+        }, `Expected element "#multiple-select" to have options "value2" selected, "value1, value2" found.`, "value1,value2", "value2");
     });
 
     it("Assert Selected Options Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async () => {
             await browser.assert.selectedOptions("#normal-select", "value3", "selected fails");
-        }, "selected fails");
+        }, "selected fails", "value1", "value3");
 
     });
 

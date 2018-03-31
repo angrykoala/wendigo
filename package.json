@@ -1,13 +1,19 @@
 {
   "name": "wendigo",
-  "version": "0.4.6",
-  "description": "A proper monster for front-end testing",
+  "version": "0.5.0",
+  "description": "A proper monster for front-end automated testing",
   "engines": {
-    "node": ">=8.9.4"
+    "node": ">=8.0.0"
   },
+  "files":[
+      "injection_scripts",
+      "lib",
+      "config.js"
+  ],
   "main": "lib/wendigo.js",
   "scripts": {
-    "test": "mocha tests --recursive --retries 2"
+    "test": "mocha tests --recursive --retries 2",
+    "eslint": "eslint lib/ tests/ --ext .js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +34,9 @@
   },
   "homepage": "https://github.com/angrykoala/wendigo#readme",
   "dependencies": {
+    "compositer": "^0.1.0",
+    "deep-equal": "^1.0.1",
+    "mixwith": "^0.1.1",
     "puppeteer": "^1.2.0"
   },
   "devDependencies": {

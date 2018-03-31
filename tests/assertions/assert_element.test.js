@@ -1,7 +1,7 @@
 "use strict";
 
 const Wendigo = require('../../lib/wendigo');
-const utils = require('../utils');
+const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
 describe("Assert Element", function() {
@@ -36,7 +36,7 @@ describe("Assert Element", function() {
     it("Elements Throws", async () => {
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", 3);
-        }, `Expected selector "p" to find exactly 3 elements, 2 found`);
+        }, `Expected selector "p" to find exactly 3 elements, 2 found`, "2", "3");
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.elements("p", {atLeast: 3});
         }, `Expected selector "p" to find at least 3 elements, 2 found`);
@@ -64,10 +64,10 @@ describe("Assert Element", function() {
     it("Element Throws", async () => {
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p.not-exist");
-        }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`);
+        }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`, "0", "1");
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.element("p");
-        }, `Expected selector "p" to find exactly 1 elements, 2 found`);
+        }, `Expected selector "p" to find exactly 1 elements, 2 found`, "2", "1");
     });
 
     it("Element Throws With Custom Message", async () => {

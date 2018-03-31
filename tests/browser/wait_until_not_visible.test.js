@@ -2,7 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
-const utils = require('../utils');
+const utils = require('../test_utils');
 
 describe("Wait Until Not Visible", function() {
     this.timeout(5000);
@@ -35,7 +35,7 @@ describe("Wait Until Not Visible", function() {
         await browser.click(".btn2");
         await utils.assertThrowsAsync (async () => {
             await browser.waitUntilNotVisible("#switch.on", 10);
-        }, `Error: Waiting for element "#switch.on" not to be visible, timeout of 10ms exceeded`);
+        }, `Error: Waiting for element "#switch.on" not to be visible, timeout of 10ms exceeded.`);
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
     });

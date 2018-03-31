@@ -1,3 +1,16 @@
+0.5.0 / 2018-03-31
+==================
+
+  * Added optional selector to findByTextContaining
+  * WaitFor support for functions and xPath
+  * Back, forward and refresh methods
+  * Settings updated if changed between browser creation
+  * Fixed bug with error messages expect and actual values
+  * Support for node 8.0.0
+  * Remove unnecessary files from pack
+  * Major code refactor
+  * Mixwith, compositer and deep-equal dependencies added
+
 0.4.6 / 2018-03-24
 ==================
 

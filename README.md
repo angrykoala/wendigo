@@ -4,7 +4,7 @@ _by @angrykoala_
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
 
-> A proper monster for front-end testing
+> A proper monster for front-end automated testing
 
 **Wendigo** is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
 
@@ -226,12 +226,16 @@ Returns the current url of the page
 **wait(ms=250)**   
 Waits for the given milliseconds.
 
-**waitFor(selector, timeout=500)**   
+**waitFor(selector, timeout=500, ...args?)**   
 Waits for given selector to exists and be visible, with the given timeout in milliseconds.
 
 ```js
 await browser.waitFor(".popup");
 ```
+
+If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
+
+> Css and Xpath selectors supported
 
 **waitUntilNotVisible(selector, timeout=500)**   
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
@@ -250,13 +254,15 @@ elements.length; // 1
 
 Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
-**findByTextContaining(text)**    
+**findByTextContaining(selector?, text)**    
 Returns an array with all the elements with a text that contains the given text.
 
 ```js
 const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
+
+Otionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
 **type(selector, text)**   
 Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
@@ -340,6 +346,15 @@ Will throw if no element is found.
 
 > Css, Xpath and Dom selectors supported
 
+**back()**     
+Navigates to previous page in history.
+
+**forward()**     
+Navigates to next page in history.
+
+
+**refresh()**     
+Reloads current page.
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
