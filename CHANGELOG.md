@@ -1,6 +1,7 @@
 0.5.1 / ####-##-##
 ==================
 
+  * Checked, check and uncheck methods
   * Compositer updated to 1.0.0
 
 0.5.0 / 2018-03-31

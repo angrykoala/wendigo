@@ -192,6 +192,10 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
+**checked(selector)**   
+Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined.
+
+
 **text(selector)**   
 Returns an array with all text contents of the elements matching the css selector
 
@@ -214,6 +218,12 @@ await browser.clickText("Click Me!");
 ```
 
 Optionally a selector can be passed as first argument to only click elements under the given selector.
+
+**check(selector)**    
+Checks the first element matching given selector. Setting its checked property to true.
+
+**uncheck(selector)**    
+Unchecks the first element matching given selector. Setting its checked property to false.
 
 **title()**   
 Returns the page title
