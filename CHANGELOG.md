@@ -2,6 +2,7 @@
 ==================
 
   * Checked, check and uncheck methods
+  * Checked and not checked assertions
   * Compositer updated to 1.0.0
 
 0.5.0 / 2018-03-31

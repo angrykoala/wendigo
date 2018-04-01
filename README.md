@@ -524,6 +524,11 @@ browser.assert.cookie("username");
 browser.assert.cookie("username", "arthur_dent");
 ```
 
+**checked(selector, msg?)**   
+Asserts that the first element matching the given selector has a checked value set to true.
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -615,6 +620,14 @@ browser.assert.not.cookie("username", "not-user");
 ```
 
 > Assertions related to LocalStorage can be found under each section
+
+
+**not.checked(selector, msg?)**   
+Asserts that the first element matching the given selector has a checked value set to false.
+
+Note that if the element doesn't have a checked value (i.e. is not a checkbox) this assertion will throw.
+
+> Css, Xpath and Dom selectors supported
 
 ## Cookies
 The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
