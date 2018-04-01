@@ -39,6 +39,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [LocalStorage](#localstorage)
     * [Errors](#errors)
 * [Examples](#examples)
+* [Development](#development)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
 
@@ -756,6 +757,26 @@ describe("My Tests", function() {
     });
 });
 ```
+
+## Development
+These instructions assume node>8.0.0 and npm installed:
+
+1. Clone the git repository (`dev` branch)
+2. `npm install`
+3. `npm test` to execute the tests
+  * `npm run lint` to execute the linting tests
+
+Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
+
+### Architecture
+
+* `Wendigo`: The main class exported by the module, provides the base interface to instantiate the browser class.
+  * `BrowserFactory`: class takes care of the creation of the browser instance
+* `Browser`: Provides all the API to connect, retrieve information and perform assertions on a webpage. The BrowserFactory will compose this class from multiple mixins and modules.
+  * `mixins`: A Browser is divided in several mixins (found on the folder with the same name). These will be composed in the Browser class at runtime.
+* `Modules`: A module represents an object that will be attached to the browser at runtime with a given name (e.g. assert or localStorage). All modules inherit from BrowserModule.
+  * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
+  * Note that the assertion module is a composed module as well.
 
 ## Troubleshooting
 
