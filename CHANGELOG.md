@@ -4,7 +4,7 @@
   * Checked, check and uncheck methods
   * Checked and not checked assertions
   * Fixed SubqueryXpath Problem
-  * Compositer updated to 1.0.0
+  * Compositer updated to 1.1.0
 
 0.5.0 / 2018-03-31
 ==================
