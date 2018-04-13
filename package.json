@@ -12,7 +12,7 @@
   ],
   "main": "lib/wendigo.js",
   "scripts": {
-    "test": "mocha tests --recursive --retries 2",
+    "test": "mocha tests --recursive",
     "lint": "eslint lib/ tests/ --ext .js"
   },
   "repository": {
