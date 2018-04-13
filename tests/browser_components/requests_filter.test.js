@@ -41,6 +41,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(await browser.requests.filter.url("no-match")._requests.length, 0);
         assert.strictEqual(await browser.requests.filter.url(configUrls.requests)._requests.length, 1);
         await browser.clickText("click me");
+        await browser.wait();
         assert.strictEqual(await browser.requests.filter.url(/api/)._requests.length, 1);
     });
 
@@ -92,5 +93,12 @@ describe("Requests Filter", function() {
 
         assert.strictEqual(await browser.requests.filter.ok()._requests.length, okRequests + 1);
         assert.strictEqual(await browser.requests.filter.ok(false)._requests.length, notOkRequests);
+    });
+
+    it("Multiple Requests Filters", async () => {
+        await browser.clickText("click me");
+        await browser.wait();
+        assert.strictEqual(await browser.requests.filter.url(/api/).method("GET")._requests.length, 1);
+        assert.strictEqual(await browser.requests.filter.url(/api/).method("POST")._requests.length, 0);
     });
 });

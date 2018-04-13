@@ -3,8 +3,7 @@
 
   * Checked, check and uncheck methods
   * Checked and not checked assertions
-  * Browser.requests
-  * Browser.assert.requests
+  * Browser.requests module
   * Fixed SubqueryXpath Problem
   * Compositer updated to 1.1.0
 
