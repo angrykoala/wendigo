@@ -37,6 +37,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Assert](#assert)
     * [Cookies](#cookies)
     * [LocalStorage](#localstorage)
+    * [Requests](#requests)
     * [Errors](#errors)
 * [Examples](#examples)
 * [Development](#development)
@@ -731,7 +732,73 @@ Asserts that the localStorage is empty (i.e. length>0)
 
 > All these assertions have the negative `browser.assert.localStorage.not`.
 
-### Errors
+## Requests
+The Requests module allows to get and filter the requests made by the browser since the page was opened.
+
+> All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
+
+* **all**    
+Returns all requests, ordered by when it was dispatched.
+```js
+await browser.requests.all;
+```
+
+* **filter**    
+Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
+
+* **clear()**    
+Clears the list of requests.
+
+### Filtering Requests
+To filter the requests made by the browser, you can use `browser.request.filter`.
+
+For example, to filter requests with status code of 200:
+
+```js
+const filteredRequests = await browser.requests.filter.status(200).requests;
+```
+
+The available filters are:
+
+* **url(value)**    
+Filters by the given url. The url can be a string or a regex.
+
+```js
+await browser.requests.filter.url("http://localhost:8002/api").requests;
+```
+
+* **method(value)**    
+Filters by request method (`GET`, `POST`,...)
+
+* **status(value)**    
+Filters by response status (`200`, `400`)
+
+* **fromCache(value=true)**    
+Filters whether the response comes from the browser cache or not.
+
+* **responseHeaders(headers)**   
+Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
+
+```js
+await browser.requests.filter.responseHeaders({
+    'content-type': /html/,
+})
+```
+
+* **ok(isOk=true)**    
+Filters request which response are considered successfull (status is between 200 and 299).
+
+
+Filters can be joined to perform a filter of several fields.
+
+```js
+await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests; //Filters all the POST requests made to any url with api that are not cached and returned a success code
+```
+
+
+> Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
+
+## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
 **AssertionError**   
