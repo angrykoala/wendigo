@@ -5,6 +5,7 @@
         "simple": "http://localhost:3456/html_simple.html",
         "forms": "http://localhost:3456/forms.html",
         "url": "http://localhost:3456/url_history.html",
-        "storage": "http://localhost:3456/storage.html"
+        "storage": "http://localhost:3456/storage.html",
+        "requests": "http://localhost:3456/request.html"
     }
 }

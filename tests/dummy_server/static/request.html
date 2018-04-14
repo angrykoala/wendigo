@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="btn" onclick="doRequest()">click me</button>
+
+    <script>
+        function doRequest() {
+            fetch("/api");
+        }
+    </script>
+</body>
+
+</html>

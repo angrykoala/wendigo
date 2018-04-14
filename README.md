@@ -37,8 +37,10 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Assert](#assert)
     * [Cookies](#cookies)
     * [LocalStorage](#localstorage)
+    * [Requests](#requests)
     * [Errors](#errors)
 * [Examples](#examples)
+* [Development](#development)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
 
@@ -191,6 +193,10 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
+**checked(selector)**   
+Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined.
+
+
 **text(selector)**   
 Returns an array with all text contents of the elements matching the css selector
 
@@ -213,6 +219,12 @@ await browser.clickText("Click Me!");
 ```
 
 Optionally a selector can be passed as first argument to only click elements under the given selector.
+
+**check(selector)**    
+Checks the first element matching given selector. Setting its checked property to true.
+
+**uncheck(selector)**    
+Unchecks the first element matching given selector. Setting its checked property to false.
 
 **title()**   
 Returns the page title
@@ -513,6 +525,11 @@ browser.assert.cookie("username");
 browser.assert.cookie("username", "arthur_dent");
 ```
 
+**checked(selector, msg?)**   
+Asserts that the first element matching the given selector has a checked value set to true.
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -604,6 +621,14 @@ browser.assert.not.cookie("username", "not-user");
 ```
 
 > Assertions related to LocalStorage can be found under each section
+
+
+**not.checked(selector, msg?)**   
+Asserts that the first element matching the given selector has a checked value set to false.
+
+Note that if the element doesn't have a checked value (i.e. is not a checkbox) this assertion will throw.
+
+> Css, Xpath and Dom selectors supported
 
 ## Cookies
 The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
@@ -707,7 +732,73 @@ Asserts that the localStorage is empty (i.e. length>0)
 
 > All these assertions have the negative `browser.assert.localStorage.not`.
 
-### Errors
+## Requests
+The Requests module allows to get and filter the requests made by the browser since the page was opened.
+
+> All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
+
+* **all**    
+Returns all requests, ordered by when it was dispatched.
+```js
+await browser.requests.all;
+```
+
+* **filter**    
+Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
+
+* **clear()**    
+Clears the list of requests.
+
+### Filtering Requests
+To filter the requests made by the browser, you can use `browser.request.filter`.
+
+For example, to filter requests with status code of 200:
+
+```js
+const filteredRequests = await browser.requests.filter.status(200).requests;
+```
+
+The available filters are:
+
+* **url(value)**    
+Filters by the given url. The url can be a string or a regex.
+
+```js
+await browser.requests.filter.url("http://localhost:8002/api").requests;
+```
+
+* **method(value)**    
+Filters by request method (`GET`, `POST`,...)
+
+* **status(value)**    
+Filters by response status (`200`, `400`)
+
+* **fromCache(value=true)**    
+Filters whether the response comes from the browser cache or not.
+
+* **responseHeaders(headers)**   
+Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
+
+```js
+await browser.requests.filter.responseHeaders({
+    'content-type': /html/,
+})
+```
+
+* **ok(isOk=true)**    
+Filters request which response are considered successfull (status is between 200 and 299).
+
+
+Filters can be joined to perform a filter of several fields.
+
+```js
+await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests; //Filters all the POST requests made to any url with api that are not cached and returned a success code
+```
+
+
+> Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
+
+## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
 **AssertionError**   
@@ -756,6 +847,26 @@ describe("My Tests", function() {
     });
 });
 ```
+
+## Development
+These instructions assume node>8.0.0 and npm installed:
+
+1. Clone the git repository (`dev` branch)
+2. `npm install`
+3. `npm test` to execute the tests
+  * `npm run lint` to execute the linting tests
+
+Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
+
+### Architecture
+
+* `Wendigo`: The main class exported by the module, provides the base interface to instantiate the browser class.
+  * `BrowserFactory`: class takes care of the creation of the browser instance
+* `Browser`: Provides all the API to connect, retrieve information and perform assertions on a webpage. The BrowserFactory will compose this class from multiple mixins and modules.
+  * `mixins`: A Browser is divided in several mixins (found on the folder with the same name). These will be composed in the Browser class at runtime.
+* `Modules`: A module represents an object that will be attached to the browser at runtime with a given name (e.g. assert or localStorage). All modules inherit from BrowserModule.
+  * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
+  * Note that the assertion module is a composed module as well.
 
 ## Troubleshooting
 

@@ -4,8 +4,7 @@
 <body>
     <h1>Main Title</h1>
     <form>
-        First Input: <input class="input1" name="firstname">
-        Last Input: <input class="input2" name="lastname" value="default value">
+        First Input: <input class="input1" name="firstname"> Last Input: <input class="input2" name="lastname" value="default value">
     </form>
     <p id="value-input"></p>
     <input type="file" class="input3" name="file-input">
@@ -24,10 +23,15 @@
      <option value="value4">Value 4</option>
     </select>
 
+    <div id="checkbox">
+        <input type="checkbox" value="bike">Bike<br>
+        <input type="checkbox" value="car">Car<br>
+    </div>
+
     <script>
-    document.querySelector(".input1").onkeypress = function(ev) {
-        document.getElementById("value-input").textContent=String.fromCharCode(ev.charCode)
-    };
+        document.querySelector(".input1").onkeypress = function(ev) {
+            document.getElementById("value-input").textContent = String.fromCharCode(ev.charCode)
+        };
     </script>
 
 </body>

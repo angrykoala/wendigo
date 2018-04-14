@@ -4,7 +4,16 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
+app.use((req, res, next) => { // To avoid 304
+    req.headers['if-none-match'] = 'no-match-for-this';
+    next();
+});
 app.use("/", express.static(path.join(__dirname, "static")));
+
+
+app.get("/api", (req, res) => {
+    res.json({result: "OK"});
+});
 
 let server;
 const dummy = function(port) {

@@ -1,3 +1,13 @@
+0.6.0 / 2018-04-13
+==================
+
+  * Checked, check and uncheck methods
+  * Checked and not checked assertions
+  * Browser.requests module
+  * Fixed SubqueryXpath Problem
+  * Compositer updated to 1.1.0
+  * Puppeteer updated to 1.3.0
+
 0.5.0 / 2018-03-31
 ==================
 
