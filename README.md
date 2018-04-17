@@ -368,6 +368,15 @@ Navigates to next page in history.
 **refresh()**     
 Reloads current page.
 
+**setViewport(viewportConfig)**   
+Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
+
+```js
+await browser.setViewport({width: 300});
+```
+
+> Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
