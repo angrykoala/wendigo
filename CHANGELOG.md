@@ -1,5 +1,8 @@
-0.6.1 / ####-##-##
+0.7.0 / ####-##-##
 ==================
+
+  * Assert.attribute and assert.not.attribute now match any element
+  * Assert.href and assert.not.href now match any element
 
 0.6.0 / 2018-04-13
 ==================

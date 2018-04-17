@@ -12,34 +12,39 @@ describe("Assert Attribute", function() {
         browser = await Wendigo.createBrowser();
     });
 
+    beforeEach(async() => {
+        await browser.open(configUrls.index);
+    });
+
     after(async () => {
         await browser.close();
     });
 
     it("Attribute", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.attribute(".hidden-text", "class", "hidden-text");
         await browser.assert.attribute(".hidden-text", "hidden", "");
     });
 
+    it("Attribute With Multiple Elements", async () => {
+        await browser.assert.attribute("b", "title", "title");
+        await browser.assert.attribute("b", "title");
+    });
+
     it("Attribute Without Expected", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.attribute(".hidden-text", "class");
         await browser.assert.attribute(".hidden-text", "hidden");
     });
 
     it("Attribute From Node", async () => {
-        await browser.open(configUrls.index);
         const element = await browser.query(".hidden-text");
         await browser.assert.attribute(element, "class", "hidden-text");
         await browser.assert.attribute(element, "hidden", "");
     });
 
     it("Attribute Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.attribute(".hidden-text", "class", "hidden");
-        }, `Expected element ".hidden-text" to have attribute "class" with value "hidden", "hidden-text" found.`);
+        }, `Expected element ".hidden-text" to have attribute "class" with value "hidden", ["hidden-text"] found.`);
 
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.attribute(".second-element", "hidden");
@@ -47,16 +52,12 @@ describe("Assert Attribute", function() {
     });
 
     it("Attribute Throws With No Element Found", async () => {
-        await browser.open(configUrls.index);
-
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.attribute(".not-an-element", "class", "hidden");
         }, `Expected element ".not-an-element" to have attribute "class" with value "hidden", no element found.`);
     });
 
     it("Attribute Throws With Custom Message", async () => {
-        await browser.open(configUrls.index);
-
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.attribute(".hidden-text", "class", "hidden", "attribute error");
         }, `attribute error`);
@@ -66,29 +67,30 @@ describe("Assert Attribute", function() {
     });
 
     it("Attribute Equals Null", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.attribute(".hidden-text", "href", null);
     });
 
     it("Not Attribute", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.not.attribute(".hidden-text", "class", "not-hidden-text");
     });
 
     it("Not Attribute Without Value", async () => {
-        await browser.open(configUrls.index);
         await browser.assert.not.attribute(".hidden-text", "href");
     });
 
     it("Not Attribute Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.attribute(".hidden-text", "class", "hidden-text");
         }, `Expected element ".hidden-text" not to have attribute "class" with value "hidden-text".`);
     });
 
+    it("Not Attribute With Multiple Elements Throws", async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.attribute("b", "title", "title");
+        }, `Expected element "b" not to have attribute "title" with value "title".`);
+    });
+
     it("Not Attribute Without Value Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.attribute(".hidden-text", "hidden");
         }, `Expected element ".hidden-text" not to have attribute "hidden".`);
@@ -98,7 +100,6 @@ describe("Assert Attribute", function() {
     });
 
     it("Not Attribute With No Element Found Throws", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.attribute(".not-element", "hidden");
         }, `Expected element ".not-element" not to have attribute "hidden", no element found.`);
@@ -111,7 +112,6 @@ describe("Assert Attribute", function() {
     });
 
     it("Not Attribute Throws Custom Message", async () => {
-        await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.attribute(".hidden-text", "class", "hidden-text", "custom msg");
         }, `custom msg`);
