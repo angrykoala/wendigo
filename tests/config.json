@@ -7,6 +7,7 @@
         "url": "http://localhost:3456/url_history.html",
         "storage": "http://localhost:3456/storage.html",
         "requests": "http://localhost:3456/request.html",
-        "viewport": "http://localhost:3456/viewport.html"
+        "viewport": "http://localhost:3456/viewport.html",
+        "hiddenChild": "http://localhost:3456/hidden_child.html"
     }
 }

@@ -88,4 +88,10 @@ describe("Assert Visible", function() {
             await browser.assert.not.visible("p", "not visible failed");
         }, `not visible failed`);
     });
+
+    it("Not Visible Child", async() => {
+        await browser.open(configUrls.hiddenChild);
+        await browser.assert.not.visible(".hidden-div");
+        await browser.assert.not.visible(".child");
+    });
 });

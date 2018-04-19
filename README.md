@@ -400,6 +400,7 @@ Asserts that the first element matching the selector is visible.
 An element will considered visible if:
 * Exists
 * The computed style doesn't contain display: none or visibility: hidden
+* All the parents are visible
 
 **text(selector, expected, msg?)**   
 Asserts that at least one element matching the given selector has the expected string or regex.
