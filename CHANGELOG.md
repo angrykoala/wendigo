@@ -5,6 +5,7 @@
   * Assert.attribute and assert.not.attribute now match any element
   * Assert.href and assert.not.href now match any element
   * Assert.visible message is now different when the element doesn't exist
+  * WaitFor message changed when waiting for a function
 
 0.6.0 / 2018-04-13
 ==================

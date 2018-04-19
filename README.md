@@ -247,6 +247,13 @@ await browser.waitFor(".popup");
 
 If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
 
+```js
+await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
+    const docs = document.querySelectorAll(s);
+    return docs.length > 2;
+}, 600, ".my-elements");
+```
+
 > Css and Xpath selectors supported
 
 **waitUntilNotVisible(selector, timeout=500)**   

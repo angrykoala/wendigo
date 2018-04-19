@@ -53,7 +53,7 @@ describe("Wait For", function() {
         await browser.click(".btn2");
         await utils.assertThrowsAsync (async () => {
             await browser.waitFor("#switch.off", 10);
-        }, `Error: Waiting for element "#switch.off" failed, timeout of 10ms exceeded.`);
+        }, `Error: Waiting for element "#switch.off", timeout of 10ms exceeded.`);
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
         await browser.assert.text("#switch", "On");
@@ -87,5 +87,15 @@ describe("Wait For", function() {
         await browser.assert.exists("#switch.off");
         await browser.assert.text("#switch", "Off");
         await browser.assert.not.exists("#switch.on");
+    });
+
+    it("Wait For With Function Timeout", async () => {
+        await browser.open(configUrls.click);
+        await utils.assertThrowsAsync (async () => {
+            await browser.waitFor((s) => {
+                const docs = document.querySelectorAll(s);
+                return docs.length > 0;
+            }, 10, "#switch.off");
+        }, "Error: Waiting for function to return true, timeout of 10ms exceeded.");
     });
 });
