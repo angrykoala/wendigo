@@ -32,21 +32,21 @@ describe("Assert Visible", function() {
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text");
-        }, `Expected element ".hidden-text" to be visible`);
+        }, `Expected element ".hidden-text" to be visible.`);
     });
 
     it("Is Visible When Styled Hidden", async () => {
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".hidden-text2");
-        }, `Expected element ".hidden-text2" to be visible`);
+        }, `Expected element ".hidden-text2" to be visible.`);
     });
 
     it("Is Visible When Element Not Exists", async () => {
         assert(browser.assert.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.visible(".not-exists");
-        }, `Expected element ".not-exists" to be visible`);
+        }, `Selector ".not-exists" doesn't match any elements.`);
     });
 
     it("Is Visible Throws With Custom Message", async () => {
@@ -77,10 +77,10 @@ describe("Assert Visible", function() {
         assert(browser.assert.not.visible);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.visible("p");
-        }, `Expected element "p" to not be visible`);
+        }, `Expected element "p" to not be visible.`);
         await utils.assertThrowsAssertionAsync (async () => {
             await browser.assert.not.visible("h1");
-        }, `Expected element "h1" to not be visible`);
+        }, `Expected element "h1" to not be visible.`);
     });
 
     it("Not Visible Throws With Custom Message", async () => {
