@@ -116,7 +116,7 @@ describe("Assert Requests", function() {
         }, `Expected not ok request to exist.`);
     });
 
-    it("Assert Requests By Ok Throws", async () => {
+    it("Assert Requests By Ok Throws Custom Message", async () => {
         await utils.assertThrowsAssertionAsync(async () => {
             browser.assert.request.ok(false, "ok fails");
         }, `ok fails`);
