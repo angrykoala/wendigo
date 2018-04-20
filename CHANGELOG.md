@@ -1,6 +1,7 @@
 0.7.0 / ####-##-##
 ==================
 
+  * Assert.request module
   * Assert.visible now checks every parent node is visible
   * Browser.setViewport
   * Assert.attribute and assert.not.attribute now match any element
