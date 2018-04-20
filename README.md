@@ -193,6 +193,13 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
+**style(selector, style)**
+Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
+
+```js
+const style=await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
+```
+
 **checked(selector)**   
 Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined.
 
