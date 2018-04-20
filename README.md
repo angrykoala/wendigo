@@ -754,16 +754,16 @@ The Requests module allows to get and filter the requests made by the browser si
 
 > All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
 
-* **all**    
+**all**    
 Returns all requests, ordered by when it was dispatched.
 ```js
 await browser.requests.all;
 ```
 
-* **filter**    
+**filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-* **clear()**    
+**clear()**    
 Clears the list of requests.
 
 ### Filtering Requests
@@ -777,23 +777,23 @@ const filteredRequests = await browser.requests.filter.status(200).requests;
 
 The available filters are:
 
-* **url(value)**    
+**url(value)**    
 Filters by the given url. The url can be a string or a regex.
 
 ```js
 await browser.requests.filter.url("http://localhost:8002/api").requests;
 ```
 
-* **method(value)**    
+**method(value)**    
 Filters by request method (`GET`, `POST`,...)
 
-* **status(value)**    
+**status(value)**    
 Filters by response status (`200`, `400`)
 
-* **fromCache(value=true)**    
+**fromCache(value=true)**    
 Filters whether the response comes from the browser cache or not.
 
-* **responseHeaders(headers)**   
+**responseHeaders(headers)**   
 Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
 
 ```js
@@ -802,7 +802,7 @@ await browser.requests.filter.responseHeaders({
 })
 ```
 
-* **ok(isOk=true)**    
+**ok(isOk=true)**    
 Filters request which response are considered successfull (status is between 200 and 299).
 
 
