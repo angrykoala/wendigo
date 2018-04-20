@@ -247,6 +247,13 @@ await browser.waitFor(".popup");
 
 If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
 
+```js
+await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
+    const docs = document.querySelectorAll(s);
+    return docs.length > 2;
+}, 600, ".my-elements");
+```
+
 > Css and Xpath selectors supported
 
 **waitUntilNotVisible(selector, timeout=500)**   
@@ -368,6 +375,15 @@ Navigates to next page in history.
 **refresh()**     
 Reloads current page.
 
+**setViewport(viewportConfig)**   
+Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
+
+```js
+await browser.setViewport({width: 300});
+```
+
+> Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
@@ -384,6 +400,7 @@ Asserts that the first element matching the selector is visible.
 An element will considered visible if:
 * Exists
 * The computed style doesn't contain display: none or visibility: hidden
+* All the parents are visible
 
 **text(selector, expected, msg?)**   
 Asserts that at least one element matching the given selector has the expected string or regex.
@@ -448,7 +465,7 @@ await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
 **attribute(selector, attribute, expected?, msg?)**   
-Asserts that the first element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
+Asserts that at least one element element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
 
 ```js
 await browser.assert.attribute(".hidden-class", "class", "hidden-class");
@@ -472,7 +489,7 @@ await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
 ```
 
 **href(selector, expected, msg?)**   
-Asserts that the first element matching the given selector contains an attribute href with expected value.
+Asserts that the any matching the given selector contains an attribute href with expected value.
 
 ```js
 browser.assert.href("a", "foo.html");
@@ -571,7 +588,7 @@ Asserts that the url of the page doesn't match the expected string.
 Asserts that the first element with the given selector doesn't have the expected value.
 
 **not.attribute(selector, attribute, expected?, msg?)**    
-Asserts that the first element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
+Asserts that no element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
 await browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class");
@@ -588,7 +605,7 @@ If the element doesn't exists, the assertion will fail.
 Asserts the first element matching the selector doesn't has a style with given value.
 
 **not.href(selector, expected, msg?)**   
-Asserts that the first element matching the given selector doesn't contain an attribute href with the expected value.
+Asserts that no element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg?)`
 
@@ -737,16 +754,16 @@ The Requests module allows to get and filter the requests made by the browser si
 
 > All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
 
-* **all**    
+**all**    
 Returns all requests, ordered by when it was dispatched.
 ```js
 await browser.requests.all;
 ```
 
-* **filter**    
+**filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-* **clear()**    
+**clear()**    
 Clears the list of requests.
 
 ### Filtering Requests
@@ -755,48 +772,100 @@ To filter the requests made by the browser, you can use `browser.request.filter`
 For example, to filter requests with status code of 200:
 
 ```js
-const filteredRequests = await browser.requests.filter.status(200).requests;
+const filteredRequests = browser.requests.filter.status(200).requests;
 ```
 
 The available filters are:
 
-* **url(value)**    
+**url(value)**    
 Filters by the given url. The url can be a string or a regex.
 
 ```js
-await browser.requests.filter.url("http://localhost:8002/api").requests;
+browser.requests.filter.url("http://localhost:8002/api").requests;
 ```
 
-* **method(value)**    
+**method(value)**    
 Filters by request method (`GET`, `POST`,...)
 
-* **status(value)**    
+**status(value)**    
 Filters by response status (`200`, `400`)
 
-* **fromCache(value=true)**    
+**fromCache(value=true)**    
 Filters whether the response comes from the browser cache or not.
 
-* **responseHeaders(headers)**   
+**responseHeaders(headers)**   
 Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
 
 ```js
-await browser.requests.filter.responseHeaders({
+browser.requests.filter.responseHeaders({
     'content-type': /html/,
 })
 ```
 
-* **ok(isOk=true)**    
+**ok(isOk=true)**    
 Filters request which response are considered successfull (status is between 200 and 299).
 
 
 Filters can be joined to perform a filter of several fields.
 
 ```js
-await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests; //Filters all the POST requests made to any url with api that are not cached and returned a success code
+//Filters all the POST requests made to any url with api that are not cached and returned a success code
+browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
+Not how filtering requests don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
+
+### Requests Assertions
+Assertions related requests can be accessed through `browser.assert.request`. Note that in assertions, request is singular.
+
+Like filters, request assertion don't need `await` and can be concatenated. All the assertions will check that at least one request with the given constraints was made.
+
+**url(expected, msg?)**    
+Asserts that at least one request is made to the given url. The url can be a string or regex.
+
+```js
+browser.assert.request.url(/api/);
+```
+
+**method(expected, msg?)**    
+Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
+
+```js
+browser.assert.request.method("GET");
+```
+
+**status(expected, msg?)**    
+Asserts that a response was received with the given status.
+
+```js
+browser.assert.request.status(200);
+```
+
+> Note that this method requires the request to be finished.
+
+**responseHeaders(expected, msg?)**    
+Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
+
+```js
+browser.requests.assert.responseHeaders({
+    'content-type': /html/,
+})
+```
+
+**ok(expected=true, msg?)**    
+Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
+
+
+Concatenating multiple assertions is possible:
+
+```js
+// Asserts that a POST method was done to the api endpoint
+browser.assert.request.method("POST").url("localhost:8000/api");
+```
+
+> Negative assertions are not supported for requests
 
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:

@@ -4,10 +4,11 @@
 window.WendigoUtils = {
     isVisible(element) {
         if(!element) return false;
+        if (element === document) return true; // Top element, always visible
         const style = window.getComputedStyle(element);
         if (style.display === 'none') return false;
         if (style.visibility === 'hidden') return false;
-        else return true;
+        return this.isVisible(element.parentNode);
     },
     queryElement(selector) {
         return WendigoQuery.query(selector);
