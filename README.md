@@ -817,6 +817,56 @@ Not how filtering requests don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
 
+### Requests Assertions
+Assertions related requests can be accessed through `browser.assert.request`. Note that in assertions, request is singular.
+
+Like filters, request assertion don't need `await` and can be concatenated. All the assertions will check that at least one request with the given constraints was made.
+
+**url(expected, msg?)**    
+Asserts that at least one request is made to the given url. The url can be a string or regex.
+
+```js
+browser.assert.request.url(/api/);
+```
+
+**method(expected, msg?)**    
+Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
+
+```js
+browser.assert.request.method("GET");
+```
+
+**status(expected, msg?)**    
+Asserts that a response was received with the given status.
+
+```js
+browser.assert.request.status(200);
+```
+
+> Note that this method requires the request to be finished.
+
+**responseHeaders(expected, msg?)**    
+Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
+
+```js
+browser.requests.assert.responseHeaders({
+    'content-type': /html/,
+})
+```
+
+**ok(expected=true, msg?)**    
+Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
+
+
+Concatenating multiple assertions is possible:
+
+```js
+// Asserts that a POST method was done to the api endpoint
+browser.assert.request.method("POST").url("localhost:8000/api");
+```
+
+> Negative assertions are not supported for requests
+
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
