@@ -45,6 +45,7 @@ describe("Requests Filter", function() {
     });
 
     it("Requests Filter By Method", async () => {
+        assert.strictEqual(browser.requests.filter.url(/api/)._requests.length, 0);
         assert.strictEqual(browser.requests.filter.method("GET")._requests.length, 2);
         assert.strictEqual(browser.requests.filter.method("POST")._requests.length, 0);
         await browser.clickText("click me");

@@ -6,6 +6,7 @@ const Wendigo = require('../lib/wendigo'); // Load from package.json
 
 describe("Wendigo Main", function() {
     this.timeout(5000);
+
     it("Wendigo Load", () => {
         assert(Wendigo);
         assert(Wendigo.createBrowser);
@@ -27,7 +28,7 @@ describe("Wendigo Main", function() {
 
     it("Wendigo Stop", async () => {
         await Wendigo.stop();
-        assert.strictEqual(Wendigo.instance, null);
+        assert.equal(Wendigo.instance, null);
         await Wendigo.stop();
     });
 
