@@ -2,6 +2,7 @@
 ==================
 
   * Browser.style
+  * Components improved, race condition warning fixed
 
 0.7.0 / 2018-04-20
 ==================

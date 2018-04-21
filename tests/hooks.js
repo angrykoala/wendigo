@@ -8,8 +8,6 @@ before(() => {
 });
 
 after(async () => {
-    // console.log("after1")
     await Wendigo.stop();
     dummyServer.close();
-    // console.log("after2")
 });
