@@ -770,8 +770,31 @@ await browser.requests.all;
 **filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**clear()**    
+**mock(url, response, method?)**    
+Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked.
+
+Response is an object with the following attributes:
+
+* `status` Response status code, defaults to 200.
+* `headers` Optional response headers.
+* `contentType` If set, equals to setting Content-Type response header.
+* `body` Optional response body. This must be a string
+
+> This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+
+```js
+// All requests made to /api will return 200 with the given body
+browser.requests.mock("http://localhost:8000/api", {
+    body: `{result: "ok"}`
+});
+```
+
+
+**clearRequests()**    
 Clears the list of requests.
+
+**clearMocks()**    
+Remove all the request mocks.
 
 ### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.

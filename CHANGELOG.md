@@ -1,6 +1,7 @@
 0.7.1 / ####-##-##
 ==================
 
+  * Request mocks
   * Browser.style
   * Components improved, race condition warning fixed
 
