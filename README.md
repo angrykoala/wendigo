@@ -193,6 +193,13 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
+**style(selector, style)**
+Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
+
+```js
+const style=await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
+```
+
 **checked(selector)**   
 Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined.
 
@@ -763,8 +770,33 @@ await browser.requests.all;
 **filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**clear()**    
+**mock(url, response, method?)**    
+Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked.
+
+Response is an object with the following attributes:
+
+* `status` Response status code, defaults to 200.
+* `headers` Optional response headers.
+* `contentType` If set, equals to setting Content-Type response header.
+* `body` Optional response body. This must be a string
+
+> This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+
+```js
+// All requests made to /api will return 200 with the given body
+browser.requests.mock("http://localhost:8000/api", {
+    body: `{result: "ok"}`
+});
+```
+
+All mocks are removed when opening a different page with `browser.open`.
+
+
+**clearRequests()**    
 Clears the list of requests.
+
+**clearMocks()**    
+Remove all the request mocks.
 
 ### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.

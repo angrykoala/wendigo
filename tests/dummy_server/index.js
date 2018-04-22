@@ -12,7 +12,7 @@ app.use("/", express.static(path.join(__dirname, "static")));
 
 
 app.get("/api", (req, res) => {
-    res.json({result: "OK"});
+    res.json({result: "DUMMY"});
 });
 
 let server;

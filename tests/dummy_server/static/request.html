@@ -8,10 +8,16 @@
 
 <body>
     <button class="btn" onclick="doRequest()">click me</button>
+    <div id="result"></div>
 
     <script>
         function doRequest() {
-            fetch("/api");
+            const el = document.querySelector("#result");
+            fetch("/api").then((res) => {
+                res.json().then((res) => {
+                    el.innerText = res.result;
+                });
+            })
         }
     </script>
 </body>
