@@ -789,6 +789,8 @@ browser.requests.mock("http://localhost:8000/api", {
 });
 ```
 
+All mocks are removed when opening a different page with `browser.open`.
+
 
 **clearRequests()**    
 Clears the list of requests.
