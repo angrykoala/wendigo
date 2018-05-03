@@ -84,4 +84,28 @@ describe("Requests Mocker", function() {
         await browser.assert.text("#result", "DUMMY");
     });
 
+    it("Clear Mocks", async () => {
+        await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.requests.clearMocks();
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Remove Mock", async () => {
+        await browser.requests.mock(configUrls.api, mockResponse, "GET");
+        await browser.requests.removeMock(configUrls.api, "GET");
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Remove Inexisting Mock", async () => {
+        await browser.requests.mock(configUrls.api, mockResponse, "GET");
+        await browser.requests.removeMock(configUrls.api, "POST");
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
 });

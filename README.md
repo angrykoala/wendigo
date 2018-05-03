@@ -791,6 +791,8 @@ browser.requests.mock("http://localhost:8000/api", {
 
 All mocks are removed when opening a different page with `browser.open`.
 
+**removeMock(url, method?)**
+Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.
 
 **clearRequests()**    
 Clears the list of requests.

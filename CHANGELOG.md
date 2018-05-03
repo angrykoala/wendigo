@@ -1,6 +1,7 @@
 0.7.2 / ####-##-##
 ==================
 
+  * Requests.removeMock
   * Requests list now restarted on each opened page
   * Fixed bug where request module was not properly cleared
 

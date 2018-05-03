@@ -22,8 +22,6 @@ describe("Assert Requests", function() {
     });
 
     it("Assert Requests By URL", async () => {
-        const requests = await browser.requests.filter.url(configUrls.requests);
-        console.log(requests);
         browser.assert.request.url(configUrls.requests);
         await browser.clickText("click me");
         await browser.wait();
