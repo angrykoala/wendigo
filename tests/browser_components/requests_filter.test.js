@@ -8,13 +8,15 @@ describe("Requests Filter", function() {
     this.timeout(5000);
     let browser;
 
-
-    beforeEach(async() => {
+    before(async () => {
         browser = await Wendigo.createBrowser();
+    });
+
+    beforeEach(async () => {
         await browser.open(configUrls.requests);
     });
 
-    afterEach(async() => {
+    after(async () => {
         await browser.close();
     });
 

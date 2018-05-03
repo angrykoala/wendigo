@@ -1,3 +1,10 @@
+0.7.2 / 2017-05-03
+==================
+
+  * Requests.removeMock
+  * Requests list now restarted on each opened page
+  * Fixed bug where request module was not properly cleared
+
 0.7.1 / 2018-04-23
 ==================
 

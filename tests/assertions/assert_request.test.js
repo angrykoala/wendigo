@@ -9,12 +9,15 @@ describe("Assert Requests", function() {
     let browser;
 
 
-    beforeEach(async() => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
+    });
+
+    beforeEach(async() => {
         await browser.open(configUrls.requests);
     });
 
-    afterEach(async() => {
+    after(async() => {
         await browser.close();
     });
 
