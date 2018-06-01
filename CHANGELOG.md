@@ -1,6 +1,7 @@
 0.7.4 / ####-##-##
 ==================
 
+  * Browser.focus
   * Assert.focus
   * Fixed bug where navigation to a different page breaks some methods
 

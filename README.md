@@ -400,6 +400,9 @@ await browser.setViewport({width: 300});
 
 > Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
 
+**focus(selector)**
+Focus the first element matching the given selector
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
