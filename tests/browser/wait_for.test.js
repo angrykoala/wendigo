@@ -107,7 +107,7 @@ describe("Wait For", function() {
         await browser.assert.url(configUrls.simple);
     });
 
-    it("Wait For Url", async () => {
+    it("Wait For Url Throws", async () => {
         await browser.open(configUrls.index);
         await browser.click("a");
         await utils.assertThrowsAsync (async () => {

@@ -60,7 +60,7 @@ describe("Value", function() {
     });
 
     it("Set Value Multiple Elements", async () => {
-        const changed = await browser.setValue("form input", "my-val");
+        const changed = await browser.setValue("form.basic-input input", "my-val");
         const value1 = await browser.value(".input1");
         const value2 = await browser.value(".input2");
         assert.strictEqual(value1, "my-val");

@@ -3,7 +3,7 @@
 
 <body>
     <h1>Main Title</h1>
-    <form>
+    <form class="basic-input">
         First Input: <input class="input1" name="firstname"> Last Input: <input class="input2" name="lastname" value="default value">
     </form>
     <p id="value-input"></p>
@@ -27,6 +27,12 @@
         <input type="checkbox" value="bike">Bike<br>
         <input type="checkbox" value="car">Car<br>
     </div>
+
+    <form id="radio">
+        <input type="radio" name="test-select" value="bike" checked>Bike<br>
+        <input type="radio" name="test-select" value="car">Car<br>
+        <input type="radio" name="test-select" value="other"> Other
+    </form>
 
     <script>
         document.querySelector(".input1").onkeypress = function(ev) {
