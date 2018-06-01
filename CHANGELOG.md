@@ -1,4 +1,4 @@
-0.7.3 / ####-##-##
+0.7.3 / 2018-06-01
 ==================
 
   * Assert.enabled and assert.disabled
