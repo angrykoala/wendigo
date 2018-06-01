@@ -1,6 +1,8 @@
 0.7.3 / ####-##-##
 ==================
 
+  * Assert.enabled and assert.disabled
+  * Fixed assert.attribute with null expected
   * Dependencies update
 
 0.7.2 / 2017-05-03
