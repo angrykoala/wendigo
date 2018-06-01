@@ -1,6 +1,7 @@
 0.7.4 / ####-##-##
 ==================
 
+  * Fixed bug where navigation to a different page breaks some methods
 
 0.7.3 / 2018-06-01
 ==================
