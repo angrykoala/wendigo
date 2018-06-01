@@ -573,6 +573,17 @@ Asserts that the first element matching the given selector is enabled (doesn't h
 
 > Css, Xpath and Dom selectors supported
 
+**focus(selector, msg?)**    
+Asserts that an element matching the given selector is focused.
+
+```js
+browser.click(".btn");
+browser.assert.focus(".btn");
+```
+
+> Css, Xpath and Dom selectors supported
+
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -594,7 +605,7 @@ If expected is an array, no element in it should match any element with given se
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
-**textContains(selector, expected, msg?)**   
+**not.textContains(selector, expected, msg?)**   
 Asserts that no elements matching the given selector contain the expected text.
 
 ```js
@@ -682,6 +693,11 @@ Asserts that the first element matching the given selector is not disabled (same
 
 **not.enabled(selector, msg?)**    
 Asserts that the first element matching the given selector is not enabled (same as assert.disabled).
+
+> Css, Xpath and Dom selectors supported
+
+**not.focus(selector, msg?)**    
+Asserts that none of the elements matching the given selector is focused.
 
 > Css, Xpath and Dom selectors supported
 
