@@ -1,3 +1,11 @@
+0.7.3 / 2018-06-01
+==================
+
+  * Assert.enabled and assert.disabled
+  * WaitForUrl
+  * Fixed assert.attribute with null expected
+  * Dependencies update
+
 0.7.2 / 2017-05-03
 ==================
 

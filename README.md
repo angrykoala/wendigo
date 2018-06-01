@@ -126,7 +126,7 @@ const elementText = await browser.evaluate((s) => {
 
 > This is a wrapper around browser.page.evaluate
 
-**query(selector)**   
+**query(selector, childSelector?)**   
 Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 
 ```js
@@ -135,7 +135,7 @@ const element = await browser.query("h1");
 
 Optionally, query supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
 
-**queryAll(selector)**   
+**queryAll(selector, childSelector?)**   
 Returns an array with all the DOM elements that match the given css selector.
 
 ```js
@@ -269,6 +269,15 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 ```js
 await browser.waitUntilNotVisible(".toast");
 ```
+
+**waitForUrl(url, timeout=500)**
+Waits for page url to be the given url.
+
+```js
+await browser.click("a");
+await browser.waitForUrl("my-url");
+```
+
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
@@ -554,6 +563,16 @@ Asserts that the first element matching the given selector has a checked value s
 
 > Css, Xpath and Dom selectors supported
 
+**disabled(selector, msg?)**
+Asserts that the first element matching the given selector is disabled (has attribute disabled).
+
+> Css, Xpath and Dom selectors supported
+
+**enabled(selector, msg?)**
+Asserts that the first element matching the given selector is enabled (doesn't have attribute disabled).
+
+> Css, Xpath and Dom selectors supported
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -602,11 +621,13 @@ await browser.assert.not.attribute(".not-hidden-class", "class", "hidden-class")
 await browser.assert.not.attribute(".not-hidden-class", "hidden");
 ```
 
-To pass a custom message without specifying an expected value, you can pass null:
+To pass a custom message without specifying an expected value, you can pass undefined:
 ```js
-await browser.assert.not.attribute(".hidden-class", "href", null, "hidden-class has attribute href");
+await browser.assert.not.attribute(".hidden-class", "href", undefined, "hidden-class has attribute href");
 ```
 If the element doesn't exists, the assertion will fail.
+
+> Keep in mind that passing null as expected value will assert that the attribute exists and it is not recommended
 
 **not.style(selector, style, expected, msg?)**   
 Asserts the first element matching the selector doesn't has a style with given value.
@@ -651,6 +672,16 @@ browser.assert.not.cookie("username", "not-user");
 Asserts that the first element matching the given selector has a checked value set to false.
 
 Note that if the element doesn't have a checked value (i.e. is not a checkbox) this assertion will throw.
+
+> Css, Xpath and Dom selectors supported
+
+**not.disabled(selector, msg?)**
+Asserts that the first element matching the given selector is not disabled (same as assert.enabled).
+
+> Css, Xpath and Dom selectors supported
+
+**not.enabled(selector, msg?)**
+Asserts that the first element matching the given selector is not enabled (same as assert.disabled).
 
 > Css, Xpath and Dom selectors supported
 

@@ -98,4 +98,20 @@ describe("Wait For", function() {
             }, 10, "#switch.off");
         }, "Error: Waiting for function to return true, timeout of 10ms exceeded.");
     });
+
+    it("Wait For Url", async () => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await browser.waitForUrl(configUrls.simple);
+        await browser.assert.not.title("Index Test");
+        await browser.assert.url(configUrls.simple);
+    });
+
+    it("Wait For Url", async () => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await utils.assertThrowsAsync (async () => {
+            await browser.waitForUrl(configUrls.click, 10);
+        }, `Error: Waiting for url "${configUrls.click}", timeout of 10ms exceeded.`);
+    });
 });

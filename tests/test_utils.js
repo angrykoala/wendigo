@@ -21,7 +21,10 @@ module.exports = {
             assert.throws(f, (err) => {
                 const errorCheck = expectedError ? err.toString() === expectedError : true;
                 const cbCheck = cb ? cb(err) : true;
-                return errorCheck && cbCheck;
+                if(!errorCheck) {
+                    throw new Error(`Expected different error thrown\n [Expect] ${expectedError} \n [Actual] ${err.toString()}`);
+                }
+                return cbCheck;
             });
         }
     }

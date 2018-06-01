@@ -70,6 +70,13 @@ describe("Assert Attribute", function() {
         await browser.assert.attribute(".hidden-text", "href", null);
     });
 
+    it("Attribute Equals Null Throws", async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.attribute(".hidden-text", "hidden", null);
+        }, `Expected element ".hidden-text" not to have attribute "hidden".`);
+
+    });
+
     it("Not Attribute", async () => {
         await browser.assert.not.attribute(".hidden-text", "class", "not-hidden-text");
     });
@@ -116,7 +123,7 @@ describe("Assert Attribute", function() {
             await browser.assert.not.attribute(".hidden-text", "class", "hidden-text", "custom msg");
         }, `custom msg`);
         await utils.assertThrowsAssertionAsync (async () => {
-            await browser.assert.not.attribute(".hidden-text", "hidden", null, "custom msg 2");
+            await browser.assert.not.attribute(".hidden-text", "hidden", undefined, "custom msg 2");
         }, `custom msg 2`);
     });
 });
