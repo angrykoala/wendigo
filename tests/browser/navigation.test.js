@@ -24,8 +24,6 @@ describe("Navigation", function() {
         await browser.wait();
         await browser.assert.not.title("Index Test");
         await browser.assert.url(configUrls.simple);
-        // TODO: fix page link
-        // await browser.assert.text("p", "html_test");
         await browser.back();
         await browser.assert.url(configUrls.index);
         await browser.assert.title("Index Test");

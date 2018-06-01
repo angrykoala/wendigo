@@ -2,6 +2,7 @@
 ==================
 
   * Assert.enabled and assert.disabled
+  * WaitForUrl
   * Fixed assert.attribute with null expected
   * Dependencies update
 

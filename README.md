@@ -270,6 +270,15 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 await browser.waitUntilNotVisible(".toast");
 ```
 
+**waitForUrl(url, timeout=500)**
+Waits for page url to be the given url.
+
+```js
+await browser.click("a");
+await browser.waitForUrl("my-url");
+```
+
+
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
 
