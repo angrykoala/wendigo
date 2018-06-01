@@ -270,7 +270,7 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 await browser.waitUntilNotVisible(".toast");
 ```
 
-**waitForUrl(url, timeout=500)**
+**waitForUrl(url, timeout=500)**    
 Waits for page url to be the given url.
 
 ```js
@@ -563,12 +563,12 @@ Asserts that the first element matching the given selector has a checked value s
 
 > Css, Xpath and Dom selectors supported
 
-**disabled(selector, msg?)**
+**disabled(selector, msg?)**    
 Asserts that the first element matching the given selector is disabled (has attribute disabled).
 
 > Css, Xpath and Dom selectors supported
 
-**enabled(selector, msg?)**
+**enabled(selector, msg?)**    
 Asserts that the first element matching the given selector is enabled (doesn't have attribute disabled).
 
 > Css, Xpath and Dom selectors supported
@@ -675,12 +675,12 @@ Note that if the element doesn't have a checked value (i.e. is not a checkbox) t
 
 > Css, Xpath and Dom selectors supported
 
-**not.disabled(selector, msg?)**
+**not.disabled(selector, msg?)**    
 Asserts that the first element matching the given selector is not disabled (same as assert.enabled).
 
 > Css, Xpath and Dom selectors supported
 
-**not.enabled(selector, msg?)**
+**not.enabled(selector, msg?)**    
 Asserts that the first element matching the given selector is not enabled (same as assert.disabled).
 
 > Css, Xpath and Dom selectors supported
