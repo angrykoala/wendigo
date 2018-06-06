@@ -1036,7 +1036,7 @@ This error may appear when running wendigo on certain systems and in most CI ser
 For example `NO_SANDBOX=true npm test`.
 
 ### Running Tests With Travis CI
-Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
+Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself. It is recommended to add `travis_retry` to allow travis to execute the tests multiple times, as browser-based setup may fail frequently on travis workers:
 
 ```yml
 language: node_js
@@ -1049,7 +1049,7 @@ env:
   - NO_SANDBOX=true
 
 script:
-    - npm test
+    - travis_retry npm test
 
 cache:
   directories:

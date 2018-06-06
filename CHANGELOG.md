@@ -1,8 +1,8 @@
-0.7.4 / ####-##-##
+0.7.4 / 2018-06-07
 ==================
 
   * Browser.focus
-  * Browser.hover	
+  * Browser.hover
   * Assert.focus
   * Minor bugs in tests fixed
   * Request mock supports objects as response method
