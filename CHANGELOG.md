@@ -1,3 +1,6 @@
+0.7.5 / ####-##-##
+==================
+
 0.7.4 / 2018-06-07
 ==================
 
@@ -16,7 +19,7 @@
   * Fixed assert.attribute with null expected
   * Dependencies update
 
-0.7.2 / 2017-05-03
+0.7.2 / 2018-05-03
 ==================
 
   * Requests.removeMock
