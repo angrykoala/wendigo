@@ -7,7 +7,7 @@ describe("Requests Mocker", function() {
     this.timeout(5000);
     let browser;
     const mockResponse = {
-        body: JSON.stringify({result: "MOCK"})
+        body: {result: "MOCK"}
     };
 
 
@@ -28,6 +28,15 @@ describe("Requests Mocker", function() {
 
     it("Mocked Request", async () => {
         await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mocked Request With String", async () => {
+        await browser.requests.mock(configUrls.api, {
+            body: JSON.stringify({result: "MOCK"})
+        });
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");

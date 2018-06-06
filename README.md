@@ -830,7 +830,7 @@ Response is an object with the following attributes:
 * `status` Response status code, defaults to 200.
 * `headers` Optional response headers.
 * `contentType` If set, equals to setting Content-Type response header.
-* `body` Optional response body. This must be a string
+* `body` Optional response body. It can be a string or a json-serializable object
 
 > This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
