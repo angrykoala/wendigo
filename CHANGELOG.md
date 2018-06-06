@@ -1,3 +1,13 @@
+0.7.4 / 2018-06-07
+==================
+
+  * Browser.focus
+  * Browser.hover
+  * Assert.focus
+  * Minor bugs in tests fixed
+  * Request mock supports objects as response method
+  * Fixed bug where navigation to a different page breaks some methods
+
 0.7.3 / 2018-06-01
 ==================
 

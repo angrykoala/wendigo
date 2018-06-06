@@ -270,7 +270,7 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 await browser.waitUntilNotVisible(".toast");
 ```
 
-**waitForUrl(url, timeout=500)**
+**waitForUrl(url, timeout=500)**    
 Waits for page url to be the given url.
 
 ```js
@@ -391,7 +391,7 @@ Navigates to next page in history.
 **refresh()**     
 Reloads current page.
 
-**setViewport(viewportConfig)**   
+**setViewport(viewportConfig)**     
 Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
 
 ```js
@@ -399,6 +399,16 @@ await browser.setViewport({width: 300});
 ```
 
 > Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
+
+**focus(selector)**    
+Focus the first element matching the given selector.
+
+> Only CSS selectors supported
+
+**hover(selector)**    
+Hovers over the first element matching the given selector.
+
+> Only CSS selectors supported
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
@@ -563,15 +573,26 @@ Asserts that the first element matching the given selector has a checked value s
 
 > Css, Xpath and Dom selectors supported
 
-**disabled(selector, msg?)**
+**disabled(selector, msg?)**    
 Asserts that the first element matching the given selector is disabled (has attribute disabled).
 
 > Css, Xpath and Dom selectors supported
 
-**enabled(selector, msg?)**
+**enabled(selector, msg?)**    
 Asserts that the first element matching the given selector is enabled (doesn't have attribute disabled).
 
 > Css, Xpath and Dom selectors supported
+
+**focus(selector, msg?)**    
+Asserts that an element matching the given selector is focused.
+
+```js
+browser.click(".btn");
+browser.assert.focus(".btn");
+```
+
+> Css, Xpath and Dom selectors supported
+
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
@@ -594,7 +615,7 @@ If expected is an array, no element in it should match any element with given se
 await browser.assert.not.text("p", "This text doesn't exists");
 ```
 
-**textContains(selector, expected, msg?)**   
+**not.textContains(selector, expected, msg?)**   
 Asserts that no elements matching the given selector contain the expected text.
 
 ```js
@@ -675,13 +696,18 @@ Note that if the element doesn't have a checked value (i.e. is not a checkbox) t
 
 > Css, Xpath and Dom selectors supported
 
-**not.disabled(selector, msg?)**
+**not.disabled(selector, msg?)**    
 Asserts that the first element matching the given selector is not disabled (same as assert.enabled).
 
 > Css, Xpath and Dom selectors supported
 
-**not.enabled(selector, msg?)**
+**not.enabled(selector, msg?)**    
 Asserts that the first element matching the given selector is not enabled (same as assert.disabled).
+
+> Css, Xpath and Dom selectors supported
+
+**not.focus(selector, msg?)**    
+Asserts that none of the elements matching the given selector is focused.
 
 > Css, Xpath and Dom selectors supported
 
@@ -809,7 +835,7 @@ Response is an object with the following attributes:
 * `status` Response status code, defaults to 200.
 * `headers` Optional response headers.
 * `contentType` If set, equals to setting Content-Type response header.
-* `body` Optional response body. This must be a string
+* `body` Optional response body. It can be a string or a json-serializable object
 
 > This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
@@ -1010,7 +1036,7 @@ This error may appear when running wendigo on certain systems and in most CI ser
 For example `NO_SANDBOX=true npm test`.
 
 ### Running Tests With Travis CI
-Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself:
+Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself. It is recommended to add `travis_retry` to allow travis to execute the tests multiple times, as browser-based setup may fail frequently on travis workers:
 
 ```yml
 language: node_js
@@ -1023,7 +1049,7 @@ env:
   - NO_SANDBOX=true
 
 script:
-    - npm test
+    - travis_retry npm test
 
 cache:
   directories:
@@ -1052,6 +1078,9 @@ test:
     - npm test
 ```
 _Example of .gitlab-ci.yml_
+
+### Assertion failed messages without error
+If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 

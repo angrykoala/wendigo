@@ -63,8 +63,8 @@ describe("Type", function() {
 
     it("KeyPress Invalud Input", async () => {
         await browser.click(".input1");
-        utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync(async () => {
             await browser.keyPress("NotAKey");
-        }, `Error: Unknown key: "NotAKey"`);
+        }, `Error: Could not press keys "NotAKey"`);
     });
 });
