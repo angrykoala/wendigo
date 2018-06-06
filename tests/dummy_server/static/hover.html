@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hover Test</title>
+</head>
+
+<body>
+    <p class="hover-me" onmouseover="isHover()" onmouseout="isNotHover()">hover me</p>
+    <p id="hover" class="hover">not hover</p>
+
+    <script>
+        function isHover() {
+            var elem = document.querySelector("#hover");
+            elem.textContent = "hover"
+        }
+
+        function isNotHover() {
+            var elem = document.querySelector("#hover");
+            elem.textContent = "not hover"
+        }
+    </script>
+</body>
+
+</html>

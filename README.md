@@ -403,7 +403,12 @@ await browser.setViewport({width: 300});
 **focus(selector)**
 Focus the first element matching the given selector.
 
-> Css, Xpath and Dom selectors supported
+> Only CSS selectors supported
+
+**hover(selector)**
+Hovers over the first element matching the given selector.
+
+> Only CSS selectors supported
 
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
