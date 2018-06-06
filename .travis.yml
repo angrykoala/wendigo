@@ -8,8 +8,8 @@ sudo: false
 env:
   - NO_SANDBOX=true
 
-script: travis_retry
-    - npm test
+script:
+  - travis_retry npm test
 
 cache:
   directories:
