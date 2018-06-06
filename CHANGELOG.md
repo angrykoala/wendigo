@@ -1,17 +1,10 @@
-0.7.4 / ####-##-##
-==================
-
-  * Browser.focus
-  * Assert.focus
-  * Request mock supports objects as response method
-  * Fixed bug where navigation to a different page breaks some methods
-
 0.7.3 / 2018-06-01
 ==================
 
   * Assert.enabled and assert.disabled
   * WaitForUrl
   * Fixed assert.attribute with null expected
+  * Minor bugs in tests fixed
   * Dependencies update
 
 0.7.2 / 2017-05-03
