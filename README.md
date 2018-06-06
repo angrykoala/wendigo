@@ -391,7 +391,7 @@ Navigates to next page in history.
 **refresh()**     
 Reloads current page.
 
-**setViewport(viewportConfig)**   
+**setViewport(viewportConfig)**     
 Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
 
 ```js
@@ -400,12 +400,12 @@ await browser.setViewport({width: 300});
 
 > Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
 
-**focus(selector)**
+**focus(selector)**    
 Focus the first element matching the given selector.
 
 > Only CSS selectors supported
 
-**hover(selector)**
+**hover(selector)**    
 Hovers over the first element matching the given selector.
 
 > Only CSS selectors supported
