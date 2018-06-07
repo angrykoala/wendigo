@@ -193,7 +193,7 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
-**style(selector, style)**
+**style(selector, style)**    
 Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
 
 ```js
@@ -1059,7 +1059,7 @@ _Example of travis.yml file_
 
 ### Running Tests With Gitlab CI
 
-Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`:
+Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`. It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers:
 
 ```yml
 image: node:8.9.4
@@ -1074,6 +1074,7 @@ before_script:
 
 test:
   stage: test
+  retry: 2
   script:
     - npm test
 ```
