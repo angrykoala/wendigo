@@ -151,7 +151,13 @@ describe("Requests Mocker", function() {
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called();
         }, `Mock of ${configUrls.api} not called.`);
+    });
 
+    it("Mocker Object Assertion Throws With Message", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await mock.assert.called(undefined, "called throws");
+        }, `called throws`);
     });
 
     it("Mocker Object Assertion Times", async () => {
@@ -163,7 +169,6 @@ describe("Requests Mocker", function() {
         await browser.clickText("click me");
         await browser.wait(100);
         mock.assert.called(2);
-
     });
 
     it("Mocker Object Assertion Times Throws", async () => {
@@ -174,6 +179,14 @@ describe("Requests Mocker", function() {
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called(2);
         }, `Mock of ${configUrls.api} not called 2 times.`);
+    });
+
+    it("Mocker Object Assertion Times Throws", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+
+        await utils.assertThrowsAssertionAsync (async () => {
+            await mock.assert.called(2, "called fails");
+        }, `called fails`);
     });
 
 });
