@@ -852,6 +852,8 @@ Mock will return a RequestMock object, with the following properties:
 * `called`: If the mock has been called
 * `timesCalled`: The times the mock has been called
 * `response` : The response the mock is returning (read only)
+* `url`: Mocked url
+* `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
 
 ```js
 const mock=browser.requests.mock("http://localhost:8000/api", {

@@ -1,7 +1,7 @@
 0.7.5 / ####-##-##
 ==================
 
-  * RequestMock object
+  * RequestMock object with assertion
 
 0.7.4 / 2018-06-07
 ==================

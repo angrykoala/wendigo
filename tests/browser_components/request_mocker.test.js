@@ -3,6 +3,7 @@
 const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
+const utils = require('../test_utils');
 
 describe("Requests Mocker", function() {
     this.timeout(5000);
@@ -135,6 +136,44 @@ describe("Requests Mocker", function() {
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
         assert.strictEqual(mock.timesCalled, 2);
+    });
+
+    it("Mocker Object Assertion", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        assert.strictEqual(mock.called, false);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        mock.assert.called();
+    });
+
+    it("Mocker Object Assertion Throws", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await mock.assert.called();
+        }, `Mock of ${configUrls.api} not called.`);
+
+    });
+
+    it("Mocker Object Assertion Times", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        mock.assert.called(0);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        mock.assert.called(1);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        mock.assert.called(2);
+
+    });
+
+    it("Mocker Object Assertion Times Throws", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.clickText("click me");
+        await browser.wait(100);
+
+        await utils.assertThrowsAssertionAsync (async () => {
+            await mock.assert.called(2);
+        }, `Mock of ${configUrls.api} not called 2 times.`);
     });
 
 });
