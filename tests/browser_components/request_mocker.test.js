@@ -1,5 +1,6 @@
 "use strict";
 
+const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 
@@ -115,6 +116,25 @@ describe("Requests Mocker", function() {
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mocker Object", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        assert.strictEqual(mock.called, false);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+        assert.strictEqual(mock.called, true);
+    });
+
+    it("Mocker Object timesCalled", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        assert.strictEqual(mock.timesCalled, 0);
+        await browser.clickText("click me");
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+        assert.strictEqual(mock.timesCalled, 2);
     });
 
 });

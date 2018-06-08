@@ -837,6 +837,7 @@ Response is an object with the following attributes:
 * `contentType` If set, equals to setting Content-Type response header.
 * `body` Optional response body. It can be a string or a json-serializable object
 
+
 > This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
 ```js
@@ -845,6 +846,24 @@ browser.requests.mock("http://localhost:8000/api", {
     body: `{result: "ok"}`
 });
 ```
+
+Mock will return a RequestMock object, with the following properties:
+
+* `called`: If the mock has been called
+* `timesCalled`: The times the mock has been called
+* `response` : The response the mock is returning (read only)
+
+```js
+const mock=browser.requests.mock("http://localhost:8000/api", {
+    body: {result: "ok"}
+});
+mock.called; // false
+mock.timesCalled; // 0
+callApi(); //  { result: "ok" }
+mock.called; // true
+mock.timesCalled; // true
+```
+
 
 All mocks are removed when opening a different page with `browser.open`.
 
