@@ -60,4 +60,44 @@ describe("Assert Url", function() {
             await browser.assert.not.url(configUrls.index, "not url failed");
         }, `not url failed`);
     });
+
+    it("Redirect", async () => {
+        await browser.open(configUrls.redirect);
+        await browser.assert.url(configUrls.index);
+        await browser.assert.redirect();
+    });
+
+    it("Redirect Throws", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.redirect();
+        }, "Expected current url to be a redirection.");
+    });
+
+    it("Redirect Throws Custom Message", async () => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.redirect("redirect fails");
+        }, "redirect fails");
+    });
+
+    it("Not Redirect", async () => {
+        await browser.open(configUrls.index);
+        await browser.assert.url(configUrls.index);
+        await browser.assert.not.redirect();
+    });
+
+    it("Not Redirect Throws", async () => {
+        await browser.open(configUrls.redirect);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.redirect();
+        }, "Expected current url not to be a redirection.");
+    });
+
+    it("Not Redirect Throws Custom Message", async () => {
+        await browser.open(configUrls.redirect);
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.not.redirect("not redirect fails");
+        }, "not redirect fails");
+    });
 });

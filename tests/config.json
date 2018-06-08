@@ -11,6 +11,7 @@
         "hiddenChild": "http://localhost:3456/hidden_child.html",
         "disabledItems": "http://localhost:3456/disabled_items.html",
         "hover": "http://localhost:3456/hover.html",
+        "redirect": "http://localhost:3456/redirect",
         "api": "http://localhost:3456/api"
     }
 }

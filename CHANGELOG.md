@@ -2,6 +2,7 @@
 ==================
 
   * RequestMock object with assertion
+  * Assert.redirect
 
 0.7.4 / 2018-06-07
 ==================

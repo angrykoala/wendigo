@@ -593,6 +593,8 @@ browser.assert.focus(".btn");
 
 > Css, Xpath and Dom selectors supported
 
+**redirect(msg?)**    
+Asserts that the opened url is a redirection.
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
@@ -710,6 +712,10 @@ Asserts that the first element matching the given selector is not enabled (same 
 Asserts that none of the elements matching the given selector is focused.
 
 > Css, Xpath and Dom selectors supported
+
+**not.redirect(msg?)**    
+Asserts that the current opened page is not a redirection.
+
 
 ## Cookies
 The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
