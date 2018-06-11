@@ -2,7 +2,9 @@
 ==================
 
   * RequestMock object with assertion
-  * clearRequestMocks on open option
+  * Mocks cleared on close
+  * BeforeClose hook in components
+  * ClearRequestMocks on open option
   * Assert.redirect
 
 0.7.4 / 2018-06-07
