@@ -100,12 +100,17 @@ Puppeteer [frame class](https://github.com/GoogleChrome/puppeteer/blob/master/do
 ### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 
-**open(url)**    
+**open(url, options?)**    
 Opens the given url in the browser.
 
 ```js
 await browser.open("http://localhost:8000");
 ```
+
+The following options can be passed:
+
+* `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
+
 
 **close()**    
 Close the opened page in the browser.
@@ -873,7 +878,7 @@ mock.timesCalled; // true
 ```
 
 
-All mocks are removed when opening a different page with `browser.open`.
+All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.
 
 **removeMock(url, method?)**    
 Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.

@@ -189,4 +189,12 @@ describe("Requests Mocker", function() {
         }, `called fails`);
     });
 
+    it("Keep Mocks On Open", async () => {
+        await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.open(configUrls.requests, {clearRequestMocks: false});
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
 });
