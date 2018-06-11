@@ -196,5 +196,4 @@ describe("Requests Mocker", function() {
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
-
 });
