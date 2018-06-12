@@ -1,4 +1,4 @@
-0.7.5 / ####-##-##
+0.7.5 / 2018-06-12
 ==================
 
   * Request filter and assertion by postBody
