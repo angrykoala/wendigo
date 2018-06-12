@@ -148,4 +148,45 @@ describe("Assert Requests", function() {
             browser.assert.request.url("wagablabla").method("GET");
         }, `Expected request with url "wagablabla" to exist.`);
     });
+
+    it("Assert Request By Body", async () => {
+        const body = JSON.stringify({
+            data: "example data"
+        });
+        await browser.click(".post");
+        await browser.wait();
+        browser.assert.request.url(/api/).postBody(body);
+    });
+
+    it("Assert Request By Body Object", async () => {
+        const body = {
+            data: "example data"
+        };
+        await browser.click(".post");
+        await browser.wait();
+        browser.assert.request.url(/api/).postBody(body);
+    });
+
+    it("Assert Request By Body Regex", async () => {
+        await browser.click(".post");
+        await browser.wait();
+        browser.assert.request.url(/api/).postBody(/example\sdata/);
+    });
+
+    it("Assert Request By Body Throws", async () => {
+        await browser.click(".post");
+        await browser.wait();
+        await utils.assertThrowsAssertionAsync(async () => {
+            browser.assert.request.url(/api/).postBody(/notbody/);
+        }, `Expected request with body "/notbody/" to exist.`);
+
+    });
+
+    it("Assert Request By Body Throws Custom Message", async () => {
+        await browser.click(".post");
+        await browser.wait();
+        await utils.assertThrowsAssertionAsync(async () => {
+            browser.assert.request.url(/api/).postBody(/notbody/, "post body error");
+        }, `post body error`);
+    });
 });

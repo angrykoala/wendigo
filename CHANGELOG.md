@@ -1,7 +1,7 @@
 0.7.5 / ####-##-##
 ==================
 
-  * Request filter by postBody
+  * Request filter and assertion by postBody
   * RequestMock object with assertion
   * Mocks cleared on close
   * BeforeClose hook in components

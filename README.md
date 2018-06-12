@@ -936,7 +936,7 @@ Filters can be joined to perform a filter of several fields.
 browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
-**postBody(expected)**
+**postBody(expected)**    
 Filters requests by post body, the body can be a String, Object or regex.
 
 ```js
@@ -987,6 +987,14 @@ browser.requests.assert.responseHeaders({
 
 **ok(expected=true, msg?)**    
 Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
+
+
+**postBody(expected, msg?)**
+Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
+
+```js
+browser.assert.request.postBody({status: "OK"});
+```
 
 
 Concatenating multiple assertions is possible:

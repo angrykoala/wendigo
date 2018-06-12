@@ -132,5 +132,6 @@ describe("Requests Filter", function() {
         await browser.wait();
         assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
         assert.strictEqual(browser.requests.filter.url(/api/).postBody(/example\sdata/)._requests.length, 1);
+        assert.strictEqual(browser.requests.filter.url(/api/).postBody(/notbody/)._requests.length, 0);
     });
 });
