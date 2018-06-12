@@ -103,4 +103,34 @@ describe("Requests Filter", function() {
         assert.strictEqual(browser.requests.filter.url(/api/).method("GET")._requests.length, 1);
         assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 0);
     });
+
+
+    it("Filter Mock By Body", async () => {
+        const body = JSON.stringify({
+            data: "example data"
+        });
+        await browser.click(".post");
+        await browser.wait();
+        assert.strictEqual(browser.requests.filter.url(/api/).method("GET")._requests.length, 0);
+        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
+        assert.strictEqual(browser.requests.filter.url(/api/).postBody(body)._requests.length, 1);
+        assert.strictEqual(browser.requests.filter.url(/api/).postBody("not body")._requests.length, 0);
+    });
+
+    it("Filter Mock By Object Body", async () => {
+        const body = {
+            data: "example data"
+        };
+        await browser.click(".post");
+        await browser.wait();
+        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
+        assert.strictEqual(browser.requests.filter.url(/api/).postBody(body)._requests.length, 1);
+    });
+
+    it("Filter Mock By Regex Body", async () => {
+        await browser.click(".post");
+        await browser.wait();
+        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
+        assert.strictEqual(browser.requests.filter.url(/api/).postBody(/example\sdata/)._requests.length, 1);
+    });
 });

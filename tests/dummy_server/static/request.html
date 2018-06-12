@@ -9,6 +9,7 @@
 <body>
     <button class="btn" onclick="doRequest()">click me</button>
     <div id="result"></div>
+    <button class="btn post" onclick="doPostRequest()">post</button>
 
     <script>
         function doRequest() {
@@ -17,6 +18,15 @@
                 res.json().then((res) => {
                     el.innerText = res.result;
                 });
+            })
+        }
+
+        function doPostRequest(){
+            fetch("/api",{
+                body: JSON.stringify({
+                    data: "example data"
+                }),
+                method: 'POST'
             })
         }
     </script>

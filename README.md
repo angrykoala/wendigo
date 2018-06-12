@@ -936,7 +936,15 @@ Filters can be joined to perform a filter of several fields.
 browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
-Not how filtering requests don't require the use of `await`.
+**postBody(expected)**
+Filters requests by post body, the body can be a String, Object or regex.
+
+```js
+// Flters all DELETE requests made to with json body
+browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
+```
+
+Note that filtering requests don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
 
