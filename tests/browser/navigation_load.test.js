@@ -30,4 +30,12 @@ describe("Wait For", function() {
         await browser.assert.text("p", "html_test"); // Requires WendigoUtils
     });
 
+    it("Wait For Page Load", async () => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await browser.waitForPageLoad();
+        await browser.assert.global("WendigoUtils");
+        await browser.assert.text("p", "html_test");
+    });
+
 });

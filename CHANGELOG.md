@@ -1,3 +1,14 @@
+0.7.5 / 2018-06-12
+==================
+
+  * Request filter and assertion by postBody
+  * RequestMock object with assertion
+  * Browser.waitForPageLoad
+  * Mocks cleared on close
+  * BeforeClose hook in components
+  * ClearRequestMocks on open option
+  * Assert.redirect
+
 0.7.4 / 2018-06-07
 ==================
 
@@ -16,7 +27,7 @@
   * Fixed assert.attribute with null expected
   * Dependencies update
 
-0.7.2 / 2017-05-03
+0.7.2 / 2018-05-03
 ==================
 
   * Requests.removeMock

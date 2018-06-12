@@ -15,6 +15,10 @@ app.get("/api", (req, res) => {
     res.json({result: "DUMMY"});
 });
 
+app.get("/redirect", (req, res) => {
+    res.redirect("/index.html");
+});
+
 let server;
 const dummy = function(port) {
     return new Promise((resolve) => {

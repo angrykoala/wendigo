@@ -100,12 +100,17 @@ Puppeteer [frame class](https://github.com/GoogleChrome/puppeteer/blob/master/do
 ### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 
-**open(url)**    
+**open(url, options?)**    
 Opens the given url in the browser.
 
 ```js
 await browser.open("http://localhost:8000");
 ```
+
+The following options can be passed:
+
+* `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
+
 
 **close()**    
 Close the opened page in the browser.
@@ -193,7 +198,7 @@ const styles=await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
-**style(selector, style)**
+**style(selector, style)**    
 Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
 
 ```js
@@ -400,6 +405,9 @@ await browser.setViewport({width: 300});
 
 > Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
 
+**waitForPageLoad()**    
+Waits until a dom ready event is fired, this method will also wait until Wendigo is ready to perform assertions on the given page.
+
 **focus(selector)**    
 Focus the first element matching the given selector.
 
@@ -593,6 +601,8 @@ browser.assert.focus(".btn");
 
 > Css, Xpath and Dom selectors supported
 
+**redirect(msg?)**    
+Asserts that the opened url is a redirection.
 
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
@@ -710,6 +720,10 @@ Asserts that the first element matching the given selector is not enabled (same 
 Asserts that none of the elements matching the given selector is focused.
 
 > Css, Xpath and Dom selectors supported
+
+**not.redirect(msg?)**    
+Asserts that the current opened page is not a redirection.
+
 
 ## Cookies
 The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
@@ -837,6 +851,7 @@ Response is an object with the following attributes:
 * `contentType` If set, equals to setting Content-Type response header.
 * `body` Optional response body. It can be a string or a json-serializable object
 
+
 > This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
 ```js
@@ -846,7 +861,27 @@ browser.requests.mock("http://localhost:8000/api", {
 });
 ```
 
-All mocks are removed when opening a different page with `browser.open`.
+Mock will return a RequestMock object, with the following properties:
+
+* `called`: If the mock has been called
+* `timesCalled`: The times the mock has been called
+* `response` : The response the mock is returning (read only)
+* `url`: Mocked url
+* `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
+
+```js
+const mock=browser.requests.mock("http://localhost:8000/api", {
+    body: {result: "ok"}
+});
+mock.called; // false
+mock.timesCalled; // 0
+callApi(); //  { result: "ok" }
+mock.called; // true
+mock.timesCalled; // true
+```
+
+
+All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.
 
 **removeMock(url, method?)**    
 Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.
@@ -904,7 +939,15 @@ Filters can be joined to perform a filter of several fields.
 browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
-Not how filtering requests don't require the use of `await`.
+**postBody(expected)**    
+Filters requests by post body, the body can be a String, Object or regex.
+
+```js
+// Flters all DELETE requests made to with json body
+browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
+```
+
+Note that filtering requests don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
 
@@ -947,6 +990,14 @@ browser.requests.assert.responseHeaders({
 
 **ok(expected=true, msg?)**    
 Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
+
+
+**postBody(expected, msg?)**    
+Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
+
+```js
+browser.assert.request.postBody({status: "OK"});
+```
 
 
 Concatenating multiple assertions is possible:
@@ -1059,7 +1110,7 @@ _Example of travis.yml file_
 
 ### Running Tests With Gitlab CI
 
-Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`:
+Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`. It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers:
 
 ```yml
 image: node:8.9.4
@@ -1074,6 +1125,7 @@ before_script:
 
 test:
   stage: test
+  retry: 2
   script:
     - npm test
 ```
