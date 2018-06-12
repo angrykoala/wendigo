@@ -3,6 +3,7 @@
 
   * Request filter and assertion by postBody
   * RequestMock object with assertion
+  * Browser.waitForPageLoad
   * Mocks cleared on close
   * BeforeClose hook in components
   * ClearRequestMocks on open option

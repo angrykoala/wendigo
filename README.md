@@ -405,6 +405,9 @@ await browser.setViewport({width: 300});
 
 > Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
 
+**waitForPageLoad()**    
+Waits until a dom ready event is fired, this method will also wait until Wendigo is ready to perform assertions on the given page.
+
 **focus(selector)**    
 Focus the first element matching the given selector.
 
@@ -989,7 +992,7 @@ browser.requests.assert.responseHeaders({
 Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
 
 
-**postBody(expected, msg?)**
+**postBody(expected, msg?)**    
 Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
 
 ```js
