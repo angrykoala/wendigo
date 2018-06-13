@@ -196,4 +196,9 @@ describe("Requests Mocker", function() {
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
+
+    it("Interceptor Is Ready After Close", async () => {
+        await browser.close();
+        assert.strictEqual(browser.requests._interceptorReady, true);
+    });
 });
