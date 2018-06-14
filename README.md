@@ -1136,7 +1136,7 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
-## Change Logs
+## Changelog
 
 A curated, chronologically ordered list of notable changes for each version of this project can be found in [this](CHANGELOG.md) file.
 
