@@ -947,7 +947,7 @@ Filters requests by post body, the body can be a String, Object or regex.
 browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
 
-**repsonseBody(expected)**    
+**responseBody(expected)**      
 Filters requests by response body, the body can be a String, Object or regex. This filter returns a promise, so either then or await is required. Also it cannot be concatenated directly.
 
 ```js
@@ -1143,10 +1143,6 @@ _Example of .gitlab-ci.yml_
 If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
-
-## Changelog
-
-A curated, chronologically ordered list of notable changes for each version of this project can be found in [this](CHANGELOG.md) file.
 
 ## Acknowledgements
 
