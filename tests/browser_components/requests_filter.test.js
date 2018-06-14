@@ -134,4 +134,14 @@ describe("Requests Filter", function() {
         assert.strictEqual(browser.requests.filter.url(/api/).postBody(/example\sdata/)._requests.length, 1);
         assert.strictEqual(browser.requests.filter.url(/api/).postBody(/notbody/)._requests.length, 0);
     });
+
+    it("Filter Mock By Response Body", async () => {
+        const body = {result: "DUMMY"};
+        await browser.clickText("click me");
+        await browser.wait();
+        const afterFilter = await browser.requests.filter.url(/api/).responseBody(body);
+        assert.strictEqual(afterFilter._requests.length, 1);
+        const afterFilter2 = await browser.requests.filter.url(/api/).responseBody("not response");
+        assert.strictEqual(afterFilter2._requests.length, 0);
+    });
 });

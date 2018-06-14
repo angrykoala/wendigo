@@ -943,11 +943,19 @@ browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 Filters requests by post body, the body can be a String, Object or regex.
 
 ```js
-// Flters all DELETE requests made to with json body
+// Filters all DELETE requests made to with json body
 browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
 
-Note that filtering requests don't require the use of `await`.
+**repsonseBody(expected)**    
+Filters requests by response body, the body can be a String, Object or regex. This filter returns a promise, so either then or await is required. Also it cannot be concatenated directly.
+
+```js
+const byResponseFilter = await browser.requests.filter.url(/api/).responseBody({response: 'OK'});
+byResponseFilter.requests; // Cannot be concatenated
+```
+
+Note that filtering requests except responseBody don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
 
