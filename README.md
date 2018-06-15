@@ -30,6 +30,8 @@ await browser.assert.text("#my-modal", "Button Clicked");
 
 > **Warning:** Wendigo is under early stages of development and its interface may change
 
+> Recommended node 8.11.3 lts
+
 **Contents**
 * [Api](#api)
     * [Wendigo](#wendigo)
@@ -898,7 +900,7 @@ To filter the requests made by the browser, you can use `browser.request.filter`
 For example, to filter requests with status code of 200:
 
 ```js
-const filteredRequests = browser.requests.filter.status(200).requests;
+const filteredRequests = await browser.requests.filter.status(200).requests;
 ```
 
 The available filters are:
@@ -907,7 +909,7 @@ The available filters are:
 Filters by the given url. The url can be a string or a regex.
 
 ```js
-browser.requests.filter.url("http://localhost:8002/api").requests;
+await browser.requests.filter.url("http://localhost:8002/api").requests;
 ```
 
 **method(value)**    
@@ -923,7 +925,7 @@ Filters whether the response comes from the browser cache or not.
 Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
 
 ```js
-browser.requests.filter.responseHeaders({
+await browser.requests.filter.responseHeaders({
     'content-type': /html/,
 })
 ```
@@ -936,7 +938,7 @@ Filters can be joined to perform a filter of several fields.
 
 ```js
 //Filters all the POST requests made to any url with api that are not cached and returned a success code
-browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
+await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
 **postBody(expected)**    
@@ -944,18 +946,15 @@ Filters requests by post body, the body can be a String, Object or regex.
 
 ```js
 // Filters all DELETE requests made to with json body
-browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
+await browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
 
 **responseBody(expected)**      
 Filters requests by response body, the body can be a String, Object or regex. This filter returns a promise, so either then or await is required. Also it cannot be concatenated directly.
 
 ```js
-const byResponseFilter = await browser.requests.filter.url(/api/).responseBody({response: 'OK'});
-byResponseFilter.requests; // Cannot be concatenated
+const byResponseFilter = await browser.requests.filter.url(/api/).responseBody({response: 'OK'}).requests;
 ```
-
-Note that filtering requests except responseBody don't require the use of `await`.
 
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
 
@@ -968,21 +967,21 @@ Like filters, request assertion don't need `await` and can be concatenated. All 
 Asserts that at least one request is made to the given url. The url can be a string or regex.
 
 ```js
-browser.assert.request.url(/api/);
+await browser.assert.request.url(/api/);
 ```
 
 **method(expected, msg?)**    
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
-browser.assert.request.method("GET");
+await rowser.assert.request.method("GET");
 ```
 
 **status(expected, msg?)**    
 Asserts that a response was received with the given status.
 
 ```js
-browser.assert.request.status(200);
+await browser.assert.request.status(200);
 ```
 
 > Note that this method requires the request to be finished.
@@ -991,7 +990,7 @@ browser.assert.request.status(200);
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
-browser.requests.assert.responseHeaders({
+await browser.requests.assert.responseHeaders({
     'content-type': /html/,
 })
 ```
@@ -1004,15 +1003,21 @@ Asserts that an successful response was received (status is between 200 and 299)
 Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
 
 ```js
-browser.assert.request.postBody({status: "OK"});
+await browser.assert.request.postBody({status: "OK"});
 ```
 
+**responseBody(expected, msg?)**    
+Asserts that a request response contains the given body. The expected value can be a string, regex or object.
+
+```js
+await browser.assert.request.responseBody({response: "OK"});
+```
 
 Concatenating multiple assertions is possible:
 
 ```js
 // Asserts that a POST method was done to the api endpoint
-browser.assert.request.method("POST").url("localhost:8000/api");
+await browser.assert.request.method("POST").url("localhost:8000/api");
 ```
 
 > Negative assertions are not supported for requests

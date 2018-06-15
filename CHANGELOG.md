@@ -1,8 +1,9 @@
-0.7.7 / ####-##-##
+0.8.0 / ####-##-##
 ==================
 
-  * ResponseBody request filter
-  
+  * ResponseBody request filter and assertion
+  * Major refactor in request filter and request assertions
+
 0.7.6 / 2018-06-13
 ==================
 
