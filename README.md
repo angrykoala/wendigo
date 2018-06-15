@@ -501,7 +501,7 @@ await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
 **attribute(selector, attribute, expected?, msg?)**   
-Asserts that at least one element element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass.
+Asserts that at least one element element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass. The expected value can be a string or regex
 
 ```js
 await browser.assert.attribute(".hidden-class", "class", "hidden-class");

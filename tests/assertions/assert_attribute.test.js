@@ -126,4 +126,15 @@ describe("Assert Attribute", function() {
             await browser.assert.not.attribute(".hidden-text", "hidden", undefined, "custom msg 2");
         }, `custom msg 2`);
     });
+
+    it("Attribute With Regex", async () => {
+        await browser.assert.attribute(".hidden-text", "class", /hidden-te/);
+    });
+
+    it("Attribute With Regex Throws", async () => {
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.attribute(".hidden-text", "class", /not-hidden-te/);
+        }, `Expected element ".hidden-text" to have attribute "class" with value "/not-hidden-te/", ["hidden-text"] found.`);
+
+    });
 });
