@@ -852,9 +852,10 @@ Response is an object with the following attributes:
 * `headers` Optional response headers.
 * `contentType` If set, equals to setting Content-Type response header.
 * `body` Optional response body. It can be a string or a json-serializable object
+* `delay` Optional delay to wait for the response to be fullfilled, in ms
 
 
-> This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+> This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
 ```js
 // All requests made to /api will return 200 with the given body
@@ -869,6 +870,7 @@ Mock will return a RequestMock object, with the following properties:
 * `timesCalled`: The times the mock has been called
 * `response` : The response the mock is returning (read only)
 * `url`: Mocked url
+* `immediate`: If the mock will return immediatly (delay=0)
 * `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
 
 ```js
