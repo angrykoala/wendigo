@@ -1,4 +1,4 @@
-0.8.0 / ####-##-##
+0.8.0 / 2018-06-15
 ==================
 
   * ResponseBody request filter and assertion
