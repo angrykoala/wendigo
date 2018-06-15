@@ -21,13 +21,13 @@ describe("Requests Filter", function() {
     });
 
     it("All Requests", async () => {
-        const requests = await browser.requests.all.length;
+        const requests = browser.requests.all.length;
         await browser.clickText("click me");
         await browser.wait(10);
-        assert.strictEqual(await browser.requests.all.length, requests + 1);
+        assert.strictEqual(browser.requests.all.length, requests + 1);
         await browser.clickText("click me");
         await browser.wait(10);
-        assert.strictEqual(await browser.requests.all.length, requests + 2);
+        assert.strictEqual(browser.requests.all.length, requests + 2);
     });
 
     it("Request Between Multiple Browsers", async () => {
@@ -39,69 +39,86 @@ describe("Requests Filter", function() {
     });
 
     it("Requests Filter By URL", async () => {
-        assert.strictEqual(browser.requests.filter.url("no-match")._requests.length, 0);
-        assert.strictEqual(browser.requests.filter.url(configUrls.requests)._requests.length, 1);
+        const reqs1 = await browser.requests.filter.url("no-match").requests;
+        assert.strictEqual(reqs1.length, 0);
+        const reqs2 = await browser.requests.filter.url(configUrls.requests).requests;
+        assert.strictEqual(reqs2.length, 1);
         await browser.clickText("click me");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.url(/api/)._requests.length, 1);
+        const reqs3 = await browser.requests.filter.url(/api/).requests;
+        assert.strictEqual(reqs3.length, 1);
     });
 
     it("Requests Filter By Method", async () => {
-        assert.strictEqual(browser.requests.filter.url(/api/)._requests.length, 0);
-        assert.strictEqual(browser.requests.filter.method("GET")._requests.length, 2);
-        assert.strictEqual(browser.requests.filter.method("POST")._requests.length, 0);
+        let req = await browser.requests.filter.url(/api/).requests;
+        assert.strictEqual(req.length, 0);
+        req = await browser.requests.filter.method("GET").requests;
+        assert.strictEqual(req.length, 2);
+        req = await browser.requests.filter.method("POST").requests;
+        assert.strictEqual(req.length, 0);
         await browser.clickText("click me");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.method("GET")._requests.length, 3);
+        req = await browser.requests.filter.method("GET").requests;
+        assert.strictEqual(req.length, 3);
     });
 
     it("Requests Filter By Status", async () => {
-        const requests = browser.requests.filter.status(200)._requests.length;
+        const requests = await browser.requests.filter.status(200).requests;
         await browser.clickText("click me");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.status(200)._requests.length, requests + 1);
-        assert.strictEqual(browser.requests.filter.status(900)._requests.length, 0);
+        let req = await browser.requests.filter.status(200).requests;
+        assert.strictEqual(req.length, requests.length + 1);
+        req = await browser.requests.filter.status(900).requests;
+        assert.strictEqual(req.length, 0);
     });
-
 
     it("Requests Filter By Headers", async () => {
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.responseHeaders({
+        let req = await browser.requests.filter.responseHeaders({
             'content-type': /html/
-        })._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.responseHeaders({
+        }).requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.responseHeaders({
             'content-type': /html/,
             'content-length': '0'
-        })._requests.length, 0);
-        assert.strictEqual(browser.requests.filter.responseHeaders({
+        }).requests;
+        assert.strictEqual(req.length, 0);
+        req = await browser.requests.filter.responseHeaders({
             'content-type': "text/css; charset=UTF-8"
-        })._requests.length, 1);
+        }).requests;
+        assert.strictEqual(req.length, 1);
 
-        assert.strictEqual(browser.requests.filter.responseHeaders({
+        req = await browser.requests.filter.responseHeaders({
             'content-type': /json/
-        })._requests.length, 0);
+        }).requests;
+        assert.strictEqual(req.length, 0);
         await browser.clickText("click me");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.responseHeaders({
+        req = await browser.requests.filter.responseHeaders({
             'content-type': /json/
-        })._requests.length, 1);
+        }).requests;
+        assert.strictEqual(req.length, 1);
     });
 
     it("Requests Filter By OK", async () => {
-        const okRequests = browser.requests.filter.ok()._requests.length;
-        const notOkRequests = browser.requests.filter.ok(false)._requests.length;
+        const okRequests = await browser.requests.filter.ok().requests;
+        const notOkRequests = await browser.requests.filter.ok(false).requests;
         await browser.clickText("click me");
         await browser.wait();
 
-        assert.strictEqual(browser.requests.filter.ok()._requests.length, okRequests + 1);
-        assert.strictEqual(browser.requests.filter.ok(false)._requests.length, notOkRequests);
+        let req = await browser.requests.filter.ok().requests;
+        assert.strictEqual(req.length, okRequests.length + 1);
+        req = await browser.requests.filter.ok(false).requests;
+        assert.strictEqual(req.length, notOkRequests.length);
     });
 
     it("Multiple Requests Filters", async () => {
         await browser.clickText("click me");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.url(/api/).method("GET")._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 0);
+        let req = await browser.requests.filter.url(/api/).method("GET").requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).method("POST").requests;
+        assert.strictEqual(req.length, 0);
     });
 
 
@@ -111,10 +128,14 @@ describe("Requests Filter", function() {
         });
         await browser.click(".post");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.url(/api/).method("GET")._requests.length, 0);
-        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).postBody(body)._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).postBody("not body")._requests.length, 0);
+        let req = await browser.requests.filter.url(/api/).method("GET").requests;
+        assert.strictEqual(req.length, 0);
+        req = await browser.requests.filter.url(/api/).method("POST").requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).postBody(body).requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).postBody("not body").requests;
+        assert.strictEqual(req.length, 0);
     });
 
     it("Filter Mock By Object Body", async () => {
@@ -123,15 +144,30 @@ describe("Requests Filter", function() {
         };
         await browser.click(".post");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).postBody(body)._requests.length, 1);
+        let req = await browser.requests.filter.url(/api/).method("POST").requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).postBody(body).requests;
+        assert.strictEqual(req.length, 1);
     });
 
     it("Filter Mock By Regex Body", async () => {
         await browser.click(".post");
         await browser.wait();
-        assert.strictEqual(browser.requests.filter.url(/api/).method("POST")._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).postBody(/example\sdata/)._requests.length, 1);
-        assert.strictEqual(browser.requests.filter.url(/api/).postBody(/notbody/)._requests.length, 0);
+        let req = await browser.requests.filter.url(/api/).method("POST").requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).postBody(/example\sdata/).requests;
+        assert.strictEqual(req.length, 1);
+        req = await browser.requests.filter.url(/api/).postBody(/notbody/).requests;
+        assert.strictEqual(req.length, 0);
+    });
+
+    it("Filter Mock By Response Body", async () => {
+        const body = {result: "DUMMY"};
+        await browser.clickText("click me");
+        await browser.wait();
+        const afterFilter = await browser.requests.filter.url(/api/).responseBody(body).requests;
+        assert.strictEqual(afterFilter.length, 1);
+        const afterFilter2 = await browser.requests.filter.url(/api/).responseBody("not response").requests;
+        assert.strictEqual(afterFilter2.length, 0);
     });
 });

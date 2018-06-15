@@ -1,3 +1,10 @@
+0.8.0 / 2018-06-15
+==================
+
+  * ResponseBody request filter and assertion
+  * Regex support for expected value of assert.attribute
+  * Major refactor in request filter and request assertions
+
 0.7.6 / 2018-06-13
 ==================
 
