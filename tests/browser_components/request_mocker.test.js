@@ -126,6 +126,7 @@ describe("Requests Mocker", function() {
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
         assert.strictEqual(mock.called, true);
+        assert.strictEqual(mock.auto, true);
     });
 
     it("Mocker Object timesCalled", async () => {
@@ -183,7 +184,7 @@ describe("Requests Mocker", function() {
 
     it("Mocker Object Assertion Times Throws", async () => {
         const mock = await browser.requests.mock(configUrls.api, mockResponse);
-
+        assert.strictEqual(mock.immediate, true);
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called(2, "called fails");
         }, `called fails`);
@@ -200,5 +201,38 @@ describe("Requests Mocker", function() {
     it("Interceptor Is Ready After Close", async () => {
         await browser.close();
         assert.strictEqual(browser.requests._interceptorReady, true);
+    });
+
+    it("Mock With Delay", async () => {
+        const response = Object.assign({
+            delay: 400
+        }, mockResponse);
+        const mock = await browser.requests.mock(configUrls.api, response);
+        assert.strictEqual(mock.immediate, false);
+        await browser.clickText("click me");
+        await browser.assert.not.text("#result", "MOCK");
+        await browser.wait(100);
+        await browser.assert.not.text("#result", "MOCK");
+        await browser.wait(400);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Trigger", async () => {
+        const response = Object.assign({
+            auto: false
+        }, mockResponse);
+        const mock = await browser.requests.mock(configUrls.api, response);
+        assert.strictEqual(mock.auto, false);
+        await browser.clickText("click me");
+        await browser.assert.not.text("#result", "MOCK");
+        mock.trigger();
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Auto Mock With Trigger", async () => {
+        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        await utils.assertThrowsAsync (async () => {
+            await mock.trigger();
+        }, `FatalError: Cannot trigger auto request mock.`);
     });
 });

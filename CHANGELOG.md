@@ -1,3 +1,11 @@
+0.8.1 / 2018-06-16
+==================
+
+  * Delay option for request mocks
+  * Auto option for request mocks
+  * Trigger method for request mocks
+  * UserAgent option in createBrowser settings
+
 0.8.0 / 2018-06-15
 ==================
 

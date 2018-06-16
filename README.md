@@ -57,6 +57,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
+    * `userAgent`: If defined, the default user agent will be overridden.
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
@@ -852,9 +853,11 @@ Response is an object with the following attributes:
 * `headers` Optional response headers.
 * `contentType` If set, equals to setting Content-Type response header.
 * `body` Optional response body. It can be a string or a json-serializable object
+* `delay` Optional delay to wait for the response to be fullfilled, in ms
+* `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true
 
 
-> This object matches the interface with Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+> This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
 ```js
 // All requests made to /api will return 200 with the given body
@@ -869,7 +872,9 @@ Mock will return a RequestMock object, with the following properties:
 * `timesCalled`: The times the mock has been called
 * `response` : The response the mock is returning (read only)
 * `url`: Mocked url
+* `immediate`: If the mock will return immediately (delay=0)
 * `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
+* `auto`: If the request will be completed automatically
 
 ```js
 const mock=browser.requests.mock("http://localhost:8000/api", {
@@ -884,6 +889,18 @@ mock.timesCalled; // true
 
 
 All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.
+
+If the mock is not auto, it can be manually triggered with the method `trigger()`, this method cannot be called with auto mocks:
+
+```js
+
+const mock=browser.requests.mock("http://localhost:8000/api", {
+    body: {result: "ok"},
+    auto: false()
+});
+callApi();
+mock.trigger();
+```
 
 **removeMock(url, method?)**    
 Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.
