@@ -57,6 +57,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
+    * `userAgent`: If defined, the default user agent will be overridden.
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
