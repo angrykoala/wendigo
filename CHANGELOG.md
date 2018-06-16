@@ -2,6 +2,8 @@
 ==================
 
   * Delay option for request mocks
+  * Auto option for request mocks
+  * Trigger method for request mocks 
 
 0.8.0 / 2018-06-15
 ==================
