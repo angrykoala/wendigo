@@ -1030,6 +1030,17 @@ Asserts that a request response contains the given body. The expected value can 
 await browser.assert.request.responseBody({response: "OK"});
 ```
 
+**exactly(expected, msg?)**     
+Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
+
+```js
+await browser.assert.requests.url("localhost:800/api"); // asserts that at least one request is made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
+```
+
+
+
 Concatenating multiple assertions is possible:
 
 ```js

@@ -4,7 +4,7 @@ const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe("Assert Requests", function() {
+describe.only("Assert Requests", function() {
     this.timeout(5000);
     let browser;
 
@@ -223,5 +223,41 @@ describe("Assert Requests", function() {
         await browser.clickText("click me");
         await browser.wait();
         await browser.assert.request.responseBody(/DUMMY/);
+    });
+
+    it("Assert Requests By Number", async () => {
+        await browser.clickText("click me");
+        await browser.wait();
+        await browser.assert.request.url(/api/).exactly(1);
+        await browser.clickText("click me");
+        await browser.wait();
+        await browser.assert.request.url(/api/).exactly(2);
+    });
+
+    it("Assert Requests By Number Zero", async () => {
+        await browser.assert.request.url(/api/).exactly(0);
+    });
+
+    it("Assert Requests By Number Throws", async () => {
+        await browser.clickText("click me");
+        await browser.wait();
+        await utils.assertThrowsAssertionAsync(async () => {
+            await browser.assert.request.url(/api/).exactly(2);
+        }, `Expected exactly 2 requests, 1 found.`);
+        await utils.assertThrowsAssertionAsync(async () => {
+            await browser.assert.request.url(/api/).exactly(0);
+        }, `Expected exactly 0 requests, 1 found.`);
+    });
+
+    it("Assert Requests By Number Throws Custom Message", async () => {
+        await utils.assertThrowsAssertionAsync(async () => {
+            await browser.assert.request.url(/api/).exactly(2, "exactly fails");
+        }, `exactly fails`);
+    });
+
+    it("Assert Requests By Number In Chain", async () => {
+        await browser.clickText("click me");
+        await browser.wait();
+        await browser.assert.request.method("GET").exactly(3).url(/api/);
     });
 });
