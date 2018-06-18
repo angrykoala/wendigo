@@ -950,7 +950,7 @@ If the mock is not auto, it can be manually triggered with the method `trigger()
 
 const mock=browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"},
-    auto: false()
+    auto: false
 });
 callApi();
 mock.trigger();
