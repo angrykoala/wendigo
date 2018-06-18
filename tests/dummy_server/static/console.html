@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="btn log" onclick="info()">click me</button>
+    <button class="btn error" onclick="error()">error</button>
+
+    <script>
+    console.log("Normal Log")
+        function info() {
+            console.info("Info Log")
+        }
+
+        function error() {
+            console.error("Error Log", "extra arg");
+        }
+    </script>
+</body>
+
+</html>

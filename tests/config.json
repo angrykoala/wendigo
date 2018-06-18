@@ -1,5 +1,5 @@
 {
-    "urls":{
+    "urls": {
         "index": "http://localhost:3456/index.html",
         "click": "http://localhost:3456/click.html",
         "simple": "http://localhost:3456/html_simple.html",
@@ -12,6 +12,7 @@
         "disabledItems": "http://localhost:3456/disabled_items.html",
         "hover": "http://localhost:3456/hover.html",
         "userAgent": "http://localhost:3456/user_agent.html",
+        "console": "http://localhost:3456/console.html",
         "redirect": "http://localhost:3456/redirect",
         "api": "http://localhost:3456/api"
     }

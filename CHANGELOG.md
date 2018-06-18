@@ -1,6 +1,7 @@
 0.8.2 / ####-##-##
 ==================
 
+  * Added console module
   * Added exactly assertion in requests
 
 0.8.1 / 2018-06-16
