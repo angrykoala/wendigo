@@ -1,12 +1,11 @@
-<img src="logo/light.svg" align="left" width="80px">
-
-
 # Wendigo
+<img src="logo/light.svg" align="right" width="150px">
 
 
 _by @angrykoala_    
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
+
 
 > A proper monster for front-end automated testing
 
