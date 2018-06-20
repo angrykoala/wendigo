@@ -1,7 +1,8 @@
-<img src="https://raw.githubusercontent.com/jbeguna04/wendigo/master/LogoDesign/1.png">
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/" /></a><br />Logo is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+<img src="logo/light.svg" align="left" width="80px">
+
 
 # Wendigo
+
 
 _by @angrykoala_    
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
@@ -49,6 +50,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
 * [Acknowledgements](#acknowledgements)
+* [License](#license)
 
 # Api
 
@@ -1234,3 +1236,9 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 * [Puppeteer](https://github.com/GoogleChrome/puppeteer) and Chrome Headless as base headless browser.
 * [ZombieJs](https://github.com/assaf/zombie) as inspiration of the assertion library.
 * [NightmareJs](http://www.nightmarejs.org) as inspiration for part of the browser interface.
+
+
+## License
+
+* Wendigo is maintained by @angrykoala under GPL-3.0 License
+* Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
