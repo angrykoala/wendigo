@@ -1,3 +1,6 @@
+<img src="https://raw.githubusercontent.com/jbeguna04/wendigo/master/LogoDesign/1.png">
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/" /></a><br />Logo is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
+
 # Wendigo
 
 _by @angrykoala_    
