@@ -1,8 +1,3 @@
-<p align="center">
- <img src="https://raw.githubusercontent.com/jbeguna04/wendigo/master/LogoDesign/banner.png" width=900 align="center">
- <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" /></a><br />This banner is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>
-</p>
-
 
 # Wendigo
 
