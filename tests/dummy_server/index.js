@@ -36,5 +36,7 @@ dummy.close = function() {
 module.exports = dummy;
 
 if (require.main === module) {
-    dummy(8002);
+    dummy(8002).then(() => {
+        console.log("Dummy Listening in 8002"); //eslint-disable-line
+    });
 }

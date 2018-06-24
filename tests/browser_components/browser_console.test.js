@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 
-describe("Cookies", function() {
+describe("Console", function() {
     this.timeout(5000);
     let browser;
 
@@ -60,7 +60,7 @@ describe("Cookies", function() {
     it("Find Log By Type", async () => {
         await browser.click(".log");
         await browser.click(".error");
-        const logs = browser.console.getLogsByType(browser.console.LogType.error);
+        const logs = browser.console.filter({type: browser.console.LogType.error});
         assert.strictEqual(logs.length, 1);
         assert.strictEqual(logs[0].text, "Error Log extra arg");
         assert.strictEqual(logs[0].type, browser.console.LogType.error);
@@ -69,7 +69,7 @@ describe("Cookies", function() {
     it("Find Log By Text", async () => {
         await browser.click(".log");
         await browser.click(".error");
-        const logs = browser.console.getLogsByText("Info Log");
+        const logs = browser.console.filter({text: "Info Log"});
         assert.strictEqual(logs.length, 1);
         assert.strictEqual(logs[0].text, "Info Log");
         assert.strictEqual(logs[0].type, browser.console.LogType.info);
@@ -78,10 +78,34 @@ describe("Cookies", function() {
     it("Find Log By Regex", async () => {
         await browser.click(".log");
         await browser.click(".error");
-        const logs = browser.console.getLogsByText(/Info\sLog/);
+        const logs = browser.console.filter({text: /Info\sLog/});
         assert.strictEqual(logs.length, 1);
         assert.strictEqual(logs[0].text, "Info Log");
         assert.strictEqual(logs[0].type, browser.console.LogType.info);
+    });
+
+    it("Find Log By Text And Type", async () => {
+        await browser.click(".error");
+        const logs = browser.console.filter({type: browser.console.LogType.error, text: "Error Log extra arg"});
+        assert.strictEqual(logs.length, 1);
+        assert.strictEqual(logs[0].text, "Error Log extra arg");
+        assert.strictEqual(logs[0].type, browser.console.LogType.error);
+    });
+
+    it("Find Log By Text And Type Empty", async () => {
+        await browser.click(".error");
+        const logs = browser.console.filter({type: browser.console.LogType.error, text: "Info Log"});
+        assert.strictEqual(logs.length, 0);
+    });
+
+    it("Find Log By Empty Filter", async () => {
+        const logs = browser.console.filter({});
+        assert.strictEqual(logs.length, 1);
+    });
+
+    it("Find Log By Undefined Filter", async () => {
+        const logs = browser.console.filter();
+        assert.strictEqual(logs.length, 1);
     });
 
 });

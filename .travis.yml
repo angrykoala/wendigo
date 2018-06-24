@@ -10,6 +10,7 @@ env:
 
 script:
   - travis_retry npm test
+  - npm run lint
 
 cache:
   directories:

@@ -1,12 +1,11 @@
-<img src="logo/light.svg" align="left" width="80px">
-
-
 # Wendigo
+<img src="logo/light.svg" align="right" width="150px">
 
 
 _by @angrykoala_    
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
+
 
 > A proper monster for front-end automated testing
 
@@ -141,7 +140,7 @@ const elementText = await browser.evaluate((s) => {
 > This is a wrapper around browser.page.evaluate
 
 **query(selector, childSelector?)**   
-Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+Queries the given css selector and returns a DOM element. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
@@ -168,6 +167,8 @@ Returns an array with the DOM elements matching the xPath selector.
 const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
 elements[0].textContent; // "My first paragraph"
 ```
+
+> The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
 **class(selector)**    
 Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
@@ -427,6 +428,11 @@ Hovers over the first element matching the given selector.
 
 > Only CSS selectors supported
 
+**scroll(value, xValue?)**    
+Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
+
+> Css, Xpath and Dom selectors supported
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
@@ -613,6 +619,18 @@ browser.assert.focus(".btn");
 **redirect(msg?)**    
 Asserts that the opened url is a redirection.
 
+**console(options, count?, msg?)**    
+Assets that at least one console event with given options exists, if count is set, asserts that the exact number of events exists. The options can be:
+* `text`: Asserts for the console event to have a text matching the given string or regex
+* `type`: Asserts that the event is of the given type (log, info, error,...)
+
+```js
+await browser.assert.console({
+    text: "Hello World!",
+    type: browser.console.LogType.log
+});
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -787,20 +805,22 @@ logs[0].text; // "Hello World!"
 **clear()**    
 Clear all the current logs. Note that logs are cleared when `browser.close()` is called, but not when a new page is opened.
 
-**findLogsByText(txt)**   
-Returns a list with all the logs that match the given text or regex.
+
+**filter(options)**    
+Returns an array with all the logs matching the given parameters, options can be:
+* `type`: The log type (`log`, `info`, `error`), it must be a string matching [Puppeteer's Console Types](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype), some of the most common types are accessible through `browser.console.LogTypes`.
+* `text` a string or regex matching the log output
+
+If no options are passed, all the logs will be returned, the options can be used together.
 
 ```js
-const logs=browser.console.findLogsByText(/Hello/);
-logs[0].text; // "Hello World!"
+const errorLogs=browser.console.filter({type:browser.console.LogTypes.Error});
+errorLogs[0].text; // "Oh No! An Error"
 ```
 
-**findLogsByType()**    
-Returns a list with all the logs matching the given type. The [log type](#logtypes) is a string matching [Puppeteer's Console Types](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype), some of the most common types are accessible through `browser.console.LogTypes`.
-
 ```js
-const errorLogs=browser.console.findLogsByType(browser.console.LogTypes.Error);
-errorLogs[0].text; // "Oh No! An Error"
+const logs=browser.console.filter({text: /Hello/});
+logs[0].text; // "Hello World!"
 ```
 
 ### Log
@@ -898,10 +918,10 @@ await browser.requests.all;
 **filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**mock(url, response, method?)**    
-Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked.
+**mock(url, options)**    
+Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked. The url can be a full url string (`http://...`) or a regex.
 
-Response is an object with the following attributes:
+The following options are supported:
 
 * `status` Response status code, defaults to 200.
 * `headers` Optional response headers.
@@ -909,9 +929,13 @@ Response is an object with the following attributes:
 * `body` Optional response body. It can be a string or a json-serializable object
 * `delay` Optional delay to wait for the response to be fullfilled, in ms
 * `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true
+* `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
+    * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
 
 
 > This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+
+> If multiple mocks match a requests, the more specific will be used.
 
 ```js
 // All requests made to /api will return 200 with the given body
@@ -926,6 +950,7 @@ Mock will return a RequestMock object, with the following properties:
 * `timesCalled`: The times the mock has been called
 * `response` : The response the mock is returning (read only)
 * `url`: Mocked url
+* `queryString`: The mock queryString
 * `immediate`: If the mock will return immediately (delay=0)
 * `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
 * `auto`: If the request will be completed automatically
@@ -950,14 +975,14 @@ If the mock is not auto, it can be manually triggered with the method `trigger()
 
 const mock=browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"},
-    auto: false()
+    auto: false
 });
 callApi();
 mock.trigger();
 ```
 
-**removeMock(url, method?)**    
-Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.
+**removeMock(url, options?)**    
+Removes the mock with the given url. If the original mock has a method or queryString, these must be provided in options.
 
 **clearRequests()**    
 Clears the list of requests.
@@ -1088,9 +1113,9 @@ await browser.assert.request.responseBody({response: "OK"});
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
 
 ```js
-await browser.assert.requests.url("localhost:800/api"); // asserts that at least one request is made to given url
-await browser.assert.requests.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
-await browser.assert.requests.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
+await browser.assert.request.url("localhost:800/api"); // asserts that at least one request is made to given url
+await browser.assert.request.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
+await browser.assert.request.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
 ```
 
 

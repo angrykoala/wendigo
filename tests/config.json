@@ -13,6 +13,7 @@
         "hover": "http://localhost:3456/hover.html",
         "userAgent": "http://localhost:3456/user_agent.html",
         "console": "http://localhost:3456/console.html",
+        "scroll": "http://localhost:3456/scroll.html",
         "redirect": "http://localhost:3456/redirect",
         "api": "http://localhost:3456/api"
     }

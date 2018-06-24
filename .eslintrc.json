@@ -58,7 +58,7 @@
             "afterColon": true
         }],
         "lines-between-class-members": ["warn", "always"],
-        "max-lines": ["error", 300],
+        "max-lines": ["error", 400],
         "max-len": ["off", 140],
         "max-params": ["error", 4],
         "max-nested-callbacks": ["error", 6],

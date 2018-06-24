@@ -42,6 +42,12 @@ describe("Type", function() {
         await browser.assert.value("input.input1", "firstText");
     });
 
+    it("Type Invalid Selector", async () => {
+        await utils.assertThrowsAsync(async () => {
+            await browser.type({}, "firstText");
+        }, `FatalError: Invalid selector on "browser.type".`);
+    });
+
     it("Type With Keypress Event", async () => {
         await browser.type(".input1", "dontpanic");
         await browser.assert.text("#value-input", "c");

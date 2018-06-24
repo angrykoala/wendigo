@@ -1,8 +1,13 @@
-0.8.2 / ####-##-##
+0.9.0 / 2018-06-24
 ==================
 
-  * Added console module
-  * Added exactly assertion in requests
+  * Updated requests mocks interface
+  * Requests mocks now support regex and queryStrings
+  * Console module
+  * Console assertion
+  * Exactly assertion in requests
+  * Browser.scroll method
+  * DomElement object to interface with Puppeteer's elementhandle
 
 0.8.1 / 2018-06-16
 ==================
