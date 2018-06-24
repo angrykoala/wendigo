@@ -1,5 +1,5 @@
 # Wendigo
-<img src="logo/light.svg" align="right" width="150px">
+<img src="https://user-images.githubusercontent.com/5960567/41823576-2f7cb71a-7802-11e8-8714-521cb38b42c0.png" align="right" width="150px">
 
 
 _by @angrykoala_    
