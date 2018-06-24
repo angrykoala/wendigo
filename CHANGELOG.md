@@ -1,4 +1,4 @@
-0.9.0 / ####-##-##
+0.9.0 / 2018-06-24
 ==================
 
   * Updated requests mocks interface
