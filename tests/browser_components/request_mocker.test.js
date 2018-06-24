@@ -45,21 +45,29 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocked Request With Method", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse, "GET");
+        const response = Object.assign({}, mockResponse, {method: "GET"});
+        await browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
 
-    it("Invalid Mocked Request", async () => {
-        await browser.requests.mock("Not API", mockResponse);
+    it("Invalid Mocked Request Url", async () => {
+        assert.throws(() => {
+            browser.requests.mock("Not API", mockResponse);
+        });
+    });
+
+    it("Unmatched Mocked Request", async () => {
+        await browser.requests.mock(`${configUrls.api}/noturl`, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
     });
 
     it("Invalid Mocked Request With Method", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse, "POST");
+        const response = Object.assign({}, mockResponse, {method: "POST"});
+        await browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -69,14 +77,15 @@ describe("Requests Mocker", function() {
         const mockResponse2 = {
             body: JSON.stringify({result: "DUMMY"})
         };
-        await browser.requests.mock(configUrls.api, mockResponse, "GET");
+        const response1 = Object.assign({}, mockResponse, {method: "GET"});
+        await browser.requests.mock(configUrls.api, response1);
         await browser.requests.mock(configUrls.api, mockResponse2); // Less Priority
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
 
-    it("Mocked Request Priority", async () => {
+    it("Mocked Request Override", async () => {
         const mockResponse2 = {
             body: JSON.stringify({result: "DUMMY"})
         };
@@ -104,16 +113,18 @@ describe("Requests Mocker", function() {
     });
 
     it("Remove Mock", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse, "GET");
-        await browser.requests.removeMock(configUrls.api, "GET");
+        const response = Object.assign({}, mockResponse, {method: "GET"});
+        await browser.requests.mock(configUrls.api, response);
+        await browser.requests.removeMock(configUrls.api, {method: "GET"});
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
     });
 
     it("Remove Inexisting Mock", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse, "GET");
-        await browser.requests.removeMock(configUrls.api, "POST");
+        const response = Object.assign({}, mockResponse, {method: "GET"});
+        await browser.requests.mock(configUrls.api, response);
+        await browser.requests.removeMock(configUrls.api, {method: "POST"});
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -234,5 +245,139 @@ describe("Requests Mocker", function() {
         await utils.assertThrowsAsync (async () => {
             await mock.trigger();
         }, `FatalError: Cannot trigger auto request mock.`);
+    });
+
+    it("Mock With QueryString", async () => {
+        await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Explicit QueryString", async () => {
+        const response = Object.assign({
+            queryString: "query=hi"
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Explicit QueryString Object", async () => {
+        const response = Object.assign({
+            queryString: {query: "hi"}
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Explicit QueryString Fails", async () => {
+        const response = Object.assign({
+            queryString: "query=not"
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Explicit QueryString Fails Object", async () => {
+        const response = Object.assign({
+            queryString: {query: "not"}
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Explicit QueryString Fails Multiple Elements", async () => {
+        const response = Object.assign({
+            queryString: {query: "hi", user: "dent"}
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Explicit Empty QueryString", async () => {
+        const response = Object.assign({
+            queryString: {}
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Explicit Empty QueryString String", async () => {
+        const response = Object.assign({
+            queryString: ""
+        }, mockResponse);
+        await browser.requests.mock(configUrls.api, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Explicit QueryString In Url", async () => {
+        await browser.requests.mock(`${configUrls.api}?query=hi`, mockResponse);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With 2 Explicit QueryString", async () => {
+        const response = Object.assign({
+            queryString: "query=hi"
+        }, mockResponse);
+        await browser.requests.mock(`${configUrls.api}?query=hi`, response);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Explicit QueryString Priority", async () => {
+        const response = {
+            queryString: "query=hi",
+            body: {result: "MOCK2"}
+        };
+        await browser.requests.mock(configUrls.api, response);
+        await browser.requests.mock(configUrls.api, mockResponse);
+        await browser.clickText("query");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK2");
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Regex", async () => {
+        await browser.requests.mock(/api/, mockResponse);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock With Regex Fails", async () => {
+        await browser.requests.mock(/not-api/, mockResponse);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Mock With Regex Priority", async () => {
+        const response = {
+            body: {result: "MOCK2"}
+        };
+        await browser.requests.mock(configUrls.api, response);
+        await browser.requests.mock(/api/, mockResponse);
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "MOCK2");
     });
 });

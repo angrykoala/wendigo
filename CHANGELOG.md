@@ -1,6 +1,8 @@
-0.8.2 / ####-##-##
+0.9.0 / ####-##-##
 ==================
 
+  * Updated requests mocks interface
+  * Requests mocks now support regex and queryStrings
   * Added console module
   * Added exactly assertion in requests
 

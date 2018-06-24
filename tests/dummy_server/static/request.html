@@ -10,11 +10,21 @@
     <button class="btn" onclick="doRequest()">click me</button>
     <div id="result"></div>
     <button class="btn post" onclick="doPostRequest()">post</button>
+    <button class="btn query" onclick="doQueryRequest()">query</button>
 
     <script>
         function doRequest() {
             const el = document.querySelector("#result");
             fetch("/api").then((res) => {
+                res.json().then((res) => {
+                    el.innerText = res.result;
+                });
+            })
+        }
+
+        function doQueryRequest() {
+            const el = document.querySelector("#result");
+            fetch("/api?query=hi").then((res) => {
                 res.json().then((res) => {
                     el.innerText = res.result;
                 });

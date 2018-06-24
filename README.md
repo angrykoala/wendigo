@@ -897,10 +897,10 @@ await browser.requests.all;
 **filter**    
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**mock(url, response, method?)**    
-Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked.
+**mock(url, options)**    
+Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked. The url can be a full url string (`http://...`) or a regex.
 
-Response is an object with the following attributes:
+The following options are supported:
 
 * `status` Response status code, defaults to 200.
 * `headers` Optional response headers.
@@ -908,9 +908,13 @@ Response is an object with the following attributes:
 * `body` Optional response body. It can be a string or a json-serializable object
 * `delay` Optional delay to wait for the response to be fullfilled, in ms
 * `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true
+* `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
+    * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
 
 
 > This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
+
+> If multiple mocks match a requests, the more specific will be used.
 
 ```js
 // All requests made to /api will return 200 with the given body
@@ -925,6 +929,7 @@ Mock will return a RequestMock object, with the following properties:
 * `timesCalled`: The times the mock has been called
 * `response` : The response the mock is returning (read only)
 * `url`: Mocked url
+* `queryString`: The mock queryString
 * `immediate`: If the mock will return immediately (delay=0)
 * `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
 * `auto`: If the request will be completed automatically
@@ -955,8 +960,8 @@ callApi();
 mock.trigger();
 ```
 
-**removeMock(url, method?)**    
-Removes the mock with the given url and method. If the original mock has a method, removeMock must provide the same method.
+**removeMock(url, options?)**    
+Removes the mock with the given url. If the original mock has a method or queryString, these must be provided in options.
 
 **clearRequests()**    
 Clears the list of requests.
@@ -1087,9 +1092,9 @@ await browser.assert.request.responseBody({response: "OK"});
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
 
 ```js
-await browser.assert.requests.url("localhost:800/api"); // asserts that at least one request is made to given url
-await browser.assert.requests.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
-await browser.assert.requests.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
+await browser.assert.request.url("localhost:800/api"); // asserts that at least one request is made to given url
+await browser.assert.request.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
+await browser.assert.request.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
 ```
 
 
