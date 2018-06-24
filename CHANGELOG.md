@@ -3,8 +3,9 @@
 
   * Updated requests mocks interface
   * Requests mocks now support regex and queryStrings
-  * Added console module
-  * Added exactly assertion in requests
+  * Console module
+  * Console assertion
+  * Exactly assertion in requests
 
 0.8.1 / 2018-06-16
 ==================

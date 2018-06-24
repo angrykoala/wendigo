@@ -612,6 +612,18 @@ browser.assert.focus(".btn");
 **redirect(msg?)**    
 Asserts that the opened url is a redirection.
 
+**console(options, count?, msg?)**    
+Assets that at least one console event with given options exists, if count is set, asserts that the exact number of events exists. The options can be:
+* `text`: Asserts for the console event to have a text matching the given string or regex
+* `type`: Asserts that the event is of the given type (log, info, error,...)
+
+```js
+await browser.assert.console({
+    text: "Hello World!",
+    type: browser.console.LogType.log
+});
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
@@ -786,20 +798,22 @@ logs[0].text; // "Hello World!"
 **clear()**    
 Clear all the current logs. Note that logs are cleared when `browser.close()` is called, but not when a new page is opened.
 
-**findLogsByText(txt)**   
-Returns a list with all the logs that match the given text or regex.
+
+**filter(options)**    
+Returns an array with all the logs matching the given parameters, options can be:
+* `type`: The log type (`log`, `info`, `error`), it must be a string matching [Puppeteer's Console Types](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype), some of the most common types are accessible through `browser.console.LogTypes`.
+* `text` a string or regex matching the log output
+
+If no options are passed, all the logs will be returned, the options can be used together.
 
 ```js
-const logs=browser.console.findLogsByText(/Hello/);
-logs[0].text; // "Hello World!"
+const errorLogs=browser.console.filter({type:browser.console.LogTypes.Error});
+errorLogs[0].text; // "Oh No! An Error"
 ```
 
-**findLogsByType()**    
-Returns a list with all the logs matching the given type. The [log type](#logtypes) is a string matching [Puppeteer's Console Types](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype), some of the most common types are accessible through `browser.console.LogTypes`.
-
 ```js
-const errorLogs=browser.console.findLogsByType(browser.console.LogTypes.Error);
-errorLogs[0].text; // "Oh No! An Error"
+const logs=browser.console.filter({text: /Hello/});
+logs[0].text; // "Hello World!"
 ```
 
 ### Log
