@@ -428,6 +428,11 @@ Hovers over the first element matching the given selector.
 
 > Only CSS selectors supported
 
+**scroll(value, xValue?)**    
+Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
+
+> Css, Xpath and Dom selectors supported
+
 ## Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 
