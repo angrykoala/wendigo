@@ -2,6 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const assert = require('assert');
+const DomElement = require('../../lib/dom_element');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
@@ -24,6 +25,7 @@ describe("Query", function() {
     it("Query", async () => {
         const element = await browser.query("h1");
         assert(element);
+        assert(element instanceof DomElement);
     });
 
     it("Query Multiple Elements", async () => {
@@ -63,5 +65,19 @@ describe("Query", function() {
     it("XPath Query", async () => {
         const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
         assert.strictEqual(elements.length, 1);
+    });
+
+    it("Query Dom Selector", async () => {
+        const element = await browser.query("p");
+        const element2 = await browser.query(element);
+        assert(element2);
+        assert(element === element2);
+    });
+
+    it("Query Invalid Selector", async () => {
+        await utils.assertThrowsAsync(async () => {
+            await browser.query({});
+        }, "FatalError: Invalid Selector on browser.query.");
+
     });
 });

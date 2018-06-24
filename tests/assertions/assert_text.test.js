@@ -143,4 +143,11 @@ describe("Assert Text", function() {
         }, `Error: Missing expected text for assertion`);
     });
 
+    it("Text Throws With DOM Object Selector", async () => {
+        const element = await browser.query("h1");
+        await utils.assertThrowsAssertionAsync (async () => {
+            await browser.assert.text(element, "My first paragraph");
+        }, `Expected element "h1" to have text "My first paragraph", "Main Title" found`);
+    });
+
 });

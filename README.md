@@ -140,7 +140,7 @@ const elementText = await browser.evaluate((s) => {
 > This is a wrapper around browser.page.evaluate
 
 **query(selector, childSelector?)**   
-Queries the given css selector and returns a DOM node. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+Queries the given css selector and returns a DOM element. If multiple elements are matched, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
@@ -167,6 +167,8 @@ Returns an array with the DOM elements matching the xPath selector.
 const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
 elements[0].textContent; // "My first paragraph"
 ```
+
+> The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
 **class(selector)**    
 Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.

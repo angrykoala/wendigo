@@ -6,6 +6,7 @@
   * Console module
   * Console assertion
   * Exactly assertion in requests
+  * DomElement object to interface with Puppeteer's elementhandle
 
 0.8.1 / 2018-06-16
 ==================
