@@ -44,6 +44,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Console](#console)
     * [LocalStorage](#localstorage)
     * [Requests](#requests)
+    * [Webworkers](#webworkers)
     * [Errors](#errors)
 * [Examples](#examples)
 * [Development](#development)
@@ -1128,6 +1129,18 @@ await browser.assert.request.method("POST").url("localhost:8000/api");
 ```
 
 > Negative assertions are not supported for requests
+
+## Webworkers
+The webworkers module allows to retrieve all the webworkers in the current page:
+
+**all()**    
+Returns all the webworkers currently executing in the page. Each webworker will have the following properties:
+
+* _url_: Returns the webworker file url
+* _worker_: Returns the [Puppeteer's Worker instance](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-worker)
+
+
+
 
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:

@@ -2,6 +2,7 @@
 ==================
 
   * Logo link fixed in readme
+  * Webworker module
 
 0.9.0 / 2018-06-24
 ==================
