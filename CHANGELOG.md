@@ -1,3 +1,10 @@
+0.9.1 / 2018-07-04
+==================
+
+  * Webworker module and assertions
+  * Bug with request mocks remove and override fixed
+  * Logo link fixed in readme
+
 0.9.0 / 2018-06-24
 ==================
 

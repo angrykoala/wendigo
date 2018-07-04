@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -12,7 +12,7 @@
   ],
   "main": "lib/wendigo.js",
   "scripts": {
-    "test": "mocha tests --recursive --exit --retries 2",
+    "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --retries 2",
     "lint": "eslint lib/ tests/ --ext .js"
   },
   "repository": {
@@ -40,7 +40,7 @@
     "puppeteer": "^1.5.0"
   },
   "devDependencies": {
-    "eslint": "^5.0.0",
+    "eslint": "^5.0.1",
     "express": "^4.16.3",
     "mocha": "^5.2.0"
   }

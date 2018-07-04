@@ -2,7 +2,7 @@
 
 const Wendigo = require('../../lib/wendigo');
 const assert = require('assert');
-const DomElement = require('../../lib/dom_element');
+const DomElement = require('../../lib/models/dom_element');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
