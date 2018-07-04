@@ -1,3 +1,9 @@
+1.0.0 / ####-##-##
+==================
+
+  * Incognito browser option
+  * Fixed bug where Wendigo options weren't updated properly
+
 0.9.1 / 2018-07-04
 ==================
 

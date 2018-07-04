@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Incognito Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <p id="check-text" class="on">On</p>
+
+    <script>
+        let fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+        var elem = document.querySelector("#check-text");
+        fs(window.TEMPORARY,
+            100,
+            () => {
+                elem.textContent = "Not Incognito";
+            }, () => {
+                elem.textContent = "Incognito";
+            });
+    </script>
+</body>
+
+</html>

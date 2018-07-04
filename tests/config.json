@@ -15,6 +15,7 @@
         "console": "http://localhost:3456/console.html",
         "scroll": "http://localhost:3456/scroll.html",
         "webworker": "http://localhost:3456/webworker.html",
+        "incognito": "http://localhost:3456/incognito.html",
         "redirect": "http://localhost:3456/redirect",
         "api": "http://localhost:3456/api"
     }
