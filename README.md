@@ -632,6 +632,17 @@ await browser.assert.console({
 });
 ```
 
+**webworker(options, msg?)**    
+Assert that at least one webworker is running, the following options can be passes:
+* `url`: Matches only the webworkers with given url
+* `count`: Matches exactly the given number of webworkers running.
+
+```js
+await browser.assert.webworker({url: "foo.js"}); // At least one webworker with given url running
+await browser.assert.webworker(); // at least one webworker running
+await browser.assert.webworker({count: 0}); // No webworkers running
+```
+
 ### Negative assertions
 Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 

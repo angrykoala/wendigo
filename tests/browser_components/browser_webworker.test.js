@@ -45,6 +45,5 @@ describe("Webworkers", function() {
         await browser.wait();
         const workers = browser.webworkers.all();
         assert.strictEqual(workers[0].url, "http://localhost:3456/worker.js");
-
     });
 });
