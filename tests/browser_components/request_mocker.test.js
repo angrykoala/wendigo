@@ -5,7 +5,7 @@ const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe("Requests Mocker", function() {
+describe.only("Requests Mocker", function() {
     this.timeout(5000);
     let browser;
     const mockResponse = {
@@ -91,6 +91,7 @@ describe("Requests Mocker", function() {
         };
         await browser.requests.mock(configUrls.api, mockResponse2);
         await browser.requests.mock(configUrls.api, mockResponse); // Overrides
+        assert.strictEqual(browser.requests._mockedRequests.length, 1);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -116,6 +117,15 @@ describe("Requests Mocker", function() {
         const response = Object.assign({}, mockResponse, {method: "GET"});
         await browser.requests.mock(configUrls.api, response);
         await browser.requests.removeMock(configUrls.api, {method: "GET"});
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.text("#result", "DUMMY");
+    });
+
+    it("Remove Mock Without Exact Match", async () => {
+        const response = Object.assign({}, mockResponse, {method: "GET"});
+        await browser.requests.mock(configUrls.api, response);
+        await browser.requests.removeMock(configUrls.api);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
