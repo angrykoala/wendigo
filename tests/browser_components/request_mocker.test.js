@@ -5,7 +5,7 @@ const Wendigo = require('../../lib/wendigo');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe.only("Requests Mocker", function() {
+describe("Requests Mocker", function() {
     this.timeout(5000);
     let browser;
     const mockResponse = {
@@ -91,7 +91,7 @@ describe.only("Requests Mocker", function() {
         };
         await browser.requests.mock(configUrls.api, mockResponse2);
         await browser.requests.mock(configUrls.api, mockResponse); // Overrides
-        assert.strictEqual(browser.requests._mockedRequests.length, 1);
+        assert.strictEqual(browser.requests._requestMocker._mockedRequests.length, 1);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
