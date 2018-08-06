@@ -33,7 +33,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 
 > **Warning:** Wendigo is under early stages of development and its interface may change
 
-> Recommended node 8.11.3 lts
+> Recommended Node 8.11.3 LTS or greater
 
 **Contents**
 * [Api](#api)
@@ -63,6 +63,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 * _settings_ is an optional object with the settings to build the browser
     * `log: false`: If true, it will log all the console events of the browser.
+    * `incognito: false`: If true, the browser will open as an incognito browser.
     * `userAgent`: If defined, the default user agent will be overridden.
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.

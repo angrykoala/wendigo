@@ -29,7 +29,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocked Request", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse);
+        browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -46,20 +46,20 @@ describe("Requests Mocker", function() {
 
     it("Mocked Request With Method", async () => {
         const response = Object.assign({}, mockResponse, {method: "GET"});
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
 
-    it("Invalid Mocked Request Url", async () => {
+    it("Invalid Mocked Request Url", () => {
         assert.throws(() => {
             browser.requests.mock("Not API", mockResponse);
         });
     });
 
     it("Unmatched Mocked Request", async () => {
-        await browser.requests.mock(`${configUrls.api}/noturl`, mockResponse);
+        browser.requests.mock(`${configUrls.api}/noturl`, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -67,7 +67,7 @@ describe("Requests Mocker", function() {
 
     it("Invalid Mocked Request With Method", async () => {
         const response = Object.assign({}, mockResponse, {method: "POST"});
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -78,8 +78,8 @@ describe("Requests Mocker", function() {
             body: JSON.stringify({result: "DUMMY"})
         };
         const response1 = Object.assign({}, mockResponse, {method: "GET"});
-        await browser.requests.mock(configUrls.api, response1);
-        await browser.requests.mock(configUrls.api, mockResponse2); // Less Priority
+        browser.requests.mock(configUrls.api, response1);
+        browser.requests.mock(configUrls.api, mockResponse2); // Less Priority
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -89,8 +89,8 @@ describe("Requests Mocker", function() {
         const mockResponse2 = {
             body: JSON.stringify({result: "DUMMY"})
         };
-        await browser.requests.mock(configUrls.api, mockResponse2);
-        await browser.requests.mock(configUrls.api, mockResponse); // Overrides
+        browser.requests.mock(configUrls.api, mockResponse2);
+        browser.requests.mock(configUrls.api, mockResponse); // Overrides
         assert.strictEqual(browser.requests._requestMocker._mockedRequests.length, 1);
         await browser.clickText("click me");
         await browser.wait(100);
@@ -115,7 +115,7 @@ describe("Requests Mocker", function() {
 
     it("Remove Mock", async () => {
         const response = Object.assign({}, mockResponse, {method: "GET"});
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.requests.removeMock(configUrls.api, {method: "GET"});
         await browser.clickText("click me");
         await browser.wait(100);
@@ -124,7 +124,7 @@ describe("Requests Mocker", function() {
 
     it("Remove Mock Without Exact Match", async () => {
         const response = Object.assign({}, mockResponse, {method: "GET"});
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.requests.removeMock(configUrls.api);
         await browser.clickText("click me");
         await browser.wait(100);
@@ -133,7 +133,7 @@ describe("Requests Mocker", function() {
 
     it("Remove Inexisting Mock", async () => {
         const response = Object.assign({}, mockResponse, {method: "GET"});
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.requests.removeMock(configUrls.api, {method: "POST"});
         await browser.clickText("click me");
         await browser.wait(100);
@@ -141,7 +141,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         assert.strictEqual(mock.called, false);
         await browser.clickText("click me");
         await browser.wait(100);
@@ -151,7 +151,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object timesCalled", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         assert.strictEqual(mock.timesCalled, 0);
         await browser.clickText("click me");
         await browser.clickText("click me");
@@ -161,7 +161,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object Assertion", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         assert.strictEqual(mock.called, false);
         await browser.clickText("click me");
         await browser.wait(100);
@@ -169,21 +169,21 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object Assertion Throws", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called();
         }, `Mock of ${configUrls.api} not called.`);
     });
 
     it("Mocker Object Assertion Throws With Message", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called(undefined, "called throws");
         }, `called throws`);
     });
 
     it("Mocker Object Assertion Times", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         mock.assert.called(0);
         await browser.clickText("click me");
         await browser.wait(100);
@@ -194,7 +194,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object Assertion Times Throws", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
 
@@ -204,7 +204,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocker Object Assertion Times Throws", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         assert.strictEqual(mock.immediate, true);
         await utils.assertThrowsAssertionAsync (async () => {
             await mock.assert.called(2, "called fails");
@@ -212,7 +212,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Keep Mocks On Open", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse);
+        browser.requests.mock(configUrls.api, mockResponse);
         await browser.open(configUrls.requests, {clearRequestMocks: false});
         await browser.clickText("click me");
         await browser.wait(100);
@@ -228,7 +228,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             delay: 400
         }, mockResponse);
-        const mock = await browser.requests.mock(configUrls.api, response);
+        const mock = browser.requests.mock(configUrls.api, response);
         assert.strictEqual(mock.immediate, false);
         await browser.clickText("click me");
         await browser.assert.not.text("#result", "MOCK");
@@ -242,7 +242,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             auto: false
         }, mockResponse);
-        const mock = await browser.requests.mock(configUrls.api, response);
+        const mock = browser.requests.mock(configUrls.api, response);
         assert.strictEqual(mock.auto, false);
         await browser.clickText("click me");
         await browser.assert.not.text("#result", "MOCK");
@@ -251,14 +251,14 @@ describe("Requests Mocker", function() {
     });
 
     it("Auto Mock With Trigger", async () => {
-        const mock = await browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAsync (async () => {
             await mock.trigger();
         }, `FatalError: Cannot trigger auto request mock.`);
     });
 
     it("Mock With QueryString", async () => {
-        await browser.requests.mock(configUrls.api, mockResponse);
+        browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -268,7 +268,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: "query=hi"
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -278,7 +278,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: {query: "hi"}
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -288,7 +288,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: "query=not"
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -298,7 +298,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: {query: "not"}
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -308,7 +308,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: {query: "hi", user: "dent"}
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -318,7 +318,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: {}
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -328,14 +328,14 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: ""
         }, mockResponse);
-        await browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
     });
 
     it("Mock With Explicit QueryString In Url", async () => {
-        await browser.requests.mock(`${configUrls.api}?query=hi`, mockResponse);
+        browser.requests.mock(`${configUrls.api}?query=hi`, mockResponse);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -345,7 +345,7 @@ describe("Requests Mocker", function() {
         const response = Object.assign({
             queryString: "query=hi"
         }, mockResponse);
-        await browser.requests.mock(`${configUrls.api}?query=hi`, response);
+        browser.requests.mock(`${configUrls.api}?query=hi`, response);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -356,8 +356,8 @@ describe("Requests Mocker", function() {
             queryString: "query=hi",
             body: {result: "MOCK2"}
         };
-        await browser.requests.mock(configUrls.api, response);
-        await browser.requests.mock(configUrls.api, mockResponse);
+        browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("query");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK2");
@@ -367,14 +367,14 @@ describe("Requests Mocker", function() {
     });
 
     it("Mock With Regex", async () => {
-        await browser.requests.mock(/api/, mockResponse);
+        browser.requests.mock(/api/, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
     });
 
     it("Mock With Regex Fails", async () => {
-        await browser.requests.mock(/not-api/, mockResponse);
+        browser.requests.mock(/not-api/, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
@@ -384,8 +384,8 @@ describe("Requests Mocker", function() {
         const response = {
             body: {result: "MOCK2"}
         };
-        await browser.requests.mock(configUrls.api, response);
-        await browser.requests.mock(/api/, mockResponse);
+        browser.requests.mock(configUrls.api, response);
+        browser.requests.mock(/api/, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK2");
