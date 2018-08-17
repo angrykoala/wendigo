@@ -2,6 +2,8 @@
 ==================
 
   * Added extra information to browser.open and browser.close errors
+  * Fixed a bug which caused so browsers not to close
+  * Some performance and stability improvements
 
 0.9.2 / 2018-08-17
 ==================
