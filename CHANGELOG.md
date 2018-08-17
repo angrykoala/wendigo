@@ -1,3 +1,11 @@
+0.9.2 / 2018-08-17
+==================
+
+  * Incognito browser option
+  * Fixed bug where Wendigo options weren't updated properly
+  * Puppeteer updated to 1.7.0
+  * Removed async/await from core code to increase compatibility
+
 0.9.1 / 2018-07-04
 ==================
 
