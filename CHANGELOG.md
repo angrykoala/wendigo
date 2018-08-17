@@ -1,3 +1,8 @@
+0.9.3 / ####-##-##
+==================
+
+  * Added extra information to browser.open and browser.close errors
+
 0.9.2 / 2018-08-17
 ==================
 
