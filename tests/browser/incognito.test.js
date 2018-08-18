@@ -5,7 +5,7 @@ const configUrls = require('../config.json').urls;
 
 
 describe("Incognito", function() {
-    this.timeout(5000);
+    this.timeout(50000);
 
     it("Not Incognito", async () => {
         const browser = await Wendigo.createBrowser();
@@ -20,6 +20,4 @@ describe("Incognito", function() {
         await browser.assert.text("#check-text", "Incognito");
         await browser.close();
     });
-
-
 });

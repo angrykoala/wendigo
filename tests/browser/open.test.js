@@ -20,7 +20,7 @@ describe("Open", function() {
     it("Open Fails", async () => {
         await utils.assertThrowsAsync(async () => {
             await browser.open("not-a-page");
-        }, `FatalError: Failed to open not-a-page.`);
+        }, `FatalError: Failed to open not-a-page. Protocol error (Page.navigate): Cannot navigate to invalid URL`);
     });
 
     it("Before Open Fails", async () => {
@@ -54,8 +54,7 @@ describe("Open", function() {
         browser._loaded = true;
         await utils.assertThrowsAsync(async () => {
             await browser.close();
-        }, `FatalError: Failed to close browser.`);
+        }, `FatalError: Failed to close browser. Protocol error: Connection closed. Most likely the page has been closed.`);
 
     });
-
 });

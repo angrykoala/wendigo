@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require('assert');
-const Wendigo = require('../lib/wendigo'); // Load from package.json
+const Wendigo = require('../../lib/wendigo'); // Load from package.json
 
 
 describe("Wendigo Main", function() {
