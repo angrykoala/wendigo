@@ -1,6 +1,7 @@
 0.9.3 / ####-##-##
 ==================
 
+  * Browser.openFile method
   * Added extra information to browser.open and browser.close errors
   * Fixed a bug which caused so browsers not to close
   * Some performance and stability improvements

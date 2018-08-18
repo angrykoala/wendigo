@@ -122,6 +122,15 @@ The following options can be passed:
 * `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
 
 
+**openFile(path, options?)**
+Opens the given file from the browser. Same options as `open` can be passed. The file will be passed by appending `file://` to the absolute path.
+
+```js
+await browser.open("static/index.html");
+```
+
+
+
 **close()**    
 Close the opened page in the browser.
 
