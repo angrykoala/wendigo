@@ -65,6 +65,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
     * `log: false`: If true, it will log all the console events of the browser.
     * `incognito: false`: If true, the browser will open as an incognito browser.
     * `userAgent`: If defined, the default user agent will be overridden.
+    * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting))
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds

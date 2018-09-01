@@ -1,3 +1,8 @@
+1.1.0 / ####-##-##
+==================
+
+  * Added the option noSandbox to createBrowser
+
 1.0.0 / 2018-08-18
 ==================
 
