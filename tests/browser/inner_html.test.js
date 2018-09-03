@@ -8,22 +8,22 @@ describe("Inner Html", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("InnerHtml", async () => {
+    it("InnerHtml", async() => {
         await browser.open(configUrls.index);
         const innerHtml = await browser.innerHtml(".container");
         assert.strictEqual(innerHtml.length, 1);
         assert.strictEqual(innerHtml[0], "\n        <p>My first paragraph</p>\n    ");
     });
 
-    it("InnerHtml Multiple Elements", async () => {
+    it("InnerHtml Multiple Elements", async() => {
         await browser.open(configUrls.index);
         const innerHtml = await browser.innerHtml("b");
         assert.strictEqual(innerHtml.length, 2);

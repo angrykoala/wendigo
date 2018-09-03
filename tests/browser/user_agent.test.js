@@ -8,14 +8,14 @@ describe("User Agent", function() {
     let browser;
 
 
-    it("Default User Agent", async () => {
+    it("Default User Agent", async() => {
         browser = await Wendigo.createBrowser();
         await browser.open(configUrls.userAgent);
         await browser.assert.text("#user-agent", /Chrome/);
         await browser.close();
     });
 
-    it("Set User Agent", async () => {
+    it("Set User Agent", async() => {
         browser = await Wendigo.createBrowser({
             userAgent: "wendigo"
         });

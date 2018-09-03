@@ -13,7 +13,7 @@ describe("Wendigo Main", function() {
         assert(Wendigo.stop);
     });
 
-    it("Wendigo Create Browser", async () => {
+    it("Wendigo Create Browser", async() => {
         assert(Wendigo.createBrowser);
         const browser = await Wendigo.createBrowser();
         assert(browser);
@@ -26,7 +26,7 @@ describe("Wendigo Main", function() {
         assert.strictEqual(browser._loaded, false);
     });
 
-    it("Wendigo Stop", async () => {
+    it("Wendigo Stop", async() => {
         await Wendigo.stop();
         assert.equal(Wendigo.instance, null);
         await Wendigo.stop();
@@ -38,7 +38,7 @@ describe("Wendigo Main", function() {
         assert(Wendigo.Errors.FatalError, "FatalError not accesible.");
     });
 
-    it("Change Browser Settings", async () => {
+    it("Change Browser Settings", async() => {
         const browser1 = await Wendigo.createBrowser();
         assert.strictEqual(browser1._settings.slowMo, 0);
         assert.strictEqual(Wendigo._lastSettings.slowMo, 0);
@@ -46,5 +46,4 @@ describe("Wendigo Main", function() {
         assert.strictEqual(browser2._settings.slowMo, 1);
         assert.strictEqual(Wendigo._lastSettings.slowMo, 1);
     });
-
 });

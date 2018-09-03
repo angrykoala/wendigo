@@ -9,38 +9,38 @@ describe("Browser Class", function() {
     this.timeout(5000);
 
     let browser;
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.index);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Class", async () => {
+    it("Class", async() => {
         const elements = await browser.class('div');
         assert.strictEqual(elements.length, 2);
         assert.strictEqual(elements[0], "container");
         assert.strictEqual(elements[1], "extra-class");
     });
 
-    it("Class With Multiple Elements", async () => {
+    it("Class With Multiple Elements", async() => {
         const elements = await browser.class('b');
         assert.strictEqual(elements.length, 1);
         assert.strictEqual(elements[0], "hidden-text2");
     });
 
-    it("Class Element Doesn't Exists", async () => {
-        await utils.assertThrowsAsync (async () => {
+    it("Class Element Doesn't Exists", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.class('div.not-exists');
         }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
     });
 
-    it("Class From Node", async () => {
+    it("Class From Node", async() => {
         const node = await browser.query('div');
         const classes = await browser.class(node);
         assert.strictEqual(classes.length, 2);
@@ -48,7 +48,7 @@ describe("Browser Class", function() {
         assert.strictEqual(classes[1], "extra-class");
     });
 
-    it("Class From Xpath", async () => {
+    it("Class From Xpath", async() => {
         const elements = await browser.class('//div');
         assert.strictEqual(elements.length, 2);
         assert.strictEqual(elements[0], "container");

@@ -8,11 +8,11 @@ describe("Assert Console", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.console);
     });
 
@@ -20,11 +20,11 @@ describe("Assert Console", function() {
         browser.console.clear();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Assert Log", async () => {
+    it("Assert Log", async() => {
         await browser.assert.console();
         await browser.assert.console({
             type: browser.console.LogType.log
@@ -38,7 +38,7 @@ describe("Assert Console", function() {
         });
     });
 
-    it("Assert Log Count", async () => {
+    it("Assert Log Count", async() => {
         await browser.click(".log");
         await browser.click(".log");
         await browser.click(".error");
@@ -51,7 +51,7 @@ describe("Assert Console", function() {
         }, 1);
     });
 
-    it("Assert Log Throws", async () => {
+    it("Assert Log Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 type: browser.console.LogType.log
@@ -64,7 +64,7 @@ describe("Assert Console", function() {
         }, `Expected console events of type "error", 0 found.`);
     });
 
-    it("Assert Log With Text Throws", async () => {
+    it("Assert Log With Text Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 text: "Invalid Text"
@@ -79,13 +79,13 @@ describe("Assert Console", function() {
     });
 
 
-    it("Assert Log With Regex", async () => {
+    it("Assert Log With Regex", async() => {
         await browser.assert.console({
             text: /Normal/
         });
     });
 
-    it("Assert Log With Regex Throws", async () => {
+    it("Assert Log With Regex Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 text: /NotText/
@@ -93,7 +93,7 @@ describe("Assert Console", function() {
         }, `Expected console events with text "/NotText/", 0 found.`);
     });
 
-    it("Assert Log Throws Custom Message", async () => {
+    it("Assert Log Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 type: browser.console.LogType.log

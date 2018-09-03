@@ -7,19 +7,19 @@ describe("Navigation", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.index);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Go Back", async () => {
+    it("Go Back", async() => {
         await browser.click("a");
         await browser.wait();
         await browser.assert.not.title("Index Test");
@@ -38,7 +38,7 @@ describe("Navigation", function() {
         await browser.assert.url(configUrls.simple);
     });
 
-    it("Refresh", async () => {
+    it("Refresh", async() => {
         await browser.open(configUrls.click);
         await browser.click(".btn");
         await browser.assert.text("#switch", "Off");

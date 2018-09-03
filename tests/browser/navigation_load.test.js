@@ -7,21 +7,21 @@ describe("Wait For", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
 
-    it("Wendigo Utils Exists", async () => {
+    it("Wendigo Utils Exists", async() => {
         await browser.open(configUrls.index);
         await browser.assert.global("WendigoUtils");
     });
 
-    it("Using Wendigo Utils After Redirect", async () => {
+    it("Using Wendigo Utils After Redirect", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");
         await browser.waitForUrl(configUrls.simple);
@@ -30,12 +30,11 @@ describe("Wait For", function() {
         await browser.assert.text("p", "html_test"); // Requires WendigoUtils
     });
 
-    it("Wait For Page Load", async () => {
+    it("Wait For Page Load", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");
         await browser.waitForPageLoad();
         await browser.assert.global("WendigoUtils");
         await browser.assert.text("p", "html_test");
     });
-
 });

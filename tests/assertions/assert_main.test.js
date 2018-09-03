@@ -7,19 +7,18 @@ describe("Assertions Main", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Multiple Assertions From Same Node", async () => {
+    it("Multiple Assertions From Same Node", async() => {
         await browser.open(configUrls.index);
         const node = await browser.query("h1");
         await browser.assert.text(node, "Main Title");
         await browser.assert.visible(node);
     });
-
 });

@@ -2,6 +2,8 @@
 ==================
 
   * Added the option noSandbox to createBrowser
+  * Potential bug in request mocker fixed
+  * Code style changed with more strict rules
 
 1.0.0 / 2018-08-18
 ==================

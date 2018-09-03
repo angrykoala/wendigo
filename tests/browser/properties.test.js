@@ -8,20 +8,20 @@ describe("Properties", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.forms);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
 
-    it("Html", async () => {
+    it("Html", async() => {
         await browser.open(configUrls.simple);
         const expectedHtml = `<!DOCTYPE html><html><head></head><body>
 <p>html_test</p>
@@ -32,16 +32,15 @@ describe("Properties", function() {
         assert.strictEqual(html, expectedHtml);
     });
 
-    it("Title", async () => {
+    it("Title", async() => {
         await browser.open(configUrls.index);
         const title = await browser.title();
         assert.strictEqual(title, "Index Test");
     });
 
-    it("Default Title", async () => {
+    it("Default Title", async() => {
         await browser.open(configUrls.simple);
         const title = await browser.title();
         assert.strictEqual(title, "");
     });
-
 });

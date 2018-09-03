@@ -8,19 +8,19 @@ describe("Requests Filter", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.requests);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("All Requests", async () => {
+    it("All Requests", async() => {
         const requests = browser.requests.all.length;
         await browser.clickText("click me");
         await browser.wait(10);
@@ -30,7 +30,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(browser.requests.all.length, requests + 2);
     });
 
-    it("Request Between Multiple Browsers", async () => {
+    it("Request Between Multiple Browsers", async() => {
         const requests = await browser.requests.all.length;
         await browser.close();
         browser = await Wendigo.createBrowser();
@@ -38,7 +38,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(await browser.requests.all.length, requests);
     });
 
-    it("Requests Filter By URL", async () => {
+    it("Requests Filter By URL", async() => {
         const reqs1 = await browser.requests.filter.url("no-match").requests;
         assert.strictEqual(reqs1.length, 0);
         const reqs2 = await browser.requests.filter.url(configUrls.requests).requests;
@@ -49,7 +49,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(reqs3.length, 1);
     });
 
-    it("Requests Filter By Method", async () => {
+    it("Requests Filter By Method", async() => {
         let req = await browser.requests.filter.url(/api/).requests;
         assert.strictEqual(req.length, 0);
         req = await browser.requests.filter.method("GET").requests;
@@ -62,7 +62,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 3);
     });
 
-    it("Requests Filter By Status", async () => {
+    it("Requests Filter By Status", async() => {
         const requests = await browser.requests.filter.status(200).requests;
         await browser.clickText("click me");
         await browser.wait();
@@ -72,7 +72,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 0);
     });
 
-    it("Requests Filter By Headers", async () => {
+    it("Requests Filter By Headers", async() => {
         await browser.wait();
         let req = await browser.requests.filter.responseHeaders({
             'content-type': /html/
@@ -100,7 +100,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 1);
     });
 
-    it("Requests Filter By OK", async () => {
+    it("Requests Filter By OK", async() => {
         const okRequests = await browser.requests.filter.ok().requests;
         const notOkRequests = await browser.requests.filter.ok(false).requests;
         await browser.clickText("click me");
@@ -112,7 +112,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, notOkRequests.length);
     });
 
-    it("Multiple Requests Filters", async () => {
+    it("Multiple Requests Filters", async() => {
         await browser.clickText("click me");
         await browser.wait();
         let req = await browser.requests.filter.url(/api/).method("GET").requests;
@@ -122,7 +122,7 @@ describe("Requests Filter", function() {
     });
 
 
-    it("Filter Mock By Body", async () => {
+    it("Filter Mock By Body", async() => {
         const body = JSON.stringify({
             data: "example data"
         });
@@ -138,7 +138,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 0);
     });
 
-    it("Filter Mock By Object Body", async () => {
+    it("Filter Mock By Object Body", async() => {
         const body = {
             data: "example data"
         };
@@ -150,7 +150,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 1);
     });
 
-    it("Filter Mock By Regex Body", async () => {
+    it("Filter Mock By Regex Body", async() => {
         await browser.click(".post");
         await browser.wait();
         let req = await browser.requests.filter.url(/api/).method("POST").requests;
@@ -161,7 +161,7 @@ describe("Requests Filter", function() {
         assert.strictEqual(req.length, 0);
     });
 
-    it("Filter Mock By Response Body", async () => {
+    it("Filter Mock By Response Body", async() => {
         const body = {result: "DUMMY"};
         await browser.clickText("click me");
         await browser.wait();

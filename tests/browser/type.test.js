@@ -8,68 +8,68 @@ describe("Type", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.forms);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Type", async () => {
+    it("Type", async() => {
         await browser.type("input.input1", "firstText");
         await browser.assert.value("input.input1", "firstText");
     });
-    it("Type With Existing Text", async () => {
+    it("Type With Existing Text", async() => {
         await browser.type("input.input2", "secondText");
         await browser.assert.value("input.input2", "secondTextdefault value");
     });
 
-    it("Type Multiple Elements", async () => {
+    it("Type Multiple Elements", async() => {
         await browser.type("input", "firstText");
         await browser.assert.value("input.input1", "firstText");
         await browser.assert.value("input.input2", "default value");
     });
 
-    it("Type Node", async () => {
+    it("Type Node", async() => {
         const node = await browser.query("input.input1");
 
         await browser.type(node, "firstText");
         await browser.assert.value("input.input1", "firstText");
     });
 
-    it("Type Invalid Selector", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Type Invalid Selector", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.type({}, "firstText");
         }, `FatalError: Invalid selector on "browser.type".`);
     });
 
-    it("Type With Keypress Event", async () => {
+    it("Type With Keypress Event", async() => {
         await browser.type(".input1", "dontpanic");
         await browser.assert.text("#value-input", "c");
     });
 
-    it("KeyPress", async () => {
+    it("KeyPress", async() => {
         await browser.click(".input1");
         await browser.keyPress("KeyA");
         await browser.assert.value(".input1", "a");
         await browser.assert.text("#value-input", "a");
     });
 
-    it("KeyPress Multiple Keys", async () => {
+    it("KeyPress Multiple Keys", async() => {
         await browser.click(".input1");
         await browser.keyPress(["KeyA", "KeyB", "KeyC"]);
         await browser.assert.value(".input1", "abc");
         await browser.assert.text("#value-input", "c");
     });
 
-    it("KeyPress Invalud Input", async () => {
+    it("KeyPress Invalud Input", async() => {
         await browser.click(".input1");
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync(async() => {
             await browser.keyPress("NotAKey");
         }, `Error: Could not press keys "NotAKey"`);
     });

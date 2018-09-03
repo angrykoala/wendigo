@@ -8,35 +8,35 @@ describe("Url", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
 
-    it("Url", async () => {
+    it("Url", async() => {
         await browser.open(configUrls.index);
         assert.strictEqual(await browser.url(), "http://localhost:3456/index.html");
     });
 
-    it("Changing Url", async () => {
+    it("Changing Url", async() => {
         await browser.open(configUrls.index);
         assert.strictEqual(await browser.url(), "http://localhost:3456/index.html");
         await browser.open(configUrls.click);
         assert.strictEqual(await browser.url(), "http://localhost:3456/click.html");
     });
 
-    it("Dynamic Url Update", async () => {
+    it("Dynamic Url Update", async() => {
         await browser.open(configUrls.url);
         assert.strictEqual(await browser.url(), "http://localhost:3456/url_history.html");
         await browser.click(".btn");
         assert.strictEqual(await browser.url(), "http://localhost:3456/new-url");
     });
 
-    it("Click Link And Url Update", async () => {
+    it("Click Link And Url Update", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");
         await browser.wait();
