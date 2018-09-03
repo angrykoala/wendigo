@@ -1,10 +1,10 @@
 /* global WendigoQuery */
 "use strict";
 
-if(!window.WendigoUtils) {
+if (!window.WendigoUtils) {
     window.WendigoUtils = {
         isVisible(element) {
-            if(!element) return false;
+            if (!element) return false;
             if (element === document) return true; // Top element, always visible
             const style = window.getComputedStyle(element);
             if (style.display === 'none') return false;
@@ -23,7 +23,7 @@ if(!window.WendigoUtils) {
         getStyles(element) {
             const rawStyles = getComputedStyle(element);
             const result = {};
-            for(let i = 0;i < rawStyles.length;i++) {
+            for (let i = 0; i < rawStyles.length; i++) {
                 const name = rawStyles[i];
                 result[name] = rawStyles.getPropertyValue(name);
             }
