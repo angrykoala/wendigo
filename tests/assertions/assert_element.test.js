@@ -80,4 +80,23 @@ describe("Assert Element", function() {
             await browser.assert.element("p", "element failed");
         }, `element failed`);
     });
+
+    it("Not Element", async() => {
+        await browser.assert.not.element("h2");
+    });
+
+    it("Not Element Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.element("h1");
+        }, `Expected selector "h1" not to find any elements.`);
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.element("p");
+        }, `Expected selector "p" not to find any elements.`);
+    });
+
+    it("Not Element Throws With Custom Message", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.element("h1", "not element failed");
+        }, `not element failed`);
+    });
 });

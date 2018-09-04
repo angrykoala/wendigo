@@ -2,6 +2,7 @@
 ==================
 
   * Added the option noSandbox to createBrowser
+  * Not.element assertion
   * Potential bug in request mocker fixed
   * Code style changed with more strict rules
 

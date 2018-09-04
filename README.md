@@ -505,7 +505,7 @@ Asserts that exactly one element matches given selector. Same as `elements(selec
 **elements(selector, count, msg?)**   
 Asserts the number of element that matches given selector.
 
-The count parameter can be a number of the exact number of elements expected or an object with the following properties:
+The count parameter can be a number of the exact number of elements expected or an object with the following properties:    
     * _atLeast_: Expects at least the given number of elements.
     * _atMost_: Expects up to the given number of elements.
     * _equal_: Expects the exact number of elements.
@@ -693,6 +693,9 @@ Asserts that the url of the page doesn't match the expected string.
 
 **not.value(selector, expected, msg?)**    
 Asserts that the first element with the given selector doesn't have the expected value.
+
+**not.element(selector, msg?)**    
+Asserts that the number of elements matching the given selector is 0.
 
 **not.attribute(selector, attribute, expected?, msg?)**    
 Asserts that no element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
