@@ -73,4 +73,24 @@ describe("Type", function() {
             await browser.keyPress("NotAKey");
         }, `Error: Could not press keys "NotAKey"`);
     });
+
+    it("KeyPress Count", async() => {
+        await browser.click(".input1");
+        await browser.keyPress("KeyA", 5);
+        await browser.assert.value(".input1", "aaaaa");
+        await browser.assert.text("#value-input", "a");
+    });
+
+    it("KeyPress Multiple Keys Count", async() => {
+        await browser.click(".input1");
+        await browser.keyPress(["KeyA", "KeyB", "KeyC"], 2);
+        await browser.assert.value(".input1", "abcabc");
+        await browser.assert.text("#value-input", "c");
+    });
+
+    it("KeyPress Count Zero", async() => {
+        await browser.click(".input1");
+        await browser.keyPress("KeyA", 0);
+        await browser.assert.value(".input1", "");
+    });
 });

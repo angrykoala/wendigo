@@ -1,7 +1,8 @@
 1.1.0 / ####-##-##
 ==================
 
-  * Added the option noSandbox to createBrowser
+  * NoSandbox option in createBrowser
+  * KeyPress count parameter
   * Not.element assertion
   * Potential bug in request mocker fixed
   * Code style changed with more strict rules
