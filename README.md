@@ -121,6 +121,7 @@ await browser.open("http://localhost:8000");
 The following options can be passed:
 
 * `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
+* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
 
 
 **openFile(path, options?)**    

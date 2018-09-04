@@ -1,6 +1,7 @@
 1.1.0 / ####-##-##
 ==================
 
+  * Viewport option on browser.open
   * Assert.visible will pass if any visible element is found
   * NoSandbox option in createBrowser
   * KeyPress count parameter
