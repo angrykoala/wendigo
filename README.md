@@ -457,7 +457,7 @@ await browser.assert.exists("h1.main-title");
 ```
 
 **visible(selector, msg?)**   
-Asserts that the first element matching the selector is visible.
+Asserts that the at least one element matching the selector is visible.
 
 An element will considered visible if:
 * Exists
@@ -666,7 +666,7 @@ await browser.not.exists("h1.foo.bar");
 ```
 
 **not.visible(selector, msg?)**   
-Asserts that the first element with given selector is not visible. If no element matches, it will be considered as not visible as well.
+Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well.
 
 **not.text(selector, expected, msg?)**   
 Asserts that no element matching the given selector matches the expected text.
