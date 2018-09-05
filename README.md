@@ -74,13 +74,13 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 Examples:
 ```js
-const Wendigo=require('wendigo');
-const browser=Wendigo.createBrowser(); // Using default options
+const Wendigo = require('wendigo');
+const browser = Wendigo.createBrowser(); // Using default options
 ```
 
 ```js
-const Wendigo=require('wendigo');
-const browser=Wendigo.createBrowser({
+const Wendigo = require('wendigo');
+const browser = Wendigo.createBrowser({
     headless: false,
     slowMo: 500
 }); // Using options to see what's happening
@@ -97,7 +97,7 @@ The Browser instance is and interface with the `page` class of Puppeteer.
 Puppeteer [page class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), allows access to Puppeteer API if needed.
 
 ```js
-await browser.page.evaluate(()=>{
+await browser.page.evaluate(() => {
     document.querySelector("h1");
 });
 ```
@@ -187,13 +187,13 @@ elements[0].textContent; // "My first paragraph"
 Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
 
 ```js
-const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
+const classes = await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
 ```
 
 Using a dom node:
 ```js
-const node=await browser.query("div.container.main");
-const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
+const node = await browser.query("div.container.main");
+const classes = await browser.class(node); // Returns ["container", "main", "another-class"]
 ```
 
 **value(selector)**   
@@ -217,7 +217,7 @@ const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); /
 Returns an object with all the computed css styles of the first element matching the given selector.
 
 ```js
-const styles=await browser.styles("h1.my-title");
+const styles = await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
@@ -225,7 +225,7 @@ styles.color; // 'rgb(255, 0, 0)'
 Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
 
 ```js
-const style=await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
+const style = await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
 ```
 
 **checked(selector)**   
@@ -236,7 +236,7 @@ Returns true if the first element matching the given selector (checkbox) is chec
 Returns an array with all text contents of the elements matching the css selector
 
 ```js
-const texts=await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
+const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
 **click(selector, index)**   
@@ -398,7 +398,7 @@ This method won't trigger certain events, use `type` and `select` when possible.
 Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
 
 ```js
-const options=await browser.options("selector.my-selector"); // ["value1", "value2"]
+const options = await browser.options("selector.my-selector"); // ["value1", "value2"]
 ```
 
 > Css, Xpath and Dom selectors supported
@@ -842,12 +842,12 @@ Returns an array with all the logs matching the given parameters, options can be
 If no options are passed, all the logs will be returned, the options can be used together.
 
 ```js
-const errorLogs=browser.console.filter({type:browser.console.LogTypes.Error});
+const errorLogs = browser.console.filter({type:browser.console.LogTypes.Error});
 errorLogs[0].text; // "Oh No! An Error"
 ```
 
 ```js
-const logs=browser.console.filter({text: /Hello/});
+const logs = browser.console.filter({text: /Hello/});
 logs[0].text; // "Hello World!"
 ```
 
@@ -876,7 +876,7 @@ The module `browser.localStorage` provides a simple wrapper around the browser l
 Returns the item with the given key. If no item exists return null.
 
 ```js
-const value=await browser.localStorage.getItem("my-key"); // returns my-value
+const value = await browser.localStorage.getItem("my-key"); // returns my-value
 ```
 
 **setItem(key, value)**    
@@ -985,7 +985,7 @@ Mock will return a RequestMock object, with the following properties:
 * `auto`: If the request will be completed automatically
 
 ```js
-const mock=browser.requests.mock("http://localhost:8000/api", {
+const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"}
 });
 mock.called; // false
@@ -1002,7 +1002,7 @@ If the mock is not auto, it can be manually triggered with the method `trigger()
 
 ```js
 
-const mock=browser.requests.mock("http://localhost:8000/api", {
+const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"},
     auto: false
 });
@@ -1205,13 +1205,13 @@ describe("My Tests", function() {
         await Wendigo.stop(); // After all tests finished
     });
 
-    it("Page Title", async ()=>{
+    it("Page Title", async () => {
         await browser.open("http://localhost");
         await browser.assert.text("h1#main-title", "My Webpage");
         await browser.assert.title("My Webpage");
     });
 
-    it("Open Menu", async ()=>{
+    it("Open Menu", async () => {
         await browser.open("http://localhost");
         await browser.assert.not.visible(".menu");   
         await browser.click(".btn.open-menu");
