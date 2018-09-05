@@ -299,13 +299,23 @@ await browser.waitUntilNotVisible(".toast");
 ```
 
 **waitForUrl(url, timeout=500)**    
-Waits for page url to be the given url.
+Waits for the page to have the given url.
 
 ```js
 await browser.click("a");
 await browser.waitForUrl("my-url");
 ```
 
+
+**waitForRequest(url, timeout=500)**    
+Waits until a request with given url is done.
+
+```js
+await browser.waitForRequest("my-url");
+```
+
+**waitForResponse(url, timeout=500)**    
+Waits until a response to the given url is done.
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
