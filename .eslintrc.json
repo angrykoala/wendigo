@@ -9,9 +9,7 @@
         "ecmaVersion": 8,
         "sourceType": "script"
     },
-    "plugins": [
-        "markdown"
-    ],
+    "plugins": [],
     "globals": {},
     "extends": [
         "eslint:recommended"
