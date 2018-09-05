@@ -20,14 +20,14 @@ app.get("/redirect", (req, res) => {
 });
 
 let server;
-const dummy = function(port) {
+function dummy(port) {
     return new Promise((resolve) => {
         server = app.listen(port, () => {
             // console.log(`Dummy Listening To ${port}`);
             resolve();
         });
     });
-};
+}
 
 dummy.close = function() {
     server.close();

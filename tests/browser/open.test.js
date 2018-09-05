@@ -9,39 +9,39 @@ describe("Open", function() {
     this.timeout(5000);
 
     let browser;
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Open Fails", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Open Fails", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.open("not-a-page");
         }, `FatalError: Failed to open not-a-page. Protocol error (Page.navigate): Cannot navigate to invalid URL`);
     });
 
-    it("Before Open Fails", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Before Open Fails", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.click(".btn");
         }, `FatalError: Cannot perform action before opening a page.`);
     });
 
-    it("Assert Before Open Fails", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Assert Before Open Fails", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.assert.exists(".btn");
         }, `FatalError: Cannot perform action before opening a page.`);
     });
 
-    it("Assert Before Open Fails", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Assert Before Open Fails", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.localStorage.getItem("my-item");
         }, `FatalError: Cannot perform action before opening a page.`);
     });
 
-    it("Open And Close", async () => {
+    it("Open And Close", async() => {
         await browser.open(configUrls.index);
         assert.strictEqual(browser._loaded, true);
         assert(browser._originalHtml);
@@ -50,11 +50,10 @@ describe("Open", function() {
         assert.strictEqual(browser._originalHtml, undefined);
     });
 
-    it("Close Throws", async () => {
+    it("Close Throws", async() => {
         browser._loaded = true;
-        await utils.assertThrowsAsync(async () => {
+        await utils.assertThrowsAsync(async() => {
             await browser.close();
         }, `FatalError: Failed to close browser. Protocol error: Connection closed. Most likely the page has been closed.`);
-
     });
 });

@@ -9,32 +9,32 @@ describe("Select", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.forms);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Default Selected Options", async () => {
+    it("Default Selected Options", async() => {
         const selectedOptions = await browser.selectedOptions("#normal-select");
         await browser.assert.value("#normal-select", "value1");
         assert.strictEqual(selectedOptions.length, 1);
         assert.strictEqual(selectedOptions[0], "value1");
     });
 
-    it("Default Selected Xpath", async () => {
+    it("Default Selected Xpath", async() => {
         const selectedOptions = await browser.selectedOptions('//*[@id="normal-select"]');
         assert.strictEqual(selectedOptions.length, 1);
         assert.strictEqual(selectedOptions[0], "value1");
     });
 
-    it("Default Selected Node", async () => {
+    it("Default Selected Node", async() => {
         const element = await browser.query("#normal-select");
         const selectedOptions = await browser.selectedOptions(element);
         await browser.assert.value("#normal-select", "value1");
@@ -42,7 +42,7 @@ describe("Select", function() {
         assert.strictEqual(selectedOptions[0], "value1");
     });
 
-    it("Select Option", async () => {
+    it("Select Option", async() => {
         const selectResult = await browser.select("#normal-select", "value2");
         await browser.assert.value("#normal-select", "value2");
         const selectedOptions = await browser.selectedOptions("#normal-select");
@@ -52,7 +52,7 @@ describe("Select", function() {
         assert.strictEqual(selectResult[0], "value2");
     });
 
-    it("Select Option Without Value", async () => {
+    it("Select Option Without Value", async() => {
         const selectResult = await browser.select("#normal-select", "Value 4");
         await browser.assert.value("#normal-select", "Value 4");
         const selectedOptions = await browser.selectedOptions("#normal-select");
@@ -64,14 +64,14 @@ describe("Select", function() {
         assert.strictEqual(selectResult[0], "Value 4");
     });
 
-    it("Select Multiple Values On Single Select", async () => {
+    it("Select Multiple Values On Single Select", async() => {
         const selectResult = await browser.select("#normal-select", ["Value 4", "value2"]);
         await browser.assert.value("#normal-select", "value2");
         assert.strictEqual(selectResult.length, 1);
         assert.strictEqual(selectResult[0], "value2");
     });
 
-    it("Select Multiple Values On Multiple Select", async () => {
+    it("Select Multiple Values On Multiple Select", async() => {
         const selectResult = await browser.select("#multiple-select", ["value4", "value2"]);
         const selectedOptions = await browser.selectedOptions("#multiple-select");
         assert.strictEqual(selectedOptions.length, 2);
@@ -82,31 +82,31 @@ describe("Select", function() {
         assert.strictEqual(selectResult[1], "value4");
     });
 
-    it("Select No Values On Multiple Select", async () => {
+    it("Select No Values On Multiple Select", async() => {
         await browser.select("#multiple-select", []);
         const selectedOptions = await browser.selectedOptions("#multiple-select");
         assert.strictEqual(selectedOptions.length, 0);
     });
 
-    it("Select Non Existant Values", async () => {
+    it("Select Non Existant Values", async() => {
         await browser.select("#normal-select", "value5");
         const selectedOptions = await browser.selectedOptions("#normal-select");
         assert.strictEqual(selectedOptions.length, 0);
     });
 
-    it("Select Non Existant Element", async () => {
-        await utils.assertThrowsAsync (async () => {
+    it("Select Non Existant Element", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.select("#not-exists", "value1");
         }, `QueryError: Element "#not-exists" not found when trying to select value.`);
     });
 
-    it("Selected Options With No Element", async () => {
-        await utils.assertThrowsAsync (async () => {
+    it("Selected Options With No Element", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.selectedOptions("#not-exists");
         }, `QueryError: Element "#not-exists" not found when trying to get selected options.`);
     });
 
-    it("All Options", async () => {
+    it("All Options", async() => {
         const options = await browser.options("#normal-select");
         assert.strictEqual(options.length, 4);
         assert.strictEqual(options[0], "value1");
@@ -115,13 +115,13 @@ describe("Select", function() {
         assert.strictEqual(options[3], "Value 4");
     });
 
-    it("Empty Options", async () => {
+    it("Empty Options", async() => {
         const options = await browser.options("#value-input");
         assert.strictEqual(options.length, 0);
     });
 
-    it("Options Invalid Element", async () => {
-        utils.assertThrowsAsync(async () => {
+    it("Options Invalid Element", async() => {
+        utils.assertThrowsAsync(async() => {
             await browser.options("#not-element");
         }, `QueryError: Element "#not-element" not found when trying to get options.`);
     });

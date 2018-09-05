@@ -9,19 +9,19 @@ describe("Checkbox", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.forms);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Default Checked Value", async () => {
+    it("Default Checked Value", async() => {
         const checkbox = await browser.queryAll("#checkbox input");
         assert.strictEqual(checkbox.length, 2);
         const checked1 = await browser.checked(checkbox[0]);
@@ -30,12 +30,12 @@ describe("Checkbox", function() {
         assert.strictEqual(checked2, false);
     });
 
-    it("Checked Value On Not Checkbox", async () => {
+    it("Checked Value On Not Checkbox", async() => {
         const checked1 = await browser.checked("h1");
         assert.strictEqual(checked1, undefined);
     });
 
-    it("Check Value", async () => {
+    it("Check Value", async() => {
         const checkbox = await browser.queryAll("#checkbox input");
         assert.strictEqual(checkbox.length, 2);
         await browser.check(checkbox[0]);
@@ -45,7 +45,7 @@ describe("Checkbox", function() {
         assert.strictEqual(checked2, false);
     });
 
-    it("Check Value Twice", async () => {
+    it("Check Value Twice", async() => {
         const checkbox = await browser.queryAll("#checkbox input");
         assert.strictEqual(checkbox.length, 2);
         await browser.check(checkbox[0]);
@@ -54,7 +54,7 @@ describe("Checkbox", function() {
         assert.strictEqual(checked1, true);
     });
 
-    it("Uncheck Value", async () => {
+    it("Uncheck Value", async() => {
         const checkbox = await browser.queryAll("#checkbox input");
         assert.strictEqual(checkbox.length, 2);
         await browser.check(checkbox[0]);
@@ -65,7 +65,7 @@ describe("Checkbox", function() {
         assert.strictEqual(checked2, false);
     });
 
-    it("Uncheck Value Twice", async () => {
+    it("Uncheck Value Twice", async() => {
         const checkbox = await browser.queryAll("#checkbox input");
         assert.strictEqual(checkbox.length, 2);
         await browser.check(checkbox[0]);
@@ -75,22 +75,20 @@ describe("Checkbox", function() {
         assert.strictEqual(checked1, false);
     });
 
-    it("Checked Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Checked Throws", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.checked(".not-element");
         }, `QueryError: Element ".not-element" not found when trying to get if checked.`);
     });
 
-    it("Check Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Check Throws", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.check(".not-element");
         }, `QueryError: Element ".not-element" not found when trying to check.`);
     });
-    it("Uncheck Throws", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Uncheck Throws", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.uncheck(".not-element");
         }, `QueryError: Element ".not-element" not found when trying to uncheck.`);
     });
-
-
 });

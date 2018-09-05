@@ -9,57 +9,57 @@ describe("Value", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.forms);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Get Value", async () => {
+    it("Get Value", async() => {
         const value1 = await browser.value("input.input1");
         const value2 = await browser.value("input.input2");
         assert.strictEqual(value1, "");
         assert.strictEqual(value2, "default value");
     });
 
-    it("Get Value Element Doesn't Exist", async () => {
+    it("Get Value Element Doesn't Exist", async() => {
         const value = await browser.value("input.not-exists");
         assert.strictEqual(value, null);
     });
 
-    it("Get Value Element Not Input", async () => {
+    it("Get Value Element Not Input", async() => {
         await browser.assert.exists("h1");
         const value = await browser.value("h1");
         assert.strictEqual(value, null);
     });
 
-    it("Get Value From Node", async () => {
+    it("Get Value From Node", async() => {
         const node = await browser.query("input.input2");
         const value = await browser.value(node);
         assert.strictEqual(value, "default value");
     });
 
-    it("Set Value", async () => {
+    it("Set Value", async() => {
         const changed = await browser.setValue(".input1", "my-val");
         const value = await browser.value(".input1");
         assert.strictEqual(value, "my-val");
         assert.strictEqual(changed, 1);
     });
 
-    it("Set Value From Node", async () => {
+    it("Set Value From Node", async() => {
         const element = await browser.query(".input1");
         await browser.setValue(element, "my-val");
         const value = await browser.value(".input1");
         assert.strictEqual(value, "my-val");
     });
 
-    it("Set Value Multiple Elements", async () => {
+    it("Set Value Multiple Elements", async() => {
         const changed = await browser.setValue("form.basic-input input", "my-val");
         const value1 = await browser.value(".input1");
         const value2 = await browser.value(".input2");
@@ -68,13 +68,13 @@ describe("Value", function() {
         assert.strictEqual(changed, 2);
     });
 
-    it("Set Value From Non-existing Element", async () => {
-        await utils.assertThrowsAsync(async () => {
+    it("Set Value From Non-existing Element", async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.setValue(".not-element", "my-val");
         }, `QueryError: Element ".not-element" not found when trying to set value "my-val".`);
     });
 
-    it("Clear Value", async () => {
+    it("Clear Value", async() => {
         await browser.clearValue("input.input1");
         await browser.clearValue("input.input2");
         const v1 = await browser.value("input.input1");
@@ -84,7 +84,7 @@ describe("Value", function() {
         assert.strictEqual(v2, "");
     });
 
-    it("Clear Value From Node", async () => {
+    it("Clear Value From Node", async() => {
         const node = await browser.query("input.input2");
         await browser.clearValue(node);
         const val = await browser.value("input.input2");

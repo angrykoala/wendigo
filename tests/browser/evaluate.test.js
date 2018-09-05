@@ -8,19 +8,19 @@ describe("Evaluate", function() {
     this.timeout(5000);
 
     let browser;
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.index);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Evaluate", async () => {
+    it("Evaluate", async() => {
         const selector = "h1";
         const elementText = await browser.evaluate((s) => {
             return document.querySelector(s).textContent;

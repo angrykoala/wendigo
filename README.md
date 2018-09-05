@@ -63,6 +63,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
     * `log: false`: If true, it will log all the console events of the browser.
     * `incognito: false`: If true, the browser will open as an incognito browser.
     * `userAgent`: If defined, the default user agent will be overridden.
+    * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting))
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
@@ -71,13 +72,13 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
 
 Examples:
 ```js
-const Wendigo=require('wendigo');
-const browser=Wendigo.createBrowser(); // Using default options
+const Wendigo = require('wendigo');
+const browser = Wendigo.createBrowser(); // Using default options
 ```
 
 ```js
-const Wendigo=require('wendigo');
-const browser=Wendigo.createBrowser({
+const Wendigo = require('wendigo');
+const browser = Wendigo.createBrowser({
     headless: false,
     slowMo: 500
 }); // Using options to see what's happening
@@ -94,7 +95,7 @@ The Browser instance is and interface with the `page` class of Puppeteer.
 Puppeteer [page class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), allows access to Puppeteer API if needed.
 
 ```js
-await browser.page.evaluate(()=>{
+await browser.page.evaluate(() => {
     document.querySelector("h1");
 });
 ```
@@ -118,6 +119,7 @@ await browser.open("http://localhost:8000");
 The following options can be passed:
 
 * `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
+* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
 
 
 **openFile(path, options?)**    
@@ -183,13 +185,13 @@ elements[0].textContent; // "My first paragraph"
 Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
 
 ```js
-const classes=await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
+const classes = await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
 ```
 
 Using a dom node:
 ```js
-const node=await browser.query("div.container.main");
-const classes=await browser.class(node); // Returns ["container", "main", "another-class"]
+const node = await browser.query("div.container.main");
+const classes = await browser.class(node); // Returns ["container", "main", "another-class"]
 ```
 
 **value(selector)**   
@@ -213,7 +215,7 @@ const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); /
 Returns an object with all the computed css styles of the first element matching the given selector.
 
 ```js
-const styles=await browser.styles("h1.my-title");
+const styles = await browser.styles("h1.my-title");
 styles.color; // 'rgb(255, 0, 0)'
 ```
 
@@ -221,7 +223,7 @@ styles.color; // 'rgb(255, 0, 0)'
 Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
 
 ```js
-const style=await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
+const style = await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
 ```
 
 **checked(selector)**   
@@ -232,7 +234,7 @@ Returns true if the first element matching the given selector (checkbox) is chec
 Returns an array with all text contents of the elements matching the css selector
 
 ```js
-const texts=await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
+const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
 **click(selector, index)**   
@@ -295,13 +297,23 @@ await browser.waitUntilNotVisible(".toast");
 ```
 
 **waitForUrl(url, timeout=500)**    
-Waits for page url to be the given url.
+Waits for the page to have the given url.
 
 ```js
 await browser.click("a");
 await browser.waitForUrl("my-url");
 ```
 
+
+**waitForRequest(url, timeout=500)**    
+Waits until a request with given url is done.
+
+```js
+await browser.waitForRequest("my-url");
+```
+
+**waitForResponse(url, timeout=500)**    
+Waits until a response to the given url is done.
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
@@ -331,14 +343,15 @@ Types given text in the first element matching given selector. If a value is alr
 await browser.type("input.my-input", "My Input");
 ```
 
-**keyPress(key)**    
+**keyPress(key, count?)**    
 Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
 
-```js
-await browser.keyPress("Enter");
-```
+If an array is passed, all the keys will be pressed consecutively. If count parameter is passed, all the keys will be pressed that given count times.
 
-If an array is passed, all the keys will be pressed consecutively.
+```js
+await browser.keyPress("Enter"); // Press Enter once
+await browser.keyPress("Escape", 2); // Press Enter twice
+```
 
 **uploadFile(selector, path)**   
 Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
@@ -393,7 +406,7 @@ This method won't trigger certain events, use `type` and `select` when possible.
 Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
 
 ```js
-const options=await browser.options("selector.my-selector"); // ["value1", "value2"]
+const options = await browser.options("selector.my-selector"); // ["value1", "value2"]
 ```
 
 > Css, Xpath and Dom selectors supported
@@ -453,7 +466,7 @@ await browser.assert.exists("h1.main-title");
 ```
 
 **visible(selector, msg?)**   
-Asserts that the first element matching the selector is visible.
+Asserts that the at least one element matching the selector is visible.
 
 An element will considered visible if:
 * Exists
@@ -502,7 +515,7 @@ Asserts that exactly one element matches given selector. Same as `elements(selec
 **elements(selector, count, msg?)**   
 Asserts the number of element that matches given selector.
 
-The count parameter can be a number of the exact number of elements expected or an object with the following properties:
+The count parameter can be a number of the exact number of elements expected or an object with the following properties:    
     * _atLeast_: Expects at least the given number of elements.
     * _atMost_: Expects up to the given number of elements.
     * _equal_: Expects the exact number of elements.
@@ -662,7 +675,7 @@ await browser.not.exists("h1.foo.bar");
 ```
 
 **not.visible(selector, msg?)**   
-Asserts that the first element with given selector is not visible. If no element matches, it will be considered as not visible as well.
+Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well.
 
 **not.text(selector, expected, msg?)**   
 Asserts that no element matching the given selector matches the expected text.
@@ -690,6 +703,9 @@ Asserts that the url of the page doesn't match the expected string.
 
 **not.value(selector, expected, msg?)**    
 Asserts that the first element with the given selector doesn't have the expected value.
+
+**not.element(selector, msg?)**    
+Asserts that the number of elements matching the given selector is 0.
 
 **not.attribute(selector, attribute, expected?, msg?)**    
 Asserts that no element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
@@ -834,12 +850,12 @@ Returns an array with all the logs matching the given parameters, options can be
 If no options are passed, all the logs will be returned, the options can be used together.
 
 ```js
-const errorLogs=browser.console.filter({type:browser.console.LogTypes.Error});
+const errorLogs = browser.console.filter({type:browser.console.LogTypes.Error});
 errorLogs[0].text; // "Oh No! An Error"
 ```
 
 ```js
-const logs=browser.console.filter({text: /Hello/});
+const logs = browser.console.filter({text: /Hello/});
 logs[0].text; // "Hello World!"
 ```
 
@@ -868,7 +884,7 @@ The module `browser.localStorage` provides a simple wrapper around the browser l
 Returns the item with the given key. If no item exists return null.
 
 ```js
-const value=await browser.localStorage.getItem("my-key"); // returns my-value
+const value = await browser.localStorage.getItem("my-key"); // returns my-value
 ```
 
 **setItem(key, value)**    
@@ -949,6 +965,7 @@ The following options are supported:
 * `body` Optional response body. It can be a string or a json-serializable object
 * `delay` Optional delay to wait for the response to be fullfilled, in ms
 * `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true
+* `method` defines the method (`GET`, `POST`, ...) to mock
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
     * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
 
@@ -976,7 +993,7 @@ Mock will return a RequestMock object, with the following properties:
 * `auto`: If the request will be completed automatically
 
 ```js
-const mock=browser.requests.mock("http://localhost:8000/api", {
+const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"}
 });
 mock.called; // false
@@ -993,7 +1010,7 @@ If the mock is not auto, it can be manually triggered with the method `trigger()
 
 ```js
 
-const mock=browser.requests.mock("http://localhost:8000/api", {
+const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"},
     auto: false
 });
@@ -1196,13 +1213,13 @@ describe("My Tests", function() {
         await Wendigo.stop(); // After all tests finished
     });
 
-    it("Page Title", async ()=>{
+    it("Page Title", async () => {
         await browser.open("http://localhost");
         await browser.assert.text("h1#main-title", "My Webpage");
         await browser.assert.title("My Webpage");
     });
 
-    it("Open Menu", async ()=>{
+    it("Open Menu", async () => {
         await browser.open("http://localhost");
         await browser.assert.not.visible(".menu");   
         await browser.click(".btn.open-menu");

@@ -1,3 +1,17 @@
+1.1.0 / 2018-09-05
+==================
+
+  * Viewport option on browser.open
+  * WaitForRequest and waitForResponse methods
+  * Assert.visible will pass if any visible element is found
+  * NoSandbox option in createBrowser
+  * KeyPress count parameter
+  * Request.mock without options supported
+  * Not.element assertion
+  * Potential bug in request mocker fixed
+  * Fixed potential bug when filtering by request response
+  * Code style changed with more strict rules
+
 1.0.0 / 2018-08-18
 ==================
 

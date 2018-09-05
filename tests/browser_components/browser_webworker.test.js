@@ -8,19 +8,19 @@ describe("Webworkers", function() {
     this.timeout(5000);
     let browser;
 
-    before(async () => {
+    before(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    beforeEach(async () => {
+    beforeEach(async() => {
         await browser.open(configUrls.webworker);
     });
 
-    after(async () => {
+    after(async() => {
         await browser.close();
     });
 
-    it("Get All Webworkers", async () => {
+    it("Get All Webworkers", async() => {
         let workers = browser.webworkers.all();
         assert.strictEqual(workers.length, 0);
         await browser.clickText("Start Worker");
@@ -29,7 +29,7 @@ describe("Webworkers", function() {
         assert.strictEqual(workers.length, 1);
     });
 
-    it("Stop Webworkers", async () => {
+    it("Stop Webworkers", async() => {
         let workers = browser.webworkers.all();
         assert.strictEqual(workers.length, 0);
         await browser.clickText("Start Worker");
@@ -40,7 +40,7 @@ describe("Webworkers", function() {
         assert.strictEqual(workers.length, 0);
     });
 
-    it("Webworker Url", async () => {
+    it("Webworker Url", async() => {
         await browser.clickText("Start Worker");
         await browser.wait();
         const workers = browser.webworkers.all();

@@ -1,5 +1,5 @@
 "use strict";
-if(!window.WendigoQuery) {
+if (!window.WendigoQuery) {
     window.WendigoQuery = {
         selectorTypes: { // Warning: Same as selector type
             css: "css",
@@ -8,7 +8,7 @@ if(!window.WendigoQuery) {
         },
         query(selector) {
             const type = this._parseSelectorType(selector);
-            switch(type) {
+            switch (type) {
                 case this.selectorTypes.css:
                     return this.queryCss(selector);
                 case this.selectorTypes.xpath:
@@ -22,7 +22,7 @@ if(!window.WendigoQuery) {
         queryAll(selector) {
             const type = this._parseSelectorType(selector);
 
-            switch(type) {
+            switch (type) {
                 case this.selectorTypes.css:
                     return this.queryCssAll(selector);
                 case this.selectorTypes.xpath:
@@ -40,11 +40,11 @@ if(!window.WendigoQuery) {
             return Array.from(document.querySelectorAll(cssSelector));
         },
         queryDomElement(element) {
-            if(Array.isArray(element)) return element[0];
+            if (Array.isArray(element)) return element[0];
             else return element;
         },
         queryDomElementAll(elements) {
-            if(Array.isArray(elements)) return elements;
+            if (Array.isArray(elements)) return elements;
             else return [elements];
         },
         queryXPath(xPath) {
@@ -56,7 +56,7 @@ if(!window.WendigoQuery) {
             const xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
             const result = [];
             let r = xPathResult.iterateNext();
-            while(r !== null) {
+            while (r !== null) {
                 result.push(r);
                 r = xPathResult.iterateNext();
             }
@@ -64,16 +64,16 @@ if(!window.WendigoQuery) {
         },
 
         _parseSelectorType(selector) {
-            if(typeof(selector) === "string") {
+            if (typeof(selector) === "string") {
                 return this._parseStringSelector(selector);
-            } else if(typeof(selector) === "object") {
+            } else if (typeof(selector) === "object") {
                 return this.selectorTypes.domElement;
             } else return null;
         },
 
         _parseStringSelector(selector) {
-            if(selector.length === 0) return null;
-            if(selector[0] === "/") return this.selectorTypes.xpath;
+            if (selector.length === 0) return null;
+            if (selector[0] === "/") return this.selectorTypes.xpath;
             else return this.selectorTypes.css;
         }
     };
