@@ -240,20 +240,26 @@ const texts = await browser.text("p"); // ["My First Paragraph", "My Second Para
 ```
 
 **click(selector, index)**   
-Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked.
+Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
 
 ```js
 await browser.click("button.btn");
 ```
 
-**clickText(selector?, text)**   
-Clicks all the elements matching given text.
+**clickText(selector?, text, index?)**   
+Clicks all the elements matching given text. Returns the number of elements clicked.
 
 ```js
 await browser.clickText("Click Me!");
 ```
 
-Optionally a selector can be passed as first argument to only click elements under the given selector.
+Optionally a selector can be passed as first argument to only click elements under the given selector. If an index is passed, only the nth element found will be clicked, be aware of the type passed down to index if selector is not passed:
+
+```js
+await browser.clickText("Click Me!", 2); // Clicks the second element
+await browser.clickText("Click Me!", "2"); // Will search for an element with selector "Click Me!" and text "2"
+await browser.clickText(".container", "Click Me!", 2); // Clicks the second element with given text under the element ".container"
+```
 
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.

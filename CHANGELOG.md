@@ -1,3 +1,9 @@
+1.2.0 / ####-##-##
+==================
+
+  * Support for index in clickText
+  * Puppeteer updated to 1.8
+
 1.1.0 / 2018-09-05
 ==================
 
