@@ -1190,7 +1190,7 @@ Returns all the webworkers currently executing in the page. Each webworker will 
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
 **AssertionError**   
-Same as Node.js Assertion Error. It will be throw for any assertion.
+Extends from Node.js Assertion Error. It will be throw for any assertion.
 
 **QueryError**    
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
