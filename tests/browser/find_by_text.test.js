@@ -62,8 +62,8 @@ describe("Find By Text", function() {
     it("Find By Text Containing And Click", async() => {
         await browser.open(configUrls.click);
         const elements = await browser.findByTextContaining("click");
-        await browser.click(elements);
+        const clicked = await browser.click(elements);
         await browser.assert.text("#switch", "Off");
-        await browser.waitFor("#switch.on", 600);
+        assert.strictEqual(clicked, 3);
     });
 });

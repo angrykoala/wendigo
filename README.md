@@ -33,7 +33,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 
 > **Warning:** Wendigo is under early stages of development and its interface may change
 
-> Recommended Node 8.11.3 LTS or greater
+> Recommended Node 8.12 LTS or higher
 
 **Contents**
 * [Api](#api)
