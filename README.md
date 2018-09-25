@@ -1195,8 +1195,12 @@ Same as Node.js Assertion Error. It will be throw for any assertion.
 **QueryError**    
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
+**TimeoutError**
+Timeout error, it will be thrown in waitFor methods. Keep in mind that this error is **not** the same as [Puppeteer's TimeoutError](https://pptr.dev/#?product=Puppeteer&show=api-class-timeouterror)
+
 **FatalError**    
 Defines a Fatal Error with Puppeteer (e.g. a connection error)
+
 
 ## Examples
 

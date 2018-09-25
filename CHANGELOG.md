@@ -2,6 +2,7 @@
 ==================
 
   * Support for index in clickText
+  * Now TimeoutError will bbe thrown on timeouts
   * Puppeteer updated to 1.8
 
 1.1.0 / 2018-09-05
