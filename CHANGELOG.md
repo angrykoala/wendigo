@@ -3,6 +3,7 @@
 
   * Support for index in clickText
   * Now TimeoutError will be thrown on timeouts
+  * Changed default viewport res to 1440x9000
   * Puppeteer updated to 1.8
   * Error handling improved
 
