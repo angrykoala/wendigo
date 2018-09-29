@@ -9,7 +9,7 @@ _by @angrykoala_
 
 > A proper monster for front-end automated testing
 
-**Wendigo** is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
+**Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
 
 Consider the following example of a test using Puppeteer:
 
