@@ -87,6 +87,7 @@ describe("Console", function() {
 
     it("Find Log By Text And Type", async() => {
         await browser.click(".error");
+        await browser.wait(5);
         const logs = browser.console.filter({type: browser.console.LogType.error,
             text: "Error Log extra arg"});
         assert.strictEqual(logs.length, 1);
