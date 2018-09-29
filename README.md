@@ -270,10 +270,10 @@ Returns the page title.
 **html()**   
 Returns the page html as string. It will return the html as it was before performing any actions.
 
-**frames()**
+**frames()**  
 Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
 
-**url()**  
+**url()**   
 Returns the current url of the page
 
 **wait(ms=250)**   
