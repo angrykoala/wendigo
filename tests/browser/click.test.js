@@ -92,4 +92,25 @@ describe("Click", function() {
             await browser.click("#not-an-element");
         }, `QueryError: No element "#not-an-element" found when trying to click.`);
     });
+
+    it("Click Text With Index", async() => {
+        const clickedElements = await browser.clickText("click me delay", 0);
+        assert.strictEqual(clickedElements, 1);
+    });
+
+    it("Click Text Multiple", async() => {
+        const clickedElements = await browser.clickText("click me delay");
+        assert.strictEqual(clickedElements, 2);
+    });
+
+    it("Click Text With Index Out Of Bounds", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickText("click me delay", 10);
+        }, `QueryError: browser.click, invalid index "10" for text "click me delay", 2 elements found.`);
+    });
+
+    it("Click Text With Index And Selector", async() => {
+        const clickedElements = await browser.clickText("body", "click me delay", 0);
+        assert.strictEqual(clickedElements, 1);
+    });
 });

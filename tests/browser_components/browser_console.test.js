@@ -34,6 +34,7 @@ describe("Console", function() {
     it("Logs List Different Types", async() => {
         await browser.click(".log");
         await browser.click(".error");
+        await browser.wait(1);
         const logList = browser.console.all();
         assert.strictEqual(logList.length, 3);
         assert.strictEqual(logList[1].text, "Info Log");

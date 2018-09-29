@@ -9,7 +9,7 @@ _by @angrykoala_
 
 > A proper monster for front-end automated testing
 
-**Wendigo** is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
+**Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
 
 Consider the following example of a test using Puppeteer:
 
@@ -102,9 +102,6 @@ await browser.page.evaluate(() => {
 
 **assert**   
 Allow access to the [Assertion](#Assert) interface.
-
-**frame**   
-Puppeteer [frame class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-frame)
 
 ### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
@@ -238,20 +235,26 @@ const texts = await browser.text("p"); // ["My First Paragraph", "My Second Para
 ```
 
 **click(selector, index)**   
-Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked.
+Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
 
 ```js
 await browser.click("button.btn");
 ```
 
-**clickText(selector?, text)**   
-Clicks all the elements matching given text.
+**clickText(selector?, text, index?)**   
+Clicks all the elements matching given text. Returns the number of elements clicked.
 
 ```js
 await browser.clickText("Click Me!");
 ```
 
-Optionally a selector can be passed as first argument to only click elements under the given selector.
+Optionally a selector can be passed as first argument to only click elements under the given selector. If an index is passed, only the nth element found will be clicked, be aware of the type passed down to index if selector is not passed:
+
+```js
+await browser.clickText("Click Me!", 2); // Clicks the second element
+await browser.clickText("Click Me!", "2"); // Will search for an element with selector "Click Me!" and text "2"
+await browser.clickText(".container", "Click Me!", 2); // Clicks the second element with given text under the element ".container"
+```
 
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
@@ -260,12 +263,15 @@ Checks the first element matching given selector. Setting its checked property t
 Unchecks the first element matching given selector. Setting its checked property to false.
 
 **title()**   
-Returns the page title
+Returns the page title.
 
 **html()**   
-Returns the page html as string. It will return the html as it was before performing any actions
+Returns the page html as string. It will return the html as it was before performing any actions.
 
-**url()**  
+**frames()**  
+Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
+
+**url()**   
 Returns the current url of the page
 
 **wait(ms=250)**   
@@ -1182,13 +1188,17 @@ Returns all the webworkers currently executing in the page. Each webworker will 
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
 **AssertionError**   
-Same as Node.js Assertion Error. It will be throw for any assertion.
+Extends from Node.js Assertion Error. It will be throw for any assertion.
 
 **QueryError**    
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
+**TimeoutError**
+Timeout error, it will be thrown in waitFor methods. Keep in mind that this error is **not** the same as [Puppeteer's TimeoutError](https://pptr.dev/#?product=Puppeteer&show=api-class-timeouterror)
+
 **FatalError**    
 Defines a Fatal Error with Puppeteer (e.g. a connection error)
+
 
 ## Examples
 
@@ -1235,6 +1245,7 @@ These instructions assume node>8.0.0 and npm installed:
 2. `npm install`
 3. `npm test` to execute the tests
   * `npm run lint` to execute the linting tests
+  * `npm run dummy-server` to start the testing server on port 8002
 
 Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
 
