@@ -105,9 +105,6 @@ await browser.page.evaluate(() => {
 **assert**   
 Allow access to the [Assertion](#Assert) interface.
 
-**frame**   
-Puppeteer [frame class](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-frame)
-
 ### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 
@@ -268,10 +265,13 @@ Checks the first element matching given selector. Setting its checked property t
 Unchecks the first element matching given selector. Setting its checked property to false.
 
 **title()**   
-Returns the page title
+Returns the page title.
 
 **html()**   
-Returns the page html as string. It will return the html as it was before performing any actions
+Returns the page html as string. It will return the html as it was before performing any actions.
+
+**frames()**
+Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
 
 **url()**  
 Returns the current url of the page
@@ -1247,6 +1247,7 @@ These instructions assume node>8.0.0 and npm installed:
 2. `npm install`
 3. `npm test` to execute the tests
   * `npm run lint` to execute the linting tests
+  * `npm run dummy-server` to start the testing server on port 8002
 
 Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
 
