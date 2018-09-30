@@ -310,16 +310,22 @@ await browser.click("a");
 await browser.waitForUrl("my-url");
 ```
 
-
 **waitForRequest(url, timeout=500)**    
-Waits until a request with given url is done.
+Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
 
 ```js
 await browser.waitForRequest("my-url");
 ```
 
 **waitForResponse(url, timeout=500)**    
-Waits until a response to the given url is done.
+Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
+
+**waitForNextRequest(url ,timeout=500)**   
+Waits until next request with given url is done. If the request was already made, this method will wait until next one.
+
+**waitForNextResponse(url ,timeout=500)**   
+Waits until next response with given url is received. If the response was already received, this method will wait until next one.
+
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
@@ -1089,13 +1095,13 @@ await browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
 
 **responseBody(expected)**      
-Filters requests by response body, the body can be a String, Object or regex. This filter returns a promise, so either then or await is required. Also it cannot be concatenated directly.
+Filters requests by response body, the body can be a String, Object or regex.
 
 ```js
 const byResponseFilter = await browser.requests.filter.url(/api/).responseBody({response: 'OK'}).requests;
 ```
 
-> Keep in mind that some filters like status require the requests to be finished. Use `await browser.wait()` before filtering to make sure the requests was completed.
+> Keep in mind that some filters like status require the requests to be finished. Use `await browser.waitForResponse()` before filtering to make sure the requests was completed.
 
 ### Requests Assertions
 Assertions related requests can be accessed through `browser.assert.request`. Note that in assertions, request is singular.
