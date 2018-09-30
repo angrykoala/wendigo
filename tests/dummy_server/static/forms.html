@@ -4,23 +4,24 @@
 <body>
     <h1>Main Title</h1>
     <form class="basic-input">
+        <label class="label1" for="input1">My Label</label>
         First Input: <input class="input1" name="firstname"> Last Input: <input class="input2" name="lastname" value="default value">
     </form>
     <p id="value-input"></p>
     <input type="file" class="input3" name="file-input">
 
     <select id="normal-select">
-     <option value="value1" selected>Value 1</option>
-     <option value="value2">Value 2</option>
-     <option value="value3" disabled>Value 3</option>
-     <option>Value 4</option>
+        <option value="value1" selected>Value 1</option>
+        <option value="value2">Value 2</option>
+        <option value="value3" disabled>Value 3</option>
+        <option>Value 4</option>
     </select>
 
     <select id="multiple-select" multiple>
-     <option value="value1" selected>Value 1</option>
-     <option value="value2">Value 2</option>
-     <option value="value3" disabled>Value 3</option>
-     <option value="value4">Value 4</option>
+        <option value="value1" selected>Value 1</option>
+        <option value="value2">Value 2</option>
+        <option value="value3" disabled>Value 3</option>
+        <option value="value4">Value 4</option>
     </select>
 
     <div id="checkbox">
@@ -31,6 +32,9 @@
     <script>
         document.querySelector(".input1").onkeypress = function(ev) {
             document.getElementById("value-input").textContent = String.fromCharCode(ev.charCode)
+        };
+        document.querySelector(".label1").onclick = function(ev) {
+            document.getElementById("value-input").textContent = "Label"
         };
     </script>
 

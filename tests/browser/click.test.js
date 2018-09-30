@@ -113,4 +113,10 @@ describe("Click", function() {
         const clickedElements = await browser.clickText("body", "click me delay", 0);
         assert.strictEqual(clickedElements, 1);
     });
+
+    it("Click Label", async() => {
+        await browser.open(configUrls.forms);
+        await browser.click("label");
+        await browser.assert.text("#value-input", "Label");
+    });
 });
