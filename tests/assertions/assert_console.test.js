@@ -30,10 +30,10 @@ describe("Assert Console", function() {
             type: browser.console.LogType.log
         });
         await browser.assert.console({
-            text: "Normal Log"
+            text: 'Normal Log {"msg":"Object Log"}'
         });
         await browser.assert.console({
-            text: "Normal Log",
+            text: 'Normal Log {"msg":"Object Log"}',
             type: browser.console.LogType.log
         });
     });

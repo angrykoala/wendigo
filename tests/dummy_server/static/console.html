@@ -11,13 +11,14 @@
     <button class="btn error" onclick="error()">error</button>
 
     <script>
-    console.log("Normal Log")
+        console.log("Normal Log", { msg: "Object Log" })
+
         function info() {
             console.info("Info Log")
         }
 
         function error() {
-            console.error("Error Log", "extra arg");
+            console.error("Error Log", "extra arg")
         }
     </script>
 </body>
