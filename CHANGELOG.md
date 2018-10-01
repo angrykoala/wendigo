@@ -1,6 +1,7 @@
 1.4.0 / ####-##-##
 ==================
 
+  * Logs parse js objects correctly in console module
 
 1.3.0 / 2018-10-01
 ==================
