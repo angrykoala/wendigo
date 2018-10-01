@@ -1002,6 +1002,7 @@ Mock will return a RequestMock object, with the following properties:
 * `queryString`: The mock queryString
 * `immediate`: If the mock will return immediately (delay=0)
 * `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called 
 * `auto`: If the request will be completed automatically
 
 ```js

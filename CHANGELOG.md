@@ -3,6 +3,7 @@
 
   * WaitForRequest and waitForResponse will resolve if the request was already made.
   * WaitForNextRequest and waitForNextResponse added with the past behavior of waitForRequest/Response
+  * Mock WaitUntilCalled method
 
 1.2.0 / 2018-09-29
 ==================
