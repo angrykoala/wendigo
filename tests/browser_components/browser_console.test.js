@@ -27,7 +27,7 @@ describe("Console", function() {
     it("Logs List", async() => {
         const logList = browser.console.all();
         assert.strictEqual(logList.length, 1);
-        assert.strictEqual(logList[0].text, "Normal Log");
+        assert.strictEqual(logList[0].text, 'Normal Log {"msg":"Object Log"}');
         assert.strictEqual(logList[0].type, browser.console.LogType.log);
     });
 
