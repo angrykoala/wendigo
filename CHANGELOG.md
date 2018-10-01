@@ -1,7 +1,7 @@
-1.3.0 / ####-##-##
+1.3.0 / 2018-10-01
 ==================
 
-  * WaitForRequest and waitForResponse will resolve if the request was already made.
+  * WaitForRequest and waitForResponse will resolve if the request was already made
   * WaitForNextRequest and waitForNextResponse added with the past behavior of waitForRequest/Response
   * Mock WaitUntilCalled method
 
