@@ -44,6 +44,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Requests](#requests)
     * [Webworkers](#webworkers)
     * [Errors](#errors)
+    * [Selectors](#selectors)
 * [Examples](#examples)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
@@ -1203,8 +1204,6 @@ Returns all the webworkers currently executing in the page. Each webworker will 
 * _worker_: Returns the [Puppeteer's Worker instance](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-worker)
 
 
-
-
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
@@ -1220,6 +1219,13 @@ Timeout error, it will be thrown in waitFor methods. Keep in mind that this erro
 **FatalError**    
 Defines a Fatal Error with Puppeteer (e.g. a connection error)
 
+
+## Selectors
+Most Wendigo methods and assertions will require a selector to localize the element in the DOM, unless specified, any method will accept 3 different kind of selectors:
+
+* **css**: Such as `#my-id` or `.container`, any selector supported by the standard `document.querySelector`.
+* **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
+* **DomElement**: The result of `browser.query` can be directly used as a selector.
 
 ## Examples
 
