@@ -1,4 +1,4 @@
-# Wendigo :jack_o_lantern: 
+# Wendigo :jack_o_lantern:
 <img src="https://user-images.githubusercontent.com/5960567/41823576-2f7cb71a-7802-11e8-8714-521cb38b42c0.png" align="right" width="150px">
 
 
@@ -1135,7 +1135,7 @@ await browser.assert.request.url(/api/);
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
-await rowser.assert.request.method("GET");
+await browser.assert.request.method("GET");
 ```
 
 **status(expected, msg?)**    
@@ -1151,7 +1151,7 @@ await browser.assert.request.status(200);
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
-await browser.requests.assert.responseHeaders({
+await browser.assert.request.responseHeaders({
     'content-type': /html/,
 })
 ```
