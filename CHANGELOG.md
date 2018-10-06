@@ -1,7 +1,9 @@
 1.4.0 / ####-##-##
 ==================
 
+  * Mock assert postBody
   * Logs parse js objects correctly in console module
+  * Minor improvements in mock handling
 
 1.3.0 / 2018-10-01
 ==================

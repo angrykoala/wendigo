@@ -995,15 +995,14 @@ browser.requests.mock("http://localhost:8000/api", {
 
 Mock will return a RequestMock object, with the following properties:
 
-* `called`: If the mock has been called
-* `timesCalled`: The times the mock has been called
-* `response` : The response the mock is returning (read only)
-* `url`: Mocked url
-* `queryString`: The mock queryString
-* `immediate`: If the mock will return immediately (delay=0)
-* `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
-* `waitUntilCalled(timeout=500)`: Waits until the mock is called 
-* `auto`: If the request will be completed automatically
+* `called`: If the mock has been called.
+* `timesCalled`: The times the mock has been called.
+* `response` : The response the mock is returning (read only).
+* `url`: Mocked url.
+* `queryString`: The mock queryString.
+* `immediate`: If the mock will return immediately (delay=0).
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called .
+* `auto`: If the request will be completed automatically.
 
 ```js
 const mock = browser.requests.mock("http://localhost:8000/api", {
@@ -1014,6 +1013,21 @@ mock.timesCalled; // 0
 callApi(); //  { result: "ok" }
 mock.called; // true
 mock.timesCalled; // true
+```
+
+The mock will also provide an assertion interface in `mock.assert` with the following assertions:
+
+* `called(times?, msg?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made.
+* `postBody(expected, msg?)`: asserts that the mock has been called with the given body in the request, expected can be an string, object, or RegExp.
+
+```js
+const mock = browser.requests.mock("http://localhost:8000/api", {
+    body: {result: "ok"}
+});
+mock.assert.called(0);
+callApi("my request"); // POST requests with given body
+mock.assert.called(0);
+mock.assert.postBody("my request");
 ```
 
 
