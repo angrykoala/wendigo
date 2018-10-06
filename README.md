@@ -1,4 +1,4 @@
-# Wendigo
+# Wendigo :jack_o_lantern: 
 <img src="https://user-images.githubusercontent.com/5960567/41823576-2f7cb71a-7802-11e8-8714-521cb38b42c0.png" align="right" width="150px">
 
 
