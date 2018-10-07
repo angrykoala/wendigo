@@ -45,6 +45,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Webworkers](#webworkers)
     * [Errors](#errors)
     * [Selectors](#selectors)
+* [Plugins](#plugins)
 * [Examples](#examples)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
@@ -57,7 +58,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 ## Wendigo
 Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
 
-**static createBrowser(settings)**   
+**createBrowser(settings)**   
 Will create and return a [Browser](#Browser) instance. It will automatically launch and connect Puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
@@ -85,8 +86,19 @@ const browser = Wendigo.createBrowser({
 }); // Using options to see what's happening
 ```
 
-**static stop()**   
+**stop()**   
 Will stop and disconnect all the browsers. It should be called after finishing all the tests.
+
+**registerPlugin(name, plugin?, assertions?)**   
+Registers a new plugin, for more information, check [Plugins](#plugins). This must be called before `createBrowser` for the plugins to work.
+
+Optionally an object can be passed with the following options:
+* `name`
+* `plugin`
+* `assertions`
+
+**clearPlugins()**   
+Removes all plugins from Wendigo. This will affect all newly created browsers.
 
 ## Browser
 The Browser instance is and interface with the `page` class of Puppeteer.
@@ -1227,13 +1239,94 @@ Most Wendigo methods and assertions will require a selector to localize the elem
 * **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
 * **DomElement**: The result of `browser.query` can be directly used as a selector.
 
-## Examples
+# Plugins
+Wendigo supports plugins to extends its capabilities with custom features and assertions. To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
+
+```js
+class MyPlugin {
+    constructor(browser) { // The plugin will receive the browser instance in the constructor
+        this._browser = browser;
+    }
+
+    getHeaderTitle() { // Custom method to find our title
+        return this._browser.text("h1.header-title")[0];
+    }
+
+    findKoalas() {
+        return this._browser.findByTextContaining(/koala/);
+    }
+
+    _beforeOpen() { // This hook will be called anytime `browser.open` is executed
+        // You can perform actions required for your plugin to run whenever
+        // a new page is opened such as setting up cache
+        // keep in mind that the page won't be accesible yet
+    }
+
+    _beforeClose() { // This hook will be called anytime `browser.close` is executed
+        // You can perform actions required for your plugin when the page is
+        // close, keep in mind that this will only be called on browser.close and
+        // not on any page loading
+    }
+}
+
+
+class MyPluginAssertions { // The assertions will be under browser.assertions[myPluginName]
+    constructor(browser, myPlugin) { // Plugin assertions receive browser and plugin in the constructor
+        this._myPlugin = myPlugin;
+    }
+
+    thereAreKoalas(count) {
+        const koalas = this._myPlugin.findKoalas().length;
+        if (!count && koalas === 0) throw new AssertionError("No koalas :("); // node's AssertionError
+        else if (count && koalas !== count) throw new AssertionError("No enough koalas :/");
+    }
+
+    headerTitle(title) {
+        if (this._myPlugin.getHeaderTitle() !== title) throw new AssertionError("Invalid title");
+    }
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+
+const browser=Wendigo.createBrowser();
+//... more code ...
+
+browser.koalafied.getHeaderTitle(); // Koalas are great
+
+browser.assert.koalafied.headerTitle("Koalas are great");
+browser.assert.koalafied.thereAreKoalas();
+```
+
+**Wendigo.registerPlugin** receives 3 parameters:   
+* **name**: Name to be used to access the plugin, it must be different than other plugins and should not collide with wendigo core modules.
+* **plugin**: Class to be used as plugin accessed under `browser.name`, this class will receive `browser` as constructor parameter and 2 methods can be implemented as hooks:
+  * **_beforeOpen**: Called when `browser.open` is called, before opening the page.
+  * **_beforeClose**: Called when `browser.close` is called, before closing the page.
+* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will received both the browser and the core plugin as parameters
+
+registerPlugin also accepts a single object containing the data in the following structure:
+* `name`
+* `plugin`
+* `assertion`
+
+Keep in mind that both the plugin and the assertions are optional, but at least one must exists to register the plugin.
+
+
+## Publishing a plugin
+If you want to create a new plugin and publish it in the npm store. Please, follow the following steps:
+
+1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually unless you want them to be imported that way.
+2. Make sure your code is tested using node 8 and above. Avoid using async/await if possible.
+3. Set Wendigo as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies) in you package.json.
+    * If you are writing tests, also set Wendigo as a dev dependency, **never** as a normal dependency.
+4. Wendigo usually follows [semantic versioning](https://semver.org/) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
+5. Let people (and koalas!) know about it.
+
+# Examples
 
 **Testing a simple page with Mocha and Wendigo**
 
 ```javascript
-"use strict";
-
 const assert = require('assert');
 const Wendigo = require('../lib/wendigo');
 
@@ -1241,31 +1334,36 @@ describe("My Tests", function() {
     this.timeout(5000); // Recommended for CI
     let browser;
 
-    before(async () => {
+    beforeEach(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    afterEach(async() => {
+        // For more speed, this method could be only executed after all tests pass
+        // if your tests do not rely on state changes
         await browser.close();
+    });
+
+    after(async() => {
         await Wendigo.stop(); // After all tests finished
     });
 
-    it("Page Title", async () => {
+    it("Page Title", async() => {
         await browser.open("http://localhost");
         await browser.assert.text("h1#main-title", "My Webpage");
         await browser.assert.title("My Webpage");
     });
 
-    it("Open Menu", async () => {
+    it("Open Menu", async() => {
         await browser.open("http://localhost");
-        await browser.assert.not.visible(".menu");   
+        await browser.assert.not.visible(".menu");
         await browser.click(".btn.open-menu");
         await browser.assert.visible(".menu");
     });
 });
 ```
 
-## Development
+# Development
 These instructions assume node>8.0.0 and npm installed:
 
 1. Clone the git repository (`dev` branch)
@@ -1276,7 +1374,7 @@ These instructions assume node>8.0.0 and npm installed:
 
 Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
 
-### Architecture
+## Architecture
 
 * `Wendigo`: The main class exported by the module, provides the base interface to instantiate the browser class.
   * `BrowserFactory`: class takes care of the creation of the browser instance
@@ -1286,14 +1384,14 @@ Before doing a commit or PR to the `dev` branch, make sure both the tests and li
   * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
   * Note that the assertion module is a composed module as well.
 
-## Troubleshooting
+# Troubleshooting
 
-### Error: Failed to launch chrome! No usable sandbox!
+## Error: Failed to launch chrome! No usable sandbox!
 This error may appear when running wendigo on certain systems and in most CI services. The sandbox setup can be bypassed by setting the environment variable `NO_SANDBOX=true`.
 
 For example `NO_SANDBOX=true npm test`.
 
-### Running Tests With Travis CI
+## Running Tests With Travis CI
 Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself. It is recommended to add `travis_retry` to allow travis to execute the tests multiple times, as browser-based setup may fail frequently on travis workers:
 
 ```yml
@@ -1343,14 +1441,14 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
-## Acknowledgements
+# Acknowledgements
 
 * [Puppeteer](https://github.com/GoogleChrome/puppeteer) and Chrome Headless as base headless browser.
 * [ZombieJs](https://github.com/assaf/zombie) as inspiration of the assertion library.
 * [NightmareJs](http://www.nightmarejs.org) as inspiration for part of the browser interface.
 
 
-## License
+# License
 
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
 * Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
