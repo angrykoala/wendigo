@@ -38,7 +38,7 @@
     "compositer": "^1.2.0",
     "deep-equal": "^1.0.1",
     "mixwith": "^0.1.1",
-    "puppeteer": "~1.8.0"
+    "puppeteer": "~1.9.0"
   },
   "devDependencies": {
     "eslint": "^5.6.1",

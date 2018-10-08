@@ -4,6 +4,7 @@
   * Plugin system for Wendigo browser
   * Mock assert postBody
   * Logs parse js objects correctly in console module
+  * Puppeteer updated to 1.9.0
   * Minor improvements in mock handling
   * Minor code improvements on browserFactory and Modules
 
