@@ -1312,6 +1312,18 @@ registerPlugin also accepts a single object containing the data in the following
 
 Keep in mind that both the plugin and the assertions are optional, but at least one must exists to register the plugin.
 
+Instead of classes, if a plain function is provided as a plugin or assertion, it will be attached directly to browser or browser assertion (without calling `new`), the function will receive the same arguments as the constructor of the plugin, as well as any extra parameter passed to the function:
+
+```js
+function myPluginAssertionFunc(browser, myPlugin, count){
+    const koalas = myPlugin.findKoalas().length;
+    if (!count && koalas === 0) throw new AssertionError("No koalas :("); // node's AssertionError
+    else if (count && koalas !== count) throw new AssertionError("No enough koalas :/");
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+browser.assert.koalafied(); // note the assertion is called directly
+```
 
 ## Publishing a plugin
 If you want to create a new plugin and publish it in the npm store. Please, follow the following steps:

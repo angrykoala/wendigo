@@ -149,4 +149,17 @@ describe("Plugins", () => {
             Wendigo.registerPlugin("pluginTest", PluginTest, {});
         }, `Error: Invalid assertion module for plugin "pluginTest".`);
     });
+
+    it("Register Plugin With Function Assertion", async() => {
+        function assertionTest(browser, pluginTest) {
+            return `assertionTest${pluginTest.myMethod()}`;
+        }
+
+        Wendigo.registerPlugin("pluginTest", PluginTest, assertionTest);
+        const browser = await Wendigo.createBrowser();
+        assert.ok(browser.pluginTest);
+        assert.ok(browser.assert.pluginTest);
+        assert.strictEqual(browser.assert.pluginTest(), "assertionTesttest");
+        await browser.close();
+    });
 });
