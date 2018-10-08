@@ -70,7 +70,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
-> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
+> **Warning:** If the settings are changed, creating a new browser will close all current browsers.
 
 Examples:
 ```js
@@ -99,6 +99,9 @@ Optionally an object can be passed with the following options:
 
 **clearPlugins()**   
 Removes all plugins from Wendigo. This will affect all newly created browsers.
+
+### Wendigo Browser Considerations
+While Wendigo is just a wrapper on Puppeteer, a browser in Wendigo actually represents a page, Wendigo will reuse the same Chromium instance instead of destroying and creating it again to avoid heavy performance issues in the tests. As a consequence, some behavior regarding multiple browsers/pages may be inconsistent. Likewise, closing a browser will simply close the current tab, not the whole browser. To achieve this, Wendigo always keep an default page open.
 
 ## Browser
 The Browser instance is and interface with the `page` class of Puppeteer.
@@ -139,10 +142,8 @@ Opens the given file from the browser. Same options as `open` can be passed. The
 await browser.open("static/index.html");
 ```
 
-
-
 **close()**    
-Close the opened page in the browser.
+Close the browser, it should be called after finishing using the browser. Avoid creating a new browser before closing the previous one if possible. Having multiple open browsers will cause performance degradation in your tests.
 
 ```js
 await browser.close();
@@ -1390,6 +1391,9 @@ Before doing a commit or PR to the `dev` branch, make sure both the tests and li
 This error may appear when running wendigo on certain systems and in most CI services. The sandbox setup can be bypassed by setting the environment variable `NO_SANDBOX=true`.
 
 For example `NO_SANDBOX=true npm test`.
+
+## MaxListenersExceededWarning: Possible EventEmitter memory leak detected warning
+This can be caused by executing `Wendigo.createBrowser` multiple times without calling `browser.close` on previous browsers, causing all of them to be kept open. This may cause performance issues in your tests and it is recommended to close **every** browser after using it.
 
 ## Running Tests With Travis CI
 Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself. It is recommended to add `travis_retry` to allow travis to execute the tests multiple times, as browser-based setup may fail frequently on travis workers:

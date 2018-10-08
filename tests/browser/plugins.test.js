@@ -46,11 +46,13 @@ describe("Plugins", () => {
         let browser = await Wendigo.createBrowser();
         assert.strictEqual(browser.pluginTest, undefined);
         Wendigo.registerPlugin("pluginTest", PluginTest);
+        await browser.close();
         browser = await Wendigo.createBrowser();
         assert.ok(browser.pluginTest);
         assert.strictEqual(browser.pluginTest.myMethod(), "test");
         assert.strictEqual(browser.pluginTest.browser, browser);
         assert.strictEqual(browser.assert.pluginTest, undefined);
+        await browser.close();
     });
 
     it("Register Plugin With Object", async() => {
@@ -61,11 +63,13 @@ describe("Plugins", () => {
             plugin: PluginTest,
             assertions: AssertionPluginTest
         });
+        await browser.close();
         browser = await Wendigo.createBrowser();
         assert.ok(browser.pluginTest);
         assert.strictEqual(browser.pluginTest.myMethod(), "test");
         assert.strictEqual(browser.pluginTest.browser, browser);
         assert.strictEqual(browser.assert.pluginTest.myAssertion(), "assertionTest");
+        await browser.close();
     });
 
     it("Plugin Hooks Before Open And Before Close", async() => {
@@ -79,6 +83,7 @@ describe("Plugins", () => {
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, false);
         await browser.close();
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, true);
+        await browser.close();
     });
 
     it("Clear Plugins", async() => {
@@ -86,10 +91,12 @@ describe("Plugins", () => {
         let browser = await Wendigo.createBrowser();
         assert.ok(browser.pluginTest);
         Wendigo.clearPlugins();
+        await browser.close();
         browser = await Wendigo.createBrowser();
         assert.strictEqual(browser.pluginTest, undefined);
         assert.ok(browser.requests);
         assert.ok(browser.localStorage);
+        await browser.close();
     });
 
     it("Register Plugin With Assertion", async() => {
@@ -100,6 +107,7 @@ describe("Plugins", () => {
         assert.strictEqual(browser.assert.pluginTest.myAssertion(), "assertionTest");
         assert.strictEqual(browser.assert.pluginTest.browser, browser);
         assert.strictEqual(browser.assert.pluginTest.plugin, browser.pluginTest);
+        await browser.close();
     });
 
     it("Register Plugin Only With Assertion", async() => {
@@ -110,6 +118,7 @@ describe("Plugins", () => {
         assert.strictEqual(browser.assert.pluginTest.myAssertion(), "assertionTest");
         assert.strictEqual(browser.assert.pluginTest.browser, browser);
         assert.strictEqual(browser.assert.pluginTest.plugin, undefined);
+        await browser.close();
     });
 
     it("Register Plugin Invalid Name", async() => {
