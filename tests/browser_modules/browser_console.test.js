@@ -16,8 +16,9 @@ describe("Console", function() {
         await browser.open(configUrls.console);
     });
 
-    afterEach(() => {
+    afterEach(async() => {
         browser.console.clear();
+        await browser.wait(10);
     });
 
     after(async() => {
@@ -61,7 +62,7 @@ describe("Console", function() {
     it("Find Log By Type", async() => {
         await browser.click(".log");
         await browser.click(".error");
-        await browser.wait(1);
+        await browser.wait(10);
         const logs = browser.console.filter({type: browser.console.LogType.error});
         assert.strictEqual(logs.length, 1);
         assert.strictEqual(logs[0].text, "Error Log extra arg");
@@ -88,7 +89,7 @@ describe("Console", function() {
 
     it("Find Log By Text And Type", async() => {
         await browser.click(".error");
-        await browser.wait(5);
+        await browser.wait(50);
         const logs = browser.console.filter({type: browser.console.LogType.error,
             text: "Error Log extra arg"});
         assert.strictEqual(logs.length, 1);

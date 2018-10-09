@@ -67,7 +67,7 @@ describe("Wait For Request", function() {
             body: "test"
         });
         await browser.clickText("click me");
-        await browser.wait(10);
+        await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
         await browser.waitForResponse("http://localhost:3456/api");
@@ -98,7 +98,7 @@ describe("Wait For Request", function() {
 
     it("Wait For Next Request Already Made", async() => {
         await browser.clickText("click me");
-        await browser.wait(10);
+        await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await utils.assertThrowsAsync(async() => {
             await browser.waitForNextRequest("http://localhost:3456/api", 10);
@@ -114,7 +114,7 @@ describe("Wait For Request", function() {
         await browser.wait(10);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(0);
-        await browser.waitForNextResponse("http://localhost:3456/api");
+        await browser.waitForNextResponse("http://localhost:3456/api", 1000);
         await browser.assert.request.url(/api/).responseBody("test");
     });
 
@@ -123,7 +123,7 @@ describe("Wait For Request", function() {
             body: "test"
         });
         await browser.clickText("click me");
-        await browser.wait(10);
+        await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
         await utils.assertThrowsAsync(async() => {
