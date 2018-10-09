@@ -4,6 +4,7 @@
   * Plugin system for Wendigo browser
   * Mock assert postBody
   * Logs parse js objects correctly in console module
+  * Fixed bug regarding multiple browsers on no-sandbox mode
   * Puppeteer updated to 1.9.0
   * Browser.assert.cookie and browser.assert.webworker deprecated in favor of cookies and webworkers
   * Other dependencies updated

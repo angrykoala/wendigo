@@ -49,7 +49,7 @@ describe("Wendigo Main", function() {
         await browser2.close();
     });
 
-    it.skip("Multiple Browsers", async() => {
+    it("Multiple Browsers", async() => {
         const browser1 = await Wendigo.createBrowser();
         await browser1.open(configUrls.index);
         const browser2 = await Wendigo.createBrowser();
