@@ -1,4 +1,4 @@
-1.4.0 / ####-##-##
+1.4.0 / 2018-10-09
 ==================
 
   * Plugin system for Wendigo browser
