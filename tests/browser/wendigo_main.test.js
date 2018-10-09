@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const Wendigo = require('../../lib/wendigo'); // Load from package.json
-
+const configUrls = require('../config.json').urls;
 
 describe("Wendigo Main", function() {
     this.timeout(5000);
@@ -42,8 +42,24 @@ describe("Wendigo Main", function() {
         const browser1 = await Wendigo.createBrowser();
         assert.strictEqual(browser1._settings.slowMo, 0);
         assert.strictEqual(Wendigo._lastSettings.slowMo, 0);
+        await browser1.close();
         const browser2 = await Wendigo.createBrowser({slowMo: 1});
         assert.strictEqual(browser2._settings.slowMo, 1);
         assert.strictEqual(Wendigo._lastSettings.slowMo, 1);
+        await browser2.close();
+    });
+
+    it.skip("Multiple Browsers", async() => {
+        const browser1 = await Wendigo.createBrowser();
+        await browser1.open(configUrls.index);
+        const browser2 = await Wendigo.createBrowser();
+        await browser2.open(configUrls.simple);
+        await browser1.wait(100);
+        await browser1.assert.text("h1", "Main Title");
+        await browser2.assert.text("p", "html_test");
+        await browser1.assert.not.text("p", "html_test");
+        await browser2.assert.not.exists("h1");
+        await browser1.close();
+        await browser2.close();
     });
 });

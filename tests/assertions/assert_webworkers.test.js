@@ -21,20 +21,20 @@ describe("Assert Webworkers", function() {
     });
 
     it("Assert Webworker", async() => {
-        await browser.assert.webworker({
+        await browser.assert.webworkers({
             count: 0
         });
         await browser.clickText("Start Worker");
         await browser.wait();
-        await browser.assert.webworker();
-        await browser.assert.webworker({
+        await browser.assert.webworkers();
+        await browser.assert.webworkers({
             count: 1
         });
     });
 
     it("Assert Webworkers Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
-            await browser.assert.webworker();
+            await browser.assert.webworkers();
         }, `Expected at least 1 webworker running, 0 found.`);
     });
 
@@ -42,7 +42,7 @@ describe("Assert Webworkers", function() {
         await browser.clickText("Start Worker");
         await browser.wait();
         await utils.assertThrowsAssertionAsync(async() => {
-            await browser.assert.webworker({
+            await browser.assert.webworkers({
                 count: 2
             });
         }, `Expected 2 webworkers running, 1 found.`);
@@ -50,14 +50,14 @@ describe("Assert Webworkers", function() {
 
     it("Assert Webworker Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
-            await browser.assert.webworker(null, "ww fails");
+            await browser.assert.webworkers(null, "ww fails");
         }, `ww fails`);
     });
 
     it("Assert Webworker Url", async() => {
         await browser.clickText("Start Worker");
         await browser.wait();
-        await browser.assert.webworker({
+        await browser.assert.webworkers({
             count: 1,
             url: "http://localhost:3456/worker.js"
         });
@@ -65,7 +65,7 @@ describe("Assert Webworkers", function() {
 
     it("Assert Webworker Url Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
-            await browser.assert.webworker({
+            await browser.assert.webworkers({
                 count: 1,
                 url: "http://localhost:3456/worker.js"
             });
@@ -73,7 +73,7 @@ describe("Assert Webworkers", function() {
     });
     it("Assert Webworker Url Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
-            await browser.assert.webworker({
+            await browser.assert.webworkers({
                 count: 1,
                 url: "http://localhost:3456/worker.js"
             }, "ww fails");
