@@ -10,6 +10,7 @@ describe("Incognito", function() {
     it("Not Incognito", async() => {
         const browser = await Wendigo.createBrowser();
         await browser.open(configUrls.incognito);
+        await browser.wait(10);
         await browser.assert.text("#check-text", "Not Incognito");
         await browser.close();
     });
@@ -17,6 +18,7 @@ describe("Incognito", function() {
     it("Incognito", async() => {
         const browser = await Wendigo.createBrowser({incognito: true});
         await browser.open(configUrls.incognito);
+        await browser.wait(10);
         await browser.assert.text("#check-text", "Incognito");
         await browser.close();
     });
