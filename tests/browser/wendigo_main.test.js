@@ -49,11 +49,12 @@ describe("Wendigo Main", function() {
         await browser2.close();
     });
 
-    it("Multiple Browsers", async() => {
+    it.skip("Multiple Browsers", async() => {
         const browser1 = await Wendigo.createBrowser();
         await browser1.open(configUrls.index);
         const browser2 = await Wendigo.createBrowser();
         await browser2.open(configUrls.simple);
+        await browser1.wait(100);
         await browser1.assert.text("h1", "Main Title");
         await browser2.assert.text("p", "html_test");
         await browser1.assert.not.text("p", "html_test");
