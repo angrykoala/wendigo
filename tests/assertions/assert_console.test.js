@@ -42,7 +42,7 @@ describe("Assert Console", function() {
         await browser.click(".log");
         await browser.click(".log");
         await browser.click(".error");
-        await browser.wait(1);
+        await browser.wait(10);
         await browser.assert.console();
         await browser.assert.console({
             type: browser.console.LogType.info
