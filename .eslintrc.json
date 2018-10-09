@@ -18,7 +18,7 @@
         "no-await-in-loop": "warn",
         "no-template-curly-in-string": "warn",
         "require-atomic-updates": "error",
-        "array-callback-return": "warn",
+        "array-callback-return": "off",
         "block-scoped-var": "error",
         "complexity": ["warn", 8],
         "dot-notation": "error",

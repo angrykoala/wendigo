@@ -1,4 +1,4 @@
-# Wendigo :jack_o_lantern: 
+# Wendigo :jack_o_lantern:
 <img src="https://user-images.githubusercontent.com/5960567/41823576-2f7cb71a-7802-11e8-8714-521cb38b42c0.png" align="right" width="150px">
 
 
@@ -44,6 +44,8 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Requests](#requests)
     * [Webworkers](#webworkers)
     * [Errors](#errors)
+    * [Selectors](#selectors)
+* [Plugins](#plugins)
 * [Examples](#examples)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
@@ -56,7 +58,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 ## Wendigo
 Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
 
-**static createBrowser(settings)**   
+**createBrowser(settings)**   
 Will create and return a [Browser](#Browser) instance. It will automatically launch and connect Puppeteer and Chrome if an instance is not running.
 
 * _settings_ is an optional object with the settings to build the browser
@@ -68,7 +70,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
-> **Warning:** the settings will only take effect the first time a browser page is created, to fully restart the settings you must close the browser connection using `Wendigo.stop()` before executing createBrowser again
+> **Warning:** If the settings are changed, creating a new browser will close all current browsers.
 
 Examples:
 ```js
@@ -84,8 +86,22 @@ const browser = Wendigo.createBrowser({
 }); // Using options to see what's happening
 ```
 
-**static stop()**   
+**stop()**   
 Will stop and disconnect all the browsers. It should be called after finishing all the tests.
+
+**registerPlugin(name, plugin?, assertions?)**   
+Registers a new plugin, for more information, check [Plugins](#plugins). This must be called before `createBrowser` for the plugins to work.
+
+Optionally an object can be passed with the following options:
+* `name`
+* `plugin`
+* `assertions`
+
+**clearPlugins()**   
+Removes all plugins from Wendigo. This will affect all newly created browsers.
+
+### Wendigo Browser Considerations
+While Wendigo is just a wrapper on Puppeteer, a browser in Wendigo actually represents a page, Wendigo will reuse the same Chromium instance instead of destroying and creating it again to avoid heavy performance issues in the tests. As a consequence, some behavior regarding multiple browsers/pages may be inconsistent. Likewise, closing a browser will simply close the current tab, not the whole browser. To achieve this, Wendigo always keep an default page open.
 
 ## Browser
 The Browser instance is and interface with the `page` class of Puppeteer.
@@ -126,10 +142,8 @@ Opens the given file from the browser. Same options as `open` can be passed. The
 await browser.open("static/index.html");
 ```
 
-
-
 **close()**    
-Close the opened page in the browser.
+Close the browser, it should be called after finishing using the browser. Avoid creating a new browser before closing the previous one if possible. Having multiple open browsers will cause performance degradation in your tests.
 
 ```js
 await browser.close();
@@ -621,8 +635,8 @@ browser.assert.global("my-val", "dontpanic");
 Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
 
 ```js
-browser.assert.cookie("username");
-browser.assert.cookie("username", "arthur_dent");
+browser.assert.cookies("username");
+browser.assert.cookies("username", "arthur_dent");
 ```
 
 **checked(selector, msg?)**   
@@ -671,9 +685,9 @@ Assert that at least one webworker is running, the following options can be pass
 * `count`: Matches exactly the given number of webworkers running.
 
 ```js
-await browser.assert.webworker({url: "foo.js"}); // At least one webworker with given url running
-await browser.assert.webworker(); // at least one webworker running
-await browser.assert.webworker({count: 0}); // No webworkers running
+await browser.assert.webworkers({url: "foo.js"}); // At least one webworker with given url running
+await browser.assert.webworkers(); // at least one webworker running
+await browser.assert.webworkers({count: 0}); // No webworkers running
 ```
 
 ### Negative assertions
@@ -767,8 +781,8 @@ Asserts that the global object (window) doesn't have the given key with the expe
 Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
 ```js
-browser.assert.not.cookie("not-a-cookie");
-browser.assert.not.cookie("username", "not-user");
+browser.assert.not.cookies("not-a-cookie");
+browser.assert.not.cookies("username", "not-user");
 ```
 
 > Assertions related to LocalStorage can be found under each section
@@ -995,15 +1009,14 @@ browser.requests.mock("http://localhost:8000/api", {
 
 Mock will return a RequestMock object, with the following properties:
 
-* `called`: If the mock has been called
-* `timesCalled`: The times the mock has been called
-* `response` : The response the mock is returning (read only)
-* `url`: Mocked url
-* `queryString`: The mock queryString
-* `immediate`: If the mock will return immediately (delay=0)
-* `assert.called(times?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made
-* `waitUntilCalled(timeout=500)`: Waits until the mock is called 
-* `auto`: If the request will be completed automatically
+* `called`: If the mock has been called.
+* `timesCalled`: The times the mock has been called.
+* `response` : The response the mock is returning (read only).
+* `url`: Mocked url.
+* `queryString`: The mock queryString.
+* `immediate`: If the mock will return immediately (delay=0).
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called .
+* `auto`: If the request will be completed automatically.
 
 ```js
 const mock = browser.requests.mock("http://localhost:8000/api", {
@@ -1014,6 +1027,21 @@ mock.timesCalled; // 0
 callApi(); //  { result: "ok" }
 mock.called; // true
 mock.timesCalled; // true
+```
+
+The mock will also provide an assertion interface in `mock.assert` with the following assertions:
+
+* `called(times?, msg?)`: asserts that the mock has been called the given number of times, if times parameter is not given, the assertion will throw if no calls were made.
+* `postBody(expected, msg?)`: asserts that the mock has been called with the given body in the request, expected can be an string, object, or RegExp.
+
+```js
+const mock = browser.requests.mock("http://localhost:8000/api", {
+    body: {result: "ok"}
+});
+mock.assert.called(0);
+callApi("my request"); // POST requests with given body
+mock.assert.called(0);
+mock.assert.postBody("my request");
 ```
 
 
@@ -1120,7 +1148,7 @@ await browser.assert.request.url(/api/);
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
-await rowser.assert.request.method("GET");
+await browser.assert.request.method("GET");
 ```
 
 **status(expected, msg?)**    
@@ -1136,7 +1164,7 @@ await browser.assert.request.status(200);
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
-await browser.requests.assert.responseHeaders({
+await browser.assert.request.responseHeaders({
     'content-type': /html/,
 })
 ```
@@ -1189,8 +1217,6 @@ Returns all the webworkers currently executing in the page. Each webworker will 
 * _worker_: Returns the [Puppeteer's Worker instance](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-worker)
 
 
-
-
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
 
@@ -1207,13 +1233,113 @@ Timeout error, it will be thrown in waitFor methods. Keep in mind that this erro
 Defines a Fatal Error with Puppeteer (e.g. a connection error)
 
 
-## Examples
+## Selectors
+Most Wendigo methods and assertions will require a selector to localize the element in the DOM, unless specified, any method will accept 3 different kind of selectors:
+
+* **css**: Such as `#my-id` or `.container`, any selector supported by the standard `document.querySelector`.
+* **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
+* **DomElement**: The result of `browser.query` can be directly used as a selector.
+
+# Plugins
+Wendigo supports plugins to extends its capabilities with custom features and assertions. To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
+
+```js
+class MyPlugin {
+    constructor(browser) { // The plugin will receive the browser instance in the constructor
+        this._browser = browser;
+    }
+
+    getHeaderTitle() { // Custom method to find our title
+        return this._browser.text("h1.header-title")[0];
+    }
+
+    findKoalas() {
+        return this._browser.findByTextContaining(/koala/);
+    }
+
+    _beforeOpen() { // This hook will be called anytime `browser.open` is executed
+        // You can perform actions required for your plugin to run whenever
+        // a new page is opened such as setting up cache
+        // keep in mind that the page won't be accesible yet
+    }
+
+    _beforeClose() { // This hook will be called anytime `browser.close` is executed
+        // You can perform actions required for your plugin when the page is
+        // close, keep in mind that this will only be called on browser.close and
+        // not on any page loading
+    }
+}
+
+
+class MyPluginAssertions { // The assertions will be under browser.assertions[myPluginName]
+    constructor(browser, myPlugin) { // Plugin assertions receive browser and plugin in the constructor
+        this._myPlugin = myPlugin;
+    }
+
+    thereAreKoalas(count) {
+        const koalas = this._myPlugin.findKoalas().length;
+        if (!count && koalas === 0) throw new AssertionError("No koalas :("); // node's AssertionError
+        else if (count && koalas !== count) throw new AssertionError("No enough koalas :/");
+    }
+
+    headerTitle(title) {
+        if (this._myPlugin.getHeaderTitle() !== title) throw new AssertionError("Invalid title");
+    }
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+
+const browser=Wendigo.createBrowser();
+//... more code ...
+
+browser.koalafied.getHeaderTitle(); // Koalas are great
+
+browser.assert.koalafied.headerTitle("Koalas are great");
+browser.assert.koalafied.thereAreKoalas();
+```
+
+**Wendigo.registerPlugin** receives 3 parameters:   
+* **name**: Name to be used to access the plugin, it must be different than other plugins and should not collide with wendigo core modules.
+* **plugin**: Class to be used as plugin accessed under `browser.name`, this class will receive `browser` as constructor parameter and 2 methods can be implemented as hooks:
+  * **_beforeOpen**: Called when `browser.open` is called, before opening the page.
+  * **_beforeClose**: Called when `browser.close` is called, before closing the page.
+* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will received both the browser and the core plugin as parameters
+
+registerPlugin also accepts a single object containing the data in the following structure:
+* `name`
+* `plugin`
+* `assertion`
+
+Keep in mind that both the plugin and the assertions are optional, but at least one must exists to register the plugin.
+
+Instead of classes, if a plain function is provided as a plugin or assertion, it will be attached directly to browser or browser assertion (without calling `new`), the function will receive the same arguments as the constructor of the plugin, as well as any extra parameter passed to the function:
+
+```js
+function myPluginAssertionFunc(browser, myPlugin, count){
+    const koalas = myPlugin.findKoalas().length;
+    if (!count && koalas === 0) throw new AssertionError("No koalas :("); // node's AssertionError
+    else if (count && koalas !== count) throw new AssertionError("No enough koalas :/");
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+browser.assert.koalafied(); // note the assertion is called directly
+```
+
+## Publishing a plugin
+If you want to create a new plugin and publish it in the npm store. Please, follow the following steps:
+
+1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually unless you want them to be imported that way.
+2. Make sure your code is tested using node 8 and above. Avoid using async/await if possible.
+3. Set Wendigo as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies) in you package.json.
+    * If you are writing tests, also set Wendigo as a dev dependency, **never** as a normal dependency.
+4. Wendigo usually follows [semantic versioning](https://semver.org/) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
+5. Let people (and koalas!) know about it.
+
+# Examples
 
 **Testing a simple page with Mocha and Wendigo**
 
 ```javascript
-"use strict";
-
 const assert = require('assert');
 const Wendigo = require('../lib/wendigo');
 
@@ -1221,31 +1347,36 @@ describe("My Tests", function() {
     this.timeout(5000); // Recommended for CI
     let browser;
 
-    before(async () => {
+    beforeEach(async() => {
         browser = await Wendigo.createBrowser();
     });
 
-    after(async () => {
+    afterEach(async() => {
+        // For more speed, this method could be only executed after all tests pass
+        // if your tests do not rely on state changes
         await browser.close();
+    });
+
+    after(async() => {
         await Wendigo.stop(); // After all tests finished
     });
 
-    it("Page Title", async () => {
+    it("Page Title", async() => {
         await browser.open("http://localhost");
         await browser.assert.text("h1#main-title", "My Webpage");
         await browser.assert.title("My Webpage");
     });
 
-    it("Open Menu", async () => {
+    it("Open Menu", async() => {
         await browser.open("http://localhost");
-        await browser.assert.not.visible(".menu");   
+        await browser.assert.not.visible(".menu");
         await browser.click(".btn.open-menu");
         await browser.assert.visible(".menu");
     });
 });
 ```
 
-## Development
+# Development
 These instructions assume node>8.0.0 and npm installed:
 
 1. Clone the git repository (`dev` branch)
@@ -1256,7 +1387,7 @@ These instructions assume node>8.0.0 and npm installed:
 
 Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
 
-### Architecture
+## Architecture
 
 * `Wendigo`: The main class exported by the module, provides the base interface to instantiate the browser class.
   * `BrowserFactory`: class takes care of the creation of the browser instance
@@ -1266,14 +1397,17 @@ Before doing a commit or PR to the `dev` branch, make sure both the tests and li
   * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
   * Note that the assertion module is a composed module as well.
 
-## Troubleshooting
+# Troubleshooting
 
-### Error: Failed to launch chrome! No usable sandbox!
+## Error: Failed to launch chrome! No usable sandbox!
 This error may appear when running wendigo on certain systems and in most CI services. The sandbox setup can be bypassed by setting the environment variable `NO_SANDBOX=true`.
 
 For example `NO_SANDBOX=true npm test`.
 
-### Running Tests With Travis CI
+## MaxListenersExceededWarning: Possible EventEmitter memory leak detected warning
+This can be caused by executing `Wendigo.createBrowser` multiple times without calling `browser.close` on previous browsers, causing all of them to be kept open. This may cause performance issues in your tests and it is recommended to close **every** browser after using it.
+
+## Running Tests With Travis CI
 Running tests using Puppeteer's require disabling the sandbox running mode. This can easily be achieved by passing the environment variable `NO_SANDBOX=true`, this can be done either as part of the test execution command, as a Travis secret env variable or in the `.travis.yml` file itself. It is recommended to add `travis_retry` to allow travis to execute the tests multiple times, as browser-based setup may fail frequently on travis workers:
 
 ```yml
@@ -1323,14 +1457,14 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
 
-## Acknowledgements
+# Acknowledgements
 
 * [Puppeteer](https://github.com/GoogleChrome/puppeteer) and Chrome Headless as base headless browser.
 * [ZombieJs](https://github.com/assaf/zombie) as inspiration of the assertion library.
 * [NightmareJs](http://www.nightmarejs.org) as inspiration for part of the browser interface.
 
 
-## License
+# License
 
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
 * Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)

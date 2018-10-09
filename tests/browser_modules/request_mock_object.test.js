@@ -137,4 +137,48 @@ describe("Requests Mock Object", function() {
             await mock.waitUntilCalled(10);
         }, `TimeoutError: Wait until mock of "${configUrls.api}" is called, timeout of 10ms exceeded.`);
     });
+
+    it("Mock Assert Post Body", async() => {
+        const mock = browser.requests.mock(configUrls.api, {
+            method: "POST"
+        });
+        await browser.clickText("post");
+        await mock.waitUntilCalled();
+        await mock.assert.postBody({
+            data: "example data"
+        });
+    });
+    it("Mock Assert Post Body With Regex", async() => {
+        const mock = browser.requests.mock(configUrls.api, {
+            method: "POST"
+        });
+        await browser.clickText("post");
+        await mock.waitUntilCalled();
+        await mock.assert.postBody(/example/);
+    });
+    it("Mock Assert Post Body Throws", async() => {
+        const mock = browser.requests.mock(configUrls.api, {
+            method: "POST"
+        });
+        await browser.clickText("post");
+        await mock.waitUntilCalled();
+        await utils.assertThrowsAssertionAsync(async() => {
+            await mock.assert.postBody({
+                data: "example Fake data"
+            });
+        }, `Expected mock to be called with body "{"data":"example Fake data"}".`);
+    });
+
+    it("Mock Assert Post Body Throws Custom Message", async() => {
+        const mock = browser.requests.mock(configUrls.api, {
+            method: "POST"
+        });
+        await browser.clickText("post");
+        await mock.waitUntilCalled();
+        await utils.assertThrowsAssertionAsync(async() => {
+            await mock.assert.postBody({
+                data: "example Fake data"
+            }, "postbody fails");
+        }, `postbody fails`);
+    });
 });
