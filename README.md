@@ -635,8 +635,8 @@ browser.assert.global("my-val", "dontpanic");
 Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
 
 ```js
-browser.assert.cookie("username");
-browser.assert.cookie("username", "arthur_dent");
+browser.assert.cookies("username");
+browser.assert.cookies("username", "arthur_dent");
 ```
 
 **checked(selector, msg?)**   
@@ -685,9 +685,9 @@ Assert that at least one webworker is running, the following options can be pass
 * `count`: Matches exactly the given number of webworkers running.
 
 ```js
-await browser.assert.webworker({url: "foo.js"}); // At least one webworker with given url running
-await browser.assert.webworker(); // at least one webworker running
-await browser.assert.webworker({count: 0}); // No webworkers running
+await browser.assert.webworkers({url: "foo.js"}); // At least one webworker with given url running
+await browser.assert.webworkers(); // at least one webworker running
+await browser.assert.webworkers({count: 0}); // No webworkers running
 ```
 
 ### Negative assertions
@@ -781,8 +781,8 @@ Asserts that the global object (window) doesn't have the given key with the expe
 Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
 ```js
-browser.assert.not.cookie("not-a-cookie");
-browser.assert.not.cookie("username", "not-user");
+browser.assert.not.cookies("not-a-cookie");
+browser.assert.not.cookies("username", "not-user");
 ```
 
 > Assertions related to LocalStorage can be found under each section
