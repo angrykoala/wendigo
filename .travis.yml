@@ -9,7 +9,8 @@ env:
   - NO_SANDBOX=true
 
 script:
-  - travis_retry npm test
+  # - travis_retry npm test
+  - npm test
   - npm run lint
 
 cache:
