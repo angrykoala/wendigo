@@ -1274,7 +1274,7 @@ class MyPlugin {
         // not on any page loading
     }
 
-    _afterOpen() { // This hook will be called after the page is opened and _loaded
+    _afterOpen() { // This hook will be called after the page is opened and loaded
         // You can use this hook to start performing actions with evaluate or
         // adding custom scripts with this._browser.page.addScriptTag
     }
