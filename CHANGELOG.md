@@ -1,7 +1,9 @@
-1.5.0 / ####-##-##
+1.4.2 / ####-##-##
 ==================
 
   * AddScript method
+  * After Open hook fix
+  * Minor improvements to some error messages
 
 1.4.1 / 2018-10-13
 ==================
