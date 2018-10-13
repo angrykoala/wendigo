@@ -1,3 +1,10 @@
+1.4.2 / 2018-10-14
+==================
+
+  * AddScript method
+  * After Open hook fix
+  * Minor improvements to some error messages
+
 1.4.1 / 2018-10-13
 ==================
 

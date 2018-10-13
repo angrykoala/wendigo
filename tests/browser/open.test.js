@@ -20,7 +20,7 @@ describe("Open", function() {
     it("Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.open("not-a-page");
-        }, `FatalError: Failed to open not-a-page. Protocol error (Page.navigate): Cannot navigate to invalid URL`);
+        }, `FatalError: Failed to open "not-a-page". Protocol error (Page.navigate): Cannot navigate to invalid URL`);
     });
 
     it("Before Open Fails", async() => {

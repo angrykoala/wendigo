@@ -12,6 +12,7 @@ describe("Plugins", () => {
             this.browser = browser;
             this.beforeOpenCalled = false;
             this.beforeCloseCalled = false;
+            this.afterOpenCalled = false;
         }
 
         myMethod() {
@@ -24,6 +25,10 @@ describe("Plugins", () => {
 
         _beforeClose() {
             this.beforeCloseCalled = true;
+        }
+
+        _afterOpen() {
+            this.afterOpenCalled = true;
         }
     }
 
@@ -78,8 +83,10 @@ describe("Plugins", () => {
         assert.ok(browser.pluginTest);
         assert.strictEqual(browser.pluginTest.beforeOpenCalled, false);
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, false);
+        assert.strictEqual(browser.pluginTest.afterOpenCalled, false);
         await browser.open(configUrls.index);
         assert.strictEqual(browser.pluginTest.beforeOpenCalled, true);
+        assert.strictEqual(browser.pluginTest.afterOpenCalled, true);
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, false);
         await browser.close();
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, true);
