@@ -192,6 +192,11 @@ elements[0].textContent; // "My first paragraph"
 
 > The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
+**addScript(scriptPath)**   
+Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
+
+It is heavily recommended to only use this to load helper functions, and not execute anything that might cause side effects. Anything loaded as a script may interfere with the behavior of the page or Wendigo. It is recommended to **always** check if the object of function you are loading already exists before loading, remember that `WendigoUtils` and `WendigoQuery` objects in `window` are required for Wendigo to work, so do not override them.
+
 **class(selector)**    
 Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
 

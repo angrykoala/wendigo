@@ -58,7 +58,7 @@ describe("Wait For Request", function() {
         await browser.wait(10);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(0);
-        await browser.waitForResponse("http://localhost:3456/api");
+        await browser.waitForResponse("http://localhost:3456/api", 1000);
         await browser.assert.request.url(/api/).responseBody("test");
     });
 
