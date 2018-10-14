@@ -42,11 +42,12 @@ describe("Open", function() {
     });
 
     it("Open And Close", async() => {
+        assert.strictEqual(browser.loaded, false);
         await browser.open(configUrls.index);
-        assert.strictEqual(browser._loaded, true);
+        assert.strictEqual(browser.loaded, true);
         assert(browser._originalHtml);
         await browser.close();
-        assert.strictEqual(browser._loaded, false);
+        assert.strictEqual(browser.loaded, false);
         assert.strictEqual(browser._originalHtml, undefined);
     });
 
