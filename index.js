@@ -2,9 +2,9 @@
 
 const process = require('process');
 const deepEqual = require('deep-equal');
-const BrowserFactory = require('./browser_factory');
+const BrowserFactory = require('./lib/browser_factory');
 const puppeteer = require('puppeteer');
-const Errors = require('./errors');
+const Errors = require('./lib/errors');
 
 const defaultSettings = {
     log: false,
@@ -18,23 +18,23 @@ const defaultSettings = {
 
 const defaultPlugins = [{
     name: "cookies",
-    plugin: require('./modules/cookies/browser_cookies'),
-    assertions: require('./modules/cookies/cookies_assertion')
+    plugin: require('./lib/modules/cookies/browser_cookies'),
+    assertions: require('./lib/modules/cookies/cookies_assertion')
 }, {
     name: "localStorage",
-    plugin: require('./modules/local_storage/browser_local_storage'),
-    assertions: require('./modules/local_storage/local_storage_assertions')
+    plugin: require('./lib/modules/local_storage/browser_local_storage'),
+    assertions: require('./lib/modules/local_storage/local_storage_assertions')
 }, {
     name: "requests",
-    plugin: require('./modules/requests/browser_requests')
+    plugin: require('./lib/modules/requests/browser_requests')
 }, {
     name: "console",
-    plugin: require('./modules/console/browser_console'),
-    assertions: require('./modules/console/console_assertion')
+    plugin: require('./lib/modules/console/browser_console'),
+    assertions: require('./lib/modules/console/console_assertion')
 }, {
     name: "webworkers",
-    plugin: require('./modules/webworkers/browser_webworkers'),
-    assertions: require('./modules/webworkers/webworkers_assertions')
+    plugin: require('./lib/modules/webworkers/browser_webworkers'),
+    assertions: require('./lib/modules/webworkers/webworkers_assertions')
 }];
 
 

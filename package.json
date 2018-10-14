@@ -10,7 +10,7 @@
     "lib",
     "config.js"
   ],
-  "main": "lib/wendigo.js",
+  "main": "wendigo.js",
   "scripts": {
     "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit",
     "dummy-server": "node tests/dummy_server/index.js",

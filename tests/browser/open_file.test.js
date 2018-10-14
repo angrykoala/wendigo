@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require('path');
-const Wendigo = require('../../lib/wendigo');
+const Wendigo = require('../..');
 const utils = require('../test_utils');
 
 

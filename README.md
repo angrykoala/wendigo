@@ -1351,7 +1351,7 @@ If you want to create a new plugin and publish it in the npm store. Please, foll
 
 ```javascript
 const assert = require('assert');
-const Wendigo = require('../lib/wendigo');
+const Wendigo = require('wendigo');
 
 describe("My Tests", function() {
     this.timeout(5000); // Recommended for CI
