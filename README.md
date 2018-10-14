@@ -999,6 +999,7 @@ The following options are supported:
 * `method` defines the method (`GET`, `POST`, ...) to mock
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
     * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
+* `redirectTo`: If set, the mock will return the response of the given url instead of the original call, maintaining the query string, keep in mind that the redirected request won't trigger any mocks. E.g. `request.mock("http://localhost:8010", {redirectTo: "http://localhost:9010"})` will change the port where all request in the page are sent.
 
 
 > This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
@@ -1262,7 +1263,7 @@ class MyPlugin {
         return this._browser.findByTextContaining(/koala/);
     }
 
-    _beforeOpen() { // This hook will be called anytime `browser.open` is executed
+    _beforeOpen(options) { // This hook will be called anytime `browser.open` is executed
         // You can perform actions required for your plugin to run whenever
         // a new page is opened such as setting up cache
         // keep in mind that the page won't be accesible yet
@@ -1274,7 +1275,7 @@ class MyPlugin {
         // not on any page loading
     }
 
-    _afterOpen() { // This hook will be called after the page is opened and loaded
+    _afterOpen(options) { // This hook will be called after the page is opened and loaded
         // You can use this hook to start performing actions with evaluate or
         // adding custom scripts with this._browser.page.addScriptTag
     }

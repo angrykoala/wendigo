@@ -2,6 +2,9 @@
 ==================
 
   * Browser.loaded
+  * Mock redirectTo option
+  * Options passed to beforeOpen and afterOpen hooks
+  * Mock waitUntilCalled will now wait until the response has been sent
 
 1.4.2 / 2018-10-14
 ==================
