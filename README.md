@@ -116,8 +116,8 @@ await browser.page.evaluate(() => {
 });
 ```
 
-**assert**   
-Allow access to the [Assertion](#Assert) interface.
+**loaded**   
+True if the page has already opened and loaded.
 
 ### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
@@ -999,6 +999,7 @@ The following options are supported:
 * `method` defines the method (`GET`, `POST`, ...) to mock
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
     * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
+* `redirectTo`: If set, the mock will return the response of the given url instead of the original call, maintaining the query string, keep in mind that the redirected request won't trigger any mocks. E.g. `request.mock("http://localhost:8010", {redirectTo: "http://localhost:9010"})` will change the port where all request in the page are sent.
 
 
 > This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
@@ -1262,7 +1263,7 @@ class MyPlugin {
         return this._browser.findByTextContaining(/koala/);
     }
 
-    _beforeOpen() { // This hook will be called anytime `browser.open` is executed
+    _beforeOpen(options) { // This hook will be called anytime `browser.open` is executed
         // You can perform actions required for your plugin to run whenever
         // a new page is opened such as setting up cache
         // keep in mind that the page won't be accesible yet
@@ -1274,7 +1275,7 @@ class MyPlugin {
         // not on any page loading
     }
 
-    _afterOpen() { // This hook will be called after the page is opened and loaded
+    _afterOpen(options) { // This hook will be called after the page is opened and loaded
         // You can use this hook to start performing actions with evaluate or
         // adding custom scripts with this._browser.page.addScriptTag
     }
@@ -1351,7 +1352,7 @@ If you want to create a new plugin and publish it in the npm store. Please, foll
 
 ```javascript
 const assert = require('assert');
-const Wendigo = require('../lib/wendigo');
+const Wendigo = require('wendigo');
 
 describe("My Tests", function() {
     this.timeout(5000); // Recommended for CI
@@ -1403,9 +1404,12 @@ Before doing a commit or PR to the `dev` branch, make sure both the tests and li
   * `BrowserFactory`: class takes care of the creation of the browser instance
 * `Browser`: Provides all the API to connect, retrieve information and perform assertions on a webpage. The BrowserFactory will compose this class from multiple mixins and modules.
   * `mixins`: A Browser is divided in several mixins (found on the folder with the same name). These will be composed in the Browser class at runtime.
-* `Modules`: A module represents an object that will be attached to the browser at runtime with a given name (e.g. assert or localStorage). All modules inherit from BrowserModule.
+* `Modules`: A module (or plugin) represents an object that will be attached to the browser at runtime with a given name (e.g. localStorage).
   * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
-  * Note that the assertion module is a composed module as well.
+  * Note that each module is composed by 2 parts, one attached to the main browser class and other to the assertion module.
+* `Injection Scripts`: These scripts will be injected at runtime into the browser, and are required to perform most of wendigo actions within the browser context, these scripts cannot access other parts of the code, and the rest of the code should not use these scripts out of the browser's context. These scripts can be used in the context of `browser.evaluate` by the user and other plugins
+  * `ẀendigoUtils`: Several utilities required by Wendigo in the browser's context.
+  * `WendigoQuery`: Wrapper of the different types of selectors (css, xpath and DOM node)
 
 # Troubleshooting
 

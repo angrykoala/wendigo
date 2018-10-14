@@ -1,6 +1,6 @@
 "use strict";
 
-const Wendigo = require('../../lib/wendigo');
+const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 

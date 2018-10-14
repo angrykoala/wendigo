@@ -12,7 +12,8 @@ app.use("/", express.static(path.join(__dirname, "static")));
 
 
 app.get("/api", (req, res) => {
-    res.json({result: "DUMMY"});
+    if (req.query.query === "hi2") res.json({result: "QUERY"});
+    else res.json({result: "DUMMY"});
 });
 
 app.get("/redirect", (req, res) => {

@@ -1,7 +1,7 @@
 "use strict";
 
 const assert = require('assert');
-const Wendigo = require('../../lib/wendigo');
+const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
 describe("Requests Mocker", function() {
@@ -27,26 +27,26 @@ describe("Requests Mocker", function() {
     });
 
     it("Mocked Request", async() => {
-        browser.requests.mock(configUrls.api, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
-        await browser.wait(100);
+        await mock.waitUntilCalled();
         await browser.assert.text("#result", "MOCK");
     });
 
     it("Mocked Request With String", async() => {
-        await browser.requests.mock(configUrls.api, {
+        const mock = await browser.requests.mock(configUrls.api, {
             body: JSON.stringify({result: "MOCK"})
         });
         await browser.clickText("click me");
-        await browser.wait(100);
+        await mock.waitUntilCalled();
         await browser.assert.text("#result", "MOCK");
     });
 
     it("Mocked Request With Method", async() => {
         const response = Object.assign({}, mockResponse, {method: "GET"});
-        browser.requests.mock(configUrls.api, response);
+        const mock = await browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
-        await browser.wait(100);
+        await mock.waitUntilCalled();
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -57,7 +57,7 @@ describe("Requests Mocker", function() {
     });
 
     it("Unmatched Mocked Request", async() => {
-        browser.requests.mock(`${configUrls.api}/noturl`, mockResponse);
+        await browser.requests.mock(`${configUrls.api}/noturl`, mockResponse);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "DUMMY");
