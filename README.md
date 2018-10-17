@@ -66,6 +66,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
     * `incognito: false`: If true, the browser will open as an incognito browser.
     * `userAgent`: If defined, the default user agent will be overridden.
     * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting))
+    * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
