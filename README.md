@@ -45,6 +45,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Webworkers](#webworkers)
     * [Errors](#errors)
     * [Selectors](#selectors)
+    * [Injected Scripts](#injected-scripts)
 * [Plugins](#plugins)
 * [Examples](#examples)
 * [Development](#development)
@@ -1246,6 +1247,21 @@ Most Wendigo methods and assertions will require a selector to localize the elem
 * **css**: Such as `#my-id` or `.container`, any selector supported by the standard `document.querySelector`.
 * **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
 * **DomElement**: The result of `browser.query` can be directly used as a selector.
+
+## Injected Scripts
+For Wendigo to work properly, it must inject some scripts into the web page within the browser's context at runtime. Usually these scripts will only be used by Wendigo, but you can still access them when using `evaluate` in your code or when writing a plugin.
+
+### WendigoUtils
+Wendigo Utils contain several methods and utilities for wendigo, it can be accessed in the browser's context (in an `evaluate` callback) through the global variable `WendigoUtils` or `window.WendigoUtils`. The following methods are exposed:
+
+* **isVisible(element)**: Returns true if an element is visible.
+* **queryElement(selector)**: Returns the first element matching the given selector. The selector can be css, xpath or an element.
+* **queryAll(selector)**: Returns all the elements matching the given selector (css, xpath or dom element).
+* **xPathQuery(xPath)**: Returns all the elements matching the given xPath selector.
+* **getStyles(element)**: Returns all the styles of the given element.
+
+### WendigoQuery
+The variable `WendigoQuery` or `window.WendigoQuery` exposes several utilities regarding Wendigo querying system, these shouldn't be used by user's code or plugins as `WendigoUtils` already exposes the methods to perform these queries.
 
 # Plugins
 Wendigo supports plugins to extends its capabilities with custom features and assertions. To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
