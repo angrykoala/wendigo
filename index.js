@@ -42,10 +42,7 @@ const customPlugins = [];
 
 class Wendigo {
     static createBrowser(settings = {}) {
-        settings = Object.assign({}, defaultSettings, settings);
-        if (process.env.NO_SANDBOX || settings.noSandbox) {
-            settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
-        }
+        settings = this._processSettings(settings);
         let p = Promise.resolve();
         if (!deepEqual(this._lastSettings, settings)) {
             p = this.stop();
@@ -128,6 +125,19 @@ class Wendigo {
                 }
             });
         } else return Promise.resolve();
+    }
+
+    static _processSettings(settings) {
+        settings = Object.assign({}, defaultSettings, settings);
+        if (process.env.NO_SANDBOX || settings.noSandbox) {
+            settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
+        }
+
+        if (settings.timezone) {
+            if (!settings.env) settings.env = {};
+            settings.env.TZ = settings.timezone;
+        }
+        return settings;
     }
 }
 

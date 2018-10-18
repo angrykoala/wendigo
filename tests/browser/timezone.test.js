@@ -5,8 +5,7 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
 
-// Skipped until #204 fixed
-describe.skip("Timezone", function() {
+describe("Timezone", function() {
     this.timeout(5000);
     let browser;
 
@@ -30,14 +29,25 @@ describe.skip("Timezone", function() {
         assert.strictEqual(tz, "UTC");
     });
 
+    it("Change Timezone To Tokyo", async() => {
+        browser = await Wendigo.createBrowser({
+            timezone: "Asia/Tokyo"
+        });
+        await browser.open(configUrls.simple, {
+            timezone: "Asia/Tokyo"
+        });
+        const tz = await getTimezone();
+        assert.strictEqual(tz, "Asia/Tokyo");
+    });
+
     it("Change Timezone To Japan", async() => {
         browser = await Wendigo.createBrowser({
             timezone: "Japan"
         });
         await browser.open(configUrls.simple, {
-            timezone: "Japan"
+            timezone: "Asia/Tokyo"
         });
         const tz = await getTimezone();
-        assert.strictEqual(tz, "Japan");
+        assert.strictEqual(tz, "Asia/Tokyo");
     });
 });
