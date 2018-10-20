@@ -41,7 +41,7 @@ const defaultPlugins = [{
 const customPlugins = [];
 
 class Wendigo {
-    static createBrowser(settings = {}) {
+    createBrowser(settings = {}) {
         settings = this._processSettings(settings);
         let p = Promise.resolve();
         if (!deepEqual(this._lastSettings, settings)) {
@@ -58,7 +58,7 @@ class Wendigo {
         });
     }
 
-    static stop() {
+    stop() {
         if (this.instance) {
             return this.instance.close().then(() => {
                 this._clearInstance();
@@ -67,7 +67,7 @@ class Wendigo {
     }
 
     /* eslint-disable complexity */
-    static registerPlugin(name, plugin, assertions) {
+    registerPlugin(name, plugin, assertions) {
         if (!plugin && !assertions && typeof name === 'object') {
             const config = name;
             name = config.name;
@@ -89,32 +89,32 @@ class Wendigo {
     }
     /* eslint-enable complexity */
 
-    static clearPlugins() {
+    clearPlugins() {
         customPlugins.splice(0, customPlugins.length);
         BrowserFactory.clearCache();
     }
 
-    static get Errors() {
+    get Errors() {
         return Errors;
     }
 
-    static _clearInstance() {
+    _clearInstance() {
         this.instance = null;
         BrowserFactory.clearCache();
     }
 
-    static _getMainPage() {
+    _getMainPage() {
         return this.instance.newPage();
     }
 
-    static _validatePluginName(name) {
+    _validatePluginName(name) {
         let invalidNames = ["assert"];
         const plugins = defaultPlugins.concat(customPlugins);
         invalidNames = invalidNames.concat(plugins.map(p => p.name));
         return !invalidNames.includes(name);
     }
 
-    static _setInstance(settings) {
+    _setInstance(settings) {
         if (!this.instance) {
             return puppeteer.launch(settings).then((instance) => {
                 this.instance = instance;
@@ -127,7 +127,7 @@ class Wendigo {
         } else return Promise.resolve();
     }
 
-    static _processSettings(settings) {
+    _processSettings(settings) {
         settings = Object.assign({}, defaultSettings, settings);
         if (process.env.NO_SANDBOX || settings.noSandbox) {
             settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
@@ -141,4 +141,4 @@ class Wendigo {
     }
 }
 
-module.exports = Wendigo;
+module.exports = new Wendigo();
