@@ -47,6 +47,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Selectors](#selectors)
     * [Injected Scripts](#injected-scripts)
 * [Plugins](#plugins)
+    * [Writing A Plugin](#writing-a-plugin)
 * [Examples](#examples)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
@@ -1264,7 +1265,14 @@ Wendigo Utils contain several methods and utilities for wendigo, it can be acces
 The variable `WendigoQuery` or `window.WendigoQuery` exposes several utilities regarding Wendigo querying system, these shouldn't be used by user's code or plugins as `WendigoUtils` already exposes the methods to perform these queries.
 
 # Plugins
-Wendigo supports plugins to extends its capabilities with custom features and assertions. To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
+Wendigo supports plugins to extends its capabilities with custom features and assertions. These plugins can be added with `registerPlugin`
+
+[**wendigo-vue-plugin**](https://github.com/angrykoala/wendigo-vue-plugin)   
+This plugin support several methods and assertions to use along with pages using [Vue](https://vuejs.org).
+
+
+## Writing A Plugin
+To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
 
 ```js
 class MyPlugin {
