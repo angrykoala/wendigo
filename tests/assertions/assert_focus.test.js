@@ -11,8 +11,13 @@ describe("Assert Focus", function() {
     before(async() => {
         browser = await Wendigo.createBrowser();
     });
+
     beforeEach(async() => {
         await browser.open(configUrls.click);
+    });
+
+    after(async() => {
+        browser.close();
     });
 
     it("Assert Focus", async() => {

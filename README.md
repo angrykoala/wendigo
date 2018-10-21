@@ -47,6 +47,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Selectors](#selectors)
     * [Injected Scripts](#injected-scripts)
 * [Plugins](#plugins)
+    * [Writing A Plugin](#writing-a-plugin)
 * [Examples](#examples)
 * [Development](#development)
 * [Troubleshooting](#troubleshooting)
@@ -72,7 +73,6 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
-> **Warning:** If the settings are changed, creating a new browser will close all current browsers.
 
 Examples:
 ```js
@@ -101,9 +101,6 @@ Optionally an object can be passed with the following options:
 
 **clearPlugins()**   
 Removes all plugins from Wendigo. This will affect all newly created browsers.
-
-### Wendigo Browser Considerations
-While Wendigo is just a wrapper on Puppeteer, a browser in Wendigo actually represents a page, Wendigo will reuse the same Chromium instance instead of destroying and creating it again to avoid heavy performance issues in the tests. As a consequence, some behavior regarding multiple browsers/pages may be inconsistent. Likewise, closing a browser will simply close the current tab, not the whole browser. To achieve this, Wendigo always keep an default page open.
 
 ## Browser
 The Browser instance is and interface with the `page` class of Puppeteer.
@@ -277,6 +274,15 @@ await browser.clickText("Click Me!", "2"); // Will search for an element with se
 await browser.clickText(".container", "Click Me!", 2); // Clicks the second element with given text under the element ".container"
 ```
 
+**clickAndWaitForNavigation(selector, timeout=500)**   
+Clicks an element and waits until a navigation event is triggered. Recommended for links to different pages. Keep in mind that not all the clicks will trigger a navigation event.
+
+```js
+await browser.url(); // my-page/account
+await browser.clickInWaitForNavigation(".home-button");
+await browser.url(); // my-page/home
+```
+
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
 
@@ -347,6 +353,8 @@ Waits until next request with given url is done. If the request was already made
 **waitForNextResponse(url ,timeout=500)**   
 Waits until next response with given url is received. If the response was already received, this method will wait until next one.
 
+**waitForNavigation(timeout=500)**   
+Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
@@ -532,7 +540,7 @@ await browser.assert.class("div.container.main-div", "container");
 ```
 
 **url(expected, msg?)**   
-Asserts that the current url matches the given string.
+Asserts that the current url matches the given string or RegExp.
 
 **value(selector, expected, msg?)**   
 Asserts that the first element matching the selector has the expected value.
@@ -1264,7 +1272,14 @@ Wendigo Utils contain several methods and utilities for wendigo, it can be acces
 The variable `WendigoQuery` or `window.WendigoQuery` exposes several utilities regarding Wendigo querying system, these shouldn't be used by user's code or plugins as `WendigoUtils` already exposes the methods to perform these queries.
 
 # Plugins
-Wendigo supports plugins to extends its capabilities with custom features and assertions. To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
+Wendigo supports plugins to extends its capabilities with custom features and assertions. These plugins can be added with `registerPlugin`
+
+[**wendigo-vue-plugin**](https://github.com/angrykoala/wendigo-vue-plugin)   
+This plugin support several methods and assertions to use along with pages using [Vue](https://vuejs.org).
+
+
+## Writing A Plugin
+To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
 
 ```js
 class MyPlugin {

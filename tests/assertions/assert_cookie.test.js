@@ -21,6 +21,10 @@ describe("Assert Cookie", function() {
         await browser.cookies.clear();
     });
 
+    after(async() => {
+        await browser.close();
+    });
+
     it("Assert Cookie", async() => {
         await browser.assert.cookies("username");
         await browser.assert.cookies("username", "arthur_dent");
