@@ -23,12 +23,24 @@ describe("Assert Url", function() {
         await browser.assert.url(configUrls.index);
     });
 
+    it("Url With Regex", async() => {
+        await browser.open(configUrls.index);
+        await browser.assert.url(/index/);
+    });
+
     it("Url Throws", async() => {
         const invalidUrl = "http://localhost/not_the_url";
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.url(invalidUrl);
         }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`, configUrls.index, invalidUrl);
+    });
+
+    it("Url With Regex Throws", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.url(/not-url/);
+        }, `Expected url to be "/not-url/", "${configUrls.index}" found`, configUrls.index, "/not-url/");
     });
 
     it("Url Throws With Custom Message", async() => {

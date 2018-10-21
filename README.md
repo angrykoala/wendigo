@@ -544,7 +544,7 @@ await browser.assert.class("div.container.main-div", "container");
 ```
 
 **url(expected, msg?)**   
-Asserts that the current url matches the given string.
+Asserts that the current url matches the given string or RegExp.
 
 **value(selector, expected, msg?)**   
 Asserts that the first element matching the selector has the expected value.
