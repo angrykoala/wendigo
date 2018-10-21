@@ -31,4 +31,18 @@ describe("Wait For Navigation", function() {
             await browser.waitForNavigation(1);
         }, "TimeoutError: Wait for navigation, timeout of 1ms exceeded.");
     });
+
+    it("Click And Wait For Navigation", async() => {
+        await browser.open(configUrls.index);
+        await browser.clickAndWaitForNavigation("a");
+        await browser.assert.not.title("Index Test");
+        await browser.assert.url(configUrls.simple);
+    });
+
+    it("Click And Wait For Navigation Timeout", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickAndWaitForNavigation("p", 1);
+        }, "TimeoutError: Wait for navigation, timeout of 1ms exceeded.");
+    });
 });

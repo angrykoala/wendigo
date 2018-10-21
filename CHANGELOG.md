@@ -2,6 +2,7 @@
 ==================
 
   * Wait for navigation
+  * Click and wait for navigation
 
 1.5.2 / 2018-10-18
 ==================
