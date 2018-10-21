@@ -348,6 +348,8 @@ Waits until next request with given url is done. If the request was already made
 **waitForNextResponse(url ,timeout=500)**   
 Waits until next response with given url is received. If the response was already received, this method will wait until next one.
 
+**waitForNavigation(timeout=500)**   
+Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
