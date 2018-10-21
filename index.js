@@ -1,7 +1,6 @@
 "use strict";
 
 const process = require('process');
-const deepEqual = require('deep-equal');
 const BrowserFactory = require('./lib/browser_factory');
 const puppeteer = require('puppeteer');
 const Errors = require('./lib/errors');
@@ -38,32 +37,29 @@ const defaultPlugins = [{
 }];
 
 
-const customPlugins = [];
-
 class Wendigo {
+    constructor() {
+        this.customPlugins = [];
+        this.browsers = [];
+    }
+
     createBrowser(settings = {}) {
         settings = this._processSettings(settings);
-        let p = Promise.resolve();
-        if (!deepEqual(this._lastSettings, settings)) {
-            p = this.stop();
-        }
-        return p.then(() => {
-            this._lastSettings = settings;
-            return this._setInstance(settings).then(() => {
-                return this._getMainPage().then((page) => {
-                    const plugins = defaultPlugins.concat(customPlugins);
-                    return BrowserFactory.createBrowser(page, settings, plugins);
-                });
+        return this._createInstance(settings).then((instance) => {
+            const plugins = defaultPlugins.concat(this.customPlugins);
+            return instance.newPage().then((page) => {
+                const b = BrowserFactory.createBrowser(page, settings, plugins);
+                this.browsers.push(b); // TODO: remove closed browser when closed with browser.close
+                return b;
             });
         });
     }
 
     stop() {
-        if (this.instance) {
-            return this.instance.close().then(() => {
-                this._clearInstance();
-            });
-        } else return Promise.resolve();
+        this.clearPlugins();
+        return Promise.all(this.browsers.map((b) => {
+            return b.close();
+        }));
     }
 
     /* eslint-disable complexity */
@@ -81,7 +77,7 @@ class Wendigo {
         if (assertions && typeof assertions !== 'function') throw new Error(`Invalid assertion module for plugin "${name}".`);
         if (!plugin && !assertions) throw new Error(`Invalid plugin module "${name}".`);
         BrowserFactory.clearCache();
-        customPlugins.push({
+        this.customPlugins.push({
             name: name,
             plugin: plugin,
             assertions: assertions
@@ -90,7 +86,7 @@ class Wendigo {
     /* eslint-enable complexity */
 
     clearPlugins() {
-        customPlugins.splice(0, customPlugins.length);
+        this.customPlugins = [];
         BrowserFactory.clearCache();
     }
 
@@ -98,33 +94,19 @@ class Wendigo {
         return Errors;
     }
 
-    _clearInstance() {
-        this.instance = null;
-        BrowserFactory.clearCache();
-    }
-
-    _getMainPage() {
-        return this.instance.newPage();
-    }
-
     _validatePluginName(name) {
         let invalidNames = ["assert"];
-        const plugins = defaultPlugins.concat(customPlugins);
+        const plugins = defaultPlugins.concat(this.customPlugins);
         invalidNames = invalidNames.concat(plugins.map(p => p.name));
         return !invalidNames.includes(name);
     }
 
-    _setInstance(settings) {
-        if (!this.instance) {
-            return puppeteer.launch(settings).then((instance) => {
-                this.instance = instance;
-                if (settings.incognito) {
-                    return this.instance.createIncognitoBrowserContext().then((context) => {
-                        this.instance = context;
-                    });
-                }
-            });
-        } else return Promise.resolve();
+    _createInstance(settings) {
+        return puppeteer.launch(settings).then((instance) => {
+            if (settings.incognito) {
+                return instance.createIncognitoBrowserContext();
+            } else return instance;
+        });
     }
 
     _processSettings(settings) {

@@ -50,11 +50,4 @@ describe("Open", function() {
         assert.strictEqual(browser.loaded, false);
         assert.strictEqual(browser._originalHtml, undefined);
     });
-
-    it("Close Throws", async() => {
-        browser._loaded = true;
-        await utils.assertThrowsAsync(async() => {
-            await browser.close();
-        }, `FatalError: Failed to close browser. Protocol error: Connection closed. Most likely the page has been closed.`);
-    });
 });

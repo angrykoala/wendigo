@@ -6,7 +6,9 @@ const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
 
-describe("Plugins", () => {
+describe("Plugins", function() {
+    this.timeout(5000);
+
     class PluginTest {
         constructor(browser) {
             this.browser = browser;
@@ -90,7 +92,6 @@ describe("Plugins", () => {
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, false);
         await browser.close();
         assert.strictEqual(browser.pluginTest.beforeCloseCalled, true);
-        await browser.close();
     });
 
     it("Clear Plugins", async() => {

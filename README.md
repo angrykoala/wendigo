@@ -73,7 +73,6 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
-> **Warning:** If the settings are changed, creating a new browser will close all current browsers.
 
 Examples:
 ```js
@@ -102,9 +101,6 @@ Optionally an object can be passed with the following options:
 
 **clearPlugins()**   
 Removes all plugins from Wendigo. This will affect all newly created browsers.
-
-### Wendigo Browser Considerations
-While Wendigo is just a wrapper on Puppeteer, a browser in Wendigo actually represents a page, Wendigo will reuse the same Chromium instance instead of destroying and creating it again to avoid heavy performance issues in the tests. As a consequence, some behavior regarding multiple browsers/pages may be inconsistent. Likewise, closing a browser will simply close the current tab, not the whole browser. To achieve this, Wendigo always keep an default page open.
 
 ## Browser
 The Browser instance is and interface with the `page` class of Puppeteer.

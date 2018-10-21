@@ -4,6 +4,9 @@
   * Wait for navigation
   * Click and wait for navigation
   * RegExp support for assert.url
+  * Browsers now are independent chromium instances
+  * Fixed bug where changing settings will disable previous browsers
+  * Dependency deep-equal no longer needed
 
 1.5.2 / 2018-10-18
 ==================
