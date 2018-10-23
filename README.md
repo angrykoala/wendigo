@@ -283,6 +283,8 @@ await browser.clickInWaitForNavigation(".home-button");
 await browser.url(); // my-page/home
 ```
 
+> clickAndWaitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
+
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
 
@@ -355,6 +357,8 @@ Waits until next response with given url is received. If the response was alread
 
 **waitForNavigation(timeout=500)**   
 Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
+
+> waitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
