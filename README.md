@@ -986,14 +986,14 @@ The Requests module allows to get and filter the requests made by the browser si
 
 > All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
 
+**filter**    
+Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
+
 **all**    
 Returns all requests, ordered by when it was dispatched.
 ```js
 await browser.requests.all;
 ```
-
-**filter**    
-Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
 **mock(url, options)**    
 Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked. The url can be a full url string (`http://...`) or a regex.
