@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+     .btn {
+       position: absolute;
+       width: 100px;
+       height: 100px;
+       top: 100px;
+       left: 100px;
+     }
+    </style>
+</head>
+
+<body>
+    <button id="clicker" class="btn" onclick="switchText()">click me</button>
+
+    <script>
+     function switchText() {
+       clicker.innerText = "Clicked!";
+     }
+    </script>
+</body>
+
+</html>
