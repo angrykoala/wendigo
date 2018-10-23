@@ -119,7 +119,7 @@ class Wendigo {
 
     _processSettings(settings) {
         settings = Object.assign({}, defaultSettings, settings);
-        settings.__onClose = this._removeBrowser;
+        settings.__onClose = this._removeBrowser.bind(this);
         if (process.env.NO_SANDBOX || settings.noSandbox) {
             settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
         }
