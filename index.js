@@ -110,7 +110,7 @@ class Wendigo {
     }
 
     _removeBrowser(browser) {
-        idx = this.browsers.indexOf(browser);
+        let idx = this.browsers.indexOf(browser);
         if (idx === -1) {
             throw new Errors.FatalError("browser not found on closing.")
         }
