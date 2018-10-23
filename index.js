@@ -59,7 +59,9 @@ class Wendigo {
         this.clearPlugins();
         return Promise.all(this.browsers.map((b) => {
             return b.close();
-        })).then(() => this.browsers=[]); // reset browsers before returning promise.
+        })).then(() => {
+            this.browsers = [];
+        }); // reset browsers before returning promise.
     }
 
     /* eslint-disable complexity */
@@ -110,9 +112,9 @@ class Wendigo {
     }
 
     _removeBrowser(browser) {
-        let idx = this.browsers.indexOf(browser);
+        const idx = this.browsers.indexOf(browser);
         if (idx === -1) {
-            throw new Errors.FatalError("browser not found on closing.")
+            throw new Errors.FatalError("browser not found on closing.");
         }
         this.browsers.splice(idx, 1);
     }
