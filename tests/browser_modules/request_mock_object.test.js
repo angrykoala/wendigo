@@ -101,6 +101,7 @@ describe("Requests Mock Object", function() {
         await browser.clickText("click me");
         await browser.assert.not.text("#result", "MOCK");
         mock.trigger();
+        await browser.wait(10);
         await browser.assert.text("#result", "MOCK");
     });
 
