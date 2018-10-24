@@ -259,6 +259,8 @@ Clicks all the elements with the matching css selector, if the index parameter i
 await browser.click("button.btn");
 ```
 
+Optionally, if two numbers are passed, the element in position x, y (in pixels) will be clicked.
+
 **clickText(selector?, text, index?)**   
 Clicks all the elements matching given text. Returns the number of elements clicked.
 

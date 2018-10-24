@@ -45,8 +45,10 @@ describe("Open", function() {
         assert.strictEqual(browser.loaded, false);
         await browser.open(configUrls.index);
         assert.strictEqual(browser.loaded, true);
+        assert.strictEqual(Wendigo._browsers.length, 1);
         assert(browser._originalHtml);
         await browser.close();
+        assert.strictEqual(Wendigo._browsers.length, 0);
         assert.strictEqual(browser.loaded, false);
         assert.strictEqual(browser._originalHtml, undefined);
     });
