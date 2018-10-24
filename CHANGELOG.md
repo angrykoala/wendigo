@@ -1,9 +1,12 @@
+1.6.2 / ####-##-##
+==================
+
 1.6.1 / 2018-10-24
 ==================
 
   * Position click supported
-  * clickAndWaitForNavigation now returns the same result as click
-  * clickAndWaitForNavigation now waits until the page and wendgio finished loading
+  * ClickAndWaitForNavigation now returns the same result as click
+  * ClickAndWaitForNavigation now waits until the page and wendgio finished loading
   * Fix on ever increasing list of browsers in wendigo main class
 
 1.6.0 / 2018-10-22
