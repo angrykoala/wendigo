@@ -122,9 +122,9 @@ describe("Click", function() {
 
     it('Clicks XY coordinates', async() => {
         await browser.open(configUrls.difficultClick);
-        await browser.clickXY(10, 10);
+        await browser.click(10, 10);
         await browser.assert.text("#clicker", "click me");
-        await browser.clickXY(100, 100);
+        await browser.click(100, 100);
         await browser.assert.text("#clicker", "Clicked!");
     });
 });
