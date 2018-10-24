@@ -1,6 +1,7 @@
 
 "use strict";
 
+const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
@@ -21,6 +22,7 @@ describe("Wait For Navigation", function() {
         await browser.open(configUrls.index);
         await browser.click("a");
         await browser.waitForNavigation();
+        await browser.assert.global("WendigoUtils");
         await browser.assert.not.title("Index Test");
         await browser.assert.url(configUrls.simple);
     });
@@ -34,8 +36,9 @@ describe("Wait For Navigation", function() {
 
     it("Click And Wait For Navigation", async() => {
         await browser.open(configUrls.index);
-        await browser.clickAndWaitForNavigation("a");
+        const clicked = await browser.clickAndWaitForNavigation("a");
         await browser.assert.not.title("Index Test");
+        assert.strictEqual(clicked, 2);
         await browser.assert.url(configUrls.simple);
     });
 
@@ -44,5 +47,12 @@ describe("Wait For Navigation", function() {
         await utils.assertThrowsAsync(async() => {
             await browser.clickAndWaitForNavigation("p", 1);
         }, "TimeoutError: Wait for navigation, timeout of 1ms exceeded.");
+    });
+
+    it("Click And Wait For Navigation Timeout Invalid Selector", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickAndWaitForNavigation(".not-valid");
+        }, `QueryError: No element ".not-valid" found when trying to click.`);
     });
 });

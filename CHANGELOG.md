@@ -1,3 +1,9 @@
+1.6.1 / ####-##-##
+==================
+
+  * clickAndWaitForNavigation now returns the same result as click
+  * clickAndWaitForNavigation now waits until the page and wendgio finished loading
+
 1.6.0 / 2018-10-22
 ==================
 
