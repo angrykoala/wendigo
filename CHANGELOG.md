@@ -1,6 +1,7 @@
 1.6.1 / ####-##-##
 ==================
 
+  * Position click supported
   * clickAndWaitForNavigation now returns the same result as click
   * clickAndWaitForNavigation now waits until the page and wendgio finished loading
 

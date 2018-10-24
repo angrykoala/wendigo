@@ -122,9 +122,18 @@ describe("Click", function() {
 
     it('Clicks XY coordinates', async() => {
         await browser.open(configUrls.difficultClick);
-        await browser.click(10, 10);
+        let clicked = await browser.click(10, 10);
         await browser.assert.text("#clicker", "click me");
-        await browser.click(100, 100);
+        assert.strictEqual(clicked, 1);
+        clicked = await browser.click(100, 100);
+        assert.strictEqual(clicked, 1);
         await browser.assert.text("#clicker", "Clicked!");
+    });
+
+    it('Clicks XY coordinates Throws', async() => {
+        await browser.open(configUrls.difficultClick);
+        await utils.assertThrowsAsync(async() => {
+            await browser.click(4000, 4000);
+        }, `QueryError: No element in position [4000, 4000] found when trying to click.`);
     });
 });
