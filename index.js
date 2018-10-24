@@ -40,7 +40,7 @@ const defaultPlugins = [{
 class Wendigo {
     constructor() {
         this.customPlugins = [];
-        this.browsers = [];
+        this._browsers = [];
     }
 
     createBrowser(settings = {}) {
@@ -49,7 +49,7 @@ class Wendigo {
             const plugins = defaultPlugins.concat(this.customPlugins);
             return instance.newPage().then((page) => {
                 const b = BrowserFactory.createBrowser(page, settings, plugins);
-                this.browsers.push(b); // TODO: remove closed browser when closed with browser.close
+                this._browsers.push(b); // TODO: remove closed browser when closed with browser.close
                 return b;
             });
         });
@@ -57,10 +57,10 @@ class Wendigo {
 
     stop() {
         this.clearPlugins();
-        return Promise.all(this.browsers.map((b) => {
+        return Promise.all(this._browsers.map((b) => {
             return b.close();
         })).then(() => {
-            this.browsers = [];
+            this._browsers = [];
         }); // reset browsers before returning promise.
     }
 
@@ -112,11 +112,11 @@ class Wendigo {
     }
 
     _removeBrowser(browser) {
-        const idx = this.browsers.indexOf(browser);
+        const idx = this._browsers.indexOf(browser);
         if (idx === -1) {
             throw new Errors.FatalError("browser not found on closing.");
         }
-        this.browsers.splice(idx, 1);
+        this._browsers.splice(idx, 1);
     }
 
     _processSettings(settings) {
