@@ -12,7 +12,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit",
+    "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
     "lint": "eslint . --ext .js"
   },
