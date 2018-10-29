@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+        #target {
+            width: 350px;
+            height: 70px;
+            padding: 10px;
+            border: 1px solid #aaaaaa;
+        }
+    </style>
+    <script>
+        function allowDrop(ev) {
+            console.log("allow")
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            console.log("drag")
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            console.log("drop")
+            ev.preventDefault();
+            var textElem=document.querySelector("#result");
+            textElem.textContent="DROP"
+        }
+    </script>
+</head>
+
+<body>
+
+
+    <div id="target" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <p id="draggable-text" draggable="true" ondragstart="drag(event)" width="336" height="69">DRAG ME</p>
+    <p id="result">NOT<p>
+
+</body>
+
+</html>
