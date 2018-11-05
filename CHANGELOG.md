@@ -2,6 +2,7 @@
 ==================
 
   * Wendigo will bypass Content Security Policy by default
+  * Puppeteer updated to 1.10
 
 1.6.1 / 2018-10-24
 ==================
