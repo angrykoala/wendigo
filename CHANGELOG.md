@@ -1,6 +1,8 @@
 1.6.2 / ####-##-##
 ==================
 
+  * Wendigo will bypass Content Security Policy by default
+
 1.6.1 / 2018-10-24
 ==================
 

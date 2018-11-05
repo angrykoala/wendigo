@@ -67,8 +67,9 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
     * `log: false`: If true, it will log all the console events of the browser.
     * `incognito: false`: If true, the browser will open as an incognito browser.
     * `userAgent`: If defined, the default user agent will be overridden.
-    * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting))
+    * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
     * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
+    * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
         * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
@@ -1254,6 +1255,8 @@ Timeout error, it will be thrown in waitFor methods. Keep in mind that this erro
 **FatalError**    
 Defines a Fatal Error with Puppeteer (e.g. a connection error)
 
+**InjectScriptError**
+Defines an error injecting scripts on the page. This may be caused on open if the option `bypassCSP` is set to false.
 
 ## Selectors
 Most Wendigo methods and assertions will require a selector to localize the element in the DOM, unless specified, any method will accept 3 different kind of selectors:
@@ -1378,7 +1381,7 @@ browser.assert.koalafied(); // note the assertion is called directly
 If you want to create a new plugin and publish it in the npm store. Please, follow the following steps:
 
 1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually unless you want them to be imported that way.
-2. Make sure your code is tested using node 8 and above. Avoid using async/await if possible.
+2. Make sure your code is tested using node 8 and above.
 3. Set Wendigo as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies) in you package.json.
     * If you are writing tests, also set Wendigo as a dev dependency, **never** as a normal dependency.
 4. Wendigo usually follows [semantic versioning](https://semver.org/) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
