@@ -11,7 +11,8 @@ const defaultSettings = {
     args: [],
     slowMo: 0,
     incognito: false,
-    noSandbox: false
+    noSandbox: false,
+    bypassCSP: true
 };
 
 

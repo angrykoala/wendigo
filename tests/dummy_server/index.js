@@ -6,6 +6,7 @@ const app = express();
 
 app.use((req, res, next) => { // To avoid 304
     req.headers['if-none-match'] = 'no-match-for-this';
+    res.set('Content-Security-Policy', "default-src 'self'"); // CSP set
     next();
 });
 app.use("/", express.static(path.join(__dirname, "static")));

@@ -52,4 +52,14 @@ describe("Open", function() {
         assert.strictEqual(browser.loaded, false);
         assert.strictEqual(browser._originalHtml, undefined);
     });
+
+    it("Open Fails CSP", async() => {
+        const browser2 = await Wendigo.createBrowser({
+            bypassCSP: false
+        });
+        await utils.assertThrowsAsync(async() => {
+            await browser2.open(configUrls.index);
+        }, `InjectScriptError: Error: Evaluation failed: Event. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
+        await browser2.close();
+    });
 });
