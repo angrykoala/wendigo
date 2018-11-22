@@ -1,6 +1,11 @@
 1.6.2 / 2018-11-06
 ==================
 
+  * Improve error messages
+
+1.6.2 / 2018-11-06
+==================
+
   * Wendigo will bypass Content Security Policy by default
   * Puppeteer updated to 1.10
 
