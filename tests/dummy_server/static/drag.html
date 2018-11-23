@@ -12,17 +12,17 @@
     </style>
     <script>
         function allowDrop(ev) {
-            console.log("allow")
+            // console.log("allow")
             ev.preventDefault();
         }
 
         function drag(ev) {
-            console.log("drag")
+            // console.log("drag")
             ev.dataTransfer.setData("text", ev.target.id);
         }
 
         function drop(ev) {
-            console.log("drop")
+            // console.log("drop")
             ev.preventDefault();
             var textElem=document.querySelector("#result");
             textElem.textContent="DROP"
