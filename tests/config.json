@@ -20,6 +20,7 @@
         "incognito": "http://localhost:3456/incognito.html",
         "iframes": "http://localhost:3456/iframes.html",
         "redirect": "http://localhost:3456/redirect",
+        "drag": "http://localhost:3456/drag.html",
         "api": "http://localhost:3456/api",
         "fakeApi": "http://localhost:3456/api2"
     }
