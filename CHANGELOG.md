@@ -1,3 +1,9 @@
+1.6.3 / 2018-12-04
+==================
+
+  * Improve error messages
+  * Puppeteer updated to 1.11
+
 1.6.2 / 2018-11-06
 ==================
 
@@ -9,8 +15,8 @@
 
   * Position click supported
   * ClickAndWaitForNavigation now returns the same result as click
-  * ClickAndWaitForNavigation now waits until the page and wendgio finished loading
-  * Fix on ever increasing list of browsers in wendigo main class
+  * ClickAndWaitForNavigation now waits until the page and Wendigo finished loading
+  * Fix on ever increasing list of browsers in Wendigo main class
 
 1.6.0 / 2018-10-22
 ==================
