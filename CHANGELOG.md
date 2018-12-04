@@ -2,7 +2,7 @@
 ==================
 
   * Improve error messages
-  * Some dependencies updated
+  * Puppeteer and some dependencies updated
 
 1.6.2 / 2018-11-06
 ==================
