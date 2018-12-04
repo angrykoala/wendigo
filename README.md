@@ -282,7 +282,7 @@ Clicks an element and waits until a navigation event is triggered. Recommended f
 
 ```js
 await browser.url(); // my-page/account
-await browser.clickInWaitForNavigation(".home-button");
+await browser.clickAndWaitForNavigation(".home-button");
 await browser.url(); // my-page/home
 ```
 
