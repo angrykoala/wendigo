@@ -1,3 +1,8 @@
+1.6.4 / 2018-12-08
+==================
+
+  * Fix bug in waitForNavigation that caused false timeouts in poor performance systems
+
 1.6.3 / 2018-12-04
 ==================
 
