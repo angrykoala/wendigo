@@ -342,6 +342,14 @@ await browser.click("a");
 await browser.waitForUrl("my-url");
 ```
 
+**waitForText(text, timeout=500)**   
+Waits for the given text to exists.
+
+```js
+await browser.waitForText("Click me!");
+await browser.clickText("Click me!");
+```
+
 **waitForRequest(url, timeout=500)**    
 Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
 
