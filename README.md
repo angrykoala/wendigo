@@ -1524,6 +1524,3 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
 * Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 
-
-
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/gaucho)
