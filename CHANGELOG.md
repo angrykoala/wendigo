@@ -2,6 +2,7 @@
 ==================
 
   * Browser.waitForText
+  * Option queryString on open
 
 1.6.4 / 2018-12-08
 ==================

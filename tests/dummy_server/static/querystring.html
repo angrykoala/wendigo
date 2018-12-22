@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Index Test</title>
+</head>
+
+<body>
+    <p class="qs"></p>
+</body>
+
+<script>
+    const qs = window.location.search.substring(1);
+    const elem=document.querySelector(".qs");
+    elem.textContent=qs;
+</script>
+
+</html>

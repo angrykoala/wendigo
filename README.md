@@ -133,6 +133,7 @@ The following options can be passed:
 
 * `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
+* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url
 
 
 **openFile(path, options?)**    
