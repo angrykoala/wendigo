@@ -289,6 +289,9 @@ await browser.url(); // my-page/home
 
 > clickAndWaitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
 
+**waitAndClick(selector, timeout=500)**    
+Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
+
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
 

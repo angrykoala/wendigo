@@ -1,6 +1,7 @@
 1.7.0 / ####-##-##
 ==================
 
+  * Browser.waitAndClick
   * Browser.waitForText
   * Option queryString on open
 
