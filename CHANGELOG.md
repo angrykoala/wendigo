@@ -1,10 +1,10 @@
-1.7.0 / ####-##-##
+1.7.0 / 2018-12-24
 ==================
 
-  * mockDate and clearDateMock
-  * Browser.waitAndClick
-  * Browser.clickTextContaining
-  * Browser.waitForText
+  * MockDate and clearDateMock
+  * WaitAndClick
+  * ClickTextContaining
+  * WaitForText
   * Option queryString on open
 
 1.6.4 / 2018-12-08
