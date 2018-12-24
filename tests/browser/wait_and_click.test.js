@@ -1,5 +1,6 @@
 "use strict";
 
+const assert = require('assert');
 const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
@@ -24,7 +25,8 @@ describe("Wait And Click", function() {
         await browser.assert.not.text(".text", "text");
         await browser.assert.not.element(".btn2");
         await browser.click(".btn");
-        await browser.waitAndClick(".btn2", 800);
+        const clickedElements = await browser.waitAndClick(".btn2", 800);
+        assert.strictEqual(clickedElements, 1);
         await browser.assert.text(".text", "text");
     });
 

@@ -2,6 +2,7 @@
 ==================
 
   * Browser.waitAndClick
+  * Browser.clickTextContaining
   * Browser.waitForText
   * Option queryString on open
 

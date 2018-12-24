@@ -278,6 +278,9 @@ await browser.clickText("Click Me!", "2"); // Will search for an element with se
 await browser.clickText(".container", "Click Me!", 2); // Clicks the second element with given text under the element ".container"
 ```
 
+**clickTextContaining(selector?, text, index?)**    
+Same as clickText, but matches with any text containing the given parameter.
+
 **clickAndWaitForNavigation(selector, timeout=500)**   
 Clicks an element and waits until a navigation event is triggered. Recommended for links to different pages. Keep in mind that not all the clicks will trigger a navigation event.
 
