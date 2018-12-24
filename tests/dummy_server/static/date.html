@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Date Test</title>
+</head>
+
+<body>
+    <button class="btn" onclick="dateUpdate()">click me</button>
+    <p class="date-text"></p>
+
+    <script>
+        function dateUpdate() {
+            const elem = document.querySelector(".date-text");
+            const currentDate = new Date();
+            const time=`${currentDate.getHours()}-${currentDate.getMinutes()}-${currentDate.getSeconds()}`
+            elem.textContent = currentDate.toLocaleDateString("en-US")+"::"+time
+        }
+    </script>
+</body>
+
+</html>

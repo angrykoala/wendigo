@@ -311,7 +311,41 @@ Returns the page html as string. It will return the html as it was before perfor
 Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
 
 **url()**   
-Returns the current url of the page
+Returns the current url of the page.
+
+**mockDate(date, options?)**   
+Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters. The first parameter must be a JavaScript Date object. The following options are supported:
+* `freeze: true`: if set to true, the new Date objects will always return the given date as current date, if false, the expected date will increase normally as time passes.
+
+```js
+await browser.mockDate(new Date(2010,10,6)); // Mocks to 6-sept 2010
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010
+    const d2 = new Date(2011,10,10); // 10-sept 2011
+})
+```
+
+```js
+await browser.mockDate(new Date(2010,10,6), {
+    freeze: false
+});
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010 plus some milliseconds
+});
+
+await browser.wait(1000);
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010 plus one second and some milliseconds
+})
+```
+
+> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates.
+
+**clearDateMock()**    
+Clears the date mock, if any, returning to the native Date object.
 
 **wait(ms=250)**   
 Waits for the given milliseconds.

@@ -1,6 +1,7 @@
 1.7.0 / ####-##-##
 ==================
 
+  * mockDate and clearDateMock
   * Browser.waitAndClick
   * Browser.clickTextContaining
   * Browser.waitForText
