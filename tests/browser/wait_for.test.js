@@ -107,11 +107,28 @@ describe("Wait For", function() {
         await browser.assert.url(configUrls.simple);
     });
 
-    it("Wait For Url Throws", async() => {
+    it("Wait For Url Timeout", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");
         await utils.assertThrowsAsync(async() => {
             await browser.waitForUrl(configUrls.click, 10);
         }, `TimeoutError: Waiting for url "${configUrls.click}", timeout of 10ms exceeded.`);
+    });
+
+    it("Wait For Text", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await browser.click(".btn2");
+        await browser.waitForText("Off", 600);
+        await browser.assert.text("#switch", "Off");
+    });
+
+    it("Wait For Text Timeout", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await browser.click(".btn2");
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitForText("Off", 10);
+        }, `TimeoutError: Waiting for text "Off", timeout of 10ms exceeded.`);
     });
 });

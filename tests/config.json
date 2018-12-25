@@ -21,6 +21,9 @@
         "iframes": "http://localhost:3456/iframes.html",
         "redirect": "http://localhost:3456/redirect",
         "drag": "http://localhost:3456/drag.html",
+        "queryString": "http://localhost:3456/querystring.html",
+        "waitAndClick": "http://localhost:3456/wait_and_click.html",
+        "date": "http://localhost:3456/date.html",
         "api": "http://localhost:3456/api",
         "fakeApi": "http://localhost:3456/api2"
     }

@@ -51,6 +51,7 @@ describe("Open", function() {
         assert.strictEqual(Wendigo._browsers.length, 0);
         assert.strictEqual(browser.loaded, false);
         assert.strictEqual(browser._originalHtml, undefined);
+        browser = await Wendigo.createBrowser();
     });
 
     it("Open Fails CSP", async() => {
@@ -61,5 +62,33 @@ describe("Open", function() {
             await browser2.open(configUrls.index);
         }, `InjectScriptError: Error: Evaluation failed: Event. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
         await browser2.close();
+    });
+
+    it("Open With Querystring", async() => {
+        await browser.open(`${configUrls.queryString}?test=foo`);
+        await browser.assert.text(".qs", "test=foo");
+    });
+
+    it("Open With Querystring Parameter As String", async() => {
+        await browser.open(configUrls.queryString, {
+            queryString: "test=foo"
+        });
+        await browser.assert.text(".qs", "test=foo");
+    });
+
+    it("Open With Querystring Parameter As String With Separator", async() => {
+        await browser.open(configUrls.queryString, {
+            queryString: "?test=foo"
+        });
+        await browser.assert.text(".qs", "test=foo");
+    });
+
+    it("Open With Querystring Parameter As Object", async() => {
+        await browser.open(configUrls.queryString, {
+            queryString: {
+                test: "foo"
+            }
+        });
+        await browser.assert.text(".qs", "test=foo");
     });
 });

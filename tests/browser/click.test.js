@@ -136,4 +136,34 @@ describe("Click", function() {
             await browser.click(4000, 4000);
         }, `QueryError: No element in position [4000, 4000] found when trying to click.`);
     });
+
+    it("Click Text Containing", async() => {
+        await browser.assert.text("#switch", "On");
+        const clickedElements = await browser.clickTextContaining("weird");
+        assert.strictEqual(clickedElements, 1);
+        await browser.assert.text("#switch", "Off");
+    });
+
+    it("Click Text Containing Throws", async() => {
+        await browser.assert.text("#switch", "On");
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickTextContaining("badText");
+        }, `QueryError: No element with text containing "badText" found when trying to click.`);
+    });
+
+    it("Click Text Containing With Index", async() => {
+        const clickedElements = await browser.clickTextContaining("weird", 0);
+        assert.strictEqual(clickedElements, 1);
+    });
+
+    it("Click Text Containing With Index And Selector", async() => {
+        const clickedElements = await browser.clickTextContaining("body", "weird", 0);
+        assert.strictEqual(clickedElements, 1);
+    });
+
+    it("Click Text Containing With Index Out Of Bounds", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickTextContaining("weird", 10);
+        }, `QueryError: browser.clickTextContaining, invalid index "10" for text containing "weird", 1 elements found.`);
+    });
 });

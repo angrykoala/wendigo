@@ -2,6 +2,8 @@
 "use strict";
 
 if (!window.WendigoUtils) {
+    const _origDate = Date;
+
     window.WendigoUtils = {
         isVisible(element) {
             if (!element) return false;
@@ -28,6 +30,28 @@ if (!window.WendigoUtils) {
                 result[name] = rawStyles.getPropertyValue(name);
             }
             return result;
+        },
+        mockDate(timestamp, freeze) {
+            let baseTimestamp = 0;
+            if (!freeze) {
+                baseTimestamp = new _origDate().getTime();
+            }
+            class DateMock extends _origDate {
+                constructor(...params) {
+                    if (params.length > 0) {
+                        super(...params);
+                    } else if (!freeze) {
+                        const currentTimestamp = new _origDate().getTime();
+                        const timeDiff = currentTimestamp - baseTimestamp;
+                        super(timestamp + timeDiff);
+                    } else super(timestamp);
+                }
+            }
+
+            window.Date = DateMock;
+        },
+        clearDateMock() {
+            window.Date = _origDate;
         }
     };
 }

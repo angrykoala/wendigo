@@ -1,3 +1,12 @@
+1.7.0 / 2018-12-25
+==================
+
+  * MockDate and clearDateMock
+  * WaitAndClick
+  * ClickTextContaining
+  * WaitForText
+  * Option queryString on open
+
 1.6.4 / 2018-12-08
 ==================
 

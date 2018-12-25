@@ -133,6 +133,7 @@ The following options can be passed:
 
 * `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
+* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url
 
 
 **openFile(path, options?)**    
@@ -277,6 +278,9 @@ await browser.clickText("Click Me!", "2"); // Will search for an element with se
 await browser.clickText(".container", "Click Me!", 2); // Clicks the second element with given text under the element ".container"
 ```
 
+**clickTextContaining(selector?, text, index?)**    
+Same as clickText, but matches with any text containing the given parameter.
+
 **clickAndWaitForNavigation(selector, timeout=500)**   
 Clicks an element and waits until a navigation event is triggered. Recommended for links to different pages. Keep in mind that not all the clicks will trigger a navigation event.
 
@@ -287,6 +291,9 @@ await browser.url(); // my-page/home
 ```
 
 > clickAndWaitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
+
+**waitAndClick(selector, timeout=500)**    
+Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
 
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
@@ -304,7 +311,41 @@ Returns the page html as string. It will return the html as it was before perfor
 Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
 
 **url()**   
-Returns the current url of the page
+Returns the current url of the page.
+
+**mockDate(date, options?)**   
+Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters. The first parameter must be a JavaScript Date object. The following options are supported:
+* `freeze: true`: if set to true, the new Date objects will always return the given date as current date, if false, the expected date will increase normally as time passes.
+
+```js
+await browser.mockDate(new Date(2010,10,6)); // Mocks to 6-sept 2010
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010
+    const d2 = new Date(2011,10,10); // 10-sept 2011
+})
+```
+
+```js
+await browser.mockDate(new Date(2010,10,6), {
+    freeze: false
+});
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010 plus some milliseconds
+});
+
+await browser.wait(1000);
+
+await browser.evaluate(() => {
+    const d = new Date(); // 6-sept 2010 plus one second and some milliseconds
+})
+```
+
+> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates.
+
+**clearDateMock()**    
+Clears the date mock, if any, returning to the native Date object.
 
 **wait(ms=250)**   
 Waits for the given milliseconds.
@@ -340,6 +381,14 @@ Waits for the page to have the given url.
 ```js
 await browser.click("a");
 await browser.waitForUrl("my-url");
+```
+
+**waitForText(text, timeout=500)**   
+Waits for the given text to exists.
+
+```js
+await browser.waitForText("Click me!");
+await browser.clickText("Click me!");
 ```
 
 **waitForRequest(url, timeout=500)**    
@@ -1523,4 +1572,3 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
 * Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
-
