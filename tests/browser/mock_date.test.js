@@ -9,7 +9,7 @@ describe("Date Mock", function() {
     let browser;
 
     before(async() => {
-        browser = await Wendigo.createBrowser({log: true});
+        browser = await Wendigo.createBrowser();
     });
 
     beforeEach(async() => {
@@ -67,7 +67,7 @@ describe("Date Mock", function() {
         await browser.mockDate(new Date(2010, 11, 10));
         await browser.click(".btn");
         const expectedDate = await browser.evaluate(() => {
-            return new Date(2008, 1, 1).getTime();
+            return new Date(1201820400000).getTime();
         });
         assert.strictEqual(expectedDate, 1201820400000);
     });
