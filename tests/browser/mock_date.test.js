@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-describe("Date Mock", function() {
+describe.only("Date Mock", function() {
     this.timeout(5000);
     let browser;
 
@@ -49,8 +49,9 @@ describe("Date Mock", function() {
             const d = new Date();
             return d.getTime();
         });
+        console.log(currentTimestamp);
         assert(currentTimestamp > 1291935600000);
-        assert(currentTimestamp < 1291935603000);
+        assert(currentTimestamp < 1291935605000);
     });
 
     it("Clear Date Mock", async() => {
@@ -102,7 +103,8 @@ describe("Date Mock", function() {
         const currentTimestamp = await browser.evaluate(() => {
             return Date.now();
         });
+        console.log(currentTimestamp);
         assert(currentTimestamp > 1291935600000);
-        assert(currentTimestamp < 1291935603000);
+        assert(currentTimestamp < 1291935605000);
     });
 });
