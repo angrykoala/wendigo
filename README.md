@@ -342,7 +342,7 @@ await browser.evaluate(() => {
 })
 ```
 
-> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates.
+> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates. It is recommended to use timestamps to avoid problems with different timezones between the browser and Node.
 
 **clearDateMock()**    
 Clears the date mock, if any, returning to the native Date object.
