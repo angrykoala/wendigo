@@ -41,7 +41,7 @@ describe("Date Mock", function() {
 
 
     it("Mock Date Without Freezing Clock", async() => {
-        const mockDate = new Date(2010, 11, 10);
+        const mockDate = new Date(1291935600000);
         await browser.mockDate(mockDate, {
             freeze: false
         });
@@ -86,7 +86,7 @@ describe("Date Mock", function() {
 
 
     it("Date.now", async() => {
-        await browser.mockDate(new Date(2010, 11, 10));
+        await browser.mockDate(new Date(1291935600000));
         await browser.click(".btn");
         const currentTimestamp = await browser.evaluate(() => {
             return Date.now();
@@ -96,7 +96,7 @@ describe("Date Mock", function() {
 
 
     it("Date.now Without Freezing Clock", async() => {
-        const mockDate = new Date(2010, 11, 10);
+        const mockDate = new Date(1291935600000);
         await browser.mockDate(mockDate, {
             freeze: false
         });
