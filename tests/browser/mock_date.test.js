@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-describe.only("Date Mock", function() {
+describe("Date Mock", function() {
     this.timeout(5000);
     let browser;
 
@@ -41,7 +41,8 @@ describe.only("Date Mock", function() {
 
 
     it("Mock Date Without Freezing Clock", async() => {
-        await browser.mockDate(new Date(2010, 11, 10), {
+        const mockDate = new Date(2010, 11, 10);
+        await browser.mockDate(mockDate, {
             freeze: false
         });
         await browser.wait(1);
@@ -49,9 +50,8 @@ describe.only("Date Mock", function() {
             const d = new Date();
             return d.getTime();
         });
-        console.log(currentTimestamp);
-        assert(currentTimestamp > 1291935600000);
-        assert(currentTimestamp < 1291935605000);
+        assert(currentTimestamp >= mockDate.getTime());
+        assert(currentTimestamp < mockDate.getTime() + 3000);
     });
 
     it("Clear Date Mock", async() => {
@@ -96,15 +96,15 @@ describe.only("Date Mock", function() {
 
 
     it("Date.now Without Freezing Clock", async() => {
-        await browser.mockDate(new Date(2010, 11, 10), {
+        const mockDate = new Date(2010, 11, 10);
+        await browser.mockDate(mockDate, {
             freeze: false
         });
         await browser.wait(1);
         const currentTimestamp = await browser.evaluate(() => {
             return Date.now();
         });
-        console.log(currentTimestamp);
-        assert(currentTimestamp > 1291935600000);
-        assert(currentTimestamp < 1291935605000);
+        assert(currentTimestamp >= mockDate.getTime());
+        assert(currentTimestamp < mockDate.getTime() + 3000);
     });
 });
