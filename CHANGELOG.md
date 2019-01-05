@@ -1,6 +1,7 @@
 1.7.1 / ####-##-##
 ==================
 
+  * Date.now supported when browser's date is mocked
 
 1.7.0 / 2018-12-25
 ==================

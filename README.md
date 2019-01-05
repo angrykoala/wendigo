@@ -314,7 +314,7 @@ Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/d
 Returns the current url of the page.
 
 **mockDate(date, options?)**   
-Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters. The first parameter must be a JavaScript Date object. The following options are supported:
+Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters or `Date.now()`. The first parameter must be a JavaScript Date object. The following options are supported:
 * `freeze: true`: if set to true, the new Date objects will always return the given date as current date, if false, the expected date will increase normally as time passes.
 
 ```js
