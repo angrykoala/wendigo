@@ -2,6 +2,7 @@
 ==================
 
   * Date.now supported when browser's date is mocked
+  * Minor code improvements
 
 1.7.0 / 2018-12-25
 ==================
