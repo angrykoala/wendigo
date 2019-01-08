@@ -1,4 +1,4 @@
-1.7.1 / ####-##-##
+1.7.1 / 2019-01-08
 ==================
 
   * Date.now supported when browser's date is mocked
