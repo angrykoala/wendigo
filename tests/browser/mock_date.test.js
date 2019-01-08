@@ -41,15 +41,17 @@ describe("Date Mock", function() {
 
 
     it("Mock Date Without Freezing Clock", async() => {
-        await browser.mockDate(new Date(2010, 11, 10), {
+        const mockDate = new Date(1291935600000);
+        await browser.mockDate(mockDate, {
             freeze: false
         });
-        await browser.click(".btn");
-        await browser.assert.text(".date-text", "12/10/2010::0-0-0");
-        await browser.wait(1000);
-        await browser.click(".btn");
-        await browser.assert.not.text(".date-text", "12/10/2010::0-0-0");
-        await browser.assert.text(".date-text", /12\/10\/2010::0-\d\d?-\d\d?/);
+        await browser.wait(1);
+        const currentTimestamp = await browser.evaluate(() => {
+            const d = new Date();
+            return d.getTime();
+        });
+        assert(currentTimestamp >= mockDate.getTime());
+        assert(currentTimestamp < mockDate.getTime() + 3000);
     });
 
     it("Clear Date Mock", async() => {
@@ -72,7 +74,7 @@ describe("Date Mock", function() {
         assert.strictEqual(expectedDate, 1201820400000);
     });
 
-    it.skip("Using Date as function", async() => { // NOT SUPPORTED
+    it.skip("Using Date As Function", async() => { // NOT SUPPORTED
         await browser.mockDate(new Date(2010, 11, 10));
         await browser.click(".btn");
         const currentDates = await browser.evaluate(() => {
@@ -80,5 +82,29 @@ describe("Date Mock", function() {
         });
         assert.strictEqual(currentDates[0], currentDates[1]);
         await browser.assert.text(".date-text", "12/10/2010::0-0-0");
+    });
+
+
+    it("Date.now", async() => {
+        await browser.mockDate(new Date(1291935600000));
+        await browser.click(".btn");
+        const currentTimestamp = await browser.evaluate(() => {
+            return Date.now();
+        });
+        assert.strictEqual(currentTimestamp, 1291935600000);
+    });
+
+
+    it("Date.now Without Freezing Clock", async() => {
+        const mockDate = new Date(1291935600000);
+        await browser.mockDate(mockDate, {
+            freeze: false
+        });
+        await browser.wait(1);
+        const currentTimestamp = await browser.evaluate(() => {
+            return Date.now();
+        });
+        assert(currentTimestamp >= mockDate.getTime());
+        assert(currentTimestamp < mockDate.getTime() + 3000);
     });
 });

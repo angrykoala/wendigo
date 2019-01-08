@@ -9,7 +9,7 @@ _by @angrykoala_
 
 > A proper monster for front-end automated testing
 
-**Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier and simpler. Install it with `npm install --save-dev wendigo`
+**Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier. Install it with `npm install --save-dev wendigo`.
 
 Consider the following example of a test using Puppeteer:
 
@@ -27,7 +27,7 @@ Using Wendigo, the same test could be written like this:
 
 ```javascript
 await browser.click(".my-btn");
-await page.waitFor("#my-modal");
+await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
@@ -46,6 +46,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [Errors](#errors)
     * [Selectors](#selectors)
     * [Injected Scripts](#injected-scripts)
+    * [DOM Element](#dom-element)
 * [Plugins](#plugins)
     * [Writing A Plugin](#writing-a-plugin)
 * [Examples](#examples)
@@ -314,7 +315,7 @@ Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/d
 Returns the current url of the page.
 
 **mockDate(date, options?)**   
-Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters. The first parameter must be a JavaScript Date object. The following options are supported:
+Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters or `Date.now()`. The first parameter must be a JavaScript Date object. The following options are supported:
 * `freeze: true`: if set to true, the new Date objects will always return the given date as current date, if false, the expected date will increase normally as time passes.
 
 ```js
@@ -342,7 +343,7 @@ await browser.evaluate(() => {
 })
 ```
 
-> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates.
+> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates. It is recommended to use timestamps to avoid problems with different timezones between the browser and Node.
 
 **clearDateMock()**    
 Clears the date mock, if any, returning to the native Date object.
@@ -1312,7 +1313,7 @@ Most Wendigo methods and assertions will require a selector to localize the elem
 
 * **css**: Such as `#my-id` or `.container`, any selector supported by the standard `document.querySelector`.
 * **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
-* **DomElement**: The result of `browser.query` can be directly used as a selector.
+* **DomElement**: The result of `browser.query` can be directly used as a selector. Check [DOM Element](#dom-element)
 
 ## Injected Scripts
 For Wendigo to work properly, it must inject some scripts into the web page within the browser's context at runtime. Usually these scripts will only be used by Wendigo, but you can still access them when using `evaluate` in your code or when writing a plugin.
@@ -1328,6 +1329,19 @@ Wendigo Utils contain several methods and utilities for wendigo, it can be acces
 
 ### WendigoQuery
 The variable `WendigoQuery` or `window.WendigoQuery` exposes several utilities regarding Wendigo querying system, these shouldn't be used by user's code or plugins as `WendigoUtils` already exposes the methods to perform these queries.
+
+## DOM Element
+Any query for an element will return an instance of a DOMElement. This class insterfaces with Puppeteer's ElementHandle and can be used as a selector for other methods and assertions. A DOMElement contains the following attributes:
+* **element**: Puppeteer's ElementHandle object.
+* **name**: Name to be used when displaying errors.
+
+A DOMElement also provides the following methods:
+
+* **query(selector)**: Performs a css query within the children of the element. Returns the first element matching the selector.
+* **queryXPath(selector)**: Performs an XPath query within the children of the element.
+* **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
+* **click()**: Clicks the given element.
+* **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
 
 # Plugins
 Wendigo supports plugins to extends its capabilities with custom features and assertions. These plugins can be added with `registerPlugin`

@@ -36,15 +36,23 @@ if (!window.WendigoUtils) {
             if (!freeze) {
                 baseTimestamp = new _origDate().getTime();
             }
+            function getCurrentTimestamp() {
+                if (!freeze) {
+                    const currentTimestamp = new _origDate().getTime();
+                    const timeDiff = currentTimestamp - baseTimestamp;
+                    return timestamp + timeDiff;
+                } else return timestamp;
+            }
+
             class DateMock extends _origDate {
                 constructor(...params) {
                     if (params.length > 0) {
                         super(...params);
-                    } else if (!freeze) {
-                        const currentTimestamp = new _origDate().getTime();
-                        const timeDiff = currentTimestamp - baseTimestamp;
-                        super(timestamp + timeDiff);
-                    } else super(timestamp);
+                    } else super(getCurrentTimestamp());
+                }
+
+                static now() {
+                    return getCurrentTimestamp();
                 }
             }
 

@@ -1,4 +1,5 @@
 "use strict";
+
 if (!window.WendigoQuery) {
     window.WendigoQuery = {
         selectorTypes: { // Warning: Same as selector type
