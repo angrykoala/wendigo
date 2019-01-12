@@ -41,7 +41,7 @@ describe("Assert Url", function() {
         await utils.assertThrowsAsync(async() => {
             await browser2.assert.url("...");
         }, `FatalError: Can't obtain page url.Cannot perform action before opening a page.`);
-        await browser2.open(configUrls.index); // TODO: this should not be necessary, remove after issue #265 is fixed
+        // await browser2.open(configUrls.index); // TODO: this should not be necessary, remove after issue #265 is fixed
         await browser2.close();
     });
 
