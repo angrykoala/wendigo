@@ -36,6 +36,15 @@ describe("Assert Url", function() {
         }, `Expected url to be "${invalidUrl}", "${configUrls.index}" found`, configUrls.index, invalidUrl);
     });
 
+    it("Url Throws Of Internal Error", async() => {
+        const browser2 = await Wendigo.createBrowser();
+        await utils.assertThrowsAsync(async() => {
+            await browser2.assert.url("...");
+        }, `FatalError: Can't obtain page url.Cannot perform action before opening a page.`);
+        // await browser2.open(configUrls.index); // TODO: this should not be necessary, remove after issue #265 is fixed
+        await browser2.close();
+    });
+
     it("Url With Regex Throws", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {

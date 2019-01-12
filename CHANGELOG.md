@@ -1,3 +1,10 @@
+1.7.2 / 2019-01-12
+==================
+
+  * WaitUntilEnabled
+  * Changed browser.assert.url error message when internal error happens
+  * Fixed unexpected behaviour on closing a browser that has never been opened
+
 1.7.1 / 2019-01-08
 ==================
 

@@ -29,6 +29,12 @@
         <input type="checkbox" value="car">Car<br>
     </div>
 
+    <div id="disabled-button">
+        <button onclick="enableButton()" class="enable-button">Enable</button>
+        <button disabled class="disabled-button">Disabled button</button>
+        <p class="enabled-status"></p>
+    </div>
+
     <script>
         document.querySelector(".input1").onkeypress = function(ev) {
             document.getElementById("value-input").textContent = String.fromCharCode(ev.charCode)
@@ -36,6 +42,15 @@
         document.querySelector(".label1").onclick = function(ev) {
             document.getElementById("value-input").textContent = "Label"
         };
+
+        function enableButton() {
+            setTimeout(() => {
+                const elem = document.querySelector(".disabled-button");
+                elem.disabled = false
+                const status = document.querySelector(".enabled-status");
+                status.textContent = "enabled"
+            }, 250)
+        }
     </script>
 
 </body>
