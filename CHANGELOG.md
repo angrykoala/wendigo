@@ -1,6 +1,7 @@
 1.7.2 / ####-##-##
 ==================
 
+  * WaitUntilEnabled
   * Changed browser.assert.url error message when internal error happens
 
 1.7.1 / 2019-01-08

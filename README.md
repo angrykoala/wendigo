@@ -296,6 +296,8 @@ await browser.url(); // my-page/home
 **waitAndClick(selector, timeout=500)**    
 Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
 
+> Only Css and XPath Selectors supported
+
 **check(selector)**    
 Checks the first element matching given selector. Setting its checked property to true.
 
@@ -367,7 +369,7 @@ await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
 }, 600, ".my-elements");
 ```
 
-> Css and Xpath selectors supported
+> Css and Xpath selectors supported only.
 
 **waitUntilNotVisible(selector, timeout=500)**   
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
@@ -375,6 +377,8 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 ```js
 await browser.waitUntilNotVisible(".toast");
 ```
+
+> Css and XPath selectors supported only.
 
 **waitForUrl(url, timeout=500)**    
 Waits for the page to have the given url.
@@ -412,6 +416,9 @@ Waits until next response with given url is received. If the response was alread
 Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
 > waitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
+
+**waitUntilEnabled(selector, timeout=500)**    
+Waits until the first element matching the given selector has the attribute `disabled` set to null.
 
 **findByText(selector?, text)**   
 Returns an array with the elements with text content matching the given text.  
