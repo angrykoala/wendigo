@@ -44,7 +44,7 @@ describe("Path Finder", function() {
 
     it("Find CssPath Duplicate Elements", async() => {
         await browser.open(configUrls.duplicateElements);
-        const elements = await browser.queryAll("p"); // TODO: with .p error is thrown, related to #270
+        const elements = await browser.queryAll("p");
         const path1 = await browser.findCssPath(elements[0]);
         const path2 = await browser.findCssPath(elements[1]);
 

@@ -50,4 +50,9 @@ describe("Query All", function() {
             await browser.queryAll(".container", "b");
         }, "Error: Invalid parent element for queryAll");
     });
+
+    it("QueryAll Element Not Found", async() => {
+        const elements = await browser.queryAll(".not-element");
+        assert.strictEqual(elements.length, 0);
+    });
 });
