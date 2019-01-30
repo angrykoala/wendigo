@@ -1,6 +1,7 @@
-1.7.3 / ####-##-##
+1.8.0 / ####-##-##
 ==================
 
+  * FindCssPath and findXPath
   * Browser.requests.getAllMocks method
   * Several dependencies updated
 

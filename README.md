@@ -438,7 +438,19 @@ const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
-Otionally, a selector can be passed as first argument to perform a text search on children of that element only.
+Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
+
+**findCssPath(element)**    
+Will return the css path string (e.g. `body > div > button`) of a DomElement.
+
+```js
+const elem = await browser.query(".my-element")
+const path = await browser.findCssPath(elem); // body > div > p.my-element
+```
+
+**findXPath(element)**    
+Will return the xPath string (e.g. `/html/body/div/button`) of a DomElement.
+
 
 **type(selector, text)**   
 Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.

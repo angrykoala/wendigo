@@ -3,6 +3,7 @@
 const Wendigo = require('../..');
 const assert = require('assert');
 const configUrls = require('../config.json').urls;
+const utils = require('../test_utils');
 
 describe("Path Finder", function() {
     this.timeout(5000);
@@ -67,6 +68,13 @@ describe("Path Finder", function() {
         assert.strictEqual(path, '#title');
     });
 
+    it("Find cssPath Invalid Element", async() => {
+        await browser.open(configUrls.duplicateElements);
+        await utils.assertThrowsAsync(async() => {
+            await browser.findCssPath("h1");
+        }, `Error: Invalid element for css path query.`);
+    });
+
 
     it("Find xPath", async() => {
         await browser.open(configUrls.index);
@@ -115,5 +123,12 @@ describe("Path Finder", function() {
         const element = await browser.query("h1");
         const path = await browser.findXPath(element);
         assert.strictEqual(path, '//*[@id="title"]');
+    });
+
+    it("Find xPath Invalid Element", async() => {
+        await browser.open(configUrls.duplicateElements);
+        await utils.assertThrowsAsync(async() => {
+            await browser.findXPath("h1");
+        }, `Error: Invalid element for xPath query.`);
     });
 });
