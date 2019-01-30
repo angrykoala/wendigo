@@ -2,6 +2,7 @@
 ==================
 
   * FindCssPath and findXPath
+  * Delay in type
   * Browser.requests.getAllMocks method
   * Several dependencies updated
 

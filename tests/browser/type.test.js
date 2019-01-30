@@ -24,6 +24,19 @@ describe("Type", function() {
         await browser.type("input.input1", "firstText");
         await browser.assert.value("input.input1", "firstText");
     });
+
+    it("Type With Delay", async() => {
+        browser.type("input.input1", "firstText", {delay: 10});
+        await browser.assert.not.value("input.input1", "firstText");
+        await browser.wait(800); // It should take around 90 ms, more time given just in case
+        await browser.assert.value("input.input1", "firstText");
+    });
+
+    it("Type With Delay And Await", async() => {
+        await browser.type("input.input1", "firstText", {delay: 10});
+        await browser.assert.value("input.input1", "firstText");
+    });
+
     it("Type With Existing Text", async() => {
         await browser.type("input.input2", "secondText");
         await browser.assert.value("input.input2", "secondTextdefault value");

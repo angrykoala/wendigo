@@ -452,8 +452,11 @@ const path = await browser.findCssPath(elem); // body > div > p.my-element
 Will return the xPath string (e.g. `/html/body/div/button`) of a DomElement.
 
 
-**type(selector, text)**   
+**type(selector, text, options?)**   
 Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
+
+The following options passed as an object are supported:
+* _delay_:  If a delay is given, it will delay the given ms for each key press.
 
 
 ```js
