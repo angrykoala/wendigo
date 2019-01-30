@@ -4,7 +4,7 @@ const Wendigo = require('../..');
 const assert = require('assert');
 const configUrls = require('../config.json').urls;
 
-describe.only("Path Finder", function() {
+describe("Path Finder", function() {
     this.timeout(5000);
 
     let browser;

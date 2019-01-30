@@ -6,6 +6,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found at https://github.com/ChromeDevTools/devtools-frontend/blob/master/LICENSE
 
+// Minor refactor and modifications made by @angrykoala for wendigo
+
+/* eslint-disable no-continue, complexity */
 
 if (!window.WendigoPathFinder) {
     class Step {
@@ -255,3 +258,5 @@ if (!window.WendigoPathFinder) {
         }
     };
 }
+
+/* eslint-enable no-continue, complexity */
