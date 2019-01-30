@@ -25,6 +25,7 @@
         "waitAndClick": "http://localhost:3456/wait_and_click.html",
         "date": "http://localhost:3456/date.html",
         "api": "http://localhost:3456/api",
-        "fakeApi": "http://localhost:3456/api2"
+        "fakeApi": "http://localhost:3456/api2",
+        "duplicateElements": "http://localhost:3456/duplicate_elements.html"
     }
 }

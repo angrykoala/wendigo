@@ -16,6 +16,7 @@ describe.only("Path Finder", function() {
         await browser.close();
     });
 
+
     it("Find CssPath", async() => {
         await browser.open(configUrls.index);
         const element = await browser.query(".hidden-text");
@@ -40,6 +41,27 @@ describe.only("Path Finder", function() {
         assert.strictEqual(path2, 'body > button.btn.query');
     });
 
+    it("Find CssPath Duplicate Elements", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const elements = await browser.queryAll("p"); // TODO: with .p error is thrown, related to #270
+        const path1 = await browser.findCssPath(elements[0]);
+        const path2 = await browser.findCssPath(elements[1]);
+
+        assert.strictEqual(path1, 'body > p:nth-child(1)');
+        assert.strictEqual(path2, 'body > p:nth-child(2)');
+    });
+
+    it("Find CssPath Of Input Node By Type", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const elements = await browser.queryAll("input");
+        const path1 = await browser.findCssPath(elements[0]);
+        const path2 = await browser.findCssPath(elements[1]);
+        assert.strictEqual(path1, 'body > input[type="text"]:nth-child(3)');
+        assert.strictEqual(path2, 'body > input[type="number"]:nth-child(4)');
+    });
+
+    //TODO: if (isTargetNode && nodeName.toLowerCase() === 'input' && node.getAttribute('type') && !node.getAttribute('id') && !node.getAttribute('class'))
+
     it("Find xPath", async() => {
         await browser.open(configUrls.index);
         const element = await browser.query(".hidden-text");
@@ -62,5 +84,23 @@ describe.only("Path Finder", function() {
         const path2 = await browser.findXPath(element2);
         assert.strictEqual(path, '/html/body/button[2]');
         assert.strictEqual(path2, '/html/body/button[3]');
+    });
+
+    it("Find xPath Duplicate Elements", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const elements = await browser.queryAll("p");
+        const path1 = await browser.findXPath(elements[0]);
+        const path2 = await browser.findXPath(elements[1]);
+        assert.strictEqual(path1, '/html/body/p[1]');
+        assert.strictEqual(path2, '/html/body/p[2]');
+    });
+
+    it("Find xPath Of Input Node By Type", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const elements = await browser.queryAll("input");
+        const path1 = await browser.findXPath(elements[0]);
+        const path2 = await browser.findXPath(elements[1]);
+        assert.strictEqual(path1, '/html/body/input[1]');
+        assert.strictEqual(path2, '/html/body/input[2]');
     });
 });

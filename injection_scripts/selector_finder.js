@@ -8,71 +8,45 @@
 
 
 if (!window.WendigoPathFinder) {
-    const pathFinderHelpers = {
-        _cssPathStep(node, isTargetNode) {
+    class Step {
+        constructor(value, optimized) {
+            this.value = value;
+            this.optimized = optimized || false; // Is the root node?
+        }
+
+        toString() {
+            return this.value;
+        }
+    }
+
+
+    const _cssPathFinderHelpers = {
+        _stepPreprocess(node) {
             if (node.nodeType !== Node.ELEMENT_NODE)
                 return null;
 
             const id = node.getAttribute('id');
             if (id)
-                return new this.Step(idSelector(id), true);
+                return new Step(this.idSelector(id), true);
             const nodeNameLower = node.nodeName.toLowerCase();
             if (nodeNameLower === 'body' || nodeNameLower === 'head' || nodeNameLower === 'html')
-                return new this.Step(node.localName, true);
+                return new Step(node.localName, true);
             const nodeName = node.localName;
 
             const parent = node.parentNode;
             if (!parent || parent.nodeType === Node.DOCUMENT_NODE)
-                return new this.Step(nodeName, true);
+                return new Step(nodeName, true);
+        },
 
-            function prefixedElementClassNames(node) {
-                const classAttribute = node.getAttribute('class');
-                if (!classAttribute)
-                    return [];
+        _cssPathStep(node, isTargetNode) {
+            const value = this._stepPreprocess(node);
+            if (value !== undefined) return value;
 
-                return classAttribute.split(/\s+/g).filter(Boolean).map((name) => {
-                // The prefix is required to store "__proto__" in a object-based map.
-                    return `$${ name}`;
-                });
-            }
 
-            function idSelector(id) {
-                return `#${ escapeIdentifierIfNeeded(id)}`;
-            }
+            const parent = node.parentNode;
+            const nodeName = node.localName;
 
-            function escapeIdentifierIfNeeded(ident) {
-                if (isCSSIdentifier(ident))
-                    return ident;
-                const shouldEscapeFirst = /^(?:[0-9]|-[0-9-]?)/.test(ident);
-                const lastIndex = ident.length - 1;
-                return ident.replace(/./g, (c, i) => {
-                    return ((shouldEscapeFirst && i === 0) || !isCSSIdentChar(c)) ? escapeAsciiChar(c, i === lastIndex) : c;
-                });
-            }
-
-            function escapeAsciiChar(c, isLast) {
-                return `\\${ toHexByte(c) }${isLast ? '' : ' '}`;
-            }
-
-            function toHexByte(c) {
-                let hexByte = c.charCodeAt(0).toString(16);
-                if (hexByte.length === 1)
-                    hexByte = `0${ hexByte}`;
-                return hexByte;
-            }
-
-            function isCSSIdentChar(c) {
-                if (/[a-zA-Z0-9_-]/.test(c))
-                    return true;
-                return c.charCodeAt(0) >= 0xA0;
-            }
-
-            function isCSSIdentifier(value) {
-            // Double hyphen prefixes are not allowed by specification, but many sites use it.
-                return /^-{0,2}[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);
-            }
-
-            const prefixedOwnClassNamesArray = prefixedElementClassNames(node);
+            const prefixedOwnClassNamesArray = this.prefixedElementClassNames(node);
             let needsClassNames = false;
             let needsNthChild = false;
             let ownIndex = -1;
@@ -99,7 +73,7 @@ if (!window.WendigoPathFinder) {
                     needsNthChild = true;
                     continue;
                 }
-                const siblingClassNamesArray = prefixedElementClassNames(sibling);
+                const siblingClassNamesArray = this.prefixedElementClassNames(sibling);
                 for (let j = 0; j < siblingClassNamesArray.length; ++j) {
                     const siblingClass = siblingClassNamesArray[j];
                     if (!ownClassNames.has(siblingClass))
@@ -120,11 +94,53 @@ if (!window.WendigoPathFinder) {
                 result += `:nth-child(${ ownIndex + 1 })`;
             } else if (needsClassNames) {
                 for (const prefixedName of prefixedOwnClassNamesArray)
-                    result += `.${ escapeIdentifierIfNeeded(prefixedName.substr(1))}`;
+                    result += `.${ this.escapeIdentifierIfNeeded(prefixedName.substr(1))}`;
             }
 
-            return new this.Step(result, false);
+            return new Step(result, false);
         },
+        prefixedElementClassNames(node) {
+            const classAttribute = node.getAttribute('class');
+            if (!classAttribute)
+                return [];
+
+            return classAttribute.split(/\s+/g).filter(Boolean).map((name) => {
+            // The prefix is required to store "__proto__" in a object-based map.
+                return `$${ name}`;
+            });
+        },
+        idSelector(id) {
+            return `#${ this.escapeIdentifierIfNeeded(id)}`;
+        },
+        escapeIdentifierIfNeeded(ident) {
+            if (this.isCSSIdentifier(ident))
+                return ident;
+            const shouldEscapeFirst = /^(?:[0-9]|-[0-9-]?)/.test(ident);
+            const lastIndex = ident.length - 1;
+            return ident.replace(/./g, (c, i) => {
+                return ((shouldEscapeFirst && i === 0) || !this.isCSSIdentChar(c)) ? this.escapeAsciiChar(c, i === lastIndex) : c;
+            });
+        },
+        escapeAsciiChar(c, isLast) {
+            return `\\${ this.toHexByte(c) }${isLast ? '' : ' '}`;
+        },
+        toHexByte(c) {
+            let hexByte = c.charCodeAt(0).toString(16);
+            if (hexByte.length === 1)
+                hexByte = `0${ hexByte}`;
+            return hexByte;
+        },
+        isCSSIdentChar(c) {
+            if (/[a-zA-Z0-9_-]/.test(c))
+                return true;
+            return c.charCodeAt(0) >= 0xA0;
+        },
+        isCSSIdentifier(value) {
+        // Double hyphen prefixes are not allowed by specification, but many sites use it.
+            return /^-{0,2}[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);
+        }
+    };
+    const _xPathFinderHelpers = {
         _xPathValue(node, optimized) {
             let ownValue;
             const ownIndex = this._xPathIndex(node);
@@ -134,7 +150,7 @@ if (!window.WendigoPathFinder) {
             switch (node.nodeType) {
                 case Node.ELEMENT_NODE:
                     if (optimized && node.getAttribute('id'))
-                        return new this.Step(`//*[@id="${ node.getAttribute('id') }"]`, true);
+                        return new Step(`//*[@id="${ node.getAttribute('id') }"]`, true);
                     ownValue = node.localName;
                     break;
                 case Node.ATTRIBUTE_NODE:
@@ -161,32 +177,15 @@ if (!window.WendigoPathFinder) {
             if (ownIndex > 0)
                 ownValue += `[${ ownIndex }]`;
 
-            return new this.Step(ownValue, node.nodeType === Node.DOCUMENT_NODE);
+            return new Step(ownValue, node.nodeType === Node.DOCUMENT_NODE);
         },
         _xPathIndex(node) {
-        // Returns -1 in case of error, 0 if no siblings matching the same expression, <XPath index among the same expression-matching sibling nodes> otherwise.
-            function areNodesSimilar(left, right) {
-                if (left === right)
-                    return true;
-
-                if (left.nodeType === Node.ELEMENT_NODE && right.nodeType === Node.ELEMENT_NODE)
-                    return left.localName === right.localName;
-
-                if (left.nodeType === right.nodeType)
-                    return true;
-
-                // XPath treats CDATA as text nodes.
-                const leftType = left.nodeType === Node.CDATA_SECTION_NODE ? Node.TEXT_NODE : left.nodeType;
-                const rightType = right.nodeType === Node.CDATA_SECTION_NODE ? Node.TEXT_NODE : right.nodeType;
-                return leftType === rightType;
-            }
-
             const siblings = node.parentNode ? node.parentNode.children : null;
             if (!siblings)
                 return 0; // Root node - no siblings.
             let hasSameNamedElements;
             for (let i = 0; i < siblings.length; ++i) {
-                if (areNodesSimilar(node, siblings[i]) && siblings[i] !== node) {
+                if (this.areNodesSimilar(node, siblings[i]) && siblings[i] !== node) {
                     hasSameNamedElements = true;
                     break;
                 }
@@ -195,7 +194,7 @@ if (!window.WendigoPathFinder) {
                 return 0;
             let ownIndex = 1; // XPath indices start with 1.
             for (let i = 0; i < siblings.length; ++i) {
-                if (areNodesSimilar(node, siblings[i])) {
+                if (this.areNodesSimilar(node, siblings[i])) {
                     if (siblings[i] === node)
                         return ownIndex;
                     ++ownIndex;
@@ -203,16 +202,21 @@ if (!window.WendigoPathFinder) {
             }
             return -1; // An error occurred: |node| not found in parent's children.
         },
+        areNodesSimilar(left, right) {
+            // Returns -1 in case of error, 0 if no siblings matching the same expression, <XPath index among the same expression-matching sibling nodes> otherwise.
+            if (left === right)
+                return true;
 
-        Step: class {
-            constructor(value, optimized) {
-                this.value = value;
-                this.optimized = optimized || false;
-            }
+            if (left.nodeType === Node.ELEMENT_NODE && right.nodeType === Node.ELEMENT_NODE)
+                return left.localName === right.localName;
 
-            toString() {
-                return this.value;
-            }
+            if (left.nodeType === right.nodeType)
+                return true;
+
+            // XPath treats CDATA as text nodes.
+            const leftType = left.nodeType === Node.CDATA_SECTION_NODE ? Node.TEXT_NODE : left.nodeType;
+            const rightType = right.nodeType === Node.CDATA_SECTION_NODE ? Node.TEXT_NODE : right.nodeType;
+            return leftType === rightType;
         }
     };
 
@@ -225,7 +229,7 @@ if (!window.WendigoPathFinder) {
             const steps = [];
             let contextNode = node;
             while (contextNode) {
-                const step = pathFinderHelpers._cssPathStep(contextNode, contextNode === node);
+                const step = _cssPathFinderHelpers._cssPathStep(contextNode, contextNode === node);
                 if (!step)
                     break; // Error - bail out early.
                 steps.push(step);
@@ -244,7 +248,7 @@ if (!window.WendigoPathFinder) {
             const steps = [];
             let contextNode = node;
             while (contextNode) {
-                const step = pathFinderHelpers._xPathValue(contextNode, optimized);
+                const step = _xPathFinderHelpers._xPathValue(contextNode, optimized);
                 if (!step)
                     break; // Error - bail out early.
                 steps.push(step);
