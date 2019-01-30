@@ -60,7 +60,13 @@ describe.only("Path Finder", function() {
         assert.strictEqual(path2, 'body > input[type="number"]:nth-child(4)');
     });
 
-    //TODO: if (isTargetNode && nodeName.toLowerCase() === 'input' && node.getAttribute('type') && !node.getAttribute('id') && !node.getAttribute('class'))
+    it("Find CssPath With Id", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const element = await browser.query("h1");
+        const path = await browser.findCssPath(element);
+        assert.strictEqual(path, '#title');
+    });
+
 
     it("Find xPath", async() => {
         await browser.open(configUrls.index);
@@ -102,5 +108,12 @@ describe.only("Path Finder", function() {
         const path2 = await browser.findXPath(elements[1]);
         assert.strictEqual(path1, '/html/body/input[1]');
         assert.strictEqual(path2, '/html/body/input[2]');
+    });
+
+    it("Find xPath With Id", async() => {
+        await browser.open(configUrls.duplicateElements);
+        const element = await browser.query("h1");
+        const path = await browser.findXPath(element);
+        assert.strictEqual(path, '//*[@id="title"]');
     });
 });

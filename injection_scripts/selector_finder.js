@@ -11,7 +11,7 @@ if (!window.WendigoPathFinder) {
     class Step {
         constructor(value, optimized) {
             this.value = value;
-            this.optimized = optimized || false; // Is the root node?
+            this.optimized = optimized || false;
         }
 
         toString() {
@@ -141,7 +141,7 @@ if (!window.WendigoPathFinder) {
         }
     };
     const _xPathFinderHelpers = {
-        _xPathValue(node, optimized) {
+        _xPathStep(node) {
             let ownValue;
             const ownIndex = this._xPathIndex(node);
             if (ownIndex === -1)
@@ -149,7 +149,7 @@ if (!window.WendigoPathFinder) {
 
             switch (node.nodeType) {
                 case Node.ELEMENT_NODE:
-                    if (optimized && node.getAttribute('id'))
+                    if (node.getAttribute('id'))
                         return new Step(`//*[@id="${ node.getAttribute('id') }"]`, true);
                     ownValue = node.localName;
                     break;
@@ -183,7 +183,7 @@ if (!window.WendigoPathFinder) {
             const siblings = node.parentNode ? node.parentNode.children : null;
             if (!siblings)
                 return 0; // Root node - no siblings.
-            let hasSameNamedElements;
+            let hasSameNamedElements = false;
             for (let i = 0; i < siblings.length; ++i) {
                 if (this.areNodesSimilar(node, siblings[i]) && siblings[i] !== node) {
                     hasSameNamedElements = true;
@@ -197,7 +197,7 @@ if (!window.WendigoPathFinder) {
                 if (this.areNodesSimilar(node, siblings[i])) {
                     if (siblings[i] === node)
                         return ownIndex;
-                    ++ownIndex;
+                    ownIndex++;
                 }
             }
             return -1; // An error occurred: |node| not found in parent's children.
@@ -225,30 +225,23 @@ if (!window.WendigoPathFinder) {
         cssPath(node) {
             if (node.nodeType !== Node.ELEMENT_NODE)
                 return '';
-
-            const steps = [];
-            let contextNode = node;
-            while (contextNode) {
-                const step = _cssPathFinderHelpers._cssPathStep(contextNode, contextNode === node);
-                if (!step)
-                    break; // Error - bail out early.
-                steps.push(step);
-                if (step.optimized)
-                    break;
-                contextNode = contextNode.parentNode;
-            }
-
-            steps.reverse();
+            const stepsFunction = _cssPathFinderHelpers._cssPathStep.bind(_cssPathFinderHelpers);
+            const steps = this._generatePathSteps(node, stepsFunction);
             return steps.join(' > ');
         },
-        xPath(node, optimized = true) {
+        xPath(node) {
             if (node.nodeType === Node.DOCUMENT_NODE)
                 return '/';
 
+            const stepsFunction = _xPathFinderHelpers._xPathStep.bind(_xPathFinderHelpers);
+            const steps = this._generatePathSteps(node, stepsFunction);
+            return (steps.length && steps[0].optimized ? '' : '/') + steps.join('/');
+        },
+        _generatePathSteps(node, stepFunction) {
             const steps = [];
             let contextNode = node;
             while (contextNode) {
-                const step = _xPathFinderHelpers._xPathValue(contextNode, optimized);
+                const step = stepFunction(contextNode, contextNode === node);
                 if (!step)
                     break; // Error - bail out early.
                 steps.push(step);
@@ -258,7 +251,7 @@ if (!window.WendigoPathFinder) {
             }
 
             steps.reverse();
-            return (steps.length && steps[0].optimized ? '' : '/') + steps.join('/');
+            return steps;
         }
     };
 }
