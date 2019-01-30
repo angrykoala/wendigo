@@ -300,4 +300,13 @@ describe("Requests Mocker", function() {
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK2");
     });
+
+    it("Get All Mocks", async() => {
+        const initialMocks = browser.requests.getAllMocks();
+        assert.strictEqual(initialMocks.length, 0);
+        const mock = browser.requests.mock(/api/, mockResponse);
+        assert.strictEqual(initialMocks.length, 0);
+        assert.strictEqual(browser.requests.getAllMocks().length, 1);
+        assert.strictEqual(browser.requests.getAllMocks()[0], mock);
+    });
 });

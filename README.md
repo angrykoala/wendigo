@@ -1148,6 +1148,9 @@ Clears the list of requests.
 **clearMocks()**    
 Remove all the request mocks.
 
+**getAllMocks()**   
+Returns an array with all the current request mocks set in the browser.
+
 ### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.
 

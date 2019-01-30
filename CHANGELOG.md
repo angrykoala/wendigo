@@ -1,6 +1,7 @@
 1.7.3 / ####-##-##
 ==================
 
+  * Browser.requests.getAllMocks method
   * Several dependencies updated
 
 1.7.2 / 2019-01-12
