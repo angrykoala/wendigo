@@ -30,6 +30,7 @@ describe("Requests Mocker", function() {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
         await mock.waitUntilCalled();
+        await browser.wait(1); // Delay between response and update
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -39,6 +40,7 @@ describe("Requests Mocker", function() {
         });
         await browser.clickText("click me");
         await mock.waitUntilCalled();
+        await browser.wait(1); // Delay between response and update
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -299,5 +301,14 @@ describe("Requests Mocker", function() {
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK2");
+    });
+
+    it("Get All Mocks", async() => {
+        const initialMocks = browser.requests.getAllMocks();
+        assert.strictEqual(initialMocks.length, 0);
+        const mock = browser.requests.mock(/api/, mockResponse);
+        assert.strictEqual(initialMocks.length, 0);
+        assert.strictEqual(browser.requests.getAllMocks().length, 1);
+        assert.strictEqual(browser.requests.getAllMocks()[0], mock);
     });
 });

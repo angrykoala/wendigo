@@ -1,4 +1,4 @@
-/* global WendigoQuery */
+/* global WendigoQuery, WendigoPathFinder */
 "use strict";
 
 if (!window.WendigoUtils) {
@@ -60,6 +60,12 @@ if (!window.WendigoUtils) {
         },
         clearDateMock() {
             window.Date = _origDate;
+        },
+        findCssPath(...args) {
+            return WendigoPathFinder.cssPath(...args);
+        },
+        findXPath(...args) {
+            return WendigoPathFinder.xPath(...args);
         }
     };
 }

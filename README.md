@@ -438,10 +438,25 @@ const elements = await browser.findByTextContaining("Paragraph");
 elements.length; // 2
 ```
 
-Otionally, a selector can be passed as first argument to perform a text search on children of that element only.
+Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
-**type(selector, text)**   
+**findCssPath(element)**    
+Will return the css path string (e.g. `body > div > button`) of a DomElement.
+
+```js
+const elem = await browser.query(".my-element")
+const path = await browser.findCssPath(elem); // body > div > p.my-element
+```
+
+**findXPath(element)**    
+Will return the xPath string (e.g. `/html/body/div/button`) of a DomElement.
+
+
+**type(selector, text, options?)**   
 Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
+
+The following options passed as an object are supported:
+* _delay_:  If a delay is given, it will delay the given ms for each key press.
 
 
 ```js
@@ -1147,6 +1162,9 @@ Clears the list of requests.
 
 **clearMocks()**    
 Remove all the request mocks.
+
+**getAllMocks()**   
+Returns an array with all the current request mocks set in the browser.
 
 ### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.
