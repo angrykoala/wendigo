@@ -1,45 +1,14 @@
 "use strict";
 
+// Based on https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/elements/DOMPath.js
+
+// Copyright 2018 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found at https://github.com/ChromeDevTools/devtools-frontend/blob/master/LICENSE
+
+
 if (!window.WendigoPathFinder) {
-    window.WendigoPathFinder = {
-        cssPath(node) {
-            if (node.nodeType !== Node.ELEMENT_NODE)
-                return '';
-
-            const steps = [];
-            let contextNode = node;
-            while (contextNode) {
-                const step = this._cssPathStep(contextNode, contextNode === node);
-                if (!step)
-                    break; // Error - bail out early.
-                steps.push(step);
-                if (step.optimized)
-                    break;
-                contextNode = contextNode.parentNode;
-            }
-
-            steps.reverse();
-            return steps.join(' > ');
-        },
-        xPath(node, optimized = true) {
-            if (node.nodeType === Node.DOCUMENT_NODE)
-                return '/';
-
-            const steps = [];
-            let contextNode = node;
-            while (contextNode) {
-                const step = this._xPathValue(contextNode, optimized);
-                if (!step)
-                    break; // Error - bail out early.
-                steps.push(step);
-                if (step.optimized)
-                    break;
-                contextNode = contextNode.parentNode;
-            }
-
-            steps.reverse();
-            return (steps.length && steps[0].optimized ? '' : '/') + steps.join('/');
-        },
+    const pathFinderHelpers = {
         _cssPathStep(node, isTargetNode) {
             if (node.nodeType !== Node.ELEMENT_NODE)
                 return null;
@@ -62,7 +31,7 @@ if (!window.WendigoPathFinder) {
                     return [];
 
                 return classAttribute.split(/\s+/g).filter(Boolean).map((name) => {
-                    // The prefix is required to store "__proto__" in a object-based map.
+                // The prefix is required to store "__proto__" in a object-based map.
                     return `$${ name}`;
                 });
             }
@@ -99,7 +68,7 @@ if (!window.WendigoPathFinder) {
             }
 
             function isCSSIdentifier(value) {
-                // Double hyphen prefixes are not allowed by specification, but many sites use it.
+            // Double hyphen prefixes are not allowed by specification, but many sites use it.
                 return /^-{0,2}[a-zA-Z_][a-zA-Z0-9_-]*$/.test(value);
             }
 
@@ -145,7 +114,7 @@ if (!window.WendigoPathFinder) {
 
             let result = nodeName;
             if (isTargetNode && nodeName.toLowerCase() === 'input' && node.getAttribute('type') && !node.getAttribute('id') &&
-        !node.getAttribute('class'))
+    !node.getAttribute('class'))
                 result += `[type="${ node.getAttribute('type') }"]`;
             if (needsNthChild) {
                 result += `:nth-child(${ ownIndex + 1 })`;
@@ -195,7 +164,7 @@ if (!window.WendigoPathFinder) {
             return new this.Step(ownValue, node.nodeType === Node.DOCUMENT_NODE);
         },
         _xPathIndex(node) {
-            // Returns -1 in case of error, 0 if no siblings matching the same expression, <XPath index among the same expression-matching sibling nodes> otherwise.
+        // Returns -1 in case of error, 0 if no siblings matching the same expression, <XPath index among the same expression-matching sibling nodes> otherwise.
             function areNodesSimilar(left, right) {
                 if (left === right)
                     return true;
@@ -244,6 +213,48 @@ if (!window.WendigoPathFinder) {
             toString() {
                 return this.value;
             }
+        }
+    };
+
+
+    window.WendigoPathFinder = {
+        cssPath(node) {
+            if (node.nodeType !== Node.ELEMENT_NODE)
+                return '';
+
+            const steps = [];
+            let contextNode = node;
+            while (contextNode) {
+                const step = pathFinderHelpers._cssPathStep(contextNode, contextNode === node);
+                if (!step)
+                    break; // Error - bail out early.
+                steps.push(step);
+                if (step.optimized)
+                    break;
+                contextNode = contextNode.parentNode;
+            }
+
+            steps.reverse();
+            return steps.join(' > ');
+        },
+        xPath(node, optimized = true) {
+            if (node.nodeType === Node.DOCUMENT_NODE)
+                return '/';
+
+            const steps = [];
+            let contextNode = node;
+            while (contextNode) {
+                const step = pathFinderHelpers._xPathValue(contextNode, optimized);
+                if (!step)
+                    break; // Error - bail out early.
+                steps.push(step);
+                if (step.optimized)
+                    break;
+                contextNode = contextNode.parentNode;
+            }
+
+            steps.reverse();
+            return (steps.length && steps[0].optimized ? '' : '/') + steps.join('/');
         }
     };
 }
