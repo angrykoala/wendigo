@@ -1,7 +1,9 @@
-1.8.1 / ####-##-##
+1.9.0 / ####-##-##
 ==================
 
-  * Puppeteer updated to 1.12.0
+  * Dialog Module
+  * Puppeteer updated to 1.12.1
+  * Minor dependencies updated
 
 1.8.0 / 2019-01-30
 ==================

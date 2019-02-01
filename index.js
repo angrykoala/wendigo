@@ -26,7 +26,7 @@ const defaultPlugins = [{
     assertions: require('./lib/modules/local_storage/local_storage_assertions')
 }, {
     name: "requests",
-    plugin: require('./lib/modules/requests/browser_requests')
+    plugin: require('./lib/modules/requests/browser_requests') // Assertion plugin separate
 }, {
     name: "console",
     plugin: require('./lib/modules/console/browser_console'),
@@ -35,6 +35,9 @@ const defaultPlugins = [{
     name: "webworkers",
     plugin: require('./lib/modules/webworkers/browser_webworkers'),
     assertions: require('./lib/modules/webworkers/webworkers_assertions')
+}, {
+    name: "dialog",
+    plugin: require('./lib/modules/dialog/browser_dialog')
 }];
 
 
