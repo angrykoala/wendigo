@@ -125,14 +125,4 @@ describe("Select", function() {
             await browser.options("#not-element");
         }, `QueryError: Element "#not-element" not found when trying to get options.`);
     });
-
-    it.skip("Select Option By Text", async() => { // test for #199
-        const selectResult = await browser.select("#normal-select", "Value 2");
-        await browser.assert.value("#normal-select", "value2");
-        const selectedOptions = await browser.selectedOptions("#normal-select");
-        assert.strictEqual(selectedOptions.length, 1);
-        assert.strictEqual(selectedOptions[0], "value2");
-        assert.strictEqual(selectResult.length, 1);
-        assert.strictEqual(selectResult[0], "value2");
-    });
 });

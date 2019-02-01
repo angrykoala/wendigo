@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dialog Test</title>
+</head>
+
+<body>
+    <button class="alert-btn" onclick="alertMe()">alert</button>
+    <button class="prompt-btn" onclick="promptMe()">prompt</button>
+    <p class="prompt-result"></p>
+</body>
+
+<script>
+    function alertMe() {
+        alert("an alert");
+    }
+
+    function promptMe() {
+        const res = prompt("a prompt", "enter text"); // null if dismissed
+        const elem = document.querySelector(".prompt-result");
+        elem.innerText = res;
+    }
+</script>
+
+</html>

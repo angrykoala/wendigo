@@ -43,6 +43,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
     * [LocalStorage](#localstorage)
     * [Requests](#requests)
     * [Webworkers](#webworkers)
+    * [Dialog](#dialog)
     * [Errors](#errors)
     * [Selectors](#selectors)
     * [Injected Scripts](#injected-scripts)
@@ -70,6 +71,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
     * `userAgent`: If defined, the default user agent will be overridden.
     * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
     * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
+    * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
     * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
     * Any settings that can be passed to Puppeteer can be passed in createdBrowser, for example:
         * `headless: true`: If true, the browser will run on headless mode.
@@ -1314,6 +1316,50 @@ Returns all the webworkers currently executing in the page. Each webworker will 
 * _url_: Returns the webworker file url
 * _worker_: Returns the [Puppeteer's Worker instance](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-worker)
 
+
+## Dialog
+The dialog module allows handling of native dialog such as those created by `alert` and `prompt`:
+
+**all()**  
+Returns the full ordered list of all dialogs triggered since the page was opened.
+
+**clear()**   
+Clears the list of dialogs, it will invalid `dismissLast` and may cause `waitForDialog` to misbehave.
+
+
+**waitForDialog(timeout=500)**  
+Waits until the next dialog is triggered. Returns a promise with the dialog object. If the dialog was already triggered, it will resolve the promise immediately.
+
+```js
+browser.dialog.all().length; // 0
+const p = browser.click(".dialog-trigger"); // Note that await is not used yet
+const dialog = await browser.dialog.waitForDialog();
+dialog.text; // "My Dialog Message"
+await dialog.dismiss();
+await p; // After the dialog is dissmissed, we can safely await until click event is completed
+browser.dialog.all().length; // 1
+```
+
+> Keep in mind that until the dialog is dismissed or confirmed, events such as click will be blocked, so await shouldn't be used on events that may trigger an alert unless `dismissAllDialogs` option is set to true.
+
+**dismissLast()**  
+Dismiss the last dialog triggered (if any) and if it is still active. This can safely be used whether a dialog appeared or not or it has already been dismissed. Problems may happen if the alert is dismissed manually (for example, by using the not-headless mode).
+
+### Dialog Objects
+Dialog objects are returned by the `all` and `waitForDialog` methods. These provide a wrapper around [Puppeteer's dialog](https://pptr.dev/#?product=Puppeteer&show=api-class-dialog) with the following attributes:
+
+* **text**: The dialog message
+* **type**: The dialog type (`alert`, `beforeunload`, `confirm`, `promp`). Same as those provided by Puppeteer.
+
+
+**dismiss()**  
+Dismisses the dialog, if the dialog is a prompt, `null` will be returned.
+
+**accept(text)**  
+Accepts the dialog, if the dialog is a prompt, text will be returned. If not, it will behave just like dismiss.
+
+
+> Remember that the option `dismissAllDialogs` on browser.open will automatically dismiss any dialog.
 
 ## Errors
 Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
