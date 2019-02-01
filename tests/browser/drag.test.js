@@ -22,6 +22,7 @@ describe.skip("Drag And Drop", function() {
     it("Drag And Drop Element", async() => {
         await browser.assert.text("#result", "NOT");
         await browser.dragAndDrop("#draggable-text", "#target");
+        await browser.wait(100);
         await browser.assert.text("#result", "DROPPED");
     });
 });
