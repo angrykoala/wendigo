@@ -78,6 +78,12 @@ describe("Assert Text", function() {
         }, `Error: Missing expected text for assertion`);
     });
 
+    it("Not Text Without Expected Parameter Throws", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.assert.not.text("h1");
+        }, `Error: Missing expected text for assertion`);
+    });
+
     it("Not Text", async() => {
         await browser.assert.not.text("h1", "Not Main Title");
     });
@@ -148,5 +154,29 @@ describe("Assert Text", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.text(element, "My first paragraph");
         }, `Expected element "h1" to have text "My first paragraph", "Main Title" found`);
+    });
+
+    it("Assert Empty Text", async() => {
+        await browser.open(configUrls.emptyText);
+        await browser.assert.text(".empty-p", "");
+    });
+
+    it("Assert Empty Text Throws", async() => {
+        await browser.open(configUrls.emptyText);
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.text("h1", "");
+        }, `Expected element "h1" to have text "", "Main Title" found`);
+    });
+
+    it("Assert Not Empty Text", async() => {
+        await browser.open(configUrls.emptyText);
+        await browser.assert.not.text("h1", "");
+    });
+
+    it("Assert Not Empty Text Throws", async() => {
+        await browser.open(configUrls.emptyText);
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.not.text(".empty-p", "");
+        }, `Expected element ".empty-p" not to have text ""`);
     });
 });

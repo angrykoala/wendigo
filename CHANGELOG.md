@@ -1,6 +1,7 @@
 1.9.1 / ####-##-##
 ==================
 
+  * Assert text and not text now support empty strings
   * Puppeteer updated to 1.12.2
 
 1.9.0 / 2019-02-01
