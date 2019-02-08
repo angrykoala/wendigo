@@ -775,6 +775,8 @@ await browser.assert.console({
 });
 ```
 
+> Objects logged will be converted to string using JSON.stringify, if the object fails to be stringified (circular structure) "[object Object]" will be returned
+
 **webworker(options, msg?)**    
 Assert that at least one webworker is running, the following options can be passes:
 * `url`: Matches only the webworkers with given url

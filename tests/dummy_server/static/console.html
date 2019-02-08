@@ -9,6 +9,7 @@
 <body>
     <button class="btn log" onclick="info()">click me</button>
     <button class="btn error" onclick="error()">error</button>
+    <button class="btn circular" onclick="circularLog()">circular</button>
 
     <script>
         console.log("Normal Log", { msg: "Object Log" })
@@ -19,6 +20,12 @@
 
         function error() {
             console.error("Error Log", "extra arg")
+        }
+
+        function circularLog(){
+            const obj={};
+            obj.test=obj;
+            console.log(obj);
         }
     </script>
 </body>
