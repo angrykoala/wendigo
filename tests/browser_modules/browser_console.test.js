@@ -89,7 +89,7 @@ describe("Console", function() {
 
     it("Find Log By Text And Type", async() => {
         await browser.click(".error");
-        await browser.wait(50);
+        await browser.wait(10);
         const logs = browser.console.filter({type: browser.console.LogType.error,
             text: "Error Log extra arg"});
         assert.strictEqual(logs.length, 1);
@@ -112,5 +112,24 @@ describe("Console", function() {
     it("Find Log By Undefined Filter", async() => {
         const logs = browser.console.filter();
         assert.strictEqual(logs.length, 1);
+    });
+
+    it("Circular Object", async() => {
+        await browser.click(".circular");
+        await browser.wait(10);
+        const logList = browser.console.all();
+        assert.strictEqual(logList.length, 2);
+        assert.strictEqual(logList[1].text, "[object Object]");
+    });
+
+    it("Log Dom Element", async() => {
+        await browser.evaluate(() => {
+            const element = document.querySelector(".btn");
+            console.log(element); // eslint-disable-line
+        });
+        await browser.wait(10);
+        const logList = browser.console.all();
+        assert.strictEqual(logList.length, 2);
+        assert.strictEqual(logList[1].text, "JSHandle@node");
     });
 });

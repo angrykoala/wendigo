@@ -1,7 +1,8 @@
-1.9.1 / ####-##-##
+1.9.1 / 2019-02-08
 ==================
 
   * Assert text and not text now support empty strings
+  * Fix bug when logging objects with circular structures
   * Puppeteer updated to 1.12.2
 
 1.9.0 / 2019-02-01
