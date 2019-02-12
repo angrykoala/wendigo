@@ -40,7 +40,6 @@ const defaultPlugins = [{
     plugin: require('./lib/modules/dialog/browser_dialog')
 }];
 
-
 class Wendigo {
     constructor() {
         this.customPlugins = [];

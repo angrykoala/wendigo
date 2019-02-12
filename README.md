@@ -31,9 +31,13 @@ await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
-> Recommended Node 8.11.3 LTS or greater
+> Recommended Node 10.15.1 LTS or superior
 
 **Contents**
+* [Getting Started](#getting-started)
+    * [Requirements](#requirements)
+    * [Installing Wendigo](#installing-wendigo)
+    * [Usage](#usage)
 * [Api](#api)
     * [Wendigo](#wendigo)
     * [Browser](#browser)
@@ -56,8 +60,48 @@ await browser.assert.text("#my-modal", "Button Clicked");
 * [Acknowledgements](#acknowledgements)
 * [License](#license)
 
-# Api
+# Getting Started
 
+## Requirements
+
+To start using Wendigo for testing or browser automation. Make sure you've got [NodeJS](https://nodejs.org/en/) 8.0.0 or higher and npm installed in your system. You can check if they are installed and their versions with the following commands:
+
+```bash
+node -v
+```
+
+```bash
+npm -v
+```
+
+## Installing Wendigo
+You should install Wendigo in your npm project (usually as a dev dependency):
+
+```bash
+npm install --save-dev wendigo
+```
+
+## Usage
+You can use it with your favorite test suite or standalone in a JavaScript file
+
+```js
+const Wendigo = require('wendigo');
+
+async function getMyPageHeader(){
+  const browser = Wendigo.createBrowser();
+  await browser.open("http://my-page");
+  return await browser.text("h1");
+}
+
+getMyPageHeader().then((text)=>{
+  console.log(text);
+});
+```
+
+If you find any problem, please check our [Troubleshooting](#troubleshooting) for solutions to the most common problems, or fill an [issue](https://github.com/angrykoala/wendigo/issues/new) if it appears to be a bug or lacking feature with Wendigo. More information and guides on how to use Wendigo available at the [wiki](https://github.com/angrykoala/wendigo/wiki)
+
+
+# Api
 
 ## Wendigo
 Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
