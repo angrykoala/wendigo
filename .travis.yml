@@ -4,7 +4,6 @@ os:
 node_js:
     - "stable"
     - "lts/*"
-    - "8.0.0"
 sudo: false
 env:
   - NO_SANDBOX=true

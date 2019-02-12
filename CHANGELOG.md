@@ -1,7 +1,6 @@
 1.9.2 / 2019-02-12
 ==================
 
-  * Added node 8.0.0 to Travis tests
   * Docs updated
   * Minor dependencies update
 

@@ -31,7 +31,7 @@ await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
-> Recommended Node 8.15.0 LTS or superior
+> Recommended Node 10.15.1 LTS or superior
 
 **Contents**
 * [Getting Started](#getting-started)
@@ -64,7 +64,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 
 ## Requirements
 
-To start using Wendigo for testing or browser automation. Make sure you've got [NodeJS](https://nodejs.org/en/) 8.0.0 or superior and npm installed in your system. You can check if they are installed and their versions with the following commands:
+To start using Wendigo for testing or browser automation. Make sure you've got [NodeJS](https://nodejs.org/en/) 8.0.0 or higher and npm installed in your system. You can check if they are installed and their versions with the following commands:
 
 ```bash
 node -v
