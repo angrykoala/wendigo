@@ -240,6 +240,15 @@ elements[0].textContent; // "My first paragraph"
 
 > The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
+**elementFromPoint(x, y)**   
+Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `undefined` if no element is present.
+
+```js
+const element = await browser.elementFromPoint(500, 150);
+await browser.text(element); // ["My Title"]
+
+```
+
 **addScript(scriptPath)**   
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
 

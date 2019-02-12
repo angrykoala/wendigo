@@ -1,3 +1,10 @@
+1.9.3 / ####-##-##
+==================
+
+  * Browser.elementFromPoint
+  * Minor refactor in click methods
+  * Minor changes in error messages
+
 1.9.2 / 2019-02-12
 ==================
 

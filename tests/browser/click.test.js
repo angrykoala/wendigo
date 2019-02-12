@@ -106,7 +106,7 @@ describe("Click", function() {
     it("Click Text With Index Out Of Bounds", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickText("click me delay", 10);
-        }, `QueryError: browser.click, invalid index "10" for text "click me delay", 2 elements found.`);
+        }, `QueryError: browser.clickText, invalid index "10" for text "click me delay", 2 elements found.`);
     });
 
     it("Click Text With Index And Selector", async() => {
