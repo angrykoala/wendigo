@@ -1,7 +1,8 @@
-1.9.3 / ####-##-##
+1.10.0 / ####-##-##
 ==================
 
   * Browser.elementFromPoint
+  * Screenshot interface with page.
   * Minor refactor in click methods
   * Minor changes in error messages
 
