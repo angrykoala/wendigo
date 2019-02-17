@@ -10,6 +10,7 @@ describe("Open", function() {
 
     let browser;
     before(async() => {
+        await Wendigo.stop(); // closes any dangling browser
         browser = await Wendigo.createBrowser();
     });
 
@@ -20,25 +21,25 @@ describe("Open", function() {
     it("Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.open("not-a-page");
-        }, `FatalError: Failed to open "not-a-page". Protocol error (Page.navigate): Cannot navigate to invalid URL`);
+        }, `FatalError: [open] Failed to open "not-a-page". Protocol error (Page.navigate): Cannot navigate to invalid URL`);
     });
 
     it("Before Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.click(".btn");
-        }, `FatalError: Cannot perform action before opening a page.`);
+        }, `FatalError: [click] Cannot perform action before opening a page.`);
     });
 
     it("Assert Before Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.exists(".btn");
-        }, `FatalError: Cannot perform action before opening a page.`);
+        }, `FatalError: [assert.exists] Cannot perform action before opening a page.`);
     });
 
-    it("Assert Before Open Fails", async() => {
+    it("Assert localStorage Before Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.localStorage.getItem("my-item");
-        }, `FatalError: Cannot perform action before opening a page.`);
+        }, `FatalError: [localStorage.getItem] Cannot perform action before opening a page.`);
     });
 
     it("Open And Close", async() => {
@@ -60,7 +61,7 @@ describe("Open", function() {
         });
         await utils.assertThrowsAsync(async() => {
             await browser2.open(configUrls.index);
-        }, `InjectScriptError: Error: Evaluation failed: Event. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
+        }, `InjectScriptError: [open] Evaluation failed: Event. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
         await browser2.close();
     });
 

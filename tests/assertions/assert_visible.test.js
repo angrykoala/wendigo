@@ -29,25 +29,25 @@ describe("Assert Visible", function() {
     it("Is Visible Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.visible(".hidden-text");
-        }, `Expected element ".hidden-text" to be visible.`);
+        }, `[assert.visible] Expected element ".hidden-text" to be visible.`);
     });
 
     it("Is Visible When Styled Hidden", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.visible(".hidden-text2");
-        }, `Expected element ".hidden-text2" to be visible.`);
+        }, `[assert.visible] Expected element ".hidden-text2" to be visible.`);
     });
 
     it("Is Visible When Element Not Exists", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.visible(".not-exists");
-        }, `Selector ".not-exists" doesn't match any elements.`);
+        }, `[assert.visible] Selector ".not-exists" doesn't match any elements.`);
     });
 
     it("Is Visible Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.visible(".hidden-text", "visible test failed");
-        }, `visible test failed`);
+        }, `[assert.visible] visible test failed`);
     });
 
     it("Is Visible From Node", async() => {
@@ -71,16 +71,16 @@ describe("Assert Visible", function() {
     it("Not Visible Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.visible("p");
-        }, `Expected element "p" to not be visible.`);
+        }, `[assert.not.visible] Expected element "p" to not be visible.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.visible("h1");
-        }, `Expected element "h1" to not be visible.`);
+        }, `[assert.not.visible] Expected element "h1" to not be visible.`);
     });
 
     it("Not Visible Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.visible("p", "not visible failed");
-        }, `not visible failed`);
+        }, `[assert.not.visible] not visible failed`);
     });
 
     it("Not Visible Child", async() => {

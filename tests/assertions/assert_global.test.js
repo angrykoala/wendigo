@@ -34,19 +34,19 @@ describe("Assert Global", function() {
     it("Global Assert Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.global("dummyQuery", "not-dummy");
-        }, `Expected "dummyQuery" to be defined as global variable with value "not-dummy", "dummy" found.`, "dummy", "not-dummy");
+        }, `[assert.global] Expected "dummyQuery" to be defined as global variable with value "not-dummy", "dummy" found.`, "dummy", "not-dummy");
     });
 
     it("Global Assert Throws Not Defined", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.global("notDefinedElement");
-        }, `Expected "notDefinedElement" to be defined as global variable.`);
+        }, `[assert.global] Expected "notDefinedElement" to be defined as global variable.`);
     });
 
     it("Global Assert Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.global("notDefinedElement", null, "global fails");
-        }, `global fails`);
+        }, `[assert.global] global fails`);
     });
 
     it("Not Global Assertion", async() => {
@@ -56,18 +56,18 @@ describe("Assert Global", function() {
     it("Not Global Assert Throws Not Defined", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.global("dummyQuery");
-        }, `Expected "dummyQuery" not to be defined as global variable.`);
+        }, `[assert.not.global] Expected "dummyQuery" not to be defined as global variable.`);
     });
 
     it("Not Global Assert Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.global("dummyQuery", "dummy");
-        }, `Expected "dummyQuery" not to be defined as global variable with value "dummy".`);
+        }, `[assert.not.global] Expected "dummyQuery" not to be defined as global variable with value "dummy".`);
     });
 
     it("Not Global Assert Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.global("dummyQuery", undefined, "not global fails");
-        }, `not global fails`);
+        }, `[assert.not.global] not global fails`);
     });
 });

@@ -59,7 +59,7 @@ describe("Cookies", function() {
     it("Delete Cookie Throws", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.cookies.delete();
-        }, `Error: Delete cookie name missing`);
+        }, `Error: [cookies.delete] Delete cookie name missing`);
     });
 
     it("Delete Multiple Cookies", async() => {

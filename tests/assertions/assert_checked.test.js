@@ -29,25 +29,25 @@ describe("Checkbox", function() {
     it("Assert Checked Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.checked("#checkbox input");
-        }, `Expected element "#checkbox input" to be checked.`, "false", "true");
+        }, `[assert.checked] Expected element "#checkbox input" to be checked.`, "false", "true");
     });
 
     it("Assert Checked Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.checked("#checkbox input", "check fails");
-        }, `check fails`, "false", "true");
+        }, `[assert.checked] check fails`, "false", "true");
     });
 
     it("Assert Checked Throws On Undefined", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.checked("h1");
-        }, `Expected element "h1" to be checked.`);
+        }, `[assert.checked] Expected element "h1" to be checked.`);
     });
 
     it("Assert Checked Element Not Found", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.checked(".not-element");
-        }, `QueryError: Element ".not-element" not found when trying to get if checked.`);
+        }, `QueryError: [assert.checked] Element ".not-element" not found.`);
     });
 
     it("Assert Not Checked", async() => {
@@ -59,25 +59,25 @@ describe("Checkbox", function() {
         await browser.check("#checkbox input");
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.checked("#checkbox input");
-        }, `Expected element "#checkbox input" to not be checked.`, "true", "false");
+        }, `[assert.not.checked] Expected element "#checkbox input" to not be checked.`, "true", "false");
     });
 
     it("Assert Not Checked Throws Custom Message", async() => {
         await browser.check("#checkbox input");
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.checked("#checkbox input", "not checked throws");
-        }, `not checked throws`, "true", "false");
+        }, `[assert.not.checked] not checked throws`, "true", "false");
     });
 
     it("Assert Checked Throws On Undefined", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.checked("h1");
-        }, `Expected element "h1" to not be checked.`);
+        }, `[assert.not.checked] Expected element "h1" to not be checked.`);
     });
 
     it("Assert Checked Element Not Found", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.checked(".not-element");
-        }, `QueryError: Element ".not-element" not found when trying to get if checked.`);
+        }, `QueryError: [assert.not.checked] Element ".not-element" not found.`);
     });
 });

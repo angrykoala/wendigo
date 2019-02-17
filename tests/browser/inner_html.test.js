@@ -3,6 +3,7 @@
 const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
+const utils = require('../test_utils');
 
 describe("Inner Html", function() {
     this.timeout(5000);
@@ -29,5 +30,12 @@ describe("Inner Html", function() {
         assert.strictEqual(innerHtml.length, 2);
         assert.strictEqual(innerHtml[0], "Hidden text");
         assert.strictEqual(innerHtml[1], "");
+    });
+
+    it("InnerHtml Fails Before Loading", async() => {
+        const browser2 = await Wendigo.createBrowser();
+        await utils.assertThrowsAsync(async() => {
+            await browser2.innerHtml("b");
+        }, `FatalError: [innerHtml] Cannot perform action before opening a page.`);
     });
 });

@@ -53,14 +53,14 @@ describe("Requests Mock Object", function() {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAssertionAsync(async() => {
             await mock.assert.called();
-        }, `Mock of ${configUrls.api} not called.`);
+        }, `[assert.called] Mock of ${configUrls.api} not called.`);
     });
 
     it("Mocker Object Assertion Throws With Message", async() => {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAssertionAsync(async() => {
             await mock.assert.called(undefined, "called throws");
-        }, `called throws`);
+        }, `[assert.called] called throws`);
     });
 
     it("Mocker Object Assertion Times", async() => {
@@ -81,7 +81,7 @@ describe("Requests Mock Object", function() {
 
         await utils.assertThrowsAssertionAsync(async() => {
             await mock.assert.called(2);
-        }, `Mock of ${configUrls.api} not called 2 times.`);
+        }, `[assert.called] Mock of ${configUrls.api} not called 2 times.`);
     });
 
     it("Mocker Object Assertion Times Throws", async() => {
@@ -89,7 +89,7 @@ describe("Requests Mock Object", function() {
         assert.strictEqual(mock.immediate, true);
         await utils.assertThrowsAssertionAsync(async() => {
             await mock.assert.called(2, "called fails");
-        }, `called fails`);
+        }, `[assert.called] called fails`);
     });
 
     it("Mock With Trigger", async() => {
@@ -109,7 +109,7 @@ describe("Requests Mock Object", function() {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await utils.assertThrowsAsync(async() => {
             await mock.trigger();
-        }, `FatalError: Cannot trigger auto request mock.`);
+        }, `FatalError: [trigger] Cannot trigger auto request mock.`);
     });
 
     it("Wait Until Mock Called", async() => {
@@ -136,7 +136,7 @@ describe("Requests Mock Object", function() {
         await browser.assert.not.text("#result", "MOCK");
         await utils.assertThrowsAsync(async() => {
             await mock.waitUntilCalled(10);
-        }, `TimeoutError: Wait until mock of "${configUrls.api}" is called, timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitUntilCalled] Wait until mock of "${configUrls.api}" is called, timeout of 10ms exceeded.`);
     });
 
     it("Mock Assert Post Body", async() => {
@@ -167,7 +167,7 @@ describe("Requests Mock Object", function() {
             await mock.assert.postBody({
                 data: "example Fake data"
             });
-        }, `Expected mock to be called with body "{"data":"example Fake data"}".`);
+        }, `[assert.postBody] Expected mock to be called with body "{"data":"example Fake data"}".`);
     });
 
     it("Mock Assert Post Body Throws Custom Message", async() => {
@@ -180,6 +180,6 @@ describe("Requests Mock Object", function() {
             await mock.assert.postBody({
                 data: "example Fake data"
             }, "postbody fails");
-        }, `postbody fails`);
+        }, `[assert.postBody] postbody fails`);
     });
 });

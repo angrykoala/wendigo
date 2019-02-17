@@ -4,7 +4,7 @@
   * Browser.elementFromPoint
   * Screenshot interface with page.
   * Minor refactor in click methods
-  * Minor changes in error messages
+  * Changes in error messages
 
 1.9.2 / 2019-02-12
 ==================

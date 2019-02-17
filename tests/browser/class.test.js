@@ -37,7 +37,7 @@ describe("Browser Class", function() {
     it("Class Element Doesn't Exists", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.class('div.not-exists');
-        }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
+        }, `QueryError: [class] Selector "div.not-exists" doesn't match any elements.`);
     });
 
     it("Class From Node", async() => {

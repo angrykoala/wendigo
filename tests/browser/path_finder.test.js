@@ -72,7 +72,7 @@ describe("Path Finder", function() {
         await browser.open(configUrls.duplicateElements);
         await utils.assertThrowsAsync(async() => {
             await browser.findCssPath("h1");
-        }, `Error: Invalid element for css path query.`);
+        }, `Error: [findCssPath] Invalid element for css path query.`);
     });
 
 
@@ -129,6 +129,6 @@ describe("Path Finder", function() {
         await browser.open(configUrls.duplicateElements);
         await utils.assertThrowsAsync(async() => {
             await browser.findXPath("h1");
-        }, `Error: Invalid element for xPath query.`);
+        }, `Error: [findXPath] Invalid element for xPath query.`);
     });
 });

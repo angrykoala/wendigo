@@ -57,9 +57,9 @@ describe("Query", function() {
     });
 
     it("Query Sub Element Not Valid Parent", async() => {
-        utils.assertThrowsAsync(async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.query(".container", "b");
-        }, "Error: Invalid parent element for query");
+        }, "Error: [query] Invalid parent element for query");
     });
 
     it("XPath Query", async() => {
@@ -77,6 +77,6 @@ describe("Query", function() {
     it("Query Invalid Selector", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.query({});
-        }, "FatalError: Invalid Selector on browser.query.");
+        }, "FatalError: [query] Invalid Selector on browser.query.");
     });
 });

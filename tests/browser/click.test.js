@@ -55,7 +55,7 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
         await utils.assertThrowsAsync(async() => {
             await browser.click("button", 10);
-        }, `QueryError: browser.click, invalid index "10" for selector "button", 2 elements found.`);
+        }, `Error: [click] invalid index "10" for selector "button", 2 elements found.`);
         await browser.assert.text("#switch", "On");
     });
 
@@ -70,7 +70,7 @@ describe("Click", function() {
     it("Click Text Invalid Text", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickText("not click me");
-        }, `QueryError: No element with text "not click me" found when trying to click.`);
+        }, `QueryError: [clickText] No element with text "not click me" found.`);
         await browser.assert.text("#switch", "On");
     });
 
@@ -83,14 +83,14 @@ describe("Click", function() {
     it("Click Text SubQuery Fails", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickText("#switch", "click me");
-        }, `QueryError: No element with text "click me" found when trying to click.`);
+        }, `QueryError: [clickText] No element with text "click me" found.`);
         await browser.assert.text("#switch", "On");
     });
 
     it("Click Invalid Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.click("#not-an-element");
-        }, `QueryError: No element "#not-an-element" found when trying to click.`);
+        }, `QueryError: [click] No element "#not-an-element" found.`);
     });
 
     it("Click Text With Index", async() => {
@@ -106,7 +106,7 @@ describe("Click", function() {
     it("Click Text With Index Out Of Bounds", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickText("click me delay", 10);
-        }, `QueryError: browser.clickText, invalid index "10" for text "click me delay", 2 elements found.`);
+        }, `Error: [clickText] invalid index "10" for text "click me delay", 2 elements found.`);
     });
 
     it("Click Text With Index And Selector", async() => {
@@ -134,7 +134,7 @@ describe("Click", function() {
         await browser.open(configUrls.difficultClick);
         await utils.assertThrowsAsync(async() => {
             await browser.click(4000, 4000);
-        }, `QueryError: No element in position [4000, 4000] found when trying to click.`);
+        }, `QueryError: [click] No element in position [4000, 4000] found.`);
     });
 
     it("Click Text Containing", async() => {
@@ -148,7 +148,7 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
         await utils.assertThrowsAsync(async() => {
             await browser.clickTextContaining("badText");
-        }, `QueryError: No element with text containing "badText" found when trying to click.`);
+        }, `QueryError: [clickTextContaining] No element with text containing "badText" found.`);
     });
 
     it("Click Text Containing With Index", async() => {
@@ -164,6 +164,6 @@ describe("Click", function() {
     it("Click Text Containing With Index Out Of Bounds", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickTextContaining("weird", 10);
-        }, `QueryError: browser.clickTextContaining, invalid index "10" for text containing "weird", 1 elements found.`);
+        }, `Error: [clickTextContaining] invalid index "10" for text containing "weird", 1 elements found.`);
     });
 });

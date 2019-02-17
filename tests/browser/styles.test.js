@@ -42,7 +42,7 @@ describe("Browser Styles", function() {
     it("Styles On Invalid Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.styles("#not-an-element");
-        }, `QueryError: Element "#not-an-element" not found when trying to get styles.`);
+        }, `QueryError: [styles] Element "#not-an-element" not found.`);
     });
 
     it("Styles From Node Element", async() => {
@@ -69,6 +69,6 @@ describe("Browser Styles", function() {
     it("Style On Invalid Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.style("#not-an-element", "color");
-        }, `QueryError: Element "#not-an-element" not found when trying to get style "color".`);
+        }, `QueryError: [style] Element "#not-an-element" not found.`);
     });
 });

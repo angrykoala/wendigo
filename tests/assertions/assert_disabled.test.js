@@ -35,13 +35,13 @@ describe("Assert Disabled", function() {
     it("Assert Disabled Items Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.disabled("button.en");
-        }, `Expected element "button.en" to be disabled.`);
+        }, `[assert.disabled] Expected element "button.en" to be disabled.`);
     });
 
     it("Assert Disabled Items Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.disabled("button.en", "disabled failed");
-        }, `disabled failed`);
+        }, `[assert.disabled] disabled failed`);
     });
 
     it("Assert Not Disabled Items", async() => {
@@ -53,26 +53,26 @@ describe("Assert Disabled", function() {
     it("Assert Not Disabled Items Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.disabled("button.dis");
-        }, `Expected element "button.dis" not to be disabled.`);
+        }, `[assert.not.disabled] Expected element "button.dis" not to be disabled.`);
     });
 
 
     it("Assert Not Disabled Items Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.disabled("button.dis", "not disabled fails");
-        }, `not disabled fails`);
+        }, `[assert.not.disabled] not disabled fails`);
     });
 
     it("Assert Disabled Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.disabled(".not-exist");
-        }, `QueryError: Element ".not-exist" not found when trying to get attribute "disabled".`);
+        }, `QueryError: [assert.disabled] Element ".not-exist" not found.`);
     });
 
     it("Assert Not Disabled Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.disabled(".not-exist");
-        }, `QueryError: Element ".not-exist" not found when trying to get attribute "disabled".`);
+        }, `QueryError: [assert.not.disabled] Element ".not-exist" not found.`);
     });
 
     it("Assert Enabled Items", async() => {
@@ -84,13 +84,13 @@ describe("Assert Disabled", function() {
     it("Assert Enabled Items Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.enabled("button.dis");
-        }, `Expected element "button.dis" to be enabled.`);
+        }, `[assert.enabled] Expected element "button.dis" to be enabled.`);
     });
 
     it("Assert Enabled Items Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.enabled("button.dis", "enabled failed");
-        }, `enabled failed`);
+        }, `[assert.enabled] enabled failed`);
     });
 
     it("Assert Not Enabled Items", async() => {
@@ -102,13 +102,13 @@ describe("Assert Disabled", function() {
     it("Assert Not Enabled Items Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.enabled("button.en");
-        }, `Expected element "button.en" not to be enabled.`);
+        }, `[assert.not.enabled] Expected element "button.en" not to be enabled.`);
     });
 
     it("Assert Not Enabled Items Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.enabled("button.en", "not enabled fails");
-        }, `not enabled fails`);
+        }, `[assert.not.enabled] not enabled fails`);
     });
 
     it("Assert Enabled Multiple Items", async() => {
@@ -119,12 +119,12 @@ describe("Assert Disabled", function() {
     it("Assert Enabled Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.enabled(".not-exist");
-        }, `QueryError: Element ".not-exist" not found when trying to get attribute "disabled".`);
+        }, `QueryError: [assert.enabled] Element ".not-exist" not found.`);
     });
 
     it("Assert Not Enabled Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.enabled(".not-exist");
-        }, `QueryError: Element ".not-exist" not found when trying to get attribute "disabled".`);
+        }, `QueryError: [assert.not.enabled] Element ".not-exist" not found.`);
     });
 });

@@ -35,7 +35,7 @@ describe("Assert Webworkers", function() {
     it("Assert Webworkers Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.webworkers();
-        }, `Expected at least 1 webworker running, 0 found.`);
+        }, `[assert.webworkers] Expected at least 1 webworker running, 0 found.`);
     });
 
     it("Assert Webworkers Count Throws", async() => {
@@ -45,13 +45,13 @@ describe("Assert Webworkers", function() {
             await browser.assert.webworkers({
                 count: 2
             });
-        }, `Expected 2 webworkers running, 1 found.`);
+        }, `[assert.webworkers] Expected 2 webworkers running, 1 found.`);
     });
 
     it("Assert Webworker Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.webworkers(null, "ww fails");
-        }, `ww fails`);
+        }, `[assert.webworkers] ww fails`);
     });
 
     it("Assert Webworker Url", async() => {
@@ -69,7 +69,7 @@ describe("Assert Webworkers", function() {
                 count: 1,
                 url: "http://localhost:3456/worker.js"
             });
-        }, `Expected 1 webworkers running with url "http://localhost:3456/worker.js", 0 found.`);
+        }, `[assert.webworkers] Expected 1 webworkers running with url "http://localhost:3456/worker.js", 0 found.`);
     });
     it("Assert Webworker Url Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
@@ -77,6 +77,6 @@ describe("Assert Webworkers", function() {
                 count: 1,
                 url: "http://localhost:3456/worker.js"
             }, "ww fails");
-        }, `ww fails`);
+        }, `[assert.webworkers] ww fails`);
     });
 });

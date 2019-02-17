@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-
 describe("Assert Select", function() {
     this.timeout(5000);
     let browser;
@@ -26,7 +25,7 @@ describe("Assert Select", function() {
     });
 
     it("Assert Select Options Throws", async() => {
-        const errorMsg = `Expected element "#normal-select" to have options "value1, value3, Value 4", "value1, value2, value3, Value 4" found.`;
+        const errorMsg = `[assert.options] Expected element "#normal-select" to have options "value1, value3, Value 4", "value1, value2, value3, Value 4" found.`;
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.options("#normal-select", ["value1", "value3", "Value 4"]);
         }, errorMsg, "value1,value2,value3,Value 4", "value1,value3,Value 4");
@@ -35,7 +34,7 @@ describe("Assert Select", function() {
     it("Assert Select Options Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.options("#normal-select", ["value1", "value3", "Value 4"], "options fails");
-        }, "options fails", "value1,value2,value3,Value 4", "value1,value3,Value 4");
+        }, "[assert.options] options fails", "value1,value2,value3,Value 4", "value1,value3,Value 4");
     });
 
     it("Assert Selected Options", async() => {
@@ -50,17 +49,17 @@ describe("Assert Select", function() {
     it("Assert Selected Options Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.selectedOptions("#normal-select", "value3");
-        }, `Expected element "#normal-select" to have options "value3" selected, "value1" found.`, "value1", "value3");
+        }, `[assert.selectedOptions] Expected element "#normal-select" to have options "value3" selected, "value1" found.`, "value1", "value3");
         await browser.select("#multiple-select", ["value1", "value2"]);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.selectedOptions("#multiple-select", ["value2"]);
-        }, `Expected element "#multiple-select" to have options "value2" selected, "value1, value2" found.`, "value1,value2", "value2");
+        }, `[assert.selectedOptions] Expected element "#multiple-select" to have options "value2" selected, "value1, value2" found.`, "value1,value2", "value2");
     });
 
     it("Assert Selected Options Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.selectedOptions("#normal-select", "value3", "selected fails");
-        }, "selected fails", "value1", "value3");
+        }, "[assert.selectedOptions] selected fails", "value1", "value3");
     });
 
     it("Assert Not Selected Options", async() => {
@@ -71,19 +70,19 @@ describe("Assert Select", function() {
     it("Assert Not Selected Options Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.selectedOptions("#normal-select", "value1");
-        }, `Expected element "#normal-select" not to have options "value1" selected.`);
+        }, `[assert.not.selectedOptions] Expected element "#normal-select" not to have options "value1" selected.`);
     });
 
     it("Assert Not Selected Multiple Options Throws", async() => {
         await browser.select("#multiple-select", ["value1", "value2"]);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.selectedOptions("#multiple-select", ["value1", "value2"]);
-        }, `Expected element "#multiple-select" not to have options "value1, value2" selected.`);
+        }, `[assert.not.selectedOptions] Expected element "#multiple-select" not to have options "value1, value2" selected.`);
     });
 
     it("Assert Not Selected Options Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.selectedOptions("#normal-select", "value1", "not selected fails");
-        }, "not selected fails");
+        }, "[assert.not.selectedOptions] not selected fails");
     });
 });

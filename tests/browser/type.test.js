@@ -50,7 +50,6 @@ describe("Type", function() {
 
     it("Type Node", async() => {
         const node = await browser.query("input.input1");
-
         await browser.type(node, "firstText");
         await browser.assert.value("input.input1", "firstText");
     });
@@ -58,7 +57,7 @@ describe("Type", function() {
     it("Type Invalid Selector", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.type({}, "firstText");
-        }, `FatalError: Invalid selector on "browser.type".`);
+        }, `FatalError: [type] Invalid selector on "browser.type".`);
     });
 
     it("Type With Keypress Event", async() => {
@@ -84,7 +83,7 @@ describe("Type", function() {
         await browser.click(".input1");
         await utils.assertThrowsAsync(async() => {
             await browser.keyPress("NotAKey");
-        }, `Error: Could not press keys "NotAKey"`);
+        }, `Error: [keyPress] Could not press keys "NotAKey"`);
     });
 
     it("KeyPress Count", async() => {

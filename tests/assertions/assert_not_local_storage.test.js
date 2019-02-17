@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Assert Not Local Storage", function() {
     this.timeout(5000);
     let browser;
@@ -38,20 +37,20 @@ describe("Assert Not Local Storage", function() {
     it("Item Not Exists Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.exist("arthur");
-        }, `Expected item "arthur" not to exist in localStorage.`);
+        }, `[assert.localStorage.not.exist] Expected item "arthur" not to exist in localStorage.`);
     });
 
     it("Multiple Items Not Exists Throws", async() => {
         await browser.localStorage.setItem("item2", "val2");
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.exist(["arthur", "item2"]);
-        }, `Expected items "arthur item2" not to exist in localStorage.`);
+        }, `[assert.localStorage.not.exist] Expected items "arthur item2" not to exist in localStorage.`);
     });
 
     it("Item Not Exists Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.exist("arthur", "not exists error");
-        }, `not exists error`);
+        }, `[assert.localStorage.not.exist] not exists error`);
     });
 
     it("Item Not Value", async() => {
@@ -63,13 +62,13 @@ describe("Assert Not Local Storage", function() {
     it("Item Not Value Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.value("arthur", "dontpanic");
-        }, `Expected item "arthur" not to have value "dontpanic" in localStorage.`);
+        }, `[assert.localStorage.not.value] Expected item "arthur" not to have value "dontpanic" in localStorage.`);
     });
 
     it("Item Not Value Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.value("arthur", "dontpanic", "not value fail");
-        }, `not value fail`);
+        }, `[assert.localStorage.not.value] not value fail`);
     });
 
     it("Multiple Items Not Value", async() => {
@@ -84,7 +83,7 @@ describe("Assert Not Local Storage", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.value({arthur: "dontpanic",
                 item2: "val2"});
-        }, `Expected items "arthur item2" not to have values "dontpanic val2" in localStorage.`);
+        }, `[assert.localStorage.not.value] Expected items "arthur item2" not to have values "dontpanic val2" in localStorage.`);
     });
 
     it("Storage Not Length", async() => {
@@ -96,13 +95,13 @@ describe("Assert Not Local Storage", function() {
     it("Storage Not Length Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.length(1);
-        }, `Expected localStorage not to have 1 item.`);
+        }, `[assert.localStorage.not.length] Expected localStorage not to have 1 item.`);
     });
 
     it("Storage Not Length Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.not.length(1, "not length fails");
-        }, "not length fails");
+        }, "[assert.localStorage.not.length] not length fails");
     });
 
     it("Storage Not Empty", async() => {
@@ -113,13 +112,13 @@ describe("Assert Not Local Storage", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.localStorage.clear();
             await browser.assert.localStorage.not.empty();
-        }, `Expected localStorage not to be empty.`);
+        }, `[assert.localStorage.not.empty] Expected localStorage not to be empty.`);
     });
 
     it("Storage Not Empty Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.localStorage.clear();
             await browser.assert.localStorage.not.empty("not empty fails");
-        }, `not empty fails`);
+        }, `[assert.localStorage.not.empty] not empty fails`);
     });
 });

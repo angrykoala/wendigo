@@ -33,7 +33,7 @@ describe("Assert Text Contains", function() {
         await browser.assert.textContains("p", "My first");
     });
 
-    it("Text Contains From Node", async() => {
+    it("Text Contains From DomElement", async() => {
         const node = await browser.query(".container p");
         await browser.assert.textContains(node, "My first");
     });
@@ -41,15 +41,23 @@ describe("Assert Text Contains", function() {
     it("Text Contains Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.textContains(".container p", "My second");
-        }, `Expected element ".container p" to contain text "My second", "My first paragraph" found`);
+        }, `[assert.textContains] Expected element ".container p" to contain text "My second", "My first paragraph" found`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.textContains("p", "My paragraph");
-        }, `Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
+        }, `[assert.textContains] Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found`);
     });
 
     it("Text Contains Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.textContains(".container p", "My second", "text contains fails");
-        }, `text contains fails`);
+        }, `[assert.textContains] text contains fails`);
     });
+
+
+    // Issue #289
+    it("Text Not Contains");
+    it("Text Not Contains Multiple Elements");
+    it("Text Not Contains From DomElement");
+    it("Text Not Contains Throws");
+    it("Text Not Contains Throws With Custom Message");
 });
