@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Hover", function() {
     this.timeout(5000);
     let browser;
@@ -30,6 +29,6 @@ describe("Hover", function() {
     it("Hover Not Existing Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.hover(".btn10");
-        }, `QueryError: Element ".btn10" not found when trying to hover.`);
+        }, `QueryError: [hover] Element ".btn10" not found.`);
     });
 });

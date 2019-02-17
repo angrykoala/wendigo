@@ -76,11 +76,11 @@ class Wendigo {
             assertions = config.assertions;
         }
 
-        if (!name || typeof name !== 'string') throw new Error(`Plugin requires a name.`);
-        if (!this._validatePluginName(name)) throw new Error(`Invalid plugin name "${name}".`);
-        if (plugin && typeof plugin !== 'function') throw new Error(`Invalid plugin module "${name}".`);
-        if (assertions && typeof assertions !== 'function') throw new Error(`Invalid assertion module for plugin "${name}".`);
-        if (!plugin && !assertions) throw new Error(`Invalid plugin module "${name}".`);
+        if (!name || typeof name !== 'string') throw new Errors.FatalError("registerPlugin", `Plugin requires a name.`);
+        if (!this._validatePluginName(name)) throw new Errors.FatalError("registerPlugin", `Invalid plugin name "${name}".`);
+        if (plugin && typeof plugin !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
+        if (assertions && typeof assertions !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
+        if (!plugin && !assertions) throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
         BrowserFactory.clearCache();
         this.customPlugins.push({
             name: name,

@@ -3,8 +3,6 @@
 const path = require('path');
 const Wendigo = require('../..');
 const utils = require('../test_utils');
-
-
 const filePath = "tests/dummy_server/static/html_simple.html";
 const absolutePath = path.join(__dirname, "../..", filePath);
 
@@ -39,6 +37,6 @@ describe("Open File", function() {
     it("Open File Invalid Path", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.openFile("Invalid Path");
-        }, `FatalError: Failed to open "Invalid Path". File not found.`);
+        }, `FatalError: [openFile] Failed to open "Invalid Path". File not found.`);
     });
 });

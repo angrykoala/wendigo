@@ -57,12 +57,12 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 type: browser.console.LogType.log
             }, 2);
-        }, `Expected 2 console events of type "log", 1 found.`);
+        }, `[assert.console] Expected 2 console events of type "log", 1 found.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 type: browser.console.LogType.error
             });
-        }, `Expected console events of type "error", 0 found.`);
+        }, `[assert.console] Expected console events of type "error", 0 found.`);
     });
 
     it("Assert Log With Text Throws", async() => {
@@ -70,13 +70,13 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 text: "Invalid Text"
             });
-        }, `Expected console events with text "Invalid Text", 0 found.`);
+        }, `[assert.console] Expected console events with text "Invalid Text", 0 found.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 text: "Invalid Text",
                 type: browser.console.LogType.log
             });
-        }, `Expected console events of type "log" with text "Invalid Text", 0 found.`);
+        }, `[assert.console] Expected console events of type "log" with text "Invalid Text", 0 found.`);
     });
 
 
@@ -91,7 +91,7 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 text: /NotText/
             });
-        }, `Expected console events with text "/NotText/", 0 found.`);
+        }, `[assert.console] Expected console events with text "/NotText/", 0 found.`);
     });
 
     it("Assert Log Throws Custom Message", async() => {
@@ -99,6 +99,6 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 type: browser.console.LogType.log
             }, 2, "console fails");
-        }, `console fails`);
+        }, `[assert.console] console fails`);
     });
 });

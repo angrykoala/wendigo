@@ -5,7 +5,6 @@ const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-
 describe("Assert Title", function() {
     this.timeout(5000);
     let browser;
@@ -33,10 +32,10 @@ describe("Assert Title", function() {
         assert(browser.assert.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title("Index Test 2");
-        }, `Expected page title to be "Index Test 2", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "Index Test 2", "Index Test" found.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title("");
-        }, `Expected page title to be "", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "", "Index Test" found.`);
     });
 
     it("Title Throws With Custom Message", async() => {
@@ -44,7 +43,7 @@ describe("Assert Title", function() {
         assert(browser.assert.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title("Index Test 2", "title test failed");
-        }, `title test failed`);
+        }, `[assert.title] title test failed`);
     });
 
     it("Title Regex", async() => {
@@ -57,7 +56,7 @@ describe("Assert Title", function() {
         assert(browser.assert.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title(/Index\sTest\s2/);
-        }, `Expected page title to be "/Index\\sTest\\s2/", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "/Index\\sTest\\s2/", "Index Test" found.`);
     });
 
     it("Not Title", async() => {
@@ -76,7 +75,7 @@ describe("Assert Title", function() {
         assert(browser.assert.not.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.title("Index Test");
-        }, `Expected page title not to be "Index Test"`);
+        }, `[assert.not.title] Expected page title not to be "Index Test".`);
     });
 
     it("Not Title Throws With Custom Message", async() => {
@@ -84,6 +83,6 @@ describe("Assert Title", function() {
         assert(browser.assert.not.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.title("Index Test", "not title failed");
-        }, `not title failed`);
+        }, `[assert.not.title] not title failed`);
     });
 });

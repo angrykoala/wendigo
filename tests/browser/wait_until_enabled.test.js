@@ -30,7 +30,7 @@ describe("Wait Until Enabled", function() {
         await browser.open(configUrls.forms);
         await utils.assertThrowsAsync(async() => {
             await browser.waitUntilEnabled(".disabled-button", 10);
-        }, `TimeoutError: Waiting for element ".disabled-button" to be enabled, timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitUntilEnabled] Waiting for element ".disabled-button" to be enabled, timeout of 10ms exceeded.`);
     });
 
     it("Wait Until Already Enabled Button", async() => {

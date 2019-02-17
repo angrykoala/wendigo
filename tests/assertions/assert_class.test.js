@@ -30,28 +30,28 @@ describe("Assert Class", function() {
         assert(browser.assert.class);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.class("div", "not-my-class");
-        }, `Expected element "div" to contain class "not-my-class", "container extra-class" found.`);
+        }, `[assert.class] Expected element "div" to contain class "not-my-class", "container extra-class" found.`);
     });
 
     it("Class Throws Element With No Classes", async() => {
         assert(browser.assert.class);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.class("h1", "not-my-class");
-        }, `Expected element "h1" to contain class "not-my-class", no classes found.`);
+        }, `[assert.class] Expected element "h1" to contain class "not-my-class", no classes found.`);
     });
 
     it("Class Throws Element Not Found", async() => {
         assert(browser.assert.class);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.class("div.not-exists", "not-my-class");
-        }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
+        }, `QueryError: [assert.class] Selector "div.not-exists" doesn't match any elements.`);
     });
 
     it("Class Throws With Custom Message", async() => {
         assert(browser.assert.class);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.class("div", "not-my-class", "class failed");
-        }, `class failed`);
+        }, `[assert.class] class failed`);
     });
 
     it("Class From Node", async() => {
@@ -73,13 +73,13 @@ describe("Assert Class", function() {
         assert(browser.assert.class);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.class("div", "container");
-        }, `Expected element "div" not to contain class "container".`);
+        }, `[assert.not.class] Expected element "div" not to contain class "container".`);
     });
 
     it("Not Class Throws Element Not Found", async() => {
         assert(browser.assert.not.class);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.class("div.not-exists", "not-my-class");
-        }, `QueryError: Selector "div.not-exists" doesn't match any elements when trying to get classes.`);
+        }, `QueryError: [assert.not.class] Selector "div.not-exists" doesn't match any elements.`);
     });
 });

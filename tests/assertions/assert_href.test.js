@@ -30,14 +30,14 @@ describe("Assert Href", function() {
         assert(browser.assert.href);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.href("a", "bad-link");
-        }, `Expected element "a" to have attribute "href" with value "bad-link", ["html_simple.html"] found.`);
+        }, `[assert.href] Expected element "a" to have attribute "href" with value "bad-link", ["html_simple.html"] found.`);
     });
 
     it("Href With Custom Message", async() => {
         assert(browser.assert.href);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.href("a", "bad-link", "href fails");
-        }, `href fails`);
+        }, `[assert.href] href fails`);
     });
 
     it("Href On Css Link", async() => {
@@ -57,13 +57,13 @@ describe("Assert Href", function() {
         assert(browser.assert.not.href);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.href("a", "html_simple.html");
-        }, `Expected element "a" not to have attribute "href" with value "html_simple.html".`);
+        }, `[assert.not.href] Expected element "a" not to have attribute "href" with value "html_simple.html".`);
     });
 
     it("Not Href With Custom Message", async() => {
         assert(browser.assert.not.href);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.href("a", "html_simple.html", "not href fails");
-        }, `not href fails`);
+        }, `[assert.not.href] not href fails`);
     });
 });

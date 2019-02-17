@@ -47,31 +47,31 @@ describe("Assert Inner Html", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.innerHtml("b", "not-text");
-        }, `Expected element "b" to have inner html "not-text", "Hidden text " found.`, "Hidden text,", "not-text");
+        }, `[assert.innerHtml] Expected element "b" to have inner html "not-text", "Hidden text " found.`, "Hidden text,", "not-text");
     });
 
     it("InnerHtml Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.innerHtml("b", "not-text", "html fails");
-        }, "html fails", "Hidden text,", "not-text");
+        }, "[assert.innerHtml] html fails", "Hidden text,", "not-text");
     });
 
     it("InnerHtml Throws Element Not Found", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.innerHtml(".not-element", "some-html");
-        }, `QueryError: Element ".not-element" not found.`);
+        }, `QueryError: [assert.innerHtml] Element ".not-element" not found.`);
     });
 
     it("InnerHtml Throws Invalid Expect", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.innerHtml("b");
-        }, `Error: Missing expected html for assertion.`);
+        }, `Error: [assert.innerHtml] Missing expected html for assertion.`);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.innerHtml("b", null);
-        }, `Error: Missing expected html for assertion.`);
+        }, `Error: [assert.innerHtml] Missing expected html for assertion.`);
     });
 
     it("Not InnerHtml", async() => {
@@ -94,30 +94,30 @@ describe("Assert Inner Html", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.innerHtml("b", "Hidden text");
-        }, `Expected element "b" not to have inner html "Hidden text".`);
+        }, `[assert.not.innerHtml] Expected element "b" not to have inner html "Hidden text".`);
     });
 
     it("Not InnerHtml Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.innerHtml("b", "Hidden text", "not html fails");
-        }, "not html fails");
+        }, "[assert.not.innerHtml] not html fails");
     });
 
     it("Not InnerHtml Throws Element Not Found", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.innerHtml(".not-element", "some-html");
-        }, `QueryError: Element ".not-element" not found.`);
+        }, `QueryError: [assert.not.innerHtml] Element ".not-element" not found.`);
     });
 
     it("Not InnerHtml Throws Invalid Expect", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.innerHtml("b");
-        }, `Error: Missing expected html for assertion.`);
+        }, `Error: [assert.not.innerHtml] Missing expected html for assertion.`);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.innerHtml("b", null);
-        }, `Error: Missing expected html for assertion.`);
+        }, `Error: [assert.not.innerHtml] Missing expected html for assertion.`);
     });
 });

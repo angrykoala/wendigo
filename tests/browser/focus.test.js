@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Focus", function() {
     this.timeout(5000);
     let browser;
@@ -31,6 +30,6 @@ describe("Focus", function() {
     it("Focus Not Existing Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.focus(".btn10");
-        }, `QueryError: Element ".btn10" not found when trying to focus.`);
+        }, `QueryError: [focus] Element ".btn10" not found.`);
     });
 });

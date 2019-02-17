@@ -1,4 +1,3 @@
-
 "use strict";
 
 const assert = require('assert');
@@ -31,7 +30,7 @@ describe("Wait For Navigation", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.waitForNavigation(1);
-        }, "TimeoutError: Wait for navigation, timeout of 1ms exceeded.");
+        }, "TimeoutError: [waitForNavigation] Timeout of 1ms exceeded.");
     });
 
     it("Click And Wait For Navigation", async() => {
@@ -46,13 +45,13 @@ describe("Wait For Navigation", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.clickAndWaitForNavigation("p", 1);
-        }, "TimeoutError: Wait for navigation, timeout of 1ms exceeded.");
+        }, "TimeoutError: [clickAndWaitForNavigation] Timeout of 1ms exceeded.");
     });
 
     it("Click And Wait For Navigation Timeout Invalid Selector", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
             await browser.clickAndWaitForNavigation(".not-valid");
-        }, `QueryError: No element ".not-valid" found when trying to click.`);
+        }, `QueryError: [clickAndWaitForNavigation] No element ".not-valid" found.`);
     });
 });

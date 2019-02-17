@@ -39,27 +39,27 @@ describe("Assert Element", function() {
     it("Elements Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", 3);
-        }, `Expected selector "p" to find exactly 3 elements, 2 found`, "2", "3");
+        }, `[assert.elements] Expected selector "p" to find exactly 3 elements, 2 found`, "2", "3");
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", {atLeast: 3});
-        }, `Expected selector "p" to find at least 3 elements, 2 found`);
+        }, `[assert.elements] Expected selector "p" to find at least 3 elements, 2 found`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", {atMost: 1});
-        }, `Expected selector "p" to find up to 1 elements, 2 found`);
+        }, `[assert.elements] Expected selector "p" to find up to 1 elements, 2 found`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", {atMost: 4,
                 atLeast: 3});
-        }, `Expected selector "p" to find between 3 and 4 elements, 2 found`);
+        }, `[assert.elements] Expected selector "p" to find between 3 and 4 elements, 2 found`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", {atMost: 1,
                 atLeast: 0});
-        }, `Expected selector "p" to find between 0 and 1 elements, 2 found`);
+        }, `[assert.elements] Expected selector "p" to find between 0 and 1 elements, 2 found`);
     });
 
     it("Elements Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.elements("p", 3, "elements failed");
-        }, `elements failed`);
+        }, `[assert.elements] elements failed`);
     });
 
     it("Element", async() => {
@@ -69,16 +69,16 @@ describe("Assert Element", function() {
     it("Element Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.element("p.not-exist");
-        }, `Expected selector "p.not-exist" to find exactly 1 elements, 0 found`, "0", "1");
+        }, `[assert.element] Expected selector "p.not-exist" to find exactly 1 elements, 0 found`, "0", "1");
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.element("p");
-        }, `Expected selector "p" to find exactly 1 elements, 2 found`, "2", "1");
+        }, `[assert.element] Expected selector "p" to find exactly 1 elements, 2 found`, "2", "1");
     });
 
     it("Element Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.element("p", "element failed");
-        }, `element failed`);
+        }, `[assert.element] element failed`);
     });
 
     it("Not Element", async() => {
@@ -88,15 +88,15 @@ describe("Assert Element", function() {
     it("Not Element Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.element("h1");
-        }, `Expected selector "h1" not to find any elements.`);
+        }, `[assert.not.element] Expected selector "h1" not to find any elements.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.element("p");
-        }, `Expected selector "p" not to find any elements.`);
+        }, `[assert.not.element] Expected selector "p" not to find any elements.`);
     });
 
     it("Not Element Throws With Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.element("h1", "not element failed");
-        }, `not element failed`);
+        }, `[assert.not.element] not element failed`);
     });
 });

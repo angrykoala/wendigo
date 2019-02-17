@@ -53,7 +53,7 @@ describe("Wait For", function() {
         await browser.click(".btn2");
         await utils.assertThrowsAsync(async() => {
             await browser.waitFor("#switch.off", 10);
-        }, `TimeoutError: Waiting for element "#switch.off", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitFor] Waiting for element "#switch.off", timeout of 10ms exceeded.`);
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
         await browser.assert.text("#switch", "On");
@@ -96,7 +96,7 @@ describe("Wait For", function() {
                 const docs = document.querySelectorAll(s);
                 return docs.length > 0;
             }, 10, "#switch.off");
-        }, "TimeoutError: Waiting for function to return true, timeout of 10ms exceeded.");
+        }, "TimeoutError: [waitFor] Waiting for function to return true, timeout of 10ms exceeded.");
     });
 
     it("Wait For Url", async() => {
@@ -112,7 +112,7 @@ describe("Wait For", function() {
         await browser.click("a");
         await utils.assertThrowsAsync(async() => {
             await browser.waitForUrl(configUrls.click, 10);
-        }, `TimeoutError: Waiting for url "${configUrls.click}", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForUrl] Waiting for url "${configUrls.click}", timeout of 10ms exceeded.`);
     });
 
     it("Wait For Text", async() => {
@@ -129,6 +129,6 @@ describe("Wait For", function() {
         await browser.click(".btn2");
         await utils.assertThrowsAsync(async() => {
             await browser.waitForText("Off", 10);
-        }, `TimeoutError: Waiting for text "Off", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForText] Waiting for text "Off", timeout of 10ms exceeded.`);
     });
 });

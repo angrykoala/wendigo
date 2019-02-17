@@ -26,17 +26,17 @@ describe("Assert Exists", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.exists("h2");
-        }, `Expected element "h2" to exists`);
+        }, `[assert.exists] Expected element "h2" to exists`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.exists(".not_container");
-        }, `Expected element ".not_container" to exists`);
+        }, `[assert.exists] Expected element ".not_container" to exists`);
     });
 
     it("Exists Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.exists("h2", "test failed");
-        }, `test failed`);
+        }, `[assert.exists] test failed`);
     });
 
     it("Exists From Node", async() => {
@@ -56,16 +56,16 @@ describe("Assert Exists", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.exists("h1");
-        }, `Expected element "h1" to not exists`);
+        }, `[assert.not.exists] Expected element "h1" to not exists.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.exists(".container");
-        }, `Expected element ".container" to not exists`);
+        }, `[assert.not.exists] Expected element ".container" to not exists.`);
     });
 
     it("Not Exists Throws With Custom Message", async() => {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.exists("h1", "not exists failed");
-        }, `not exists failed`);
+        }, `[assert.not.exists] not exists failed`);
     });
 });

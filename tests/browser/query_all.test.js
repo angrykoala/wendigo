@@ -46,9 +46,9 @@ describe("Query All", function() {
     });
 
     it("QueryAll Sub Element Not Valid Parent", async() => {
-        utils.assertThrowsAsync(async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.queryAll(".container", "b");
-        }, "Error: Invalid parent element for queryAll");
+        }, "Error: [queryAll] Invalid parent element for queryAll");
     });
 
     it("QueryAll Element Not Found", async() => {

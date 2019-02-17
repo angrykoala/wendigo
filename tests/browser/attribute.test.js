@@ -45,7 +45,7 @@ describe("Browser Attribute", function() {
     it("Attribute With Non Existing Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.attribute(".not-element", "class");
-        }, `QueryError: Element ".not-element" not found when trying to get attribute "class".`);
+        }, `QueryError: [attribute] Element ".not-element" not found.`);
     });
 
     it("Attribute From Node", async() => {

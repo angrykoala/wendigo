@@ -5,7 +5,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Dialog Alerts", function() {
     this.timeout(5000);
     let browser;
@@ -122,11 +121,9 @@ describe("Dialog Alerts", function() {
     });
 
     it("WaitForDialog Timeout", async() => {
-        // browser.click(".alert-btn");
-
         await utils.assertThrowsAsync(async() => {
             await browser.dialog.waitForDialog(10);
-        }, `TimeoutError: Wait for dialog, timeout of 10ms exceeded.`);
+        }, `TimeoutError: [dialog.waitForDialog] Timeout of 10ms exceeded.`);
     });
 
     it("Dismiss All Dialogs", async() => {

@@ -240,6 +240,15 @@ elements[0].textContent; // "My first paragraph"
 
 > The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
+**elementFromPoint(x, y)**   
+Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `undefined` if no element is present.
+
+```js
+const element = await browser.elementFromPoint(500, 150);
+await browser.text(element); // ["My Title"]
+
+```
+
 **addScript(scriptPath)**   
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
 
@@ -361,6 +370,18 @@ Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/d
 
 **url()**   
 Returns the current url of the page.
+
+**screenshot(options?)**    
+Takes a screenshot of the page. This is just a direct interface to [Puppeteer's screenshot method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions) and will use the same options, please check Puppeteer docs for the updated usage. It will return the image as a string (base64) or Buffer depending on the encoding. If an option path is defined, the image will be created on given path.
+
+The possible options (from Puppeteer's docs) are:
+
+* `path`: The file path to save the image to. The screenshot type will be inferred from file extension. If path is a relative path, then it is resolved relative to current working directory. If no path is provided, the image won't be saved to the disk.
+* `type`: Specify screenshot type, can be either jpeg or png. Defaults to 'png'.
+* `fullPage`: When true, takes a screenshot of the full scrollable page. Defaults to false.
+* `clip`: An object which specifies clipping region of the page. Should have the fields x, y, width and height
+* `omitBackground`: Hides default white background and allows capturing screenshots with transparency. Defaults to false.
+* `encoding`: The encoding of the image, can be either base64 or binary. Defaults to binary.
 
 **mockDate(date, options?)**   
 Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters or `Date.now()`. The first parameter must be a JavaScript Date object. The following options are supported:

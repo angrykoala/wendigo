@@ -3,7 +3,6 @@
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-
 describe("Incognito", function() {
     this.timeout(50000);
 

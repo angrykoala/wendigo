@@ -33,6 +33,6 @@ describe("Wait And Click", function() {
     it("Wait For Button Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitAndClick(".btn2", 1);
-        }, "TimeoutError: Wait and click, timeout of 1ms exceeded.");
+        }, "TimeoutError: [waitAndClick] Timeout of 1ms exceeded.");
     });
 });

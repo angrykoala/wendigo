@@ -78,17 +78,17 @@ describe("Checkbox", function() {
     it("Checked Throws", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.checked(".not-element");
-        }, `QueryError: Element ".not-element" not found when trying to get if checked.`);
+        }, `QueryError: [checked] Element ".not-element" not found.`);
     });
 
     it("Check Throws", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.check(".not-element");
-        }, `QueryError: Element ".not-element" not found when trying to check.`);
+        }, `QueryError: [check] Element ".not-element" not found.`);
     });
     it("Uncheck Throws", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.uncheck(".not-element");
-        }, `QueryError: Element ".not-element" not found when trying to uncheck.`);
+        }, `QueryError: [uncheck] Element ".not-element" not found.`);
     });
 });

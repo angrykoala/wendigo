@@ -1,3 +1,11 @@
+1.10.0 / 2018-02-17
+==================
+
+  * Browser.elementFromPoint
+  * Screenshot interface with page.
+  * Minor refactor in click methods
+  * Changes in error messages
+
 1.9.2 / 2019-02-12
 ==================
 

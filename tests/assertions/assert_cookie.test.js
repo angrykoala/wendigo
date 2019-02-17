@@ -33,19 +33,19 @@ describe("Assert Cookie", function() {
     it("Assert Cookie Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.cookies("not-exists");
-        }, `Expected cookie "not-exists" to exist.`);
+        }, `[assert.cookies] Expected cookie "not-exists" to exist.`);
     });
 
     it("Assert Cookie Throws Invalid Value", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.cookies("username", "marvin");
-        }, `Expected cookie "username" to have value "marvin", "arthur_dent" found.`, "arthur_dent", "marvin");
+        }, `[assert.cookies] Expected cookie "username" to have value "marvin", "arthur_dent" found.`, "arthur_dent", "marvin");
     });
 
     it("Assert Cookie Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.cookies("username", "marvin", "cookie fails");
-        }, `cookie fails`, "arthur_dent", "marvin");
+        }, `[assert.cookies] cookie fails`, "arthur_dent", "marvin");
     });
 
     it("Assert Not Cookie", async() => {
@@ -56,18 +56,18 @@ describe("Assert Cookie", function() {
     it("Assert Not Cookie Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.cookies("username");
-        }, `Expected cookie "username" to not exist.`);
+        }, `[assert.not.cookies] Expected cookie "username" to not exist.`);
     });
 
     it("Assert Not Cookie Throws Invalid Value", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.cookies("username", "arthur_dent");
-        }, `Expected cookie "username" to not have value "arthur_dent".`);
+        }, `[assert.not.cookies] Expected cookie "username" to not have value "arthur_dent".`);
     });
 
     it("Assert Not Cookie Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.cookies("username", "arthur_dent", "not cookie fails");
-        }, `not cookie fails`);
+        }, `[assert.not.cookies] not cookie fails`);
     });
 });

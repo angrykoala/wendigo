@@ -5,7 +5,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Plugins", function() {
     this.timeout(5000);
 
@@ -132,30 +131,30 @@ describe("Plugins", function() {
     it("Register Plugin Invalid Name", async() => {
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("requests", PluginTest);
-        }, `Error: Invalid plugin name "requests".`);
+        }, `FatalError: [registerPlugin] Invalid plugin name "requests".`);
         Wendigo.registerPlugin("pluginTest", PluginTest);
 
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("pluginTest", PluginTest);
-        }, `Error: Invalid plugin name "pluginTest".`);
+        }, `FatalError: [registerPlugin] Invalid plugin name "pluginTest".`);
 
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("", PluginTest);
-        }, `Error: Plugin requires a name.`);
+        }, `FatalError: [registerPlugin] Plugin requires a name.`);
     });
 
     it("Register Plugin Invalid Parameters", async() => {
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("pluginTest");
-        }, `Error: Invalid plugin module "pluginTest".`);
+        }, `FatalError: [registerPlugin] Invalid plugin module "pluginTest".`);
 
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("pluginTest", {});
-        }, `Error: Invalid plugin module "pluginTest".`);
+        }, `FatalError: [registerPlugin] Invalid plugin module "pluginTest".`);
 
         await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("pluginTest", PluginTest, {});
-        }, `Error: Invalid assertion module for plugin "pluginTest".`);
+        }, `FatalError: [registerPlugin] Invalid assertion module for plugin "pluginTest".`);
     });
 
     it("Register Plugin With Function Assertion", async() => {

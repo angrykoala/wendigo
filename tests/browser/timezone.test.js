@@ -4,7 +4,6 @@ const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-
 describe("Timezone", function() {
     this.timeout(5000);
     let browser;

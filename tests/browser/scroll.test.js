@@ -5,7 +5,6 @@ const assert = require('assert');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Scroll", function() {
     this.timeout(5000);
 
@@ -66,6 +65,6 @@ describe("Scroll", function() {
     it("Scroll By Invalid Dom Element", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.scroll(".not-exists");
-        }, `QueryError: Selector ".not-exists" doesn't match any element to scroll.`);
+        }, `QueryError: [scroll] Selector ".not-exists" doesn't match any element to scroll.`);
     });
 });

@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Assert Local Storage", function() {
     this.timeout(5000);
     let browser;
@@ -39,23 +38,23 @@ describe("Assert Local Storage", function() {
     it("Item Exists Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.exist("item2");
-        }, `Expected item "item2" to exist in localStorage.`);
+        }, `[assert.localStorage.exist] Expected item "item2" to exist in localStorage.`);
         await browser.localStorage.clear();
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.exist("arthur");
-        }, `Expected item "arthur" to exist in localStorage.`);
+        }, `[assert.localStorage.exist] Expected item "arthur" to exist in localStorage.`);
     });
 
     it("Multiple Items Exists Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.exist(["arthur", "item2"]);
-        }, `Expected items "arthur item2" to exist in localStorage.`);
+        }, `[assert.localStorage.exist] Expected items "arthur item2" to exist in localStorage.`);
     });
 
     it("Item Exists Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.exist("item2", "exists error");
-        }, `exists error`);
+        }, `[assert.localStorage.exist] exists error`);
     });
 
     it("Item Value", async() => {
@@ -71,19 +70,19 @@ describe("Assert Local Storage", function() {
     it("Item Value Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.value("arthur", "panic");
-        }, `Expected item "arthur" to have value "panic" in localStorage, "dontpanic" found.`);
+        }, `[assert.localStorage.value] Expected item "arthur" to have value "panic" in localStorage, "dontpanic" found.`);
     });
 
     it("Item Value Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.value("arthur", "panic", "value fail");
-        }, `value fail`);
+        }, `[assert.localStorage.value] value fail`);
     });
 
     it("Item Value Throws Not Element", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.value("item2", "panic");
-        }, `Expected item "item2" to have value "panic" in localStorage, "null" found.`);
+        }, `[assert.localStorage.value] Expected item "item2" to have value "panic" in localStorage, "null" found.`);
     });
 
     it("Multiple Items Value", async() => {
@@ -96,14 +95,14 @@ describe("Assert Local Storage", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.value({arthur: "dontpanic",
                 item2: "val2"});
-        }, `Expected items "arthur item2" to have values "dontpanic val2" in localStorage, "dontpanic null" found.`);
+        }, `[assert.localStorage.value] Expected items "arthur item2" to have values "dontpanic val2" in localStorage, "dontpanic null" found.`);
     });
 
     it("Multiple Items Value Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.value({arthur: "dontpanic",
                 item2: "val2"}, "multiple fails");
-        }, `multiple fails`);
+        }, `[assert.localStorage.value] multiple fails`);
     });
 
     it("Storage Length", async() => {
@@ -119,13 +118,13 @@ describe("Assert Local Storage", function() {
     it("Storage Length Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.length(4);
-        }, `Expected localStorage to have 4 items, 1 found.`, "1", "4");
+        }, `[assert.localStorage.length] Expected localStorage to have 4 items, 1 found.`, "1", "4");
     });
 
     it("Storage Length Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.length(4, "length fails");
-        }, "length fails", "1", "4");
+        }, "[assert.localStorage.length] length fails", "1", "4");
     });
 
     it("Storage Empty", async() => {
@@ -136,12 +135,12 @@ describe("Assert Local Storage", function() {
     it("Storage Empty Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.empty();
-        }, `Expected localStorage to be empty, 1 item found.`);
+        }, `[assert.localStorage.empty] Expected localStorage to be empty, 1 item found.`);
     });
 
     it("Storage Empty Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.localStorage.empty("empty fails");
-        }, `empty fails`);
+        }, `[assert.localStorage.empty] empty fails`);
     });
 });

@@ -4,7 +4,6 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-
 describe("Wait For Request", function() {
     this.timeout(5000);
     let browser;
@@ -77,13 +76,13 @@ describe("Wait For Request", function() {
     it("Wait For Request Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitForRequest("http://localhost:3456/api", 10);
-        }, `TimeoutError: Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForRequest] Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
     it("Wait For Response Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitForResponse("http://localhost:3456/api", 10);
-        }, `TimeoutError: Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForResponse] Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
 
@@ -102,7 +101,7 @@ describe("Wait For Request", function() {
         await browser.assert.request.url(/api/).exactly(1);
         await utils.assertThrowsAsync(async() => {
             await browser.waitForNextRequest("http://localhost:3456/api", 10);
-        }, `TimeoutError: Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForNextRequest] Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
     it("Wait For Next Response With Mock", async() => {
@@ -128,7 +127,7 @@ describe("Wait For Request", function() {
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
         await utils.assertThrowsAsync(async() => {
             await browser.waitForNextResponse("http://localhost:3456/api", 10);
-        }, `TimeoutError: Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
+        }, `TimeoutError: [waitForNextResponse] Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
     });
 });

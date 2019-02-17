@@ -36,22 +36,22 @@ describe("Assert Style", function() {
         assert(browser.assert.style);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
-        }, `Expected element "h1" to have style "color" with value "rgb(0, 0, 0)", "rgb(255, 0, 0)" found.`);
+        }, `[assert.style] Expected element "h1" to have style "color" with value "rgb(0, 0, 0)", "rgb(255, 0, 0)" found.`);
     });
     it("Style Not Found Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.style("h1", "not-style", "0");
-        }, `Expected element "h1" to have style "not-style" with value "0", style not found.`);
+        }, `[assert.style] Expected element "h1" to have style "not-style" with value "0", style not found.`);
     });
     it("Style Element Not Found", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.style(".not-element", "color", "rgb(0, 0, 0)");
-        }, `QueryError: Element ".not-element" not found when trying to assert style.`);
+        }, `QueryError: [assert.style] Element ".not-element" not found when trying to assert style.`);
     });
     it("Style Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.style("h1", "color", "rgb(0, 0, 0)", "style fails");
-        }, `style fails`);
+        }, `[assert.style] style fails`);
     });
 
     it("Not Style", async() => {
@@ -71,19 +71,19 @@ describe("Assert Style", function() {
         assert(browser.assert.not.style);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.style("h1", "color", "rgb(255, 0, 0)");
-        }, `Expected element "h1" not to have style "color" with value "rgb(255, 0, 0)".`);
+        }, `[assert.not.style] Expected element "h1" not to have style "color" with value "rgb(255, 0, 0)".`);
     });
 
     it("Not Style Element Not Found", async() => {
         assert(browser.assert.not.style);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.style(".not-element", "color", "rgb(0, 0, 0)");
-        }, `QueryError: Element ".not-element" not found when trying to assert style.`);
+        }, `QueryError: [assert.not.style] Element ".not-element" not found when trying to assert style.`);
     });
 
     it("Not Style Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.style("h1", "color", "rgb(255, 0, 0)", "not style fails");
-        }, `not style fails`);
+        }, `[assert.not.style] not style fails`);
     });
 });
