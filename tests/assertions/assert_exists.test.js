@@ -56,10 +56,10 @@ describe("Assert Exists", function() {
         await browser.open(configUrls.index);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.exists("h1");
-        }, `[assert.not.exists] Expected element "h1" to not exists`);
+        }, `[assert.not.exists] Expected element "h1" to not exists.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.exists(".container");
-        }, `[assert.not.exists] Expected element ".container" to not exists`);
+        }, `[assert.not.exists] Expected element ".container" to not exists.`);
     });
 
     it("Not Exists Throws With Custom Message", async() => {

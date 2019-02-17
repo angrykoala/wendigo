@@ -32,10 +32,10 @@ describe("Assert Title", function() {
         assert(browser.assert.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title("Index Test 2");
-        }, `[assert.title] Expected page title to be "Index Test 2", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "Index Test 2", "Index Test" found.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title("");
-        }, `[assert.title] Expected page title to be "", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "", "Index Test" found.`);
     });
 
     it("Title Throws With Custom Message", async() => {
@@ -56,7 +56,7 @@ describe("Assert Title", function() {
         assert(browser.assert.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.title(/Index\sTest\s2/);
-        }, `[assert.title] Expected page title to be "/Index\\sTest\\s2/", "Index Test" found`);
+        }, `[assert.title] Expected page title to be "/Index\\sTest\\s2/", "Index Test" found.`);
     });
 
     it("Not Title", async() => {
@@ -75,7 +75,7 @@ describe("Assert Title", function() {
         assert(browser.assert.not.title);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.title("Index Test");
-        }, `[assert.not.title] Expected page title not to be "Index Test"`);
+        }, `[assert.not.title] Expected page title not to be "Index Test".`);
     });
 
     it("Not Title Throws With Custom Message", async() => {

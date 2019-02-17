@@ -77,15 +77,15 @@ describe("Assert Value", function() {
         await browser.open(configUrls.forms);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.value("input.input1", "");
-        }, `[assert.not.value] Expected element "input.input1" not to have value ""`);
+        }, `[assert.not.value] Expected element "input.input1" not to have value "".`);
 
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.value("input.input2", "default value");
-        }, `[assert.not.value] Expected element "input.input2" not to have value "default value"`);
+        }, `[assert.not.value] Expected element "input.input2" not to have value "default value".`);
 
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.value("h1", null);
-        }, `[assert.not.value] Expected element "h1" not to have value "null"`);
+        }, `[assert.not.value] Expected element "h1" not to have value "null".`);
     });
 
     it("Assert Not Value Throws", async() => {
