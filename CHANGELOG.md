@@ -2,6 +2,8 @@
 ===================
 
 * Click coordinates now use mouse.click
+* Minor dependencies updated
+* Added Gitlab CI tests
 
 1.10.0 / 2018-02-17
 ==================
