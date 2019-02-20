@@ -5,6 +5,7 @@
 _by @angrykoala_    
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo.svg)
 
 
 > A proper monster for front-end automated testing
@@ -317,7 +318,7 @@ Clicks all the elements with the matching css selector, if the index parameter i
 await browser.click("button.btn");
 ```
 
-Optionally, if two numbers are passed, the element in position x, y (in pixels) will be clicked.
+Optionally, if two numbers are passed, position x, y (in pixels) will be clicked. In this case, null with be returned instead of the clicked elements.
 
 **clickText(selector?, text, index?)**   
 Clicks all the elements matching given text. Returns the number of elements clicked.
