@@ -5,6 +5,7 @@
 _by @angrykoala_    
 [![npm version](https://badge.fury.io/js/wendigo.svg)](https://badge.fury.io/js/wendigo)
 [![Build Status](https://travis-ci.org/angrykoala/wendigo.svg?branch=master)](https://travis-ci.org/angrykoala/wendigo)
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo.svg)
 
 
 > A proper monster for front-end automated testing
