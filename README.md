@@ -1580,14 +1580,14 @@ browser.assert.koalafied(); // note the assertion is called directly
 ```
 
 ## Publishing a plugin
-If you want to create a new plugin and publish it in the npm store. Please, follow the following steps:
+If you want to create a new plugin and publish it in the npm store. Please, follow these steps:
 
 1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually unless you want them to be imported that way.
-2. Make sure your code is tested using node 8 and above.
+2. Make sure your code is tested using Node.js 8 and above.
 3. Set Wendigo as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies) in you package.json.
     * If you are writing tests, also set Wendigo as a dev dependency, **never** as a normal dependency.
-4. Wendigo usually follows [semantic versioning](https://semver.org/) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
-5. Let people (and koalas!) know about it.
+4. Wendigo usually follows [semantic versioning](https://semver.org) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
+5. Let people know about it!.
 
 # Examples
 
