@@ -43,6 +43,6 @@
   "devDependencies": {
     "eslint": "^5.14.1",
     "express": "^4.16.4",
-    "mocha": "^6.0.0"
+    "mocha": "^6.0.1"
   }
 }

@@ -169,4 +169,33 @@ describe("Plugins", function() {
         assert.strictEqual(browser.assert.pluginTest(), "assertionTesttest");
         await browser.close();
     });
+
+
+    it("Register Plugin Only With Function", async() => {
+        Wendigo.registerPlugin("pluginTest", () => {
+            return "ok";
+        });
+        const browser = await Wendigo.createBrowser();
+        assert.ok(browser.pluginTest);
+        assert.strictEqual(browser.pluginTest(), "ok");
+        await browser.close();
+    });
+
+    // Tests Issue #288
+    it.skip("Register Plugin With Function Assertion And Not Assertion", async() => {
+        Wendigo.registerPlugin("pluginTest", null, {
+            assert: () => {
+                return "ok";
+            },
+            not: () => {
+                return "not ok";
+            }
+        });
+        const browser = await Wendigo.createBrowser();
+        assert.ok(browser.assert.pluginTest);
+        assert.ok(browser.assert.not.pluginTest);
+        assert.strictEqual(browser.assert.pluginTest(), "ok");
+        assert.strictEqual(browser.assert.not.pluginTest(), "not ok");
+        await browser.close();
+    });
 });
