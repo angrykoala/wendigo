@@ -3,9 +3,9 @@
 
 
 _by @angrykoala_    
-![npm](https://img.shields.io/npm/v/wendigo.svg)
-![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo.svg?label=travis)
-![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo.svg?label=gitlab)
+[![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
+[![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo.svg?label=gitlab)](https://gitlab.com/angrykoala/wendigo/pipelines)
 
 
 > A proper monster for front-end automated testing
