@@ -89,7 +89,7 @@ You can use it with your favorite test suite or standalone in a JavaScript file
 const Wendigo = require('wendigo');
 
 async function getMyPageHeader(){
-  const browser = Wendigo.createBrowser();
+  const browser = await Wendigo.createBrowser();
   await browser.open("http://my-page");
   return await browser.text("h1");
 }
