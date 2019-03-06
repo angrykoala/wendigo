@@ -382,6 +382,15 @@ The possible options (from Puppeteer's docs) are:
 * `omitBackground`: Hides default white background and allows capturing screenshots with transparency. Defaults to false.
 * `encoding`: The encoding of the image, can be either base64 or binary. Defaults to binary.
 
+**screenshotOfElement(selector, options?)**  
+Takes a screenshot of the first element matching the given selector. Will fail if the element is not found. The supported options are the same as `screenshot`.
+
+```js
+const base64Image = await browser.screenshotOfElement("#my-dashboard", {
+    encoding: "base64"
+})
+```
+
 **mockDate(date, options?)**  
 Mocks the browser's Date object so it returns the expected date instead of current date when using `new Date()` without parameters or `Date.now()`. The first parameter must be a JavaScript Date object. The following options are supported:
 

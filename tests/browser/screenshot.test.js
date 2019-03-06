@@ -26,4 +26,12 @@ describe("Screenshot", function() {
         });
         assert.ok(res.length > 100);
     });
+
+    it("Element Screenshot", async() => {
+        const res = await browser.screenshotOfElement("div.container.extra-class", {
+            encoding: "base64"
+        });
+        assert.ok(res.length > 100);
+        assert.strictEqual(res.slice(0, 39), "iVBORw0KGgoAAAANSUhEUgAABZAAAAASCAYAAAD");
+    });
 });

@@ -1,14 +1,17 @@
-1.10.2 / ####-##-##
+1.10.2 / 2019-03-06
 ===================
 
-1.10.1 / 2018-02-20
+* Browser.screenshotOfElement
+* Fixed error message of browser.scroll
+
+1.10.1 / 2019-02-20
 ===================
 
 * Click coordinates now use mouse.click
 * Minor dependencies updated
 * Added Gitlab CI tests
 
-1.10.0 / 2018-02-17
+1.10.0 / 2019-02-17
 ==================
 
 * Browser.elementFromPoint
