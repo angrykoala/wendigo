@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -14,7 +14,8 @@
   "scripts": {
     "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
-    "lint": "eslint . --ext .js"
+    "lint": "eslint . --ext .js",
+    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
   "devDependencies": {
     "eslint": "^5.14.1",
     "express": "^4.16.4",
-    "mocha": "^6.0.0"
+    "markdownlint-cli": "^0.14.0",
+    "mocha": "^6.0.1"
   }
 }

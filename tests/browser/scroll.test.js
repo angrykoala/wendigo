@@ -64,7 +64,7 @@ describe("Scroll", function() {
 
     it("Scroll By Invalid Dom Element", async() => {
         await utils.assertThrowsAsync(async() => {
-            await browser.scroll(".not-exists");
-        }, `QueryError: [scroll] Selector ".not-exists" doesn't match any element to scroll.`);
+            await browser.scroll(".not-exists2");
+        }, `QueryError: [scroll] Selector ".not-exists2" doesn't match any element to scroll.`);
     });
 });
