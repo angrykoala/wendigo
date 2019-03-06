@@ -90,7 +90,9 @@ const Wendigo = require('wendigo');
 async function getMyPageHeader(){
   const browser = await Wendigo.createBrowser();
   await browser.open("http://my-page");
-  return await browser.text("h1");
+  const text = await browser.text("h1");
+  await browser.close();
+  return text;
 }
 
 getMyPageHeader().then((text)=>{
