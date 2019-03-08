@@ -84,7 +84,7 @@ describe("Requests Mock Object", function() {
         }, `[assert.called] Mock of ${configUrls.api} not called 2 times.`);
     });
 
-    it("Mocker Object Assertion Times Throws", async() => {
+    it("Mocker Object Assertion Times Throws Custom Message", async() => {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         assert.strictEqual(mock.immediate, true);
         await utils.assertThrowsAssertionAsync(async() => {
@@ -112,7 +112,7 @@ describe("Requests Mock Object", function() {
         }, `FatalError: [trigger] Cannot trigger auto request mock.`);
     });
 
-    it("Wait Until Mock Called", async() => {
+    it.skip("Wait Until Mock Called", async() => {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         setTimeout(() => {
             browser.clickText("click me");
