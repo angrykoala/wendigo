@@ -1716,7 +1716,6 @@ test:
 
 _Example of .gitlab-ci.yml_
 
-
 ### Using Wendigo with Docker
 Wendigo con be running on docker just as any other application using Puppeteer, but an official image is provided to ease the setup, the following is an example of a dockerfile using Node 10 and Wendigo:
 
@@ -1740,7 +1739,6 @@ CMD ["npm", "run", "test"]
 ```
 
 > Warning: while the image is updated and maintained, it is still an early feature and not as stable as plain Wendigo
-
 
 #### Assertion failed messages without error
 If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.
