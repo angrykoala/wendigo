@@ -4,8 +4,8 @@
 
 _by @angrykoala_  
 [![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
-[![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
+[![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo/master.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo/master.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
 
 > A proper monster for front-end automated testing
 
@@ -90,7 +90,9 @@ const Wendigo = require('wendigo');
 async function getMyPageHeader(){
   const browser = await Wendigo.createBrowser();
   await browser.open("http://my-page");
-  return await browser.text("h1");
+  const text = await browser.text("h1");
+  await browser.close();
+  return text;
 }
 
 getMyPageHeader().then((text)=>{
@@ -1713,6 +1715,30 @@ test:
 ```
 
 _Example of .gitlab-ci.yml_
+
+### Using Wendigo with Docker
+Wendigo con be running on docker just as any other application using Puppeteer, but an official image is provided to ease the setup, the following is an example of a dockerfile using Node 10 and Wendigo:
+
+```dockerfile
+FROM angrykoala/wendigo
+
+# Example directory to run you app
+WORKDIR /app
+
+COPY package*.json ./
+# Copies Puppeteer and Wendigo from the base image
+RUN mv /node_modules .
+# Installs your up (it must have Wendigo as a dependency)
+RUN npm install
+# Copies the rest of your app
+COPY . /app
+
+# Runs your tests
+CMD ["npm", "run", "test"]
+
+```
+
+> Warning: while the image is updated and maintained, it is still an early feature and not as stable as plain Wendigo
 
 #### Assertion failed messages without error
 If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.

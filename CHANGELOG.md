@@ -1,3 +1,10 @@
+1.10.3 / 2019-03-09
+===================
+
+* Dependencies updated
+* Added delay to mocked requests to ensure the browser updated the response
+* Dockerfile
+
 1.10.2 / 2019-03-06
 ===================
 
