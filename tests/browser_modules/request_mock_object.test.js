@@ -101,7 +101,7 @@ describe("Requests Mock Object", function() {
         await browser.clickText("click me");
         await browser.assert.not.text("#result", "MOCK");
         mock.trigger();
-        await browser.wait(10);
+        await browser.wait(20);
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -112,7 +112,7 @@ describe("Requests Mock Object", function() {
         }, `FatalError: [trigger] Cannot trigger auto request mock.`);
     });
 
-    it.skip("Wait Until Mock Called", async() => {
+    it("Wait Until Mock Called", async() => {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         setTimeout(() => {
             browser.clickText("click me");
