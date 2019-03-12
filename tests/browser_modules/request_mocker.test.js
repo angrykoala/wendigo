@@ -30,7 +30,6 @@ describe("Requests Mocker", function() {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
         await mock.waitUntilCalled();
-        // await browser.wait(1); // Delay between response and update
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -48,8 +47,6 @@ describe("Requests Mocker", function() {
         const mock = await browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await mock.waitUntilCalled();
-        // await browser.wait(1); // Delay between response and update
-
         await browser.assert.text("#result", "MOCK");
     });
 
