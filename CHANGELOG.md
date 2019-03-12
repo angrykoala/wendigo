@@ -1,3 +1,10 @@
+1.10.4 / 2019-03-12
+===================
+
+* Slight delay after mock waitUntilCalled
+* Injection script errors after page load silenced
+* Minor changes to Dockerfile
+
 1.10.3 / 2019-03-09
 ===================
 

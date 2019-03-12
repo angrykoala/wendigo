@@ -1192,7 +1192,7 @@ Mock will return a RequestMock object, with the following properties:
 * `url`: Mocked url.
 * `queryString`: The mock queryString.
 * `immediate`: If the mock will return immediately (delay=0).
-* `waitUntilCalled(timeout=500)`: Waits until the mock is called .
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 * `auto`: If the request will be completed automatically.
 
 ```js
