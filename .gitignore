@@ -58,3 +58,4 @@ typings/
 .env
 
 ncp/
+.DS_Store
