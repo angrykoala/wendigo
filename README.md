@@ -1,6 +1,6 @@
 # Wendigo
 
-<img src="https://user-images.githubusercontent.com/5960567/41823576-2f7cb71a-7802-11e8-8714-521cb38b42c0.png" align="right" width="150px">
+<img src="https://user-images.githubusercontent.com/5960567/54274028-6641ca80-4587-11e9-9e92-f27daa2e3910.png" align="right" width="150px">
 
 _by @angrykoala_  
 [![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
@@ -1754,4 +1754,5 @@ If you are using node@10 and puppeteer 1.4.0 or less, you may experience message
 ## License
 
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
-* Wendigo Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
+* Wendigo Old Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
+* Wendigo Logo, made by @belenpicazo is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)

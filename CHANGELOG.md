@@ -1,3 +1,9 @@
+1.10.6 / 2019-03-19
+===================
+
+* New Logo
+* Minor improvements on browser.type error messages
+
 1.10.5 / 2019-03-13
 ===================
 

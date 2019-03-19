@@ -57,7 +57,7 @@ describe("Type", function() {
     it("Type Invalid Selector", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.type({}, "firstText");
-        }, `FatalError: [type] Invalid selector on "browser.type".`);
+        }, `Error: [type] Invalid selector.`);
     });
 
     it("Type With Keypress Event", async() => {
@@ -104,5 +104,11 @@ describe("Type", function() {
         await browser.click(".input1");
         await browser.keyPress("KeyA", 0);
         await browser.assert.value(".input1", "");
+    });
+
+    it("Type With Undefined Value", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.type("input.input1", undefined);
+        }, `Error: [type] Invalid text.`);
     });
 });
