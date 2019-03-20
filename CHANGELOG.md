@@ -1,6 +1,9 @@
 1.10.7 / ####-##-##
 ===================
 
+* Browser.tap
+* Browser.click with multiple elements will perform clicks sequentially
+
 1.10.6 / 2019-03-19
 ===================
 

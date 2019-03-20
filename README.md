@@ -311,7 +311,7 @@ Returns an array with all text contents of the elements matching the css selecto
 const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
-**click(selector, index)**  
+**click(selector, index?)**  
 Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
 
 ```js
@@ -353,6 +353,11 @@ await browser.url(); // my-page/home
 Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
 
 > Only Css and XPath Selectors supported
+
+**tap(selector, index?)**  
+Performs a touchscreen tap action, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click
+
+If two numbers are passed, the given coordinates are clicked.
 
 **check(selector)**  
 Checks the first element matching given selector. Setting its checked property to true.
@@ -1484,6 +1489,7 @@ A DOMElement also provides the following methods:
 * **queryXPath(selector)**: Performs an XPath query within the children of the element.
 * **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
 * **click()**: Clicks the given element.
+* **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
 
 ## Plugins
