@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <p class="ev-result" onclick="switchText()">default</p>
+
+    <script>
+        const element = document.querySelector(".ev-result");
+
+        element.addEventListener("my-event", ()=>{
+            element.textContent="custom-event"
+        });
+        function switchText(){
+            element.textContent="click-event"
+        }
+    </script>
+</body>
+
+</html>
