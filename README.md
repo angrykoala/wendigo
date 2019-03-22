@@ -657,7 +657,7 @@ Vertically scrolls the page to the given value on pixels, an optional xValue can
 
 > Css, Xpath and Dom selectors supported
 
-**triggerEvent(selector, eventName, options?)**   
+**triggerEvent(selector, eventName, options?)**  
 Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
 
 ```js
