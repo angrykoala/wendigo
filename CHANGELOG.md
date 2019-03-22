@@ -1,6 +1,7 @@
 1.10.7 / ####-##-##
 ===================
 
+* Browser.triggerEvent
 * Browser.tap
 * Browser.click with multiple elements will perform clicks sequentially
 

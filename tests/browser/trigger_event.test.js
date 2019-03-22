@@ -3,7 +3,7 @@
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-describe.only("Trigger Event", function() {
+describe("Trigger Event", function() {
     this.timeout(5000);
     let browser;
 
@@ -56,6 +56,17 @@ describe.only("Trigger Event", function() {
         await browser.assert.text(".ev-result", "default");
     });
 
-    it("Trigger Event With Options");
-    it("Trigger Multiple Events");
+    it("Trigger Event With Options", async() => {
+        await browser.assert.text(".ev-result", "default");
+        await browser.triggerEvent(".ev-result", "my-event", {
+            bubbles: true
+        });
+        await browser.assert.text(".ev-result", "custom-eventdiv-event1div-event2");
+    });
+
+    it("Trigger Events On Multiple Elements", async() => {
+        await browser.assert.text(".ev-result", "default");
+        await browser.triggerEvent("div", "my-event");
+        await browser.assert.text(".ev-result", "defaultdiv-event2div-event1");
+    });
 });
