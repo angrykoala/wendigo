@@ -657,6 +657,16 @@ Vertically scrolls the page to the given value on pixels, an optional xValue can
 
 > Css, Xpath and Dom selectors supported
 
+**triggerEvent(selector, eventName, options?)**   
+Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
+
+```js
+await browser.triggerEvent("button", "click"); // Triggers a click event on all buttons. This won't emulate mouse movement like browser.click
+await browser.triggerEvent(".listener", "my-custom-event"); // Triggers a custom event to an element that may have a listener atached
+```
+
+> Css, Xpath and Dom selectors supported
+
 ### Assert
 The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
 

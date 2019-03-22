@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div class="parent-div2">
+        <div class="parent-div1">
+            <p class="ev-result" onclick="switchText()">default</p>
+        <div>
+    <div>
+    <script>
+        const element = document.querySelector(".ev-result");
+        const parent1 = document.querySelector(".parent-div1");
+        const parent2 = document.querySelector(".parent-div2");
+
+        element.addEventListener("my-event", ()=>{
+            element.textContent="custom-event"
+        });
+
+        parent1.addEventListener("my-event", ()=>{
+            element.textContent=element.textContent+"div-event1"
+        });
+        parent2.addEventListener("my-event", ()=>{
+            element.textContent=element.textContent+"div-event2"
+        });
+        function switchText(){
+            element.textContent="click-event"
+        }
+    </script>
+</body>
+
+</html>
