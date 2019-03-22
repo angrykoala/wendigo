@@ -4,6 +4,7 @@
 * Browser.triggerEvent
 * Browser.tap
 * Browser.click with multiple elements will perform clicks sequentially
+* Mock waitUntilCalled will now trigger after the response was sent
 
 1.10.6 / 2019-03-19
 ===================

@@ -125,7 +125,7 @@ describe("Requests Mock Object", function() {
     it("Wait After Mock Called", async() => {
         const mock = browser.requests.mock(configUrls.api, mockResponse);
         await browser.clickText("click me");
-        await browser.wait(10);
+        await browser.wait(50);
         await browser.assert.text("#result", "MOCK");
         await mock.waitUntilCalled();
         await browser.assert.text("#result", "MOCK");
