@@ -3,6 +3,7 @@
 
 * Browser.triggerEvent
 * Browser.tap
+* Browser.blur
 * Browser.click with multiple elements will perform clicks sequentially
 * Mock waitUntilCalled will now trigger after the response was sent
 

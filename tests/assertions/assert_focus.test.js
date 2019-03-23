@@ -46,7 +46,7 @@ describe("Assert Focus", function() {
     it("Assert Focus Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.focus(".btn10");
-        }, `QueryError: [assert.focus] Element ".btn10" not found when trying to assert focus.`);
+        }, `QueryError: [assert.focus] Element ".btn10" not found.`);
     });
 
     it("Assert Not Focus", async() => {
@@ -77,6 +77,6 @@ describe("Assert Focus", function() {
     it("Assert Not Focus Element Not Exist", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.focus(".btn10");
-        }, `QueryError: [assert.not.focus] Element ".btn10" not found when trying to assert focus.`);
+        }, `QueryError: [assert.not.focus] Element ".btn10" not found.`);
     });
 });

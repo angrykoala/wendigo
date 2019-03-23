@@ -647,6 +647,11 @@ Focus the first element matching the given selector.
 
 > Only CSS selectors supported
 
+**blur(selector)**  
+Unfocus the first element matching the given selector.
+
+> Css, XPath and DOM selectors supported
+
 **hover(selector)**  
 Hovers over the first element matching the given selector.
 
