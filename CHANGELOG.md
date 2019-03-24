@@ -1,8 +1,10 @@
 1.12.0 / ####-##-##
 ===================
 
+* Browser.assert.tag and browser.assert.not.tag
 * Browser.tag
 * Browser.findByAttribute
+* Minor fixes in some error messages
 
 1.11.0 / 2018-03-24
 ===================

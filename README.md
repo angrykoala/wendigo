@@ -708,6 +708,13 @@ An element will considered visible if:
 * The computed style doesn't contain display: none or visibility: hidden
 * All the parents are visible
 
+**tag(selector, expected, msg?)**  
+Asserts that at least one element matching the given selector has the given tag name.
+
+```js
+await browser.assert.tag("my-header", "h1");
+```
+
 **text(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected string or regex.
 If expected is an array, all texts in it should match.
@@ -917,6 +924,13 @@ await browser.not.exists("h1.foo.bar");
 
 **not.visible(selector, msg?)**  
 Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well.
+
+**tag(selector, expected, msg?)**  
+Asserts that at least no element matching the given selector has the given tag name.
+
+```js
+await browser.assert.not.tag("my-main-header", "h4");
+```
 
 **not.text(selector, expected, msg?)**  
 Asserts that no element matching the given selector matches the expected text.
