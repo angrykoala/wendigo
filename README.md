@@ -601,6 +601,15 @@ await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
 
 > Css, Xpath and Dom selectors supported
 
+**tag(selector)**  
+Returns the tag name of the first element matching the given selector, keep in mind that the tag will **always** be returned lowercase. Returns null if no element was found.
+
+```js
+await browser.tag(".my-header"); // "h1"
+```
+
+> Css, Xpath and Dom selectors supported
+
 **setValue(selector, value)**  
 Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
 

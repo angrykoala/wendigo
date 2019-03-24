@@ -1,7 +1,8 @@
 1.12.0 / ####-##-##
 ===================
 
-* browser.findByAttribute
+* Browser.tag
+* Browser.findByAttribute
 
 1.11.0 / 2018-03-24
 ===================
