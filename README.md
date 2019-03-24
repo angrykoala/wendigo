@@ -118,6 +118,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
   * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
   * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
+  * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
   * Any settings that can be passed to Puppeteer can be passed in createBrowser, for example:
     * `headless: true`: If true, the browser will run on headless mode.
     * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
