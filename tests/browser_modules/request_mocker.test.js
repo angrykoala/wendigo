@@ -39,6 +39,7 @@ describe("Requests Mocker", function() {
         });
         await browser.clickText("click me");
         await mock.waitUntilCalled();
+        await browser.wait(50);
         await browser.assert.text("#result", "MOCK");
     });
 
@@ -47,6 +48,7 @@ describe("Requests Mocker", function() {
         const mock = await browser.requests.mock(configUrls.api, response);
         await browser.clickText("click me");
         await mock.waitUntilCalled();
+        await browser.wait(50);
         await browser.assert.text("#result", "MOCK");
     });
 

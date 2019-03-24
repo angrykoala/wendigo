@@ -1,3 +1,12 @@
+1.11.0 / 2018-03-24
+===================
+
+* Browser.triggerEvent
+* Browser.tap
+* Browser.blur
+* Browser.click with multiple elements will perform clicks sequentially
+* Mock waitUntilCalled will now trigger after the response was sent
+
 1.10.6 / 2019-03-19
 ===================
 

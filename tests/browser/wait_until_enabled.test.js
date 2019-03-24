@@ -36,7 +36,7 @@ describe("Wait Until Enabled", function() {
     it("Wait Until Already Enabled Button", async() => {
         await browser.open(configUrls.forms);
         await browser.assert.enabled(".enable-button");
-        await browser.waitUntilEnabled(".enable-button", 10);
+        await browser.waitUntilEnabled(".enable-button", 20);
         await browser.assert.enabled(".enable-button");
     });
 

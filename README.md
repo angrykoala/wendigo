@@ -311,7 +311,7 @@ Returns an array with all text contents of the elements matching the css selecto
 const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
-**click(selector, index)**  
+**click(selector, index?)**  
 Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
 
 ```js
@@ -353,6 +353,11 @@ await browser.url(); // my-page/home
 Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
 
 > Only Css and XPath Selectors supported
+
+**tap(selector, index?)**  
+Performs a touchscreen tap action, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click
+
+If two numbers are passed, the given coordinates are clicked.
 
 **check(selector)**  
 Checks the first element matching given selector. Setting its checked property to true.
@@ -642,6 +647,11 @@ Focus the first element matching the given selector.
 
 > Only CSS selectors supported
 
+**blur(selector)**  
+Unfocus the first element matching the given selector.
+
+> Css, XPath and DOM selectors supported
+
 **hover(selector)**  
 Hovers over the first element matching the given selector.
 
@@ -649,6 +659,16 @@ Hovers over the first element matching the given selector.
 
 **scroll(value, xValue?)**  
 Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
+
+> Css, Xpath and Dom selectors supported
+
+**triggerEvent(selector, eventName, options?)**  
+Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
+
+```js
+await browser.triggerEvent("button", "click"); // Triggers a click event on all buttons. This won't emulate mouse movement like browser.click
+await browser.triggerEvent(".listener", "my-custom-event"); // Triggers a custom event to an element that may have a listener atached
+```
 
 > Css, Xpath and Dom selectors supported
 
@@ -1484,6 +1504,7 @@ A DOMElement also provides the following methods:
 * **queryXPath(selector)**: Performs an XPath query within the children of the element.
 * **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
 * **click()**: Clicks the given element.
+* **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
 
 ## Plugins
@@ -1692,7 +1713,7 @@ cache:
 
 _Example of travis.yml file_
 
-#### Running Tests With Gitlab CI
+### Running Tests With Gitlab CI
 
 Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`. It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers:
 
@@ -1740,10 +1761,25 @@ CMD ["npm", "run", "test"]
 
 > Warning: while the image is updated and maintained, it is still an early feature and not as stable as plain Wendigo
 
-#### Assertion failed messages without error
+### Assertion failed messages without error
 If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.
 
 > Remember to check [Puppeteer Troubleshooting](https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md)
+
+### Page doesn't work the same way on headless mode
+Wendigo runs on headless mode by default, it can be disabled with the options `headless: false`, making it run on a graphical mode. This can cause some inconsistencies as headless and graphical mode won't behave exactly the same way on all scenarios.
+
+These Differences can be caused by multiple reasons. Most commonly graphical mode requires more resources and execute actions slower than headless mode, making it less stable and causing some timeouts and race conditions. Setting the `slowMo` option may help on making headless mode behave more similar to a real browser.
+
+The user-agent provided by Puppeteer is also different when executing in headless browser, some webpages may rely on this to detect bots or to change the display. This can easily be avoided by explicitly setting the user agent on createBrowser:
+
+```js
+// This setup will make headless mode run work more like a real browser
+const browser = await Wendigo.createBrowser({
+    slowMo: 50,
+    userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36"
+});
+```
 
 ## Acknowledgements
 

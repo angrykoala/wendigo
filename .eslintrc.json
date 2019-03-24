@@ -15,7 +15,7 @@
         "eslint:recommended"
     ],
     "rules": {
-        "no-await-in-loop": "warn",
+        "no-await-in-loop": "off",
         "no-template-curly-in-string": "warn",
         "require-atomic-updates": "error",
         "array-callback-return": "off",
