@@ -1,4 +1,4 @@
-1.12.0 / ####-##-##
+1.12.0 / 2018-03-25
 ===================
 
 * Browser.assert.tag and browser.assert.not.tag
