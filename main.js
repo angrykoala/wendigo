@@ -12,7 +12,8 @@ const defaultSettings = {
     slowMo: 0,
     incognito: false,
     noSandbox: false,
-    bypassCSP: true
+    bypassCSP: true,
+    proxyServer: null
 };
 
 
@@ -127,6 +128,10 @@ class Wendigo {
         settings.__onClose = this._removeBrowser.bind(this);
         if (process.env.NO_SANDBOX || settings.noSandbox) {
             settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
+        }
+
+        if (settings.proxyServer) {
+            settings.args.push(`--proxy-server=${settings.proxyServer}`);
         }
 
         if (settings.timezone) {

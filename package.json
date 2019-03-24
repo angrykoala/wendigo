@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -10,7 +10,7 @@
     "lib",
     "config.js"
   ],
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",

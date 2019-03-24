@@ -46,7 +46,7 @@ describe("Assert Style", function() {
     it("Style Element Not Found", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.style(".not-element", "color", "rgb(0, 0, 0)");
-        }, `QueryError: [assert.style] Element ".not-element" not found when trying to assert style.`);
+        }, `QueryError: [assert.style] Element ".not-element" not found.`);
     });
     it("Style Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
@@ -78,7 +78,7 @@ describe("Assert Style", function() {
         assert(browser.assert.not.style);
         await utils.assertThrowsAsync(async() => {
             await browser.assert.not.style(".not-element", "color", "rgb(0, 0, 0)");
-        }, `QueryError: [assert.not.style] Element ".not-element" not found when trying to assert style.`);
+        }, `QueryError: [assert.not.style] Element ".not-element" not found.`);
     });
 
     it("Not Style Throws Custom Message", async() => {

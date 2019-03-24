@@ -118,6 +118,7 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
   * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
   * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
+  * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
   * Any settings that can be passed to Puppeteer can be passed in createBrowser, for example:
     * `headless: true`: If true, the browser will run on headless mode.
     * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
@@ -523,6 +524,14 @@ elements.length; // 2
 
 Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
+**findByAttribute(attributeName, attributeValue?)**  
+Returns an array with all elements having an attribute matching the given name and value. If no value is assigned, it will match all elements with that attribute, regardless of the value. Use empty string as value to match all the elements with an attribute without value (e.g. `<div hidden>`)
+
+```js
+const hiddenElements = await browser.findByAttribute("hidden"); // Returns all the elements with the hidden attribute
+const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
+```
+
 **findCssPath(element)**  
 Will return the css path string (e.g. `body > div > button`) of a DomElement.
 
@@ -589,6 +598,15 @@ Returns an array with the innerHtml strings of all the elements matching the giv
 
 ```js
 await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
+```
+
+> Css, Xpath and Dom selectors supported
+
+**tag(selector)**  
+Returns the tag name of the first element matching the given selector, keep in mind that the tag will **always** be returned lowercase. Returns null if no element was found.
+
+```js
+await browser.tag(".my-header"); // "h1"
 ```
 
 > Css, Xpath and Dom selectors supported
@@ -690,6 +708,13 @@ An element will considered visible if:
 * Exists
 * The computed style doesn't contain display: none or visibility: hidden
 * All the parents are visible
+
+**tag(selector, expected, msg?)**  
+Asserts that at least one element matching the given selector has the given tag name.
+
+```js
+await browser.assert.tag("my-header", "h1");
+```
 
 **text(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected string or regex.
@@ -900,6 +925,13 @@ await browser.not.exists("h1.foo.bar");
 
 **not.visible(selector, msg?)**  
 Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well.
+
+**tag(selector, expected, msg?)**  
+Asserts that at least no element matching the given selector has the given tag name.
+
+```js
+await browser.assert.not.tag("my-main-header", "h4");
+```
 
 **not.text(selector, expected, msg?)**  
 Asserts that no element matching the given selector matches the expected text.
