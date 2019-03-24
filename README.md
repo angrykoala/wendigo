@@ -523,6 +523,14 @@ elements.length; // 2
 
 Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
 
+**findByAttribute(attributeName, attributeValue?)**  
+Returns an array with all elements having an attribute matching the given name and value. If no value is assigned, it will match all elements with that attribute, regardless of the value. Use empty string as value to match all the elements with an attribute without value (e.g. `<div hidden>`)
+
+```js
+const hiddenElements = await browser.findByAttribute("hidden"); // Returns all the elements with the hidden attribute
+const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
+```
+
 **findCssPath(element)**  
 Will return the css path string (e.g. `body > div > button`) of a DomElement.
 
