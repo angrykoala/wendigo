@@ -2,6 +2,7 @@
 ===================
 
 * Minor improvements to dockerfile
+* Fix on using log: true when console.warn is used in the page
 
 1.12.0 / 2018-03-25
 ===================
