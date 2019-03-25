@@ -8,7 +8,7 @@ describe("Requests Redirect", function() {
     let browser;
 
     beforeEach(async() => {
-        browser = await Wendigo.createBrowser({log: true});
+        browser = await Wendigo.createBrowser();
         await browser.open(configUrls.requestsFake);
     });
 

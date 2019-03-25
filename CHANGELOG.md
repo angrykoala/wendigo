@@ -1,3 +1,9 @@
+1.12.1 / 2018-03-25
+===================
+
+* Minor improvements to dockerfile
+* Fix of console.warn logs when set the option log: true
+
 1.12.0 / 2018-03-25
 ===================
 

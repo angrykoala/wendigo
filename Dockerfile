@@ -2,8 +2,7 @@ FROM node:10-slim
 
 WORKDIR /app
 
-RUN apt-get update
-RUN apt-get install -y -q \
+RUN apt-get update && apt-get install -y -q --no-install-recommends\
     libasound2 \
     libatk1.0-0 \
     libc6 \
@@ -40,7 +39,9 @@ RUN apt-get install -y -q \
     libnss3 \
     lsb-release \
     xdg-utils \
-    wget
+    wget \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NO_SANDBOX=true
 RUN npm install wendigo && npm cache clean --force
