@@ -1,8 +1,8 @@
-1.12.1 / ####-##-##
+1.12.1 / 2018-03-25
 ===================
 
 * Minor improvements to dockerfile
-* Fix on using log: true when console.warn is used in the page
+* Fix of console.warn logs when set the option log: true
 
 1.12.0 / 2018-03-25
 ===================
