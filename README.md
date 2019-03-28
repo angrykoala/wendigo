@@ -1614,7 +1614,7 @@ browser.assert.koalafied.thereAreKoalas();
 * **plugin**: Class to be used as plugin accessed under `browser.name`, this class will receive `browser` as constructor parameter and 2 methods can be implemented as hooks:
   * **_beforeOpen**: Called when `browser.open` is called, before opening the page.
   * **_beforeClose**: Called when `browser.close` is called, before closing the page.
-* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will received both the browser and the core plugin as parameters
+* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will receive both the browser and the core plugin as parameters
 
 registerPlugin also accepts a single object containing the data in the following structure:
 
@@ -1635,6 +1635,24 @@ function myPluginAssertionFunc(browser, myPlugin, count){
 
 Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
 browser.assert.koalafied(); // note the assertion is called directly
+```
+
+An object with 2 functions "assert" and "not" can also be passed as an assertion to registerModule. In this case, both will be attached to the main modules `assert` and `assert.not`:
+
+```js
+const myAssertion = {
+    assert(browser, myPlugin, count){
+        // koala count assertion
+    },
+    not(browser, myPlugin, count){
+        // not assertion check
+    }
+
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+browser.assert.koalafied();
+browser.assert.not.koalafied();
 ```
 
 ### Publishing a plugin
