@@ -86,7 +86,6 @@ class Wendigo {
         });
     }
 
-
     clearPlugins() {
         this.customPlugins = [];
         BrowserFactory.clearCache();
@@ -99,17 +98,24 @@ class Wendigo {
     _validatePlugin(name, plugin, assertions) {
         this._validatePluginName(name);
         if (plugin && typeof plugin !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
-        if (assertions && typeof assertions !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
+        this._validatePluginAssertion(name, assertions);
         if (!plugin && !assertions) throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
     }
 
     _validatePluginName(name) {
         if (!name || typeof name !== 'string') throw new Errors.FatalError("registerPlugin", `Plugin requires a name.`);
-        let invalidNames = ["assert", "page"];
+        let invalidNames = ["assert", "page", "not"];
         const plugins = defaultPlugins.concat(this.customPlugins);
         invalidNames = invalidNames.concat(plugins.map(p => p.name));
         const valid = !invalidNames.includes(name);
         if (!valid) throw new Errors.FatalError("registerPlugin", `Invalid plugin name "${name}".`);
+    }
+
+    _validatePluginAssertion(name, assertions) {
+        if (assertions) {
+            const isValidObject = assertions.assert || assertions.not;
+            if (typeof assertions !== 'function' && !isValidObject) throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
+        }
     }
 
     _createInstance(settings) {

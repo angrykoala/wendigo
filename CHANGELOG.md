@@ -1,3 +1,8 @@
+1.13.0 / ####-##-##
+===================
+
+* Support for an object with assert and not functions for a plugin
+
 1.12.1 / 2018-03-25
 ===================
 

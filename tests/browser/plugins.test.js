@@ -189,8 +189,7 @@ describe("Plugins", function() {
         await browser.close();
     });
 
-    // Tests Issue #288
-    it.skip("Register Plugin With Function Assertion And Not Assertion", async() => {
+    it("Register Plugin With Function Assertion And Not Assertion", async() => {
         Wendigo.registerPlugin("pluginTest", null, {
             assert: () => {
                 return "ok";
