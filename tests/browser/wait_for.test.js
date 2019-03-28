@@ -131,4 +131,24 @@ describe("Wait For", function() {
             await browser.waitForText("Off", 10);
         }, `TimeoutError: [waitForText] Waiting for text "Off", timeout of 10ms exceeded.`);
     });
+
+    // Test #305
+    it.skip("Wait For Url Using Regexp", async() => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitForUrl(/not-a-web/, 10);
+        }, `TimeoutError: [waitForUrl] Waiting for url "/not-a-web/", timeout of 10ms exceeded.`);
+
+        await browser.assert.not.title("Index Test");
+        await browser.assert.url(configUrls.simple);
+    });
+
+    it.skip("Wait For Url Regexp Timeout", async() => {
+        await browser.open(configUrls.index);
+        await browser.click("a");
+        await browser.waitForUrl(/html_simple/);
+        await browser.assert.not.title("Index Test");
+        await browser.assert.url(configUrls.simple);
+    });
 });
