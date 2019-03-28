@@ -139,6 +139,14 @@ describe("Plugins", function() {
         }, `FatalError: [registerPlugin] Invalid plugin name "pluginTest".`);
 
         await utils.assertThrowsAsync(() => {
+            Wendigo.registerPlugin("assert", PluginTest);
+        }, `FatalError: [registerPlugin] Invalid plugin name "assert".`);
+
+        await utils.assertThrowsAsync(() => {
+            Wendigo.registerPlugin("page", PluginTest);
+        }, `FatalError: [registerPlugin] Invalid plugin name "page".`);
+
+        await utils.assertThrowsAsync(() => {
             Wendigo.registerPlugin("", PluginTest);
         }, `FatalError: [registerPlugin] Plugin requires a name.`);
     });
