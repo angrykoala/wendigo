@@ -1,3 +1,8 @@
+2.0.0 / ####-##-##
+==================
+
+* Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
+
 1.13.0 / 2018-03-29
 ===================
 
