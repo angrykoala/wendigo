@@ -1215,11 +1215,11 @@ The Requests module allows to get and filter the requests made by the browser si
 **filter**  
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**all**  
+**all()**  
 Returns all requests, ordered by when it was dispatched.
 
 ```js
-await browser.requests.all;
+await browser.requests.all();
 ```
 
 **mock(url, options)**  
