@@ -36,7 +36,8 @@ describe("Evaluate", function() {
         assert.strictEqual(elementText, "Main Title");
     });
 
-    it.skip("Evaluate With Regexp Argument", async() => { // Not yet supported
+    // Tests #392
+    it.skip("Evaluate With Regexp Argument", async() => {
         const regex = /a.a/;
         const match = await browser.evaluate((r) => {
             r.test("aba");

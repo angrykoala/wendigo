@@ -74,7 +74,8 @@ describe("Date Mock", function() {
         assert.strictEqual(expectedDate, 1201820400000);
     });
 
-    it.skip("Using Date As Function", async() => { // NOT SUPPORTED
+    // Tests #331
+    it.skip("Using Date As Function", async() => {
         await browser.mockDate(new Date(2010, 11, 10));
         await browser.click(".btn");
         const currentDates = await browser.evaluate(() => {

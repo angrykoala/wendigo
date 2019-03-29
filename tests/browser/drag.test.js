@@ -3,6 +3,7 @@
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
+// Tests #227
 describe.skip("Drag And Drop", function() {
     this.timeout(5000);
     let browser;
