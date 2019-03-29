@@ -6,6 +6,7 @@ _by @angrykoala_
 [![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
 [![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo/master.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo/master.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fangrykoala%2Fwendigo.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fangrykoala%2Fwendigo?ref=badge_shield)
 
 > A proper monster for front-end automated testing
 
@@ -1824,3 +1825,6 @@ const browser = await Wendigo.createBrowser({
 * Wendigo is maintained by @angrykoala under GPL-3.0 License
 * Wendigo Old Logo, made by @jbeguna04 is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
 * Wendigo Logo, made by @belenpicazo is licensed under [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fangrykoala%2Fwendigo.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fangrykoala%2Fwendigo?ref=badge_large)
