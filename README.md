@@ -209,7 +209,18 @@ const elementText = await browser.evaluate((s) => {
 }, selector); // My Title
 ```
 
-> This is a wrapper around browser.page.evaluate
+This method, unlike `browser.page.evaluate` will automatically parse DOMElements arguments and DOMElements returns:
+
+```js
+const selector = "h1";
+const element = await browser.evaluate((s) => {
+    return document.querySelector(s);
+}, selector); // DOMElement
+
+const elementText = await browser.evaluate((e)=>{
+    return e.textContent;
+}, element); // My Title
+```
 
 **query(selector, childSelector?)**  
 Queries the given css selector and returns a DOM element. If multiple elements are matched, only the first will be returned. Returns null if no element found.
@@ -243,7 +254,7 @@ elements[0].textContent; // "My first paragraph"
 > The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
 **elementFromPoint(x, y)**  
-Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `undefined` if no element is present.
+Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `null` if no element is present.
 
 ```js
 const element = await browser.elementFromPoint(500, 150);
@@ -465,7 +476,7 @@ await browser.waitUntilNotVisible(".toast");
 > Css and XPath selectors supported only.
 
 **waitForUrl(url, timeout=500)**  
-Waits for the page to have the given url.
+Waits for the page to have the given url. The url can be a string or a RegExp.
 
 ```js
 await browser.click("a");
@@ -1287,6 +1298,8 @@ callApi();
 mock.trigger();
 ```
 
+Trigger supports an optional response that will be used instead of the mock default response. It uses the same syntax (body, status, ...).
+
 **removeMock(url, options?)**  
 Removes the mock with the given url. If the original mock has a method or queryString, these must be provided in options.
 
@@ -1614,7 +1627,7 @@ browser.assert.koalafied.thereAreKoalas();
 * **plugin**: Class to be used as plugin accessed under `browser.name`, this class will receive `browser` as constructor parameter and 2 methods can be implemented as hooks:
   * **_beforeOpen**: Called when `browser.open` is called, before opening the page.
   * **_beforeClose**: Called when `browser.close` is called, before closing the page.
-* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will received both the browser and the core plugin as parameters
+* **assertion**: Class to be used as plugin's assertions, it can be accessed on `browser.assertion.name` the constructor will receive both the browser and the core plugin as parameters
 
 registerPlugin also accepts a single object containing the data in the following structure:
 
@@ -1635,6 +1648,24 @@ function myPluginAssertionFunc(browser, myPlugin, count){
 
 Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
 browser.assert.koalafied(); // note the assertion is called directly
+```
+
+An object with 2 functions "assert" and "not" can also be passed as an assertion to registerModule. In this case, both will be attached to the main modules `assert` and `assert.not`:
+
+```js
+const myAssertion = {
+    assert(browser, myPlugin, count){
+        // koala count assertion
+    },
+    not(browser, myPlugin, count){
+        // not assertion check
+    }
+
+}
+
+Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
+browser.assert.koalafied();
+browser.assert.not.koalafied();
 ```
 
 ### Publishing a plugin

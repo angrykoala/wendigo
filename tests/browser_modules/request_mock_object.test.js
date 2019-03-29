@@ -182,4 +182,20 @@ describe("Requests Mock Object", function() {
             }, "postbody fails");
         }, `[assert.postBody] postbody fails`);
     });
+
+    it("Mock With Trigger And Response", async() => {
+        const response = Object.assign({
+            auto: false
+        }, mockResponse);
+        const mock = browser.requests.mock(configUrls.api, response);
+        assert.strictEqual(mock.auto, false);
+        await browser.clickText("click me");
+        await browser.assert.not.text("#result", "MOCK");
+        mock.trigger({
+            body: {result: "MOCK2"}
+        });
+        await browser.wait(20);
+        await browser.assert.text("#result", "MOCK2");
+        assert.strictEqual(mock._response.body, JSON.stringify({result: "MOCK"}));
+    });
 });
