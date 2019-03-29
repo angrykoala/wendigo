@@ -1287,6 +1287,8 @@ callApi();
 mock.trigger();
 ```
 
+Trigger supports an optional response that will be used instead of the mock default response. It uses the same syntax (body, status, ...).
+
 **removeMock(url, options?)**  
 Removes the mock with the given url. If the original mock has a method or queryString, these must be provided in options.
 
