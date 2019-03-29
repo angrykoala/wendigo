@@ -4,6 +4,7 @@
 * Support for an object with assert and not functions for a plugin
 * RegExp support for waitForUrl
 * Mock.trigger accepts an optional response
+* Puppeteer updated to 1.14.0
 * Cookies is now fully implemented as a plugin
 
 1.12.1 / 2018-03-25
