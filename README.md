@@ -465,7 +465,7 @@ await browser.waitUntilNotVisible(".toast");
 > Css and XPath selectors supported only.
 
 **waitForUrl(url, timeout=500)**  
-Waits for the page to have the given url.
+Waits for the page to have the given url. The url can be a string or a RegExp.
 
 ```js
 await browser.click("a");
