@@ -97,10 +97,11 @@ describe("Evaluate", function() {
     });
 
     // Tests #286
-    it.skip("Evaluate Returning DOM Element", async() => {
+    it("Evaluate Returning DOM Element", async() => {
         const result = await browser.evaluate(() => {
             return document.querySelector("h1");
         });
         assert.ok(result instanceof DomElement);
+        await browser.assert.text(result, "Main Title");
     });
 });

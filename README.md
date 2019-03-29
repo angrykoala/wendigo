@@ -209,7 +209,18 @@ const elementText = await browser.evaluate((s) => {
 }, selector); // My Title
 ```
 
-> This is a wrapper around browser.page.evaluate
+This method, unlike `browser.page.evaluate` will automatically parse DOMElements arguments and DOMElements returns:
+
+```js
+const selector = "h1";
+const element = await browser.evaluate((s) => {
+    return document.querySelector(s);
+}, selector); // DOMElement
+
+const elementText = await browser.evaluate((e)=>{
+    return e.textContent;
+}, element); // My Title
+```
 
 **query(selector, childSelector?)**  
 Queries the given css selector and returns a DOM element. If multiple elements are matched, only the first will be returned. Returns null if no element found.
@@ -243,7 +254,7 @@ elements[0].textContent; // "My first paragraph"
 > The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
 
 **elementFromPoint(x, y)**  
-Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `undefined` if no element is present.
+Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `null` if no element is present.
 
 ```js
 const element = await browser.elementFromPoint(500, 150);

@@ -33,7 +33,7 @@ describe("Element From Point", function() {
     it('No Element Found', async() => {
         await browser.open(configUrls.difficultClick);
         const element = await browser.elementFromPoint(4000, 4000);
-        assert.strictEqual(element, undefined);
+        assert.strictEqual(element, null);
     });
 
     it('Element From Point Throws', async() => {

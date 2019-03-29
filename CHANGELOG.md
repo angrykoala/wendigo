@@ -4,8 +4,10 @@
 * Support for an object with assert and not functions for a plugin
 * RegExp support for waitForUrl
 * Mock.trigger accepts an optional response
+* Browser.evaluate now supports returning DOMElements
 * Puppeteer updated to 1.14.0
 * Cookies is now fully implemented as a plugin
+* ElementFromPoint not returns null if no element is found
 
 1.12.1 / 2018-03-25
 ===================
