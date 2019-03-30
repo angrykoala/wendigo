@@ -1,37 +1,42 @@
 /* global WendigoUtils */
-"use strict";
 
-const DomElement = require('../models/dom_element');
-const utils = require('../utils/utils');
-const {QueryError, WendigoError} = require('../errors');
+import DomElement from '../models/dom_element';
+import * as utils from '../utils/utils';
+import { QueryError, WendigoError } from '../errors';
+import { Constructor } from '../types';
+import BrowserCore from '../browser_core';
+import { CssSelector, XPathSelector, WendigoSelector } from '../types';
 
-module.exports = function BrowserActionsMixin(s) {
-    return class BrowserActions extends s {
-        type(selector, text, options = {}) {
-            this._failIfNotLoaded("type");
+export default function BrowserActionsMixin<C extends Constructor<BrowserCore>>(base: C) {
+    return class BrowserActions extends base {
+        public type(selector: CssSelector | DomElement, text: string, options: { delay?: number } = {}): Promise<void> {
+            this.failIfNotLoaded("type");
             if (typeof text !== "string") return Promise.reject(new WendigoError("type", `Invalid text.`));
             if (typeof selector === "string") {
-                return this.page.type(selector, text, {delay: options.delay || 0});
+                return this.page.type(selector, text, { delay: options.delay || 0 });
             } else if (selector instanceof DomElement) {
                 return selector.element.type(text);
             } else return Promise.reject(new WendigoError("type", `Invalid selector.`));
         }
 
-        keyPress(key, count = 1) {
-            this._failIfNotLoaded("keyPress");
+        public async keyPress(key: Array<string> | string, count: number = 1): Promise<void> {
+            this.failIfNotLoaded("keyPress");
             if (!Array.isArray(key)) key = [key];
             const funcs = key.map(k => () => this.page.keyboard.press(k));
-            let funcsFinal = [];
+            let funcsFinal: Array<() => Promise<any>> = [];
             for (let i = 0; i < count; i++) {
                 funcsFinal = funcsFinal.concat(funcs);
             }
-            return utils.promiseSerial(funcsFinal).catch(() => {
+
+            try {
+                await utils.promiseSerial(funcsFinal);
+            } catch (err) {
                 return Promise.reject(new WendigoError("keyPress", `Could not press keys "${key.join(", ")}"`));
-            });
+            }
         }
 
-        uploadFile(selector, path) {
-            this._failIfNotLoaded("uploadFile");
+        public async uploadFile(selector: WendigoSelector, path: string) {
+            this.failIfNotLoaded("uploadFile");
             return this.query(selector).then(fileInput => {
                 if (fileInput) {
                     return fileInput.element.uploadFile(path);
@@ -42,8 +47,8 @@ module.exports = function BrowserActionsMixin(s) {
             });
         }
 
-        select(selector, values) {
-            this._failIfNotLoaded("select");
+        public select(selector: CssSelector, values: Array<string> | string) {
+            this.failIfNotLoaded("select");
             if (!Array.isArray(values)) values = [values];
             return this.page.select(selector, ...values).catch(() => {
                 const error = new QueryError("select", `Element "${selector}" not found.`);

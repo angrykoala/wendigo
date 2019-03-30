@@ -3,6 +3,7 @@
 
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent
+* Assertions now always return promises for consistency
 
 1.13.0 / 2018-03-29
 ===================

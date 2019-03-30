@@ -565,6 +565,8 @@ The following options passed as an object are supported:
 await browser.type("input.my-input", "My Input");
 ```
 
+> Only CSS Selector And DOM Element Supported
+
 **keyPress(key, count?)**  
 Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
 
@@ -1144,6 +1146,8 @@ All the log types are strings, but some of the most common types are accessible 
 * _warning_
 * _trace_
 
+> Keep in mind that different strings may be returned from Puppeteer
+
 ### LocalStorage
 The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return Promises.
 
@@ -1247,16 +1251,18 @@ browser.requests.mock("http://localhost:8000/api", {
 });
 ```
 
-Mock will return a RequestMock object, with the following properties:
+Mock will return a RequestMock object, with the following read-only properties:
 
 * `called`: If the mock has been called.
 * `timesCalled`: The times the mock has been called.
 * `response` : The response the mock is returning (read only).
 * `url`: Mocked url.
-* `queryString`: The mock queryString.
 * `immediate`: If the mock will return immediately (delay=0).
-* `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 * `auto`: If the request will be completed automatically.
+* `method`: Mock expected method.
+
+And the following methods:
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 
 ```js
 const mock = browser.requests.mock("http://localhost:8000/api", {
@@ -1278,10 +1284,10 @@ The mock will also provide an assertion interface in `mock.assert` with the foll
 const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"}
 });
-mock.assert.called(0);
+await mock.assert.called(0);
 callApi("my request"); // POST requests with given body
-mock.assert.called(0);
-mock.assert.postBody("my request");
+await mock.assert.called(0);
+await mock.assert.postBody("my request");
 ```
 
 All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.

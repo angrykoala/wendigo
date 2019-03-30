@@ -1,8 +1,7 @@
-"use strict";
+import * as isClass from 'is-class';
+import {mix} from 'mixwith';
+import * as compose from 'compositer';
 
-const isClass = require('is-class');
-const mix = require('mixwith').mix;
-const compose = require('compositer');
 const BrowserCore = require('./browser_core');
 const BrowserAssertion = require('./modules/assertions/browser_assertions');
 const BrowserNotAssertions = require('./modules/assertions/browser_not_assertions');
@@ -18,7 +17,7 @@ const mixins = [
     require("./mixins/browser_events")
 ];
 
-module.exports = class BrowserFactory {
+export default class BrowserFactory {
     static createBrowser(page, settings, plugins) {
         if (!this._BrowserClass) this._BrowserClass = this._createBrowserClass(plugins);
         return new this._BrowserClass(page, settings);

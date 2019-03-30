@@ -10,12 +10,13 @@
     "lib",
     "config.js"
   ],
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
     "lint": "eslint . --ext .js",
-    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md"
+    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
+    "tsc": "tsc"
   },
   "repository": {
     "type": "git",
@@ -42,9 +43,14 @@
     "puppeteer": "~1.14.0"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.12.1",
+    "@types/puppeteer": "^1.12.3",
     "eslint": "^5.15.3",
     "express": "^4.16.4",
     "markdownlint-cli": "^0.14.1",
-    "mocha": "^6.0.2"
+    "mocha": "^6.0.2",
+    "tslint": "^5.14.0",
+    "typescript": "^3.4.1"
   }
 }

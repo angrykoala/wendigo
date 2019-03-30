@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "outDir": "dist",
+        "sourceMap": true,
+        "strict": true,
+        "target": "es2015",
+        "typeRoots": [ "./@types", "./node_modules/@types"]
+    },
+    "compileOnSave": true,
+    "includes": [
+        "main.ts",
+        "globals.d.ts"
+    ]
+}

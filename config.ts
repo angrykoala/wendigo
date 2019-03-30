@@ -1,7 +1,6 @@
-"use strict";
-const path = require('path');
+import * as path from 'path';
 
-module.exports = {
+export default {
     injectionScripts: {
         path: path.join(__dirname, "injection_scripts"),
         files: [

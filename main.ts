@@ -1,9 +1,9 @@
 "use strict";
 
-const process = require('process');
-const BrowserFactory = require('./lib/browser_factory');
-const puppeteer = require('puppeteer');
-const Errors = require('./lib/errors');
+import * as process from 'process';
+import * as puppeteer from 'puppeteer';
+import BrowserFactory from './lib/browser_factory';
+import * as Errors from './lib/errors';
 
 const defaultSettings = {
     log: false,
@@ -15,7 +15,6 @@ const defaultSettings = {
     bypassCSP: true,
     proxyServer: null
 };
-
 
 const defaultPlugins = [{
     name: "cookies",
