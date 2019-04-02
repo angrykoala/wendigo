@@ -1,4 +1,4 @@
-import { AssertionError, WendigoError } from '../errors';
+import { AssertionError, WendigoError } from '../../errors';
 
 export async function invertify(cb: () => Promise<void>, fnName: string, msg: string): Promise<void> {
     try {
@@ -10,7 +10,7 @@ export async function invertify(cb: () => Promise<void>, fnName: string, msg: st
             return Promise.reject(newError);
         } else return Promise.reject(err);
     }
-    return this.rejectAssertion(fnName, msg);
+    return rejectAssertion(fnName, msg);
 }
 
 export function sameMembers(arr1: Array<any>, arr2: Array<any>): boolean {
@@ -22,6 +22,6 @@ export function sameMembers(arr1: Array<any>, arr2: Array<any>): boolean {
     return true;
 }
 
-export function rejectAssertion(fnName: string, msg: string, actual, expected) {
+export function rejectAssertion(fnName: string, msg: string, actual?: any, expected?: any): Promise<void> {
     return Promise.reject(new AssertionError(fnName, msg, actual, expected));
 }

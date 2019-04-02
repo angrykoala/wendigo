@@ -26,8 +26,8 @@ export default class DomElement {
     public async queryAll(selector: string): Promise<Array<DomElement>> {
         return this.element.$$(selector).then((elements) => {
             return elements.map((e) => {
-                return new DomElement(e, selector);
-            });
+                return DomElement.processQueryResult(e, selector);
+            }).filter(b => Boolean(b)) as Array<DomElement>;
         });
     }
 
@@ -45,10 +45,9 @@ export default class DomElement {
     }
 
     public static processQueryResult(element?: JSHandle | null, name?: string): DomElement | null {
-        if (element) {
-            const elementHandle = element.asElement();
-            if (elementHandle) return new DomElement(elementHandle, name);
-        }
-        return null;
+        if (!element) return null;
+        const elementHandle = element.asElement();
+        if (elementHandle) return new DomElement(elementHandle, name);
+        else return null;
     }
 }

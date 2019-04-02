@@ -1,18 +1,17 @@
-/* global WendigoUtils */
 import * as path from 'path';
 import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
 import * as querystring from 'querystring';
-import { FatalError, InjectScriptError } from './errors';
-import WendigoConfig from '../config';
-import WendigoPlugin from './modules/wendigo_plugin';
-import DomElement from './models/dom_element';
-import { stringifyLogText } from './utils/utils';
-import { ParsedQueryString } from './types';
+import { FatalError, InjectScriptError } from '../errors';
+import WendigoConfig from '../../config';
+import WendigoPlugin from '../modules/wendigo_plugin';
+import DomElement from '../models/dom_element';
+import { stringifyLogText } from '../utils/utils';
+import { ParsedQueryString, BrowserSettings } from '../types';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
 
-function pageLog(log: ConsoleMessage) {
+function pageLog(log: ConsoleMessage): void {
     stringifyLogText(log).then(text => {
         let logType = log.type() as string;
         if (logType === 'warning') logType = 'warn';
@@ -28,10 +27,7 @@ interface OpenSettings {
     queryString?: string | ParsedQueryString;
 }
 
-interface BrowserSettings {
-    log: boolean;
-    userAgent: string;
-    bypassCSP: boolean;
+interface FinalBrowserSettings extends BrowserSettings {
     __onClose: (a: any) => any;
 }
 
@@ -44,18 +40,18 @@ const defaultOpenOptions: OpenSettings = {
     }
 };
 
-export default class BrowserCore {
+export default abstract class BrowserCore {
     public page: Page;
     public initialResponse: Response | null;
-    public originalHtml?: string;
 
-    protected settings: BrowserSettings;
+    protected originalHtml?: string;
+    protected settings: FinalBrowserSettings;
 
     private _loaded: boolean;
     private disabled: boolean;
     private components: Array<string>; // TODO
 
-    constructor(page: Page, settings: BrowserSettings, components: Array<string>) {
+    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string>) {
         this.page = page;
         this.settings = settings;
         this._loaded = false;
@@ -74,7 +70,7 @@ export default class BrowserCore {
         });
     }
 
-    get loaded() {
+    get loaded(): boolean {
         return this._loaded && !this.disabled;
     }
 
@@ -130,7 +126,7 @@ export default class BrowserCore {
         } else return rawResult.jsonValue();
     }
 
-    public setViewport(config = {}) {
+    public setViewport(config = {}): Promise<void> {
         const finalConfig = Object.assign({}, this.page.viewport(), config) as Viewport;
         return this.page.setViewport(finalConfig);
     }
@@ -168,20 +164,13 @@ export default class BrowserCore {
         }
     }
 
-    private setupEvaluateArguments(args: Array<any>) {
-        return args.map((e) => {
-            if (e instanceof DomElement) return e.element;
-            else return e;
-        });
-    }
-
-    private async _beforeClose(): Promise<void> {
+    protected async _beforeClose(): Promise<void> {
         this.settings.__onClose(this);
         if (!this._loaded) return Promise.resolve();
         await this.callComponentsMethod("_beforeClose");
     }
 
-    private async _beforeOpen(options: OpenSettings): Promise<void> {
+    protected async _beforeOpen(options: OpenSettings): Promise<void> {
         if (this.settings.userAgent) {
             await this.page.setUserAgent(this.settings.userAgent);
         }
@@ -193,7 +182,7 @@ export default class BrowserCore {
         await this.callComponentsMethod("_beforeOpen", options);
     }
 
-    private async _afterPageLoad(options?: OpenSettings): Promise<void> {
+    protected async _afterPageLoad(options?: OpenSettings): Promise<void> {
         try {
             const content = await this.page.content();
             this.originalHtml = content;
@@ -212,6 +201,13 @@ export default class BrowserCore {
             });
         });
         await Promise.all(promises);
+    }
+
+    private setupEvaluateArguments(args: Array<any>): Array<any> {
+        return args.map((e) => {
+            if (e instanceof DomElement) return e.element;
+            else return e;
+        });
     }
 
     private async callComponentsMethod(method: string, options?: any): Promise<void> {

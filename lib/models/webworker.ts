@@ -6,7 +6,7 @@ export default class WebWoker {
         this.worker = ww;
     }
 
-    get url() {
+    get url(): string {
         return this.worker.url();
     }
 }

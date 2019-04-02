@@ -1,41 +1,33 @@
 import * as isClass from 'is-class';
-import {mix} from 'mixwith';
 import * as compose from 'compositer';
+import { Page } from 'puppeteer';
+import { BrowserSettings, WendigoPluginInterface } from './types';
 
-const BrowserCore = require('./browser_core');
-const BrowserAssertion = require('./modules/assertions/browser_assertions');
-const BrowserNotAssertions = require('./modules/assertions/browser_not_assertions');
-
-const mixins = [
-    require("./mixins/browser_actions"),
-    require("./mixins/browser_info"),
-    require("./mixins/browser_navigation"),
-    require("./mixins/browser_queries"),
-    require("./mixins/browser_wait"),
-    require("./mixins/browser_click"),
-    require("./mixins/browser_tap"),
-    require("./mixins/browser_events")
-];
+import Browser from './browser/browser';
+// const BrowserCore = require('./browser_core');
+// const BrowserAssertion = require('./modules/assertions/browser_assertions');
+// const BrowserNotAssertions = require('./modules/assertions/browser_not_assertions');
 
 export default class BrowserFactory {
-    static createBrowser(page, settings, plugins) {
-        if (!this._BrowserClass) this._BrowserClass = this._createBrowserClass(plugins);
-        return new this._BrowserClass(page, settings);
+    private static browserClass?: typeof Browser;
+
+    public static createBrowser(page: Page, settings: BrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
+        if (!this.browserClass) this.browserClass = this.createBrowserClass(plugins);
+        return new this.browserClass(page, settings);
     }
 
-    static clearCache() {
-        this._BrowserClass = undefined;
+    public static clearCache(): void {
+        this.browserClass = undefined;
     }
 
-    static _createBrowserClass(plugins) {
-        const BaseClass = this._createBrowserMixin();
-        return this._setupBrowserPlugins(BaseClass, plugins);
+    private static createBrowserClass(plugins: Array<WendigoPluginInterface>): typeof Browser { // TODO: improve plugin type
+        return this.setupBrowserPlugins(Browser, plugins);
     }
 
-    static _setupBrowserPlugins(BaseClass, plugins) {
-        const components = {};
-        const assertComponents = {};
-        const notAssertFunctions = {};
+    private static setupBrowserPlugins(BaseClass: typeof Browser, plugins: Array<WendigoPluginInterface>) {
+        const components: { [s: string]: any } = {};
+        const assertComponents: { [s: string]: any } = {};
+        const notAssertFunctions: { [s: string]: any } = {};
         for (const p of plugins) {
             if (p.plugin) {
                 components[p.name] = p.plugin;
@@ -51,16 +43,11 @@ export default class BrowserFactory {
         const NotAssertModule = compose(BrowserNotAssertions, notAssertFunctions);
         assertComponents.not = NotAssertModule;
         const AssertModule = compose(BrowserAssertion, assertComponents);
-        const finalComponents = Object.assign({}, components, {"assert": AssertModule});
+        const finalComponents = Object.assign({}, components, { "assert": AssertModule });
         return compose(BaseClass, finalComponents);
     }
 
-    static _createBrowserMixin() {
-        return class Browser extends mix(BrowserCore).with(...mixins) {
-        };
-    }
-
-    static _setupAssertionModule(AssertionPlugin, name) {
+    private static _setupAssertionModule(AssertionPlugin, name) {
         if (isClass(AssertionPlugin)) {
             return this._setupAssertionClass(AssertionPlugin, name);
         } else if (typeof AssertionPlugin === 'function') {
@@ -70,14 +57,14 @@ export default class BrowserFactory {
         }
     }
 
-    static _setupAssertionFunction(assertionFunction, name) {
+    private static _setupAssertionFunction(assertionFunction, name) {
         return function(assertionModule, ...params) {
             const browser = assertionModule._browser;
             return assertionFunction(browser, browser[name], ...params);
         };
     }
 
-    static _setupAssertionClass(AssertionClass, name) {
+    private static _setupAssertionClass(AssertionClass, name) {
         return class extends AssertionClass {
             constructor(assertionModule) {
                 const browser = assertionModule._browser;
@@ -85,4 +72,4 @@ export default class BrowserFactory {
             }
         };
     }
-};
+}

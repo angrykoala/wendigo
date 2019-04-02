@@ -16,13 +16,16 @@ export class AssertionError extends assert.AssertionError {
 }
 
 export class WendigoError extends Error {
-    constructor(fn, message) {
+    protected fnName: string;
+    protected extraMessage: string;
+
+    constructor(fn: string, message: string) {
         super(`[${fn}] ${message}`);
         this.fnName = fn;
         this.extraMessage = message;
     }
 
-    static overrideFnName(error, fnName) {
+    public static overrideFnName(error: Error, fnName: string): Error {
         if (error instanceof TimeoutError) {
             const newError = new error.constructor(fnName, error.extraMessage, error.timeout);
             return newError;
@@ -34,21 +37,22 @@ export class WendigoError extends Error {
 }
 
 export class QueryError extends WendigoError {
-    constructor(fn, message) {
+    constructor(fn: string, message: string) {
         super(fn, message);
         this.name = this.constructor.name;
     }
 }
 
 export class FatalError extends WendigoError {
-    constructor(fn, message) {
+    constructor(fn: string, message: string) {
         super(fn, message);
         this.name = this.constructor.name;
     }
 }
 
 export class TimeoutError extends WendigoError {
-    constructor(fn, message, timeout) {
+    protected timeout: number;
+    constructor(fn: string, message: string, timeout: number) {
         let msg = message ? `${message}, timeout` : "Timeout";
         if (timeout !== undefined) msg = `${msg} of ${timeout}ms exceeded.`;
         super(fn, msg);
@@ -58,9 +62,8 @@ export class TimeoutError extends WendigoError {
     }
 }
 
-
 export class InjectScriptError extends FatalError {
-    constructor(fn, message) {
+    constructor(fn: string, message: string) {
         message = `${message}. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`;
         super(fn, message);
         this.name = this.constructor.name;

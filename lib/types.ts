@@ -8,4 +8,10 @@ export type WendigoSelector = CssSelector | XPathSelector | DomElement;
 
 export type ParsedQueryString = ParsedUrlQuery | { [s: string]: string };
 
-export type Constructor<T> = new(...args: any[]) => T;
+export interface BrowserSettings {
+    log: boolean;
+    userAgent: string;
+    bypassCSP: boolean;
+}
+
+export type WendigoPluginInterface = any;

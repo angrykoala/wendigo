@@ -1,27 +1,23 @@
-/* eslint-disable max-lines */
-/* global WendigoUtils */
-"use strict";
+import * as utils from '../../utils/utils';
+import * as elementsAssertionUtils from './assert_elements';
+import * as assertUtils from './assert_utils';
+// TODO: RequestAssertionFilter should be an assertion module
+// const RequestAssertionsFilter = require('../requests/request_assertions_filter');
 
-const utils = require('../../utils/utils');
-const elementsAssertionUtils = require('../../utils/assert_elements');
-const assertUtils = require('../../utils/assert_utils');
-const RequestAssertionsFilter = require('../requests/request_assertions_filter');
-const {QueryError, FatalError, WendigoError} = require('../../errors');
+import WendigoModule from '../wendigo_module';
+import { QueryError, FatalError, WendigoError } from '../../errors';
+import { WendigoSelector } from '../../types';
 
-module.exports = class BrowserAssertions {
-    constructor(browser) {
-        this._browser = browser;
-        // Not assertions are dinamically added
-    }
+export default class BrowserAssertions extends WendigoModule {
 
-    get request() {
-        const requests = this._browser.requests.filter;
-        return new RequestAssertionsFilter((r) => {
-            r();
-        }, requests);
-    }
+    // get request() {
+    //     const requests = this._browser.requests.filter;
+    //     return new RequestAssertionsFilter((r) => {
+    //         r();
+    //     }, requests);
+    // }
 
-    async exists(selector, msg) {
+    public async exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to exists`;
         let element;
         try {
@@ -32,38 +28,38 @@ module.exports = class BrowserAssertions {
         if (!element) return assertUtils.rejectAssertion("assert.exists", msg);
     }
 
-    visible(selector, msg) {
+    public visible(selector: WendigoSelector, msg?: string): Promise<void> {
         return this._browser.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             if (elements.length === 0) throw new WendigoError("assert.visible", "Element not Found");
-            for (let i = 0; i < elements.length; i++) {
-                if (WendigoUtils.isVisible(elements[i])) return true;
+            for (const e of elements) {
+                if (WendigoUtils.isVisible(e)) return true;
             }
             return false;
         }, selector).catch(() => {
             return assertUtils.rejectAssertion("assert.visible", `Selector "${selector}" doesn't match any elements.`);
-        }).then((visible) => {
+        }).then((visible: boolean) => {
             if (!visible) {
                 if (!msg) msg = `Expected element "${selector}" to be visible.`;
                 return assertUtils.rejectAssertion("assert.visible", msg);
-            }
+            } else return Promise.resolve();
         });
     }
 
-    async tag(selector, expected, msg) {
+    public async tag(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         if (!expected) {
             return Promise.reject(new WendigoError("assert.tag", `Missing expected tag for assertion.`));
         }
         const tagsFound = await this._browser.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             const results = [];
-            for (let i = 0; i < elements.length; i++) {
-                results.push(elements[i].tagName.toLowerCase());
+            for (const e of elements) {
+                results.push(e.tagName.toLowerCase());
             }
             return results;
         }, selector);
         for (const tag of tagsFound) {
-            if (tag === expected) return null;
+            if (tag === expected) return Promise.resolve();
         }
         if (!msg) {
             msg = `No element with tag "${expected}" found.`;
@@ -71,11 +67,13 @@ module.exports = class BrowserAssertions {
         return assertUtils.rejectAssertion("assert.tag", msg);
     }
 
-    text(selector, expected, msg) {
+    public text(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             return Promise.reject(new WendigoError("assert.text", `Missing expected text for assertion.`));
         }
-        if (!Array.isArray(expected)) expected = [expected];
+        let processedExpected: Array<string> = [];
+        if (Array.isArray(expected)) processedExpected = expected;
+        else processedExpected = [expected];
         return this._browser.text(selector).then((texts) => {
             for (const expectedText of expected) {
                 if (!utils.matchTextList(texts, expectedText)) {
@@ -86,6 +84,7 @@ module.exports = class BrowserAssertions {
                     return assertUtils.rejectAssertion("assert.text", msg);
                 }
             }
+            return Promise.resolve();
         });
     }
 
@@ -374,6 +373,3 @@ module.exports = class BrowserAssertions {
             return assertUtils.rejectAssertion("assert.redirect", msg);
         } else return Promise.resolve();
     }
-};
-
-/* eslint-enable max-lines */

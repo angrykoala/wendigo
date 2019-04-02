@@ -113,16 +113,16 @@ export default class RequestMock implements RequestMockInterface {
         return this.requestsReceived.length;
     }
 
-    get immediate() {
+    get immediate(): boolean {
         return this.delay === 0;
     }
 
-    public trigger(response: RequestMockResponseOptions) {
+    public trigger(response: RequestMockResponseOptions): void {
         if (this.auto) throw new FatalError("trigger", `Cannot trigger auto request mock.`);
         this.events.emit("respond", response);
     }
 
-    public async waitUntilCalled(timeout: number = 500) {
+    public async waitUntilCalled(timeout: number = 500): Promise<void> {
         if (this.called) return Promise.resolve();
         await new Promise((resolve, reject) => {
             let rejected = false;
@@ -155,7 +155,7 @@ export default class RequestMock implements RequestMockInterface {
         }
     }
 
-    private async respondRequest(request: Request, optionalResponse?: RequestMockResponseOptions) {
+    private async respondRequest(request: Request, optionalResponse?: RequestMockResponseOptions): Promise<void> {
         let response = this.response;
         if (optionalResponse) {
             response = this.processResponse(optionalResponse);
@@ -171,7 +171,7 @@ export default class RequestMock implements RequestMockInterface {
         this.events.emit("on-request");
     }
 
-    private onTrigger(cb: (r: RequestMockResponseOptions) => Promise<void>) {
+    private onTrigger(cb: (r: RequestMockResponseOptions) => Promise<void>): void {
         this.events.once("respond", cb);
     }
 
@@ -191,7 +191,7 @@ export default class RequestMock implements RequestMockInterface {
             const parsedUrl = new URL(url);
             if (parsedUrl.search) {
                 return utils.parseQueryString(url);
-            }
+            } else return undefined;
         }
     }
 

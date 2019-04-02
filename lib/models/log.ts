@@ -15,7 +15,7 @@ export default class Log {
         this.message = consoleMessage;
     }
 
-    get text() {
+    get text(): string {
         return this.message.text();
     }
 

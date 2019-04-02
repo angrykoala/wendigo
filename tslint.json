@@ -28,7 +28,8 @@
         "max-classes-per-file": false,
         "member-ordering": false,
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
-        "no-namespace": false
+        "no-namespace": false,
+        "typedef": [true, "call-signature"]
     },
     "rulesDirectory": []
 }
