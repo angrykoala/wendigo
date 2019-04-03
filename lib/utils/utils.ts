@@ -43,7 +43,8 @@ export function promiseOr(promises: Array<Promise<any>>): Promise<any> {
     });
 }
 
-export function matchText(text: string, expected: string | RegExp): boolean {
+export function matchText(text: string | null | undefined, expected: string | RegExp): boolean {
+    if (text === undefined || text === null) return false;
     if (expected instanceof RegExp) {
         return expected.test(text);
     } else return text === expected;
@@ -51,7 +52,7 @@ export function matchText(text: string, expected: string | RegExp): boolean {
 
 export function matchTextList(list: Array<string>, expected: string | RegExp): boolean {
     for (const text of list) {
-        if (this.matchText(text, expected)) return true;
+        if (matchText(text, expected)) return true;
     }
     return false;
 }
@@ -86,13 +87,13 @@ export function parseQueryString(qs: string | URL | { [s: string]: string }): Pa
 
 export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
     if (log.text().includes('JSHandle@object')) {
-        const args = await Promise.all(log.args().map(this.stringifyArg));
+        const args = await Promise.all(log.args().map(stringifyArg));
         return args.join(' ');
     }
     return log.text();
 }
 
-export function stringifyArg(arg: JSHandle) {
+export function stringifyArg(arg: JSHandle): Promise<string> {
     return arg.executionContext().evaluate(element => {
         if (typeof element === 'object' && !(element instanceof RegExp)) {
             try {
@@ -104,4 +105,9 @@ export function stringifyArg(arg: JSHandle) {
         }
         return String(element);
     }, arg);
+}
+
+export function arrayfy<T>(raw: T | Array<T>): Array<T> {
+    if (Array.isArray(raw)) return raw;
+    else return [raw];
 }

@@ -13,7 +13,7 @@ export async function invertify(cb: () => Promise<void>, fnName: string, msg: st
     return rejectAssertion(fnName, msg);
 }
 
-export function sameMembers(arr1: Array<any>, arr2: Array<any>): boolean {
+export function sameMembers<T>(arr1: Array<T>, arr2: Array<T>): boolean {
     const arr1Length = arr1.length;
     if (arr1Length !== arr2.length) return false;
     for (let i = 0; i < arr1Length; i++) {

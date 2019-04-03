@@ -71,11 +71,9 @@ export default class BrowserAssertions extends WendigoModule {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             return Promise.reject(new WendigoError("assert.text", `Missing expected text for assertion.`));
         }
-        let processedExpected: Array<string> = [];
-        if (Array.isArray(expected)) processedExpected = expected;
-        else processedExpected = [expected];
+        const processedExpected = utils.arrayfy(expected);
         return this._browser.text(selector).then((texts) => {
-            for (const expectedText of expected) {
+            for (const expectedText of processedExpected) {
                 if (!utils.matchTextList(texts, expectedText)) {
                     if (!msg) {
                         const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
@@ -88,7 +86,7 @@ export default class BrowserAssertions extends WendigoModule {
         });
     }
 
-    textContains(selector, expected, msg) {
+    public textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         return this._browser.text(selector).then((texts) => {
             for (const text of texts) {
                 if (text && text.includes(expected)) return Promise.resolve();
@@ -101,17 +99,18 @@ export default class BrowserAssertions extends WendigoModule {
         });
     }
 
-    title(expected, msg) {
+    public title(expected: string | RegExp, msg?: string): Promise<void> {
         return this._browser.title().then((title) => {
             const foundTitle = title ? `"${title}"` : "no title";
             if (!utils.matchText(title, expected)) {
                 if (!msg) msg = `Expected page title to be "${expected}", ${foundTitle} found.`;
                 return assertUtils.rejectAssertion("assert.title", msg);
             }
+            return Promise.resolve();
         });
     }
 
-    async class(selector, expected, msg) {
+    public async class(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         let classes;
         try {
             classes = await this._browser.class(selector);
@@ -127,7 +126,7 @@ export default class BrowserAssertions extends WendigoModule {
         }
     }
 
-    async url(expected, msg) {
+    public async url(expected: string | RegExp, msg?: string): Promise<void> {
         let url;
         try {
             url = await this._browser.url();
@@ -140,7 +139,7 @@ export default class BrowserAssertions extends WendigoModule {
         }
     }
 
-    value(selector, expected, msg) {
+    public value(selector: WendigoSelector, expected: string | null, msg?: string): Promise<void> {
         return this._browser.value(selector).then((value) => {
             if (value !== expected) {
                 if (!msg) {
@@ -149,28 +148,30 @@ export default class BrowserAssertions extends WendigoModule {
                 }
                 return assertUtils.rejectAssertion("assert.value", msg, value, expected);
             }
+            return Promise.resolve();
         });
     }
 
-    element(selector, msg) {
-        return this.elements(selector, 1, msg).catch((err) => {
+    public element(selector: WendigoSelector, msg?: string): Promise<void> {
+        return this.elements(selector, 1, msg).catch((err: Error) => {
             return Promise.reject(WendigoError.overrideFnName(err, "assert.element"));
         });
     }
 
-    elements(selector, count, msg) {
+    public elements(selector: WendigoSelector, count: number, msg?: string): Promise<void> {
         const assertCountData = elementsAssertionUtils.parseCountInput(count);
-        if (!assertCountData.case) {
-            return Promise.reject("assert.elements", new WendigoError("assert.elements", `parameter count (${count}) is not valid.`));
+        const countCase = elementsAssertionUtils.getCountCase(assertCountData);
+        if (!countCase) {
+            return Promise.reject(new WendigoError("assert.elements", `parameter count (${count}) is not valid.`));
         }
         return this._browser.queryAll(selector).then((elements) => {
             const elementsCount = elements.length;
-            return elementsAssertionUtils.makeAssertion(selector, assertCountData, elementsCount, msg);
+            return elementsAssertionUtils.makeAssertion(selector, assertCountData, countCase, elementsCount, msg);
         });
     }
 
     /* eslint-disable complexity */
-    attribute(selector, attribute, expectedValue, msg) {
+    public attribute(selector: WendigoSelector, attribute: string, expectedValue?: string, msg?: string): Promise<void> {
         const customMessage = Boolean(msg);
         if (!customMessage) {
             msg = `Expected element "${selector}" to have attribute "${attribute}"`;
@@ -178,16 +179,15 @@ export default class BrowserAssertions extends WendigoModule {
             if (expectedValue === null) msg = `Expected element "${selector}" not to have attribute "${attribute}"`;
         }
 
-
         return this._browser.evaluate((q, attrName) => {
             const elements = WendigoUtils.queryAll(q);
             return Array.from(elements).map((el) => {
                 return el.getAttribute(attrName);
             });
-        }, selector, attribute).then((attributes) => {
+        }, selector, attribute).then((attributes: Array<string>) => {
             if (attributes.length === 0) {
                 if (!customMessage) msg = `${msg}, no element found.`;
-                return assertUtils.rejectAssertion("assert.attribute", msg);
+                return assertUtils.rejectAssertion("assert.attribute", msg as string);
             }
             for (const attr of attributes) {
                 if (attr !== null || expectedValue === null) {
@@ -206,12 +206,12 @@ export default class BrowserAssertions extends WendigoModule {
                     msg = `${msg}, ["${foundArr.join('", "')}"] found.`;
                 }
             }
-            return assertUtils.rejectAssertion("assert.attribute", msg);
+            return assertUtils.rejectAssertion("assert.attribute", msg as string);
         });
     }
     /* eslint-enable complexity */
 
-    style(selector, style, expected, msg) {
+    public style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
         return this._browser.evaluate((sel, sty) => {
             const element = WendigoUtils.queryElement(sel);
             if (!element) return Promise.reject();
@@ -229,16 +229,17 @@ export default class BrowserAssertions extends WendigoModule {
                 }
                 return assertUtils.rejectAssertion("assert.style", msg);
             }
+            return Promise.resolve();
         });
     }
 
-    href(selector, expected, msg) {
-        return this.attribute(selector, "href", expected, msg).catch((err) => {
+    public href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        return this.attribute(selector, "href", expected, msg).catch((err: Error) => {
             return Promise.reject(WendigoError.overrideFnName(err, "assert.href"));
         });
     }
 
-    innerHtml(selector, expected, msg) {
+    public innerHtml(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         if (!expected && expected !== "") return Promise.reject(new WendigoError("assert.innerHtml", "Missing expected html for assertion."));
 
         return this._browser.innerHtml(selector).then((found) => {
@@ -258,23 +259,24 @@ export default class BrowserAssertions extends WendigoModule {
         });
     }
 
-    options(selector, expected, msg) {
-        if (!Array.isArray(expected)) expected = [expected];
+    public options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
+        const parsedExpected = utils.arrayfy(expected);
         return this._browser.options(selector).then((options) => {
-            const sameMembers = assertUtils.sameMembers(expected, options);
+            const sameMembers = assertUtils.sameMembers(parsedExpected, options);
             if (!sameMembers) {
                 if (!msg) {
-                    const expectedText = expected.join(", ");
+                    const expectedText = parsedExpected.join(", ");
                     const optionsText = options.join(", ");
                     msg = `Expected element "${selector}" to have options "${expectedText}", "${optionsText}" found.`;
                 }
                 return assertUtils.rejectAssertion("assert.options", msg, options, expected);
             }
+            return Promise.resolve();
         });
     }
 
-    selectedOptions(selector, expected, msg) {
-        if (!Array.isArray(expected)) expected = [expected];
+    public selectedOptions(selector: WendigoSelector, expected: Array<string>, msg?: string): Promise<void> {
+        const parsedExpected = utils.arrayfy(expected);
         return this._browser.selectedOptions(selector).then((selectedOptions) => {
             const sameMembers = assertUtils.sameMembers(expected, selectedOptions);
             if (!sameMembers) {
@@ -285,12 +287,13 @@ export default class BrowserAssertions extends WendigoModule {
                 }
                 return assertUtils.rejectAssertion("assert.selectedOptions", msg, selectedOptions, expected);
             }
+            return Promise.resolve();
         });
     }
 
-    global(key, expected, msg) {
-        return this._browser.evaluate((k) => {
-            return window[k];
+    public global(key: string, expected?: any, msg?: string): Promise<void> {
+        return this._browser.evaluate((k: string) => {
+            return (window as any)[k];
         }, key).then((value) => {
             if (expected === undefined) {
                 if (value === undefined) {
@@ -305,10 +308,11 @@ export default class BrowserAssertions extends WendigoModule {
                 }
                 return assertUtils.rejectAssertion("assert.global", msg, value, expected);
             }
+            return Promise.resolve();
         });
     }
 
-    async checked(selector, msg) {
+    public async checked(selector: WendigoSelector, msg?: string): Promise<void> {
         let value;
         try {
             value = await this._browser.checked(selector);
@@ -321,7 +325,7 @@ export default class BrowserAssertions extends WendigoModule {
         }
     }
 
-    async disabled(selector, msg) {
+    public async disabled(selector: WendigoSelector, msg?: string): Promise<void> {
         let value;
         try {
             value = await this._browser.attribute(selector, "disabled");
@@ -334,7 +338,7 @@ export default class BrowserAssertions extends WendigoModule {
         }
     }
 
-    async enabled(selector, msg) {
+    public async enabled(selector: WendigoSelector, msg?: string): Promise<void> {
         let value;
         try {
             value = await this._browser.attribute(selector, "disabled");
@@ -347,7 +351,7 @@ export default class BrowserAssertions extends WendigoModule {
         }
     }
 
-    focus(selector, msg) {
+    public focus(selector: WendigoSelector, msg?: string): Promise<void> {
         return this._browser.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             if (elements.length === 0) return Promise.reject();
@@ -363,13 +367,20 @@ export default class BrowserAssertions extends WendigoModule {
                 if (!msg) msg = `Expected element "${selector}" to be focused.`;
                 return assertUtils.rejectAssertion("assert.focus", msg);
             }
+            return Promise.resolve();
         });
     }
 
-    redirect(msg) {
-        const chain = this._browser._initialResponse.request().redirectChain();
-        if (chain.length === 0) {
-            if (!msg) msg = `Expected current url to be a redirection.`;
-            return assertUtils.rejectAssertion("assert.redirect", msg);
-        } else return Promise.resolve();
+    public redirect(msg?: string): Promise<void> {
+        if (!msg) msg = `Expected current url to be a redirection.`;
+
+        if (!this._browser.initialResponse) assertUtils.rejectAssertion("assert.redirect", msg);
+        else {
+            const chain = this._browser.initialResponse.request().redirectChain();
+            if (chain.length === 0) {
+                return assertUtils.rejectAssertion("assert.redirect", msg);
+            }
+        }
+        return Promise.resolve();
     }
+}

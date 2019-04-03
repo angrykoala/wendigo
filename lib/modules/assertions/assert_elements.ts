@@ -1,5 +1,6 @@
 import { rejectAssertion } from './assert_utils';
-import { isNumber } from './utils';
+import { isNumber } from '../../utils/utils';
+import { WendigoSelector } from '../../types';
 
 enum CountCase {
     equal = "equal",
@@ -15,14 +16,13 @@ interface CountConfig {
 }
 
 export function parseCountInput(count: CountConfig | number): CountConfig {
+    let result: CountConfig;
     if (isNumber(count)) {
-        count = {
+        result = {
             equal: Number(count)
         };
-    }
-    return count;
-    // const countCase = this._getCountCase(count);
-    // count.case = countCase;
+    } else result = count;
+    return result;
 }
 
 export function getCountCase(count: CountConfig): CountCase | null {
@@ -40,20 +40,20 @@ export function getCountCase(count: CountConfig): CountCase | null {
     return countCase;
 }
 
-export function makeAssertion(selector, countData, elementsFound, msg) {
-    switch (countData.case) {
-        case countCases.equal:
-            return this._equalAssertion(countData, elementsFound, msg, selector);
-        case countCases.atLeast:
-            return this._atLeastAssertion(countData, elementsFound, msg, selector);
-        case countCases.atMost:
-            return this._atMostAssertion(countData, elementsFound, msg, selector);
-        case countCases.both:
-            return this._bothAssertion(countData, elementsFound, msg, selector);
+export function makeAssertion(selector: WendigoSelector, countData: CountConfig, countCase: CountCase, elementsFound: number, msg?: string): Promise<void> {
+    switch (countCase) {
+        case CountCase.equal:
+            return equalAssertion(countData, elementsFound, msg, selector);
+        case CountCase.atLeast:
+            return atLeastAssertion(countData, elementsFound, msg, selector);
+        case CountCase.atMost:
+            return atMostAssertion(countData, elementsFound, msg, selector);
+        case CountCase.both:
+            return bothAssertion(countData, elementsFound, msg, selector);
     }
 }
 
-function _equalAssertion(countData, elementsFound, msg, selector) {
+async function equalAssertion(countData: CountConfig, elementsFound: number, msg: string | undefined, selector: WendigoSelector): Promise<void> {
     const expected = Number(countData.equal);
     if (elementsFound !== expected) {
         if (!msg) msg = `Expected selector "${selector}" to find exactly ${countData.equal} elements, ${elementsFound} found`;
@@ -61,7 +61,7 @@ function _equalAssertion(countData, elementsFound, msg, selector) {
     }
 }
 
-function _atLeastAssertion(countData, elementsFound, msg, selector) {
+async function atLeastAssertion(countData: CountConfig, elementsFound: number, msg: string | undefined, selector: WendigoSelector): Promise<void> {
     const expected = Number(countData.atLeast);
     if (elementsFound < expected) {
         if (!msg) msg = `Expected selector "${selector}" to find at least ${countData.atLeast} elements, ${elementsFound} found`;
@@ -69,7 +69,7 @@ function _atLeastAssertion(countData, elementsFound, msg, selector) {
     }
 }
 
-function _atMostAssertion(countData, elementsFound, msg, selector) {
+async function atMostAssertion(countData: CountConfig, elementsFound: number, msg: string | undefined, selector: WendigoSelector): Promise<void> {
     const expected = Number(countData.atMost);
     if (elementsFound > expected) {
         if (!msg) msg = `Expected selector "${selector}" to find up to ${countData.atMost} elements, ${elementsFound} found`;
@@ -77,7 +77,7 @@ function _atMostAssertion(countData, elementsFound, msg, selector) {
     }
 }
 
-function _bothAssertion(countData, elementsFound, msg, selector) {
+async function bothAssertion(countData: CountConfig, elementsFound: number, msg: string | undefined, selector: WendigoSelector): Promise<void> {
     const most = Number(countData.atMost);
     const least = Number(countData.atLeast);
     if (elementsFound < least || elementsFound > most) {
