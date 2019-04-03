@@ -23,7 +23,7 @@ export default class RequestFilter {
         this.requestList = requests;
     }
 
-    get requests() {
+    get requests(): Promise<Array<Request>> {
         return this.requestList;
     }
 

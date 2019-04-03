@@ -67,7 +67,7 @@ export default class BrowserAssertions extends WendigoModule {
         return assertUtils.rejectAssertion("assert.tag", msg);
     }
 
-    public text(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
+    public text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             return Promise.reject(new WendigoError("assert.text", `Missing expected text for assertion.`));
         }
@@ -239,7 +239,7 @@ export default class BrowserAssertions extends WendigoModule {
         });
     }
 
-    public innerHtml(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+    public innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
         if (!expected && expected !== "") return Promise.reject(new WendigoError("assert.innerHtml", "Missing expected html for assertion."));
 
         return this._browser.innerHtml(selector).then((found) => {
@@ -275,13 +275,13 @@ export default class BrowserAssertions extends WendigoModule {
         });
     }
 
-    public selectedOptions(selector: WendigoSelector, expected: Array<string>, msg?: string): Promise<void> {
+    public selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         const parsedExpected = utils.arrayfy(expected);
         return this._browser.selectedOptions(selector).then((selectedOptions) => {
-            const sameMembers = assertUtils.sameMembers(expected, selectedOptions);
+            const sameMembers = assertUtils.sameMembers(parsedExpected, selectedOptions);
             if (!sameMembers) {
                 if (!msg) {
-                    const expectedText = expected.join(", ");
+                    const expectedText = parsedExpected.join(", ");
                     const optionsText = selectedOptions.join(", ");
                     msg = `Expected element "${selector}" to have options "${expectedText}" selected, "${optionsText}" found.`;
                 }
