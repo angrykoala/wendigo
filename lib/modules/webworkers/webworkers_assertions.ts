@@ -1,8 +1,10 @@
-"use strict";
-const assertUtils = require('../../utils/assert_utils');
+import * as assertUtils from '../../utils/assert_utils';
+import WebWorker from '../../models/webworker';
+import BrowserWebWorker from './browser_webworker';
+import { Browser } from 'puppeteer';
 
 /* eslint-disable complexity */
-module.exports = function(browser, webworkerModule, options, msg) {
+export default function(browser: Browser, webworkerModule: BrowserWebWorker, options: { url?: string, count?: number }, msg?: string): Promise<void> {
     if (!options) options = {};
     let workers = webworkerModule.all();
     let urlMsg = "";
@@ -21,5 +23,6 @@ module.exports = function(browser, webworkerModule, options, msg) {
         if (!msg) msg = `Expected at least 1 webworker running${urlMsg}, 0 found.`;
         return assertUtils.rejectAssertion("assert.webworkers", msg);
     }
-};
+    return Promise.resolve();
+}
 /* eslint-enable complexity */

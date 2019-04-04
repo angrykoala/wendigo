@@ -1,10 +1,6 @@
 import BrowserLocalStorageNotAssertions from './local_storage_not_assertions';
 import * as assertUtils from '../../utils/assert_utils';
 import { arrayfy } from '../../utils/utils';
-
-import { WendigoError } from '../../errors';
-import WendigoModule from '../wendigo_module';
-import { OpenSettings } from '../../types';
 import { Browser } from 'puppeteer';
 import BrowserLocalStorage from './browser_local_storage';
 
