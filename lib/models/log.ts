@@ -1,29 +1,15 @@
 import { ConsoleMessage, ConsoleMessageType } from 'puppeteer';
-
-enum LogType {
-    log = 'log',
-    debug = 'debug',
-    info = 'info',
-    error = 'error',
-    warning = 'warning',
-    trace = 'trace'
-}
+import { stringifyLogText } from '../utils/utils';
 
 export default class Log {
     public message: ConsoleMessage;
+    public readonly text: string;
     constructor(consoleMessage: ConsoleMessage) {
         this.message = consoleMessage;
-    }
-
-    get text(): string {
-        return this.message.text();
+        this.text = stringifyLogText(consoleMessage);
     }
 
     get type(): ConsoleMessageType {
         return this.message.type();
-    }
-
-    static get LogType(): typeof LogType {
-        return LogType;
     }
 }

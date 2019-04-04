@@ -863,7 +863,7 @@ browser.assert.global("my-val", "dontpanic");
 
 > Assertions related to LocalStorage can be found under each section
 
-**cookie(name, expected?, msg?)**  
+**cookies(name, expected?, msg?)**  
 Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
 
 ```js
@@ -1022,7 +1022,7 @@ Assert that the first element with given selector doesn't have the expected opti
 **not.global(key, value?, msg?)**  
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
-**not.cookie(name, expected?, msg?)**  
+**not.cookies(name, expected?, msg?)**  
 Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
 ```js

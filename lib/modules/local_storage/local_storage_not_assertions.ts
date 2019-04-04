@@ -1,28 +1,29 @@
-"use strict";
+import * as assertUtils from '../../utils/assert_utils';
+import BrowserLocalStorageAssertions from './local_storage_assertions';
+import { arrayfy } from '../../utils/utils';
 
-const assertUtils = require('../../utils/assert_utils');
+export default class BrowserLocalStorageNotAssertions {
+    private localStorageAssertions: BrowserLocalStorageAssertions;
 
-
-module.exports = class BrowserLocalStorageNotAssertions {
-    constructor(localStorageAssertions) {
-        this._localStorageAssertions = localStorageAssertions;
+    constructor(localStorageAssertions: BrowserLocalStorageAssertions) {
+        this.localStorageAssertions = localStorageAssertions;
     }
 
-    exist(key, msg) {
-        if (!Array.isArray(key)) key = [key];
+    public exist(key: string | Array<string>, msg?: string): Promise<void> {
+        const keyList = arrayfy(key);
         if (!msg) {
             const itemText = key.length === 1 ? "item" : "items";
-            msg = `Expected ${itemText} "${key.join(" ")}" not to exist in localStorage.`;
+            msg = `Expected ${itemText} "${keyList.join(" ")}" not to exist in localStorage.`;
         }
         return assertUtils.invertify(() => {
-            return this._localStorageAssertions.exist(key, "");
+            return this.localStorageAssertions.exist(keyList, "");
         }, "assert.localStorage.not.exist", msg);
     }
 
-    value(key, expected, msg) {
-        let keyVals = {};
+    public value(key: string | { [s: string]: string }, expected?: string, msg?: string): Promise<void> {
+        let keyVals: { [s: string]: string } = {};
         if (typeof key === "string") {
-            keyVals[key] = expected;
+            keyVals[key] = expected as string;
         } else {
             if (typeof expected === "string") msg = expected;
             keyVals = key;
@@ -37,24 +38,24 @@ module.exports = class BrowserLocalStorageNotAssertions {
         }
 
         return assertUtils.invertify(() => {
-            return this._localStorageAssertions.value(keyVals, "");
+            return this.localStorageAssertions.value(keyVals, "");
         }, "assert.localStorage.not.value", msg);
     }
 
-    length(expected, msg) {
+    public length(expected: number, msg?: string): Promise<void> {
         if (!msg) {
             const itemText = expected === 1 ? "item" : "items";
             msg = `Expected localStorage not to have ${expected} ${itemText}.`;
         }
         return assertUtils.invertify(() => {
-            return this._localStorageAssertions.length(expected, "");
+            return this.localStorageAssertions.length(expected, "");
         }, "assert.localStorage.not.length", msg);
     }
 
-    empty(msg) {
+    public empty(msg?: string): Promise<void> {
         if (!msg) msg = `Expected localStorage not to be empty.`;
         return assertUtils.invertify(() => {
-            return this._localStorageAssertions.empty("");
+            return this.localStorageAssertions.empty("");
         }, "assert.localStorage.not.empty", msg);
     }
-};
+}

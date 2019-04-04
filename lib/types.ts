@@ -1,5 +1,6 @@
 import DomElement from './models/dom_element';
 import { ParsedUrlQuery } from 'querystring';
+import { Viewport } from 'puppeteer';
 
 export type CssSelector = string;
 export type XPathSelector = string;
@@ -15,3 +16,9 @@ export interface BrowserSettings {
 }
 
 export type WendigoPluginInterface = any;
+
+export interface OpenSettings {
+    clearRequestMocks?: boolean;
+    viewport?: Viewport;
+    queryString?: string | ParsedQueryString;
+}

@@ -65,7 +65,7 @@ export function delay(ms: number): Promise<void> {
     });
 }
 
-export function compareObjects(obj1: object, obj2: object): boolean { // Swallow compare
+export function compareObjects(obj1: any, obj2: any): boolean { // Swallow compare
     if (!obj1 || !obj2) return false;
     const k1 = Object.keys(obj1);
     const k2 = Object.keys(obj2);
@@ -85,9 +85,9 @@ export function parseQueryString(qs: string | URL | { [s: string]: string }): Pa
     } else return qs;
 }
 
-export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
+export function stringifyLogText(log: ConsoleMessage): string {
     if (log.text().includes('JSHandle@object')) {
-        const args = await Promise.all(log.args().map(stringifyArg));
+        const args = log.args().map(stringifyArg);
         return args.join(' ');
     }
     return log.text();

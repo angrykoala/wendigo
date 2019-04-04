@@ -1,4 +1,4 @@
-import { rejectAssertion } from './assert_utils';
+import { rejectAssertion } from '../../utils/assert_utils';
 import { isNumber } from '../../utils/utils';
 import { WendigoSelector } from '../../types';
 

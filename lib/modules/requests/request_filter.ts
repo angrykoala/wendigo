@@ -67,14 +67,18 @@ export default class RequestFilter {
 
     public status(status: number): RequestFilter {
         const requests = filterPromise(this.requests, el => {
-            return el.response() !== null && el.response().status() === status;
+            const response = el.response();
+            if (!response) return false;
+            else return response.status() === status;
         });
         return new RequestFilter(requests);
     }
 
     public fromCache(isFromCache = true): RequestFilter {
         const requests = filterPromise(this.requests, el => {
-            return el.response() !== null && el.response().fromCache() === isFromCache;
+            const response = el.response();
+            if (!response) return false;
+            else return response.fromCache() === isFromCache;
         });
         return new RequestFilter(requests);
     }
@@ -88,21 +92,22 @@ export default class RequestFilter {
 
     public ok(isOk: boolean = true): RequestFilter {
         const requests = filterPromise(this.requests, el => {
-            return el.response() !== null && el.response().ok() === isOk;
+            const response = el.response();
+            if (!response) return false;
+            else return response.ok() === isOk;
         });
         return new RequestFilter(requests);
     }
 
     private responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
-        if (request.response() === null) {
-            return false;
-        }
+        const response = request.response();
+        if (!response) return false;
         const keys = Object.keys(headers);
         for (const key of keys) {
-            if (request.response().headers()[key] === undefined) {
+            if (response.headers()[key] === undefined) {
                 return false;
             }
-            if (!matchText(request.response().headers()[key], headers[key])) {
+            if (!matchText(response.headers()[key], headers[key])) {
                 return false;
             }
         }
@@ -112,16 +117,18 @@ export default class RequestFilter {
     private async getResponsesBody(requests: Array<Request>): Promise<Array<[Request, string]>> {
         type requestResponsePair = [Request, string];
 
-        const responses = await Promise.all(requests.map(async (r) => {
-            if (!r.response()) return null;
+        const responses = await Promise.all(requests.map(async (req) => {
+            const response = req.response();
+            if (!response) return null;
             else {
-                const text = await r.response().text();
-                return [r, text] as requestResponsePair;
+                const text = await response.text();
+                return [req, text] as requestResponsePair;
             }
         }));
 
-        return responses.filter((pair) => {
+        const filteredResponse = responses.filter((pair) => {
             return pair !== null;
-        });
+        }) as Array<[Request, string]>;
+        return filteredResponse;
     }
-};
+}

@@ -3,28 +3,21 @@ import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
 import * as querystring from 'querystring';
 import { FatalError, InjectScriptError } from '../errors';
 import WendigoConfig from '../../config';
-import WendigoPlugin from '../modules/wendigo_plugin';
+import WendigoModule from '../modules/wendigo_module';
 import DomElement from '../models/dom_element';
 import { stringifyLogText } from '../utils/utils';
-import { ParsedQueryString, BrowserSettings } from '../types';
+import { ParsedQueryString, BrowserSettings, OpenSettings } from '../types';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
 
 function pageLog(log: ConsoleMessage): void {
-    stringifyLogText(log).then(text => {
-        let logType = log.type() as string;
-        if (logType === 'warning') logType = 'warn';
-        const con = console as any;
-        if (!(con[logType])) logType = 'log';
-        con[logType](text);
-    });
-}
-
-interface OpenSettings {
-    clearRequestMocks?: boolean;
-    viewport?: Viewport;
-    queryString?: string | ParsedQueryString;
+    const text = stringifyLogText(log);
+    let logType = log.type() as string;
+    if (logType === 'warning') logType = 'warn';
+    const con = console as any;
+    if (!(con[logType])) logType = 'log';
+    con[logType](text);
 }
 
 interface FinalBrowserSettings extends BrowserSettings {

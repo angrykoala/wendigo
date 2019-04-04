@@ -1,18 +1,25 @@
-"use strict";
+import BrowserLocalStorageNotAssertions from './local_storage_not_assertions';
+import * as assertUtils from '../../utils/assert_utils';
+import { arrayfy } from '../../utils/utils';
 
-const BrowserLocalStorageNotAssertions = require('./local_storage_not_assertions');
-const assertUtils = require('../../utils/assert_utils');
+import { WendigoError } from '../../errors';
+import WendigoModule from '../wendigo_module';
+import { OpenSettings } from '../../types';
+import { Browser } from 'puppeteer';
+import BrowserLocalStorage from './browser_local_storage';
 
-module.exports = class BrowserLocalStorageAssertions {
-    constructor(browser, localStorage) {
+export default class BrowserLocalStorageAssertions {
+    private _localStorage: BrowserLocalStorage;
+    public readonly not: BrowserLocalStorageNotAssertions;
+    constructor(browser: Browser, localStorage: BrowserLocalStorage) {
         this._localStorage = localStorage;
         this.not = new BrowserLocalStorageNotAssertions(this);
     }
 
-    exist(key, msg) {
-        if (!Array.isArray(key)) key = [key];
-        const itemWord = key.length === 1 ? "item" : "items";
-        return Promise.all(key.map((k) => {
+    public exist(key: string | Array<string>, msg?: string): Promise<void> {
+        const keyList = arrayfy(key);
+        const itemWord = keyList.length === 1 ? "item" : "items";
+        return Promise.all(keyList.map((k) => {
             return this._localStorage.getItem(k);
         })).then((res) => {
             const nullValues = res.filter((r) => {
@@ -20,16 +27,16 @@ module.exports = class BrowserLocalStorageAssertions {
             });
             if (nullValues.length === 0) return Promise.resolve();
             else {
-                if (!msg) msg = `Expected ${itemWord} "${key.join(" ")}" to exist in localStorage.`;
+                if (!msg) msg = `Expected ${itemWord} "${keyList.join(" ")}" to exist in localStorage.`;
                 return assertUtils.rejectAssertion("assert.localStorage.exist", msg);
             }
         });
     }
 
-    value(key, expected, msg) {
-        let keyVals = {};
+    public value(key: string | { [s: string]: string }, expected?: string, msg?: string): Promise<void> {
+        let keyVals: { [s: string]: string } = {};
         if (typeof key === "string") {
-            keyVals[key] = expected;
+            keyVals[key] = expected as string;
         } else {
             if (typeof expected === "string") msg = expected;
             keyVals = key;
@@ -37,7 +44,7 @@ module.exports = class BrowserLocalStorageAssertions {
         const keys = Object.keys(keyVals);
         return Promise.all(keys.map((k) => {
             return this._localStorage.getItem(k).then((val) => {
-                return [k, val];
+                return [k, val] as [string, string | null];
             });
         })).then((values) => {
             for (const v of values) {
@@ -56,16 +63,17 @@ module.exports = class BrowserLocalStorageAssertions {
         });
     }
 
-    length(expected, msg) {
+    public length(expected: number, msg?: string): Promise<void> {
         return this._localStorage.length().then((res) => {
             if (res !== expected) {
                 if (!msg) msg = `Expected localStorage to have ${expected} items, ${res} found.`;
                 return assertUtils.rejectAssertion("assert.localStorage.length", msg, res, expected);
             }
+            return Promise.resolve();
         });
     }
 
-    empty(msg) {
+    public empty(msg?: string): Promise<void> {
         return this._localStorage.length().then((res) => {
             if (res !== 0) {
                 if (!msg) {
@@ -74,6 +82,7 @@ module.exports = class BrowserLocalStorageAssertions {
                 }
                 return assertUtils.rejectAssertion("assert.localStorage.empty", msg);
             }
+            return Promise.resolve();
         });
     }
-};
+}

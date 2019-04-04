@@ -1,6 +1,7 @@
 import * as utils from '../../utils/utils';
 import * as elementsAssertionUtils from './assert_elements';
-import * as assertUtils from './assert_utils';
+import * as assertUtils from '../../utils/assert_utils';
+
 // TODO: RequestAssertionFilter should be an assertion module
 // const RequestAssertionsFilter = require('../requests/request_assertions_filter');
 

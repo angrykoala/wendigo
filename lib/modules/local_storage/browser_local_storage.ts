@@ -1,13 +1,9 @@
-"use strict";
+import { WendigoError } from '../../errors';
+import WendigoModule from '../wendigo_module';
+import { OpenSettings } from '../../types';
 
-const {WendigoError} = require("../../errors");
-
-module.exports = class BrowserLocalStorage {
-    constructor(browser) {
-        this._browser = browser;
-    }
-
-    async getItem(key) {
+export default class BrowserLocalStorage extends WendigoModule {
+    public async getItem(key: string): Promise<string | null> {
         try {
             return await this._browser.evaluate((k) => {
                 return localStorage.getItem(k);
@@ -17,7 +13,7 @@ module.exports = class BrowserLocalStorage {
         }
     }
 
-    setItem(key, value) {
+    public setItem(key: string, value: string): Promise<void> {
         return this._browser.evaluate((k, v) => {
             return localStorage.setItem(k, v);
         }, key, value).catch((err) => {
@@ -25,7 +21,7 @@ module.exports = class BrowserLocalStorage {
         });
     }
 
-    removeItem(key) {
+    public removeItem(key: string): Promise<void> {
         return this._browser.evaluate((k) => {
             return localStorage.removeItem(k);
         }, key).catch((err) => {
@@ -33,7 +29,7 @@ module.exports = class BrowserLocalStorage {
         });
     }
 
-    clear() {
+    public clear(): Promise<void> {
         return this._browser.evaluate(() => {
             return localStorage.clear();
         }).catch((err) => {
@@ -41,11 +37,11 @@ module.exports = class BrowserLocalStorage {
         });
     }
 
-    length() {
+    public length(): Promise<number> {
         return this._browser.evaluate(() => {
             return localStorage.length;
         }).catch((err) => {
             return Promise.reject(WendigoError.overrideFnName(err, "localStorage.length"));
         });
     }
-};
+}

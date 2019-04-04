@@ -1,4 +1,4 @@
-import { AssertionError, WendigoError } from '../../errors';
+import { AssertionError, WendigoError } from '../errors';
 
 export async function invertify(cb: () => Promise<void>, fnName: string, msg: string): Promise<void> {
     try {

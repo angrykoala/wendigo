@@ -1,9 +1,10 @@
-"use strict";
+import * as assertUtils from '../../utils/assert_utils';
+import { Browser } from 'puppeteer';
+import BrowserCookies from './browser_cookies';
 
-const assertUtils = require('../../utils/assert_utils');
 /* eslint-disable max-params */
-module.exports = {
-    assert(browser, cookiesModule, name, expected, msg) {
+export default {
+    assert(browser: Browser, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
         return cookiesModule.get(name).then((value) => {
             if (expected === undefined) {
                 if (value === undefined) {
@@ -18,16 +19,18 @@ module.exports = {
                 }
                 return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
             }
+            return Promise.resolve();
         });
     },
-    not(browser, cookiesModule, name, expected, msg) {
+    not(browser: Browser, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
         if (!msg) {
             msg = expected === undefined ?
                 `Expected cookie "${name}" to not exist.` :
                 `Expected cookie "${name}" to not have value "${expected}".`;
         }
         return assertUtils.invertify(() => {
-            return browser.assert.cookies(name, expected, "x");
+            // return browser.assert.cookies(name, expected, "x");
+            return this.assert(browser, cookiesModule, name, expected, "x");
         }, "assert.not.cookies", msg);
     }
 };

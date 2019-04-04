@@ -1,48 +1,46 @@
-"use strict";
+import * as utils from '../../utils/utils';
+import Log from '../../models/log';
 
-const {WendigoError} = require('../../errors');
+import WendigoModule from '../wendigo_module';
+import { WendigoError } from '../../errors';
 
-module.exports = class BrowserCookies {
-    constructor(browser) {
-        this._browser = browser;
-    }
-
-    all() {
+export default class BrowserCookies extends WendigoModule {
+    public all(): Promise<{ [s: string]: string }> {
         return this._browser.page.cookies().then((cookies) => {
             return cookies.reduce((acc, cookie) => {
                 acc[cookie.name] = cookie.value;
                 return acc;
-            }, {});
+            }, {} as { [s: string]: string });
         });
     }
 
-    get(name) {
+    public get(name: string): Promise<string | undefined> {
         return this.all().then((cookies) => {
             return cookies[name];
         });
     }
 
-    set(name, value) {
+    public set(name: string, value: string): Promise<void> {
         return this._browser.page.setCookie({
             name: name,
             value: value
         });
     }
 
-    delete(name) {
+    public delete(name: string | Array<string>): Promise<void> {
         if (name === undefined || name === null) throw new WendigoError("cookies.delete", "Delete cookie name missing");
         if (!Array.isArray(name)) name = [name];
         const cookiesObjects = name.map((n) => {
-            return {name: n};
+            return { name: n };
         });
         return this._browser.page.deleteCookie(...cookiesObjects);
     }
 
-    clear() {
+    public clear(): Promise<void> {
         return this._browser.page.cookies().then((cookies) => {
             const cookiesList = cookies.map(c => c.name);
             if (cookiesList.length === 0) return Promise.resolve();
             return this.delete(cookiesList);
         });
     }
-};
+}

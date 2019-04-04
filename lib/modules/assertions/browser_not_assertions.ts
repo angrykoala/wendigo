@@ -1,6 +1,5 @@
-
 import * as utils from '../../utils/utils';
-import * as assertUtils from './assert_utils';
+import * as assertUtils from '../../utils/assert_utils';
 import { WendigoError, QueryError } from '../../errors';
 import BrowserAssertions from './browser_assertions';
 import Browser from '../../browser/browser';
