@@ -1260,6 +1260,7 @@ Mock will return a RequestMock object, with the following read-only properties:
 * `immediate`: If the mock will return immediately (delay=0).
 * `auto`: If the request will be completed automatically.
 * `method`: Mock expected method.
+* `querystring`: Mock expected querystring, parsed as an object.
 
 And the following methods:
 * `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.

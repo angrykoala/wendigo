@@ -1,29 +1,12 @@
-
 import * as  EventEmitter from 'events';
 import { URL } from 'url';
 import { Request } from 'puppeteer';
 
-import RequestFilter from '../modules/requests/request_filter';
-import { FatalError, AssertionError, TimeoutError } from '../errors';
-import * as utils from '../utils/utils';
-import { ParsedQueryString } from '../types';
-
-type RequestBody = string | object;
-
-interface RequestMockResponseOptions {
-    status?: number;
-    headers?: { [s: string]: string };
-    contentType?: string;
-    body?: RequestBody;
-}
-
-interface RequestMockOptions extends RequestMockResponseOptions {
-    delay?: number;
-    method?: string;
-    queryString?: string | { [s: string]: string };
-    redirectTo?: string;
-    auto?: boolean;
-}
+import RequestFilter from './request_filter';
+import { FatalError, AssertionError, TimeoutError } from '../../errors';
+import * as utils from '../../utils/utils';
+import { ParsedQueryString } from '../../types';
+import { RequestBody, RequestMockResponseOptions, RequestMockOptions } from './types';
 
 interface MockResponse {
     status?: number;
@@ -85,9 +68,9 @@ export default class RequestMock implements RequestMockInterface {
     public readonly auto: boolean;
     public readonly url: string | RegExp;
     public readonly assert: RequestMockAssertions;
+    public readonly queryString?: ParsedQueryString;
     public requestsReceived: Array<Request> = [];
 
-    private queryString?: ParsedQueryString;
     private events: EventEmitter;
     private redirectTo?: URL;
     private delay: number;
