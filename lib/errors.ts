@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 
 export class AssertionError extends assert.AssertionError {
-    protected extraMessage: string;
+    public readonly extraMessage: string;
     constructor(fn: string, message: string, actual?: any, expected?: any) {
         if (actual !== undefined) actual = String(actual);
         if (expected !== undefined) expected = String(expected);
@@ -17,7 +17,7 @@ export class AssertionError extends assert.AssertionError {
 
 export class WendigoError extends Error {
     protected fnName: string;
-    protected extraMessage: string;
+    public extraMessage: string;
 
     constructor(fn: string, message: string) {
         super(`[${fn}] ${message}`);
@@ -27,10 +27,16 @@ export class WendigoError extends Error {
 
     public static overrideFnName(error: Error, fnName: string): Error {
         if (error instanceof TimeoutError) {
-            const newError = new error.constructor(fnName, error.extraMessage, error.timeout);
+            const c = error.constructor as any;
+            const newError = new c(fnName, error.extraMessage, error.timeout);
             return newError;
-        } else if (error instanceof WendigoError || error instanceof AssertionError) {
-            const newError = new error.constructor(fnName, error.extraMessage, error.actual, error.expected); // keeps same error, changes origin function
+        } else if (error instanceof AssertionError) {
+            const c = error.constructor as any;
+            const newError = new c(fnName, error.extraMessage, error.actual, error.expected); // keeps same error, changes origin function
+            return newError;
+        } else if (error instanceof WendigoError) {
+            const c = error.constructor as any;
+            const newError = new c(fnName, error.extraMessage);
             return newError;
         } else return error;
     }
@@ -51,7 +57,7 @@ export class FatalError extends WendigoError {
 }
 
 export class TimeoutError extends WendigoError {
-    protected timeout: number;
+    public readonly timeout: number;
     constructor(fn: string, message: string, timeout: number) {
         let msg = message ? `${message}, timeout` : "Timeout";
         if (timeout !== undefined) msg = `${msg} of ${timeout}ms exceeded.`;

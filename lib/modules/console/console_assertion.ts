@@ -23,7 +23,6 @@ function processFilterMessage(filterOptions: ConsoleFilter): string {
 /* eslint-disable complexity, max-params*/
 export default function(browser: Browser, consoleModule: BrowserConsole, filterOptions: ConsoleFilter, count?: number, msg?: string): Promise<void> {
     const logs = consoleModule.filter(filterOptions);
-    const checkCount = count !== undefined && count !== null;
     if (!isNumber(count)) {
         if (logs.length <= 0) {
             if (!msg) msg = processMessageWithoutExpectedCount(filterOptions);

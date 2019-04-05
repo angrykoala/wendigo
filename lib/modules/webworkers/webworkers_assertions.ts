@@ -1,5 +1,4 @@
 import * as assertUtils from '../../utils/assert_utils';
-import WebWorker from '../../models/webworker';
 import BrowserWebWorker from './browser_webworker';
 import { Browser } from 'puppeteer';
 

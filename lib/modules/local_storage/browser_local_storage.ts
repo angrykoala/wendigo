@@ -1,6 +1,5 @@
 import { WendigoError } from '../../errors';
 import WendigoModule from '../wendigo_module';
-import { OpenSettings } from '../../types';
 
 export default class BrowserLocalStorage extends WendigoModule {
     public async getItem(key: string): Promise<string | null> {

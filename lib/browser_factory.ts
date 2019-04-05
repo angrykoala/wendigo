@@ -1,19 +1,18 @@
 import * as isClass from 'is-class';
 import * as compose from 'compositer';
 import { Page } from 'puppeteer';
-import { BrowserSettings, WendigoPluginInterface } from './types';
 
 import Browser from './browser/browser';
-// const BrowserCore = require('./browser_core');
-// const BrowserAssertion = require('./modules/assertions/browser_assertions');
-// const BrowserNotAssertions = require('./modules/assertions/browser_not_assertions');
+import { FinalBrowserSettings, WendigoPluginInterface } from './types';
+import BrowserAssertion from './modules/assertions/browser_assertions';
+import BrowserNotAssertions from './modules/assertions/browser_not_assertions';
 
 export default class BrowserFactory {
     private static browserClass?: typeof Browser;
 
-    public static createBrowser(page: Page, settings: BrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
+    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
         if (!this.browserClass) this.browserClass = this.createBrowserClass(plugins);
-        return new this.browserClass(page, settings);
+        return new this.browserClass(page, settings, []);
     }
 
     public static clearCache(): void {
@@ -24,7 +23,7 @@ export default class BrowserFactory {
         return this.setupBrowserPlugins(Browser, plugins);
     }
 
-    private static setupBrowserPlugins(BaseClass: typeof Browser, plugins: Array<WendigoPluginInterface>) {
+    private static setupBrowserPlugins(baseClass: typeof Browser, plugins: Array<WendigoPluginInterface>): typeof Browser {
         const components: { [s: string]: any } = {};
         const assertComponents: { [s: string]: any } = {};
         const notAssertFunctions: { [s: string]: any } = {};
@@ -40,33 +39,35 @@ export default class BrowserFactory {
             }
         }
 
-        const NotAssertModule = compose(BrowserNotAssertions, notAssertFunctions);
-        assertComponents.not = NotAssertModule;
-        const AssertModule = compose(BrowserAssertion, assertComponents);
-        const finalComponents = Object.assign({}, components, { "assert": AssertModule });
-        return compose(BaseClass, finalComponents);
+        const notAssertModule = compose(BrowserNotAssertions, notAssertFunctions);
+        assertComponents.not = notAssertModule;
+        const assertModule = compose(BrowserAssertion, assertComponents);
+        const finalComponents = Object.assign({}, components, { assert: assertModule });
+        return compose(baseClass, finalComponents);
     }
 
-    private static _setupAssertionModule(AssertionPlugin, name) {
-        if (isClass(AssertionPlugin)) {
-            return this._setupAssertionClass(AssertionPlugin, name);
-        } else if (typeof AssertionPlugin === 'function') {
-            return this._setupAssertionFunction(AssertionPlugin, name);
-        } else if (typeof AssertionPlugin.assert === 'function') {
-            return this._setupAssertionFunction(AssertionPlugin.assert, name);
+    private static _setupAssertionModule(assertionPlugin: any, name: string): any { // TODO: improve typing
+        if (isClass(assertionPlugin)) {
+            return this._setupAssertionClass(assertionPlugin, name);
+        } else if (typeof assertionPlugin === 'function') {
+            return this._setupAssertionFunction(assertionPlugin, name);
+        } else if (typeof assertionPlugin.assert === 'function') {
+            return this._setupAssertionFunction(assertionPlugin.assert, name);
+        } else {
+            return null;
         }
     }
 
-    private static _setupAssertionFunction(assertionFunction, name) {
-        return function(assertionModule, ...params) {
+    private static _setupAssertionFunction(assertionFunction: (...params: Array<any>) => any, name: string): (...params: Array<any>) => any {
+        return function(assertionModule, ...params: Array<any>): Promise<void> {
             const browser = assertionModule._browser;
             return assertionFunction(browser, browser[name], ...params);
         };
     }
 
-    private static _setupAssertionClass(AssertionClass, name) {
-        return class extends AssertionClass {
-            constructor(assertionModule) {
+    private static _setupAssertionClass(assertionClass: any, name: string): any {
+        return class extends assertionClass {
+            constructor(assertionModule: any) {
                 const browser = assertionModule._browser;
                 super(browser, browser[name]);
             }

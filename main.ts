@@ -1,9 +1,9 @@
-"use strict";
-
 import * as process from 'process';
 import * as puppeteer from 'puppeteer';
 import BrowserFactory from './lib/browser_factory';
+import Browser from './lib/browser/browser';
 import * as Errors from './lib/errors';
+import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface } from './lib/types';
 
 const defaultSettings = {
     log: false,
@@ -18,56 +18,62 @@ const defaultSettings = {
 
 const defaultPlugins = [{
     name: "cookies",
-    plugin: require('./lib/modules/cookies/browser_cookies'),
-    assertions: require('./lib/modules/cookies/cookies_assertion')
+    plugin: require('./lib/modules/cookies/browser_cookies').default,
+    assertions: require('./lib/modules/cookies/cookies_assertion').default
 }, {
     name: "localStorage",
-    plugin: require('./lib/modules/local_storage/browser_local_storage'),
-    assertions: require('./lib/modules/local_storage/local_storage_assertions')
+    plugin: require('./lib/modules/local_storage/browser_local_storage').default,
+    assertions: require('./lib/modules/local_storage/local_storage_assertions').default
 }, {
     name: "requests",
-    plugin: require('./lib/modules/requests/browser_requests') // Assertion plugin separate
+    plugin: require('./lib/modules/requests/browser_requests').default // Assertion plugin separate
 }, {
     name: "console",
-    plugin: require('./lib/modules/console/browser_console'),
-    assertions: require('./lib/modules/console/console_assertion')
+    plugin: require('./lib/modules/console/browser_console').default,
+    assertions: require('./lib/modules/console/console_assertion').default
 }, {
     name: "webworkers",
-    plugin: require('./lib/modules/webworkers/browser_webworkers'),
-    assertions: require('./lib/modules/webworkers/webworkers_assertions')
+    plugin: require('./lib/modules/webworkers/browser_webworker').default,
+    assertions: require('./lib/modules/webworkers/webworkers_assertions').default
 }, {
     name: "dialog",
-    plugin: require('./lib/modules/dialog/browser_dialog')
+    plugin: require('./lib/modules/dialog/browser_dialog').default
 }];
 
+interface PluginModule {
+    name: string;
+    plugin: WendigoPluginInterface;
+    assertions: WendigoPluginAssertionInterface;
+}
+
 class Wendigo {
+    private customPlugins: Array<WendigoPluginInterface>;
+    private browsers: Array<Browser>;
+
     constructor() {
         this.customPlugins = [];
-        this._browsers = [];
+        this.browsers = [];
     }
 
-    createBrowser(settings = {}) {
-        settings = this._processSettings(settings);
-        return this._createInstance(settings).then((instance) => {
-            const plugins = defaultPlugins.concat(this.customPlugins);
-            return instance.newPage().then((page) => {
-                const b = BrowserFactory.createBrowser(page, settings, plugins);
-                this._browsers.push(b); // TODO: remove closed browser when closed with browser.close
-                return b;
-            });
-        });
+    public async createBrowser(settings: BrowserSettings = {}): Promise<Browser> {
+        const finalSettings = this._processSettings(settings);
+        const instance = await this._createInstance(finalSettings);
+        const plugins = defaultPlugins.concat(this.customPlugins);
+        const page = await instance.newPage();
+        const b = BrowserFactory.createBrowser(page, finalSettings, plugins);
+        this.browsers.push(b); // TODO: remove closed browser when closed with browser.close
+        return b;
     }
 
-    stop() {
+    public async stop(): Promise<void> {
         this.clearPlugins();
-        return Promise.all(this._browsers.map((b) => {
+        await Promise.all(this.browsers.map((b) => {
             return b.close();
-        })).then(() => {
-            this._browsers = [];
-        }); // reset browsers before returning promise.
+        }));
+        this.browsers = []; // TODO: reset browsers before returning promise.
     }
 
-    registerPlugin(name, plugin, assertions) {
+    public registerPlugin(name: string | PluginModule, plugin: WendigoPluginInterface, assertions: WendigoPluginAssertionInterface): void {
         if (!plugin && !assertions && typeof name === 'object') {
             const config = name;
             name = config.name;
@@ -75,7 +81,7 @@ class Wendigo {
             assertions = config.assertions;
         }
 
-        this._validatePlugin(name, plugin, assertions);
+        this._validatePlugin(name as string, plugin, assertions);
 
         BrowserFactory.clearCache();
         this.customPlugins.push({
@@ -85,23 +91,30 @@ class Wendigo {
         });
     }
 
-    clearPlugins() {
+    public clearPlugins(): void {
         this.customPlugins = [];
         BrowserFactory.clearCache();
     }
 
-    get Errors() {
-        return Errors;
+    public get Errors(): { [s: string]: typeof Errors.WendigoError | typeof Errors.AssertionError | typeof Errors.TimeoutError } {
+        return {
+            AssertionError: Errors.AssertionError,
+            WendigoError: Errors.WendigoError,
+            QueryError: Errors.QueryError,
+            FatalError: Errors.FatalError,
+            TimeoutError: Errors.TimeoutError,
+            InjectScriptError: Errors.InjectScriptError
+        };
     }
 
-    _validatePlugin(name, plugin, assertions) {
+    private _validatePlugin(name: string, plugin: WendigoPluginInterface, assertions: WendigoPluginAssertionInterface): void {
         this._validatePluginName(name);
         if (plugin && typeof plugin !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
         this._validatePluginAssertion(name, assertions);
         if (!plugin && !assertions) throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
     }
 
-    _validatePluginName(name) {
+    private _validatePluginName(name: string): void {
         if (!name || typeof name !== 'string') throw new Errors.FatalError("registerPlugin", `Plugin requires a name.`);
         let invalidNames = ["assert", "page", "not"];
         const plugins = defaultPlugins.concat(this.customPlugins);
@@ -110,46 +123,47 @@ class Wendigo {
         if (!valid) throw new Errors.FatalError("registerPlugin", `Invalid plugin name "${name}".`);
     }
 
-    _validatePluginAssertion(name, assertions) {
+    private _validatePluginAssertion(name: string, assertions: WendigoPluginAssertionInterface): void {
         if (assertions) {
             const isValidObject = assertions.assert || assertions.not;
             if (typeof assertions !== 'function' && !isValidObject) throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
         }
     }
 
-    _createInstance(settings) {
-        return puppeteer.launch(settings).then((instance) => {
-            if (settings.incognito) {
-                return instance.createIncognitoBrowserContext();
-            } else return instance;
-        });
+    private async _createInstance(settings: FinalBrowserSettings): Promise<puppeteer.BrowserContext | puppeteer.Browser> {
+        const instance = await puppeteer.launch(settings);
+        if (settings.incognito) {
+            return instance.createIncognitoBrowserContext();
+        } else return instance;
     }
 
-    _removeBrowser(browser) {
-        const idx = this._browsers.indexOf(browser);
+    private _removeBrowser(browser: Browser): void {
+        const idx = this.browsers.indexOf(browser);
         if (idx === -1) {
-            throw new Errors.FatalError("browser not found on closing.");
+            throw new Errors.FatalError("onClose", "browser not found on closing.");
         }
-        this._browsers.splice(idx, 1);
+        this.browsers.splice(idx, 1);
     }
 
-    _processSettings(settings) {
-        settings = Object.assign({}, defaultSettings, settings);
-        settings.__onClose = this._removeBrowser.bind(this);
-        if (process.env.NO_SANDBOX || settings.noSandbox) {
-            settings.args = settings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
+    private _processSettings(settings: BrowserSettings): FinalBrowserSettings {
+        const onClose = this._removeBrowser.bind(this);
+        const finalSettings = Object.assign({ __onClose: onClose }, defaultSettings, settings) as FinalBrowserSettings;
+        if (!finalSettings.args) finalSettings.args = [];
+        if (process.env.NO_SANDBOX || finalSettings.noSandbox) {
+            finalSettings.args = finalSettings.args.concat(['--no-sandbox', '--disable-setuid-sandbox']); // Required to run on some systems
         }
 
-        if (settings.proxyServer) {
-            settings.args.push(`--proxy-server=${settings.proxyServer}`);
+        if (finalSettings.proxyServer) {
+            finalSettings.args.push(`--proxy-server=${settings.proxyServer}`);
         }
 
-        if (settings.timezone) {
-            if (!settings.env) settings.env = {};
-            settings.env.TZ = settings.timezone;
+        if (finalSettings.timezone) {
+            if (!finalSettings.env) finalSettings.env = {
+                TZ: finalSettings.timezone
+            };
         }
-        return settings;
+        return finalSettings;
     }
 }
 
-module.exports = new Wendigo();
+export = new Wendigo();

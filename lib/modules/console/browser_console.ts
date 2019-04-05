@@ -2,11 +2,8 @@ import * as utils from '../../utils/utils';
 import Log from '../../models/log';
 
 import WendigoModule from '../wendigo_module';
-import { QueryError, FatalError, WendigoError } from '../../errors';
-import { WendigoSelector } from '../../types';
 import { LogType, ConsoleFilter } from './types';
 import Browser from '../../browser/browser';
-import { ConsoleMessageType } from 'puppeteer';
 import { OpenSettings } from '../../types';
 
 export default class BrowserConsole extends WendigoModule {

@@ -9,12 +9,27 @@ export type WendigoSelector = CssSelector | XPathSelector | DomElement;
 export interface ParsedQueryString { [s: string]: string; }
 
 export interface BrowserSettings {
-    log: boolean;
-    userAgent: string;
-    bypassCSP: boolean;
+    log?: boolean;
+    userAgent?: string;
+    bypassCSP?: boolean;
+    headless?: boolean;
+    args?: Array<string>;
+    slowMo?: number;
+    incognito?: boolean;
+    noSandbox?: boolean;
+    proxyServer?: string | null;
+    timezone?: string;
 }
 
-export type WendigoPluginInterface = any;
+export interface FinalBrowserSettings extends BrowserSettings {
+    __onClose: (a: any) => any;
+    env?: {
+        TZ: string
+    };
+}
+
+export type WendigoPluginInterface = any; // TODO: improve
+export type WendigoPluginAssertionInterface = any;
 
 export interface OpenSettings {
     clearRequestMocks?: boolean;

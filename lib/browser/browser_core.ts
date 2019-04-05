@@ -1,12 +1,12 @@
 import * as path from 'path';
-import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
 import * as querystring from 'querystring';
-import { FatalError, InjectScriptError } from '../errors';
-import WendigoConfig from '../../config';
-import WendigoModule from '../modules/wendigo_module';
-import DomElement from '../models/dom_element';
+import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
+
 import { stringifyLogText } from '../utils/utils';
-import { ParsedQueryString, BrowserSettings, OpenSettings } from '../types';
+import WendigoConfig from '../../config';
+import DomElement from '../models/dom_element';
+import { FatalError, InjectScriptError } from '../errors';
+import { ParsedQueryString, FinalBrowserSettings, OpenSettings } from '../types';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
@@ -18,10 +18,6 @@ function pageLog(log: ConsoleMessage): void {
     const con = console as any;
     if (!(con[logType])) logType = 'log';
     con[logType](text);
-}
-
-interface FinalBrowserSettings extends BrowserSettings {
-    __onClose: (a: any) => any;
 }
 
 const defaultOpenOptions: OpenSettings = {

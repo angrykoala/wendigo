@@ -1,9 +1,10 @@
-import DomElement from '../models/dom_element';
+import { EvaluateFn } from 'puppeteer';
+
 import * as utils from '../utils/utils';
+import DomElement from '../models/dom_element';
 import { TimeoutError, WendigoError } from '../errors';
 import BrowserNavigation from './browser_navigation';
-import { CssSelector, XPathSelector, WendigoSelector } from '../types';
-import { EvaluateFn } from 'puppeteer';
+import { CssSelector, WendigoSelector } from '../types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
     public wait(ms: number = 250): Promise<void> {

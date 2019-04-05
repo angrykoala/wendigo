@@ -16,7 +16,7 @@
     "dummy-server": "node tests/dummy_server/index.js",
     "lint": "eslint . --ext .js",
     "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
-    "tsc": "tsc"
+    "tsc": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",

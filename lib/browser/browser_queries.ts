@@ -1,8 +1,7 @@
-/* global WendigoUtils */
 import DomElement from '../models/dom_element';
 import { FatalError, WendigoError, QueryError } from '../errors';
 import BrowserCore from './browser_core';
-import { CssSelector, XPathSelector, WendigoSelector } from '../types';
+import { CssSelector, XPathSelector } from '../types';
 
 export default abstract class BrowserQueries extends BrowserCore {
     public async query(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<DomElement | null> {

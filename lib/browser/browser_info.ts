@@ -1,6 +1,6 @@
 import BrowserClick from './browser_click';
 import { QueryError } from '../errors';
-import { CssSelector, XPathSelector, WendigoSelector } from '../types';
+import { WendigoSelector } from '../types';
 
 export default abstract class BrowserInfo extends BrowserClick {
     public text(selector: WendigoSelector): Promise<Array<string>> {

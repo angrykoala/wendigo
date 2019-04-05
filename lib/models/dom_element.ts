@@ -1,5 +1,4 @@
 import { JSHandle, ElementHandle } from 'puppeteer';
-import { WendigoSelector } from '../types';
 
 export default class DomElement {
     public readonly element: ElementHandle;

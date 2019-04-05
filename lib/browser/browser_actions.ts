@@ -1,10 +1,9 @@
 import { Base64ScreenShotOptions } from 'puppeteer';
 import DomElement from '../models/dom_element';
-import * as utils from '../utils/utils';
+import { promiseSerial } from '../utils/utils';
 import { QueryError, WendigoError } from '../errors';
-import { Constructor } from '../types';
 import BrowserQueries from './browser_queries';
-import { CssSelector, XPathSelector, WendigoSelector } from '../types';
+import { CssSelector, WendigoSelector } from '../types';
 
 export default abstract class BrowserActions extends BrowserQueries {
     public type(selector: CssSelector | DomElement, text: string, options: { delay?: number } = {}): Promise<void> {
@@ -27,7 +26,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
 
         try {
-            await utils.promiseSerial(funcsFinal);
+            await promiseSerial(funcsFinal);
         } catch (err) {
             return Promise.reject(new WendigoError("keyPress", `Could not press keys "${key.join(", ")}"`));
         }

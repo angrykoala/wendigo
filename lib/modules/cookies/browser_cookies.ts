@@ -1,6 +1,3 @@
-import * as utils from '../../utils/utils';
-import Log from '../../models/log';
-
 import WendigoModule from '../wendigo_module';
 import { WendigoError } from '../../errors';
 

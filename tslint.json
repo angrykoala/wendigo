@@ -29,6 +29,7 @@
         "member-ordering": false,
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
         "no-namespace": false,
+        "only-arrow-functions": false,
         "typedef": [true, "call-signature"]
     },
     "rulesDirectory": []

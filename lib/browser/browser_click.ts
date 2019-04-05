@@ -1,7 +1,7 @@
 import BrowserActions from './browser_actions';
 import { WendigoError, QueryError } from '../errors';
 import DomElement from '../models/dom_element';
-import { CssSelector, XPathSelector, WendigoSelector } from '../types';
+import { WendigoSelector } from '../types';
 
 export default abstract class BrowserClick extends BrowserActions {
     public async click(selector: WendigoSelector | number, index?: number): Promise<number> {
