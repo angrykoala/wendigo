@@ -172,7 +172,7 @@ export default class BrowserAssertions extends WendigoModule {
     }
 
     /* eslint-disable complexity */
-    public attribute(selector: WendigoSelector, attribute: string, expectedValue?: string, msg?: string): Promise<void> {
+    public attribute(selector: WendigoSelector, attribute: string, expectedValue?: string | null, msg?: string): Promise<void> {
         const customMessage = Boolean(msg);
         if (!customMessage) {
             msg = `Expected element "${selector}" to have attribute "${attribute}"`;
@@ -185,18 +185,23 @@ export default class BrowserAssertions extends WendigoModule {
             return Array.from(elements).map((el) => {
                 return el.getAttribute(attrName);
             });
-        }, selector, attribute).then((attributes: Array<string>) => {
+        }, selector, attribute).then((attributes: Array<string | null>) => {
             if (attributes.length === 0) {
                 if (!customMessage) msg = `${msg}, no element found.`;
                 return assertUtils.rejectAssertion("assert.attribute", msg as string);
             }
-            for (const attr of attributes) {
-                if (attr !== null || expectedValue === null) {
+
+            const filteredAttributes = attributes.filter(a => a !== null);
+            if (expectedValue === null) {
+                if (filteredAttributes.length === 0) return Promise.resolve();
+            } else {
+                for (const attr of filteredAttributes) {
                     if (expectedValue === undefined || utils.matchText(attr, expectedValue)) {
                         return Promise.resolve();
                     }
                 }
             }
+
             if (!customMessage) {
                 const foundElements = new Set(attributes.filter((a) => {
                     return a !== null;

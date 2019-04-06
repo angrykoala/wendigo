@@ -112,7 +112,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async attribute(selector: WendigoSelector, attributeName: string): Promise<string | null> {
         this.failIfNotLoaded("attribute");
         try {
-            return this.evaluate((q, attr) => {
+            return await this.evaluate((q, attr) => {
                 const element = WendigoUtils.queryElement(q);
                 if (!element) return Promise.reject();
                 return element.getAttribute(attr);

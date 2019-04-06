@@ -4,7 +4,7 @@ const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-describe("Assert Attribute", function() {
+describe.only("Assert Attribute", function() {
     this.timeout(5000);
     let browser;
 
@@ -45,7 +45,6 @@ describe("Assert Attribute", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.attribute(".hidden-text", "class", "hidden");
         }, `[assert.attribute] Expected element ".hidden-text" to have attribute "class" with value "hidden", ["hidden-text"] found.`);
-
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.attribute(".second-element", "hidden");
         }, `[assert.attribute] Expected element ".second-element" to have attribute "hidden".`);
