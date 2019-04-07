@@ -46,9 +46,18 @@ export default class RequestMocker {
         const method = options.method;
         const queryString = options.queryString;
         this._mockedRequests = this._mockedRequests.filter((m) => {
-            const same = m.url === url && method === m.method && utils.compareObjects(queryString, m.queryString);
+            const same = m.url === url && method === m.method && this._sameQs(queryString, m.queryString);
             return !same;
         });
+    }
+
+    private _sameQs(q1: string | { [s: string]: string } | undefined, q2: string | { [s: string]: string } | undefined): boolean {
+        if (q1 === q2) return true;
+        if (!q1 || !q2) return false;
+        const parsedQ1 = utils.parseQueryString(q1);
+        const parsedQ2 = utils.parseQueryString(q2);
+
+        return utils.compareObjects(parsedQ1, parsedQ2);
     }
 
     private _getMock(url: string, options: RequestMockOptions): RequestMock | null {
@@ -67,7 +76,7 @@ export default class RequestMocker {
 
     private _matchOptions(options: RequestMockOptions | RequestMock, expected: RequestMockOptions | RequestMock): boolean {
         if (expected.method && options.method !== expected.method) return false;
-        if (expected.queryString && !utils.compareObjects(options.queryString, expected.queryString)) return false;
+        if (expected.queryString !== undefined && !this._sameQs(options.queryString, expected.queryString)) return false;
         return true;
     }
 
@@ -77,7 +86,7 @@ export default class RequestMocker {
 
     // Priority is: Method > URL > QueryString
     private _hasHigherPriority(m1: RequestMock, m2: RequestMock | null): boolean {
-        if (!m2) return false;
+        if (!m2) return true;
         const existsPriority = this._checkElementPriority(m1, m2);
         if (existsPriority !== null) return existsPriority;
         const methodPriority = this._checkElementPriority(m1.method, m2.method);

@@ -65,10 +65,10 @@ export default abstract class BrowserActions extends BrowserQueries {
         }, selector);
     }
 
-    public async setValue(selector: WendigoSelector, value: any): Promise<void> {
+    public async setValue(selector: WendigoSelector, value: any): Promise<number> {
         this.failIfNotLoaded("setValue");
         try {
-            await this.evaluate((q, v) => {
+            return await this.evaluate((q, v) => {
                 const elements = WendigoUtils.queryAll(q) as Array<HTMLInputElement>;
                 if (elements.length === 0) return Promise.reject();
                 for (const element of elements) {

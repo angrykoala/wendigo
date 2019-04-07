@@ -18,7 +18,6 @@ export default abstract class BrowserWait extends BrowserNavigation {
             if (e instanceof DomElement) return e.element;
             else return e;
         });
-
         try {
             await this.page.waitFor(selector, {
                 timeout: timeout,
@@ -135,19 +134,21 @@ export default abstract class BrowserWait extends BrowserNavigation {
             let timeout2 = timeout - timeDiff;
             if (timeout2 < 10) timeout2 = 10; // just in case
             await this.waitFor(() => {
-                return Boolean(WendigoUtils);
+                const w = window as any;
+                return Boolean(w.WendigoUtils);
             }, timeout2);
         } catch (err) {
             throw new TimeoutError("waitForNavigation", "", timeout);
         }
     }
 
-    public async clickAndWaitForNavigation(selector: WendigoSelector, timeout: number = 500): Promise<void> {
+    public async clickAndWaitForNavigation(selector: WendigoSelector, timeout: number = 500): Promise<number> {
         try {
-            await Promise.all([
+            const result = await Promise.all([
                 this.waitForNavigation(timeout),
                 this.click(selector)
             ]);
+            return result[1];
         } catch (err) {
             throw WendigoError.overrideFnName(err, "clickAndWaitForNavigation");
         }
@@ -164,10 +165,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
-    public async waitAndClick(selector: CssSelector, timeout: number = 500): Promise<void> {
+    public async waitAndClick(selector: CssSelector, timeout: number = 500): Promise<number> {
         try {
             await this.waitFor(selector, timeout);
-            await this.click(selector);
+            return await this.click(selector);
         } catch (err) {
             throw new TimeoutError("waitAndClick", "", timeout);
         }

@@ -38,7 +38,7 @@ export default abstract class BrowserCore {
 
     private _loaded: boolean;
     private disabled: boolean;
-    private components: Array<string>; // TODO
+    private components: Array<string>;
 
     constructor(page: Page, settings: FinalBrowserSettings, components: Array<string> = []) {
         this.page = page;
@@ -74,7 +74,7 @@ export default abstract class BrowserCore {
             await this._beforeOpen(options);
             const response = await this.page.goto(url);
             this.initialResponse = response;
-            return this._afterPageLoad(options);
+            return this._afterPageLoad();
         } catch (err) {
             if (err instanceof FatalError) return Promise.reject(err);
             return Promise.reject(new FatalError("open", `Failed to open "${url}". ${err.message}`));
@@ -171,7 +171,7 @@ export default abstract class BrowserCore {
         await this.callComponentsMethod("_beforeOpen", options);
     }
 
-    protected async _afterPageLoad(options?: OpenSettings): Promise<void> {
+    protected async _afterPageLoad(): Promise<void> {
         try {
             const content = await this.page.content();
             this.originalHtml = content;

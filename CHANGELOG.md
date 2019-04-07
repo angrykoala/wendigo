@@ -2,9 +2,12 @@
 ==================
 
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
-* Browser.request.all changed into a function to make it consistent
+* Browser.request.all changed into a function to make it consistent with other modules
 * Assertions now always return promises for consistency
+* Fixed bug where settings on dialog module where not being updated properly
+* Fixed bug where mocks with querystring where not being updated properly
 * Removed dependency mixwith
+* Some dependencies updated
 
 1.13.0 / 2018-03-29
 ===================

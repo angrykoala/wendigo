@@ -1495,6 +1495,7 @@ Dialog objects are returned by the `all` and `waitForDialog` methods. These prov
 
 * **text**: The dialog message
 * **type**: The dialog type (`alert`, `beforeunload`, `confirm`, `promp`). Same as those provided by Puppeteer.
+* **handled**: Whether the dialog has already been handled or not.
 
 **dismiss()**  
 Dismisses the dialog, if the dialog is a prompt, `null` will be returned.

@@ -80,6 +80,7 @@ export function compareObjects(obj1: any, obj2: any): boolean { // Swallow compa
 
 export function parseQueryString(qs: string | URL | { [s: string]: string }): ParsedQueryString {
     if (typeof qs === 'string') {
+        if (qs[0] === '?') qs = qs.slice(1);
         return Object.assign({}, querystring.parse(qs)) as ParsedQueryString;
     } else if (qs instanceof URL) {
         qs = qs.searchParams.toString();

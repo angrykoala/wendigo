@@ -80,7 +80,7 @@ export default class RequestMock implements RequestMockInterface {
         this.response = this.processResponse(options);
         this.delay = options.delay || 0;
         this.method = options.method;
-        if (options.queryString) this.queryString = utils.parseQueryString(options.queryString);
+        if (options.queryString !== undefined) this.queryString = utils.parseQueryString(options.queryString);
         else this.queryString = this.parseUrlQueryString(url);
         this.auto = options.auto !== false;
         this.events = new EventEmitter();
@@ -173,7 +173,7 @@ export default class RequestMock implements RequestMockInterface {
         else {
             const parsedUrl = new URL(url);
             if (parsedUrl.search) {
-                return utils.parseQueryString(url);
+                return utils.parseQueryString(parsedUrl.search);
             } else return undefined;
         }
     }

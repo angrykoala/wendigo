@@ -1,4 +1,4 @@
-import Dialog from '../../models/dialog';
+import Dialog from './dialog';
 import { TimeoutError } from '../../errors';
 
 import WendigoModule from '../wendigo_module';
@@ -76,6 +76,7 @@ export default class BrowserDialog extends WendigoModule {
     protected async _beforeOpen(options: OpenSettings): Promise<void> {
         await super._beforeOpen(options);
         this.clear();
+        this.options = Object.assign({}, defaultOptions);
         if ((options as any).dismissAllDialogs) this.options.dismissAllDialogs = true;
     }
 }
