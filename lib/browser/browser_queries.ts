@@ -7,7 +7,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     public async query(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<DomElement | null> {
         this.failIfNotLoaded("query");
         if (optionalSelector) {
-            if (!(selector instanceof DomElement)) return Promise.reject(new WendigoError("query", "Invalid parent element for query"));
+            if (!(selector instanceof DomElement)) return Promise.reject(new WendigoError("query", "Invalid parent element."));
             return this.subQuery(selector, optionalSelector);
         }
         if (typeof selector === 'string') {
@@ -20,7 +20,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     public async queryAll(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<Array<DomElement>> {
         this.failIfNotLoaded("queryAll");
         if (optionalSelector) {
-            if (!(selector instanceof DomElement)) throw new WendigoError("queryAll", "Invalid parent element for query");
+            if (!(selector instanceof DomElement)) throw new WendigoError("queryAll", "Invalid parent element.");
             return this.subQueryAll(selector, optionalSelector);
         }
         if (typeof selector === 'string') {

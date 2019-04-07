@@ -1,7 +1,7 @@
 "use strict";
 
 const Wendigo = require('../..');
-const DomElement = require('../../dist/lib/models/dom_element');
+const DomElement = require('../../dist/lib/models/dom_element').default;
 const assert = require('assert');
 const configUrls = require('../config.json').urls;
 

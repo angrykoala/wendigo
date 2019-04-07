@@ -47,7 +47,9 @@ export function matchText(text: string | null | undefined, expected: string | Re
     if (text === undefined || text === null) return false;
     if (expected instanceof RegExp) {
         return expected.test(text);
-    } else return text === expected;
+    } else {
+        return text === expected;
+    }
 }
 
 export function matchTextList(list: Array<string>, expected: string | RegExp): boolean {

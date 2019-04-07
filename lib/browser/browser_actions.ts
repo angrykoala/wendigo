@@ -44,11 +44,12 @@ export default abstract class BrowserActions extends BrowserQueries {
         });
     }
 
-    public async select(selector: CssSelector, values: Array<string> | string): Promise<void> {
+    public async select(selector: CssSelector, values: Array<string> | string): Promise<Array<string>> {
         this.failIfNotLoaded("select");
         if (!Array.isArray(values)) values = [values];
         try {
-            await this.page.select(selector, ...values);
+            const result = await this.page.select(selector, ...values);
+            return result;
         } catch (err) {
             throw new QueryError("select", `Element "${selector}" not found.`);
         }
@@ -158,10 +159,11 @@ export default abstract class BrowserActions extends BrowserQueries {
     public async blur(selector: WendigoSelector): Promise<void> {
         this.failIfNotLoaded("selector");
         try {
-            return this.evaluate((q) => {
+            const result = await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
                 element.blur();
             }, selector);
+            return result;
         } catch (err) {
             throw new QueryError("blur", `Element "${selector}" not found.`);
         }

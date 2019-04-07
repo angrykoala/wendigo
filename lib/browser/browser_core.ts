@@ -59,7 +59,7 @@ export default abstract class BrowserCore {
         });
     }
 
-    get loaded(): boolean {
+    public get loaded(): boolean {
         return this._loaded && !this.disabled;
     }
 

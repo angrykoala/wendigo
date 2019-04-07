@@ -52,7 +52,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async options(selector: WendigoSelector): Promise<Array<string>> {
         this.failIfNotLoaded("options");
         try {
-            return this.evaluate((q) => {
+            return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLSelectElement;
                 if (!element) return Promise.reject();
                 const options = element.options || [];
@@ -70,7 +70,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async selectedOptions(selector: WendigoSelector): Promise<Array<string>> {
         this.failIfNotLoaded("selectedOptions");
         try {
-            return this.evaluate((q) => {
+            const result = await this.evaluate((q) => {
                 const elements = WendigoUtils.queryElement(q) as HTMLSelectElement;
                 return Array.from(elements.options).filter((option) => {
                     return option.selected;
@@ -78,9 +78,9 @@ export default abstract class BrowserInfo extends BrowserClick {
                     return option.value || option.text;
                 });
             }, selector);
+            return result;
         } catch (err) {
             throw new QueryError("selectedOptions", `Element "${selector}" not found.`);
-
         }
     }
 
@@ -125,7 +125,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async styles(selector: WendigoSelector): Promise<{ [s: string]: string }> {
         this.failIfNotLoaded("styles");
         try {
-            return this.evaluate((q) => {
+            return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
                 if (!element) return Promise.reject();
                 return WendigoUtils.getStyles(element);
@@ -138,7 +138,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async style(selector: WendigoSelector, styleName: string): Promise<string> {
         this.failIfNotLoaded("style");
         try {
-            return this.styles(selector).then((styles) => {
+            return await this.styles(selector).then((styles) => {
                 return styles[styleName];
             });
         } catch (err) {
@@ -149,7 +149,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     public async checked(selector: WendigoSelector): Promise<boolean | undefined> {
         this.failIfNotLoaded("checked");
         try {
-            return this.evaluate((q) => {
+            return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLInputElement;
                 if (!element) return Promise.reject();
                 return element.checked;
