@@ -1,10 +1,13 @@
-"use strict";
+import { AssertionError } from '../../errors';
+import { stringify } from '../../utils/utils';
+import RequestFilter from './request_filter';
+import { ExpectedHeaders } from './types';
 
-const {AssertionError} = require('../../errors');
-const utils = require('../../utils/utils');
+type PromiseExecutor<T> = (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void;
 
-module.exports = class RequestAssertionsFilter extends Promise {
-    constructor(executor, requestFilter) {
+export default class RequestAssertionsFilter extends Promise<RequestAssertionsFilter> {
+    private _requestFilter: RequestFilter;
+    constructor(executor: PromiseExecutor<RequestAssertionsFilter>, requestFilter: RequestFilter) {
         super((resolve, reject) => {
             return executor(resolve, reject);
         });
@@ -12,25 +15,25 @@ module.exports = class RequestAssertionsFilter extends Promise {
         this._requestFilter = requestFilter;
     }
 
-    url(expected, msg) {
+    public url(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
         const urlFilter = this._requestFilter.url(expected);
         if (!msg) msg = `Expected request with url "${expected}" to exist.`;
         return this._assertFilter("assert.request.url", urlFilter, msg);
     }
 
-    method(expected, msg) {
+    public method(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
         const methodFilter = this._requestFilter.method(expected);
         if (!msg) msg = `Expected request with method "${expected}" to exist.`;
         return this._assertFilter("assert.request.method", methodFilter, msg);
     }
 
-    status(expected, msg) {
+    public status(expected: number, msg?: string): RequestAssertionsFilter {
         const statusFilter = this._requestFilter.status(expected);
         if (!msg) msg = `Expected request with status "${expected}" to exist.`;
         return this._assertFilter("assert.request.status", statusFilter, msg);
     }
 
-    responseHeaders(expected, msg) {
+    public responseHeaders(expected: ExpectedHeaders, msg?: string): RequestAssertionsFilter {
         const responseHeadersFilter = this._requestFilter.responseHeaders(expected);
         if (!msg) {
             const keys = Object.keys(expected);
@@ -42,31 +45,31 @@ module.exports = class RequestAssertionsFilter extends Promise {
         return this._assertFilter("assert.request.responseHeaders", responseHeadersFilter, msg);
     }
 
-    ok(expected = true, msg) {
+    public ok(expected = true, msg?: string): RequestAssertionsFilter {
         const okFilter = this._requestFilter.ok(expected);
         if (!msg) msg = `Expected ${expected ? "" : "not"} ok request to exist.`;
         return this._assertFilter("assert.request.ok", okFilter, msg);
     }
 
-    postBody(expected, msg) {
+    public postBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
         const bodyFilter = this._requestFilter.postBody(expected);
         if (!msg) {
-            const expectedString = utils.stringify(expected);
+            const expectedString = stringify(expected);
             msg = `Expected request with body "${expectedString}" to exist.`;
         }
         return this._assertFilter("assert.request.postBody", bodyFilter, msg);
     }
 
-    responseBody(expected, msg) {
+    public responseBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
         const responseBodyFilter = this._requestFilter.responseBody(expected);
         if (!msg) {
-            const expectedString = utils.stringify(expected);
+            const expectedString = stringify(expected);
             msg = `Expected request with response body "${expectedString}" to exist.`;
         }
         return this._assertFilter("assert.request.responseBody", responseBodyFilter, msg);
     }
 
-    exactly(expected, msg) {
+    public exactly(expected: number, msg?: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
             this.then(() => {
                 return this._assertNumber("assert.request.exactly", expected, msg, resolve, reject);
@@ -76,12 +79,12 @@ module.exports = class RequestAssertionsFilter extends Promise {
             this.catch((err) => {
                 if (err instanceof AssertionError) {
                     return this._assertNumber("assert.request.exactly", expected, msg, resolve, reject);
-                } else reject(err);
+                } else return reject(err);
             });
         }, this._requestFilter);
     }
 
-    _assertFilter(fnName, filter, msg) {
+    private _assertFilter(fnName: string, filter: RequestFilter, msg: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
             return this.then(() => {
                 return filter.requests.then((reqs) => {
@@ -97,7 +100,7 @@ module.exports = class RequestAssertionsFilter extends Promise {
         }, filter);
     }
 
-    _assertNumber(fnName, expected, msg, resolve, reject) { //eslint-disable-line
+    private _assertNumber(fnName: string, expected: number, msg: string | undefined, resolve: () => void, reject: (e: Error) => void): Promise<void> {
         return this._requestFilter.requests.then((reqs) => {
             const requestsNumber = reqs.length;
             if (!msg) msg = `Expected exactly ${expected} requests, ${requestsNumber} found.`;
@@ -112,4 +115,4 @@ module.exports = class RequestAssertionsFilter extends Promise {
             reject(err);
         });
     }
-};
+}

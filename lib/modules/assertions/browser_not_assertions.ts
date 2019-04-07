@@ -11,7 +11,7 @@ export default class BrowserNotAssertions {
 
     constructor(assertions: BrowserAssertions, browser: Browser) {
         this._assertions = assertions;
-        this._browser = browser;
+        this._browser = assertions._browser;
     }
 
     public exists(selector: WendigoSelector, msg?: string): Promise<void> {
@@ -153,7 +153,7 @@ export default class BrowserNotAssertions {
         try {
             value = await this._browser.checked(selector);
         } catch (err) {
-            return Promise.reject(new QueryError("assert.not.checked", `Element "${selector}" not found.`));
+            throw new QueryError("assert.not.checked", `Element "${selector}" not found.`);
         }
         if (value !== false) {
             if (!msg) msg = `Expected element "${selector}" to not be checked.`;

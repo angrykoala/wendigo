@@ -2,7 +2,7 @@ import Browser from '../browser/browser';
 import { OpenSettings } from '../types';
 
 export default abstract class WendigoModule {
-    protected _browser: Browser;
+    public _browser: Browser; // TODO: make it private
 
     constructor(browser: Browser) {
         this._browser = browser;

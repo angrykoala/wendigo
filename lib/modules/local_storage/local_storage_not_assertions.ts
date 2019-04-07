@@ -12,7 +12,7 @@ export default class BrowserLocalStorageNotAssertions {
     public exist(key: string | Array<string>, msg?: string): Promise<void> {
         const keyList = arrayfy(key);
         if (!msg) {
-            const itemText = key.length === 1 ? "item" : "items";
+            const itemText = keyList.length === 1 ? "item" : "items";
             msg = `Expected ${itemText} "${keyList.join(" ")}" not to exist in localStorage.`;
         }
         return assertUtils.invertify(() => {

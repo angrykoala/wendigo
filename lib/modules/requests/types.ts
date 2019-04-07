@@ -14,3 +14,7 @@ export interface RequestMockOptions extends RequestMockResponseOptions {
     redirectTo?: string;
     auto?: boolean;
 }
+
+export interface ExpectedHeaders {
+    [s: string]: string | RegExp;
+}

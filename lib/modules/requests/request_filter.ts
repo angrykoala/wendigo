@@ -1,9 +1,6 @@
-import { matchText } from '../../utils/utils';
 import { Request } from 'puppeteer';
-
-interface ExpectedHeaders {
-    [s: string]: string | RegExp;
-}
+import { matchText } from '../../utils/utils';
+import { ExpectedHeaders } from './types';
 
 function processBody(body: string | RegExp | object): string | RegExp {
     if (typeof body === 'object' && !(body instanceof RegExp)) {

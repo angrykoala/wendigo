@@ -85,12 +85,13 @@ export function parseQueryString(qs: string | URL | { [s: string]: string }): Pa
     } else return qs;
 }
 
-export function stringifyLogText(log: ConsoleMessage): string {
-    if (log.text().includes('JSHandle@object')) {
-        const args = log.args().map(stringifyArg);
+export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
+    const text = log.text();
+    if (text.includes('JSHandle@object')) {
+        const args = await Promise.all(log.args().map(stringifyArg));
         return args.join(' ');
     }
-    return log.text();
+    return text;
 }
 
 export function stringifyArg(arg: JSHandle): Promise<string> {

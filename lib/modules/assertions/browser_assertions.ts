@@ -3,7 +3,8 @@ import * as elementsAssertionUtils from './assert_elements';
 import * as assertUtils from '../../utils/assert_utils';
 
 // TODO: RequestAssertionFilter should be an assertion module
-// const RequestAssertionsFilter = require('../requests/request_assertions_filter');
+import RequestAssertionsFilter from '../requests/request_assertions_filter';
+import RequestFilter from '../requests/request_filter';
 
 import WendigoModule from '../wendigo_module';
 import { QueryError, FatalError, WendigoError } from '../../errors';
@@ -11,12 +12,13 @@ import { WendigoSelector } from '../../types';
 
 export default class BrowserAssertions extends WendigoModule {
 
-    // get request() {
-    //     const requests = this._browser.requests.filter;
-    //     return new RequestAssertionsFilter((r) => {
-    //         r();
-    //     }, requests);
-    // }
+    public get request(): RequestAssertionsFilter { // TODO: make a proper plugin
+        const b = this._browser as any;
+        const requests = b.requests.filter as RequestFilter;
+        return new RequestAssertionsFilter((r) => {
+            r();
+        }, requests);
+    }
 
     public async exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to exists`;
@@ -172,7 +174,7 @@ export default class BrowserAssertions extends WendigoModule {
     }
 
     /* eslint-disable complexity */
-    public attribute(selector: WendigoSelector, attribute: string, expectedValue?: string | null, msg?: string): Promise<void> {
+    public async attribute(selector: WendigoSelector, attribute: string, expectedValue?: string | null, msg?: string): Promise<void> {
         const customMessage = Boolean(msg);
         if (!customMessage) {
             msg = `Expected element "${selector}" to have attribute "${attribute}"`;
@@ -180,40 +182,40 @@ export default class BrowserAssertions extends WendigoModule {
             if (expectedValue === null) msg = `Expected element "${selector}" not to have attribute "${attribute}"`;
         }
 
-        return this._browser.evaluate((q, attrName) => {
+        const attributes: Array<string | null> = await this._browser.evaluate((q, attrName) => {
             const elements = WendigoUtils.queryAll(q);
             return Array.from(elements).map((el) => {
                 return el.getAttribute(attrName);
             });
-        }, selector, attribute).then((attributes: Array<string | null>) => {
-            if (attributes.length === 0) {
-                if (!customMessage) msg = `${msg}, no element found.`;
-                return assertUtils.rejectAssertion("assert.attribute", msg as string);
-            }
+        }, selector, attribute);
 
-            const filteredAttributes = attributes.filter(a => a !== null);
-            if (expectedValue === null) {
-                if (filteredAttributes.length === 0) return Promise.resolve();
-            } else {
-                for (const attr of filteredAttributes) {
-                    if (expectedValue === undefined || utils.matchText(attr, expectedValue)) {
-                        return Promise.resolve();
-                    }
-                }
-            }
-
-            if (!customMessage) {
-                const foundElements = new Set(attributes.filter((a) => {
-                    return a !== null;
-                }));
-                if (foundElements.size === 0 || expectedValue === null) msg = `${msg}.`;
-                else {
-                    const foundArr = Array.from(foundElements);
-                    msg = `${msg}, ["${foundArr.join('", "')}"] found.`;
-                }
-            }
+        if (attributes.length === 0) {
+            if (!customMessage) msg = `${msg}, no element found.`;
             return assertUtils.rejectAssertion("assert.attribute", msg as string);
-        });
+        }
+
+        const filteredAttributes = attributes.filter(a => a !== null);
+        if (expectedValue === null) {
+            if (filteredAttributes.length === 0) return Promise.resolve();
+        } else {
+            for (const attr of filteredAttributes) {
+                if (expectedValue === undefined || utils.matchText(attr, expectedValue)) {
+                    return Promise.resolve();
+                }
+            }
+        }
+
+        if (!customMessage) {
+            const foundElements = new Set(attributes.filter((a) => {
+                return a !== null;
+            }));
+            if (foundElements.size === 0 || expectedValue === null) msg = `${msg}.`;
+            else {
+                const foundArr = Array.from(foundElements);
+                msg = `${msg}, ["${foundArr.join('", "')}"] found.`;
+            }
+        }
+        return assertUtils.rejectAssertion("assert.attribute", msg as string);
     }
     /* eslint-enable complexity */
 
@@ -323,7 +325,7 @@ export default class BrowserAssertions extends WendigoModule {
         try {
             value = await this._browser.checked(selector);
         } catch (err) {
-            return Promise.reject(new QueryError("assert.checked", `Element "${selector}" not found.`));
+            throw new QueryError("assert.checked", `Element "${selector}" not found.`);
         }
         if (value !== true) {
             if (!msg) msg = `Expected element "${selector}" to be checked.`;
@@ -336,7 +338,7 @@ export default class BrowserAssertions extends WendigoModule {
         try {
             value = await this._browser.attribute(selector, "disabled");
         } catch (err) {
-            return Promise.reject(new QueryError("assert.disabled", `Element "${selector}" not found.`));
+            throw new QueryError("assert.disabled", `Element "${selector}" not found.`);
         }
         if (value === null) {
             if (!msg) msg = `Expected element "${selector}" to be disabled.`;
@@ -349,7 +351,7 @@ export default class BrowserAssertions extends WendigoModule {
         try {
             value = await this._browser.attribute(selector, "disabled");
         } catch (err) {
-            return Promise.reject(new QueryError("assert.enabled", `Element "${selector}" not found.`));
+            throw new QueryError("assert.enabled", `Element "${selector}" not found.`);
         }
         if (value !== null) {
             if (!msg) msg = `Expected element "${selector}" to be enabled.`;

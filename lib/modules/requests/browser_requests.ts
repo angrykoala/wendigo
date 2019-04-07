@@ -8,7 +8,7 @@ import RequestMock from './request_mock';
 import { Request } from 'puppeteer';
 import { RequestMockOptions } from './types';
 
-module.exports = class BrowserRequests extends WendigoModule {
+export default class BrowserRequests extends WendigoModule {
     private _requestMocker: RequestMocker;
     private _requests: Array<Request>;
     private _interceptorReady: boolean;
@@ -75,4 +75,4 @@ module.exports = class BrowserRequests extends WendigoModule {
             }
         });
     }
-};
+}

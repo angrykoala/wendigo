@@ -1,5 +1,5 @@
-import * as utils from '../../utils/utils';
-import Log from '../../models/log';
+import Log from './log';
+import { matchText, stringifyLogText } from '../../utils/utils';
 
 import WendigoModule from '../wendigo_module';
 import { LogType, ConsoleFilter } from './types';
@@ -12,7 +12,8 @@ export default class BrowserConsole extends WendigoModule {
         super(browser);
         this.logs = [];
         this._browser.page.on("console", async (log) => {
-            this.logs.push(new Log(log));
+            const text = await stringifyLogText(log);
+            this.logs.push(new Log(log, text));
         });
     }
 
@@ -27,7 +28,7 @@ export default class BrowserConsole extends WendigoModule {
     public filter(filters: ConsoleFilter = {}): Array<Log> {
         return this.logs.filter((l) => {
             if (filters.type && l.type !== filters.type) return false;
-            if (filters.text && !utils.matchText(l.text, filters.text)) return false;
+            if (filters.text && !matchText(l.text, filters.text)) return false;
             return true;
         });
     }

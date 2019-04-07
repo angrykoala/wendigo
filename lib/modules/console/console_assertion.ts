@@ -11,7 +11,7 @@ function processMessage(filterOptions: ConsoleFilter, count: number, actualCount
 
 function processMessageWithoutExpectedCount(filterOptions: ConsoleFilter): string {
     const filterMessage = processFilterMessage(filterOptions);
-    return `Expected at least one console event${filterMessage}, none found`;
+    return `Expected at least one console event${filterMessage}, none found.`;
 }
 
 function processFilterMessage(filterOptions: ConsoleFilter): string {

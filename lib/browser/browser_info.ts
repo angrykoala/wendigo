@@ -146,13 +146,13 @@ export default abstract class BrowserInfo extends BrowserClick {
         }
     }
 
-    public async checked(selector: WendigoSelector): Promise<boolean> {
+    public async checked(selector: WendigoSelector): Promise<boolean | undefined> {
         this.failIfNotLoaded("checked");
         try {
             return this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLInputElement;
                 if (!element) return Promise.reject();
-                return Boolean(element.checked);
+                return element.checked;
             }, selector);
         } catch (err) {
             throw new QueryError("checked", `Element "${selector}" not found.`);

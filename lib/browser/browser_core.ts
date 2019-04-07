@@ -11,8 +11,8 @@ import { ParsedQueryString, FinalBrowserSettings, OpenSettings } from '../types'
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
 
-function pageLog(log: ConsoleMessage): void {
-    const text = stringifyLogText(log);
+async function pageLog(log: ConsoleMessage): Promise<void> {
+    const text = await stringifyLogText(log);
     let logType = log.type() as string;
     if (logType === 'warning') logType = 'warn';
     const con = console as any;
@@ -40,7 +40,7 @@ export default abstract class BrowserCore {
     private disabled: boolean;
     private components: Array<string>; // TODO
 
-    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string>) {
+    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string> = []) {
         this.page = page;
         this.settings = settings;
         this._loaded = false;

@@ -12,7 +12,7 @@ export default class BrowserFactory {
 
     public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
         if (!this.browserClass) this.browserClass = this.createBrowserClass(plugins);
-        return new this.browserClass(page, settings, []);
+        return new this.browserClass(page, settings);
     }
 
     public static clearCache(): void {

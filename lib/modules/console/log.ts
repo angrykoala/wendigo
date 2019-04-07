@@ -1,12 +1,11 @@
 import { ConsoleMessage, ConsoleMessageType } from 'puppeteer';
-import { stringifyLogText } from '../utils/utils';
 
 export default class Log {
     public message: ConsoleMessage;
     public readonly text: string;
-    constructor(consoleMessage: ConsoleMessage) {
+    constructor(consoleMessage: ConsoleMessage, text?: string) {
         this.message = consoleMessage;
-        this.text = stringifyLogText(consoleMessage);
+        this.text = text || consoleMessage.text();
     }
 
     get type(): ConsoleMessageType {
