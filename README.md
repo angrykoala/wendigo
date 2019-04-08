@@ -491,22 +491,6 @@ await browser.waitForText("Click me!");
 await browser.clickText("Click me!");
 ```
 
-**waitForRequest(url, timeout=500)**  
-Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
-
-```js
-await browser.waitForRequest("my-url");
-```
-
-**waitForResponse(url, timeout=500)**  
-Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
-
-**waitForNextRequest(url ,timeout=500)**  
-Waits until next request with given url is done. If the request was already made, this method will wait until next one.
-
-**waitForNextResponse(url ,timeout=500)**  
-Waits until next response with given url is received. If the response was already received, this method will wait until next one.
-
 **waitForNavigation(timeout=500)**  
 Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
@@ -1319,6 +1303,23 @@ Remove all the request mocks.
 **getAllMocks()**  
 Returns an array with all the current request mocks set in the browser.
 
+**waitForRequest(url, timeout=500)**  
+Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
+
+```js
+await browser.requests.waitForRequest("my-url");
+```
+
+**waitForResponse(url, timeout=500)**  
+Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
+
+**waitForNextRequest(url ,timeout=500)**  
+Waits until next request with given url is done. If the request was already made, this method will wait until next one.
+
+**waitForNextResponse(url ,timeout=500)**  
+Waits until next response with given url is received. If the response was already received, this method will wait until next one.
+
+
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.
 
@@ -1391,21 +1392,21 @@ Like filters, request assertion don't need `await` and can be concatenated. All 
 Asserts that at least one request is made to the given url. The url can be a string or regex.
 
 ```js
-await browser.assert.request.url(/api/);
+await browser.assert.requests.url(/api/);
 ```
 
 **method(expected, msg?)**  
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
-await browser.assert.request.method("GET");
+await browser.assert.requests.method("GET");
 ```
 
 **status(expected, msg?)**  
 Asserts that a response was received with the given status.
 
 ```js
-await browser.assert.request.status(200);
+await browser.assert.requests.status(200);
 ```
 
 > Note that this method requires the request to be finished.
@@ -1414,7 +1415,7 @@ await browser.assert.request.status(200);
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
-await browser.assert.request.responseHeaders({
+await browser.assert.requests.responseHeaders({
     'content-type': /html/,
 })
 ```
@@ -1426,30 +1427,30 @@ Asserts that an successful response was received (status is between 200 and 299)
 Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
 
 ```js
-await browser.assert.request.postBody({status: "OK"});
+await browser.assert.requests.postBody({status: "OK"});
 ```
 
 **responseBody(expected, msg?)**  
 Asserts that a request response contains the given body. The expected value can be a string, regex or object.
 
 ```js
-await browser.assert.request.responseBody({response: "OK"});
+await browser.assert.requests.responseBody({response: "OK"});
 ```
 
 **exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
 
 ```js
-await browser.assert.request.url("localhost:800/api"); // asserts that at least one request is made to given url
-await browser.assert.request.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
-await browser.assert.request.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
+await browser.assert.requests.url("localhost:800/api"); // asserts that at least one request is made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
 ```
 
 Concatenating multiple assertions is possible:
 
 ```js
 // Asserts that a POST method was done to the api endpoint
-await browser.assert.request.method("POST").url("localhost:8000/api");
+await browser.assert.requests.method("POST").url("localhost:8000/api");
 ```
 
 > Negative assertions are not supported for requests

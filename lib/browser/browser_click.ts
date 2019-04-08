@@ -9,7 +9,7 @@ export default abstract class BrowserClick extends BrowserActions {
         if (typeof selector === 'number') {
             if (!index || typeof index !== 'number') throw new WendigoError("click", `Invalid coordinates [${selector}, ${index}]`);
             await this.clickCoordinates(selector, index);
-            return 1; // TODO: there may not be an element in coordinates
+            return 1; // Returns always one click made
         } else {
             const elements = await this.queryAll(selector);
             const indexErrorMsg = `invalid index "${index}" for selector "${selector}", ${elements.length} elements found.`;

@@ -1,8 +1,7 @@
 import * as querystring from 'querystring';
 import { URL } from 'url';
+import * as isClassModule from 'is-class';
 import { ConsoleMessage, JSHandle } from 'puppeteer';
-
-import { ParsedQueryString } from '../types';
 
 export function isNumber(n: any): n is number {
     return !Number.isNaN(Number(n));
@@ -78,13 +77,13 @@ export function compareObjects(obj1: any, obj2: any): boolean { // Swallow compa
     return true;
 }
 
-export function parseQueryString(qs: string | URL | { [s: string]: string }): ParsedQueryString {
+export function parseQueryString(qs: string | URL | { [s: string]: string }): { [s: string]: string; } {
     if (typeof qs === 'string') {
         if (qs[0] === '?') qs = qs.slice(1);
-        return Object.assign({}, querystring.parse(qs)) as ParsedQueryString;
+        return Object.assign({}, querystring.parse(qs)) as { [s: string]: string; };
     } else if (qs instanceof URL) {
         qs = qs.searchParams.toString();
-        return Object.assign({}, querystring.parse(qs)) as ParsedQueryString;
+        return Object.assign({}, querystring.parse(qs)) as { [s: string]: string; };
     } else return qs;
 }
 
@@ -114,4 +113,8 @@ export function stringifyArg(arg: JSHandle): Promise<string> {
 export function arrayfy<T>(raw: T | Array<T>): Array<T> {
     if (Array.isArray(raw)) return raw;
     else return [raw];
+}
+
+export function isClass(c: any): boolean { // Wrapper to allow typing on isClass
+    return Boolean(isClassModule(c));
 }

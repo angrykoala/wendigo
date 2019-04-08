@@ -2,7 +2,6 @@ import * as utils from '../../utils/utils';
 import * as elementsAssertionUtils from './assert_elements';
 import * as assertUtils from '../../utils/assert_utils';
 
-// TODO: RequestAssertionFilter should be an assertion module
 import RequestAssertionsFilter from '../requests/request_assertions_filter';
 import RequestFilter from '../requests/request_filter';
 
@@ -12,7 +11,7 @@ import { WendigoSelector } from '../../types';
 
 export default class BrowserAssertions extends WendigoModule {
 
-    public get request(): RequestAssertionsFilter { // TODO: make a proper plugin
+    public get requests(): RequestAssertionsFilter { // TODO: make a proper plugin
         const b = this._browser as any;
         const requests = b.requests.filter as RequestFilter;
         return new RequestAssertionsFilter((r) => {

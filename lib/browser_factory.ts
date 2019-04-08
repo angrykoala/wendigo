@@ -1,6 +1,6 @@
-import * as isClass from 'is-class';
 import * as compose from 'compositer';
 import { Page } from 'puppeteer';
+import { isClass } from './utils/utils';
 
 import Browser from './browser/browser';
 import WendigoBrowser from './browser_interface';

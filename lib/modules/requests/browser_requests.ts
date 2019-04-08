@@ -7,6 +7,8 @@ import Browser from '../../browser/browser';
 import RequestMock from './request_mock';
 import { Request } from 'puppeteer';
 import { RequestMockOptions } from './types';
+import { TimeoutError } from '../../errors';
+import { promiseOr } from '../../utils/utils';
 
 export default class BrowserRequests extends WendigoModule {
     private _requestMocker: RequestMocker;
@@ -47,6 +49,59 @@ export default class BrowserRequests extends WendigoModule {
 
     public clearMocks(): void {
         this._requestMocker.clear();
+    }
+
+    public async waitForNextRequest(url: string, timeout: number = 500): Promise<void> {
+        try {
+            await this._browser.page.waitForRequest(url, {
+                timeout: timeout
+            });
+        } catch (err) {
+            throw new TimeoutError("waitForNextRequest", `Waiting for request "${url}"`, timeout);
+        }
+    }
+
+    public async waitForNextResponse(url: string, timeout: number = 500): Promise<void> {
+        try {
+            await this._browser.page.waitForResponse(url, {
+                timeout: timeout
+            });
+        } catch (err) {
+            throw new TimeoutError("waitForNextResponse", `Waiting for response "${url}"`, timeout);
+        }
+    }
+
+    public async waitForRequest(url: string, timeout: number = 500): Promise<void> {
+        const waitForPromise = this.waitForNextRequest(url, timeout);
+
+        const alreadyRequestsPromise = this.filter.url(url).requests.then((requests) => {
+            if (requests.length > 0) return Promise.resolve();
+            else return Promise.reject();
+        });
+
+        try {
+            await promiseOr([alreadyRequestsPromise, waitForPromise]);
+        } catch (err) {
+            throw new TimeoutError("waitForRequest", `Waiting for request "${url}"`, timeout);
+        }
+    }
+
+    public async waitForResponse(url: string, timeout = 500): Promise<void> {
+        const waitForPromise = this.waitForNextResponse(url, timeout);
+
+        const alreadyResponsePromise = this.filter.url(url).requests.then((requests) => {
+            const responded = requests.filter((request) => {
+                return Boolean(request.response());
+            });
+            if (responded.length > 0) return Promise.resolve();
+            else return Promise.reject();
+        });
+
+        try {
+            await promiseOr([alreadyResponsePromise, waitForPromise]);
+        } catch (err) {
+            throw new TimeoutError("waitForResponse", `Waiting for response "${url}"`, timeout);
+        }
     }
 
     protected _beforeOpen(options: OpenSettings): Promise<void> {

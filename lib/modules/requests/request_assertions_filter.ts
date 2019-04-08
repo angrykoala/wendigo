@@ -18,19 +18,19 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
     public url(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
         const urlFilter = this._requestFilter.url(expected);
         if (!msg) msg = `Expected request with url "${expected}" to exist.`;
-        return this._assertFilter("assert.request.url", urlFilter, msg);
+        return this._assertFilter("assert.requests.url", urlFilter, msg);
     }
 
     public method(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
         const methodFilter = this._requestFilter.method(expected);
         if (!msg) msg = `Expected request with method "${expected}" to exist.`;
-        return this._assertFilter("assert.request.method", methodFilter, msg);
+        return this._assertFilter("assert.requests.method", methodFilter, msg);
     }
 
     public status(expected: number, msg?: string): RequestAssertionsFilter {
         const statusFilter = this._requestFilter.status(expected);
         if (!msg) msg = `Expected request with status "${expected}" to exist.`;
-        return this._assertFilter("assert.request.status", statusFilter, msg);
+        return this._assertFilter("assert.requests.status", statusFilter, msg);
     }
 
     public responseHeaders(expected: ExpectedHeaders, msg?: string): RequestAssertionsFilter {
@@ -42,13 +42,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
             }).join(", ");
             msg = `Expected response with headers "${expectedText}" to exist.`;
         }
-        return this._assertFilter("assert.request.responseHeaders", responseHeadersFilter, msg);
+        return this._assertFilter("assert.requests.responseHeaders", responseHeadersFilter, msg);
     }
 
     public ok(expected = true, msg?: string): RequestAssertionsFilter {
         const okFilter = this._requestFilter.ok(expected);
         if (!msg) msg = `Expected ${expected ? "" : "not"} ok request to exist.`;
-        return this._assertFilter("assert.request.ok", okFilter, msg);
+        return this._assertFilter("assert.requests.ok", okFilter, msg);
     }
 
     public postBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
@@ -57,7 +57,7 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
             const expectedString = stringify(expected);
             msg = `Expected request with body "${expectedString}" to exist.`;
         }
-        return this._assertFilter("assert.request.postBody", bodyFilter, msg);
+        return this._assertFilter("assert.requests.postBody", bodyFilter, msg);
     }
 
     public responseBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
@@ -66,19 +66,19 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
             const expectedString = stringify(expected);
             msg = `Expected request with response body "${expectedString}" to exist.`;
         }
-        return this._assertFilter("assert.request.responseBody", responseBodyFilter, msg);
+        return this._assertFilter("assert.requests.responseBody", responseBodyFilter, msg);
     }
 
     public exactly(expected: number, msg?: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
             this.then(() => {
-                return this._assertNumber("assert.request.exactly", expected, msg, resolve, reject);
+                return this._assertNumber("assert.requests.exactly", expected, msg, resolve, reject);
             }).catch(() => {
                 // Empty Catch
             });
             this.catch((err) => {
                 if (err instanceof AssertionError) {
-                    return this._assertNumber("assert.request.exactly", expected, msg, resolve, reject);
+                    return this._assertNumber("assert.requests.exactly", expected, msg, resolve, reject);
                 } else return reject(err);
             });
         }, this._requestFilter);
