@@ -4,10 +4,11 @@
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "outDir": "dist",
-        "sourceMap": true,
+        "sourceMap": false,
         "strict": true,
         "target": "es2015",
-        "typeRoots": [ "./@types", "./node_modules/@types"]
+        "typeRoots": [ "./@types", "./node_modules/@types"],
+        "declaration": true
     },
     "compileOnSave": true,
     "includes": [

@@ -1,5 +1,6 @@
 import * as querystring from 'querystring';
 import { URL } from 'url';
+import * as isClassModule from 'is-class';
 import { ConsoleMessage, JSHandle } from 'puppeteer';
 
 export function isNumber(n: any): n is number {
@@ -112,4 +113,8 @@ export function stringifyArg(arg: JSHandle): Promise<string> {
 export function arrayfy<T>(raw: T | Array<T>): Array<T> {
     if (Array.isArray(raw)) return raw;
     else return [raw];
+}
+
+export function isClass(c: any): boolean { // Wrapper to allow typing on isClass
+    return Boolean(isClassModule(c));
 }

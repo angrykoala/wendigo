@@ -1,6 +1,7 @@
 2.0.0 / ####-##-##
 ==================
 
+* Wendigo refactored into TypeScript
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules
 * WaitForRequest/Response and waitForNextRequest/Response moved to requests module

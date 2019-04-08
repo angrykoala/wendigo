@@ -27,7 +27,6 @@ export default {
                 `Expected cookie "${name}" to not have value "${expected}".`;
         }
         return assertUtils.invertify(() => {
-            // return browser.assert.cookies(name, expected, "x");
             const b = browser as any; // TODO: avoid any
             return b.assert.cookies(name, expected, "x");
         }, "assert.not.cookies", msg);
