@@ -1,6 +1,6 @@
-import Wendigo = require('../../main');
-
-(async () => {
-    const browser = await Wendigo.createBrowser();
-    // browser.
-})();
+// import Wendigo = require('../../main');
+//
+// (async () => {
+//     const browser = await Wendigo.createBrowser();
+//     // browser.
+// })();

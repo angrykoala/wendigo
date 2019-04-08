@@ -57,8 +57,8 @@ export default abstract class BrowserInfo extends BrowserClick {
                 if (!element) return Promise.reject();
                 const options = element.options || [];
                 const result = [];
-                for (const o of options) {
-                    result.push(o.value);
+                for (let i = 0; i < options.length; i++) {
+                    result.push(options[i].value);
                 }
                 return result;
             }, selector);

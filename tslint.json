@@ -30,7 +30,8 @@
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
         "no-namespace": false,
         "only-arrow-functions": false,
-        "typedef": [true, "call-signature"]
+        "typedef": [true, "call-signature"],
+        "prefer-for-of": false
     },
     "rulesDirectory": []
 }
