@@ -7,7 +7,8 @@
         "sourceMap": true,
         "strict": true,
         "target": "es2015",
-        "typeRoots": [ "./@types", "./node_modules/@types"]
+        "typeRoots": ["./@types", "./node_modules/@types"],
+        "lib": ["es2017"]
     },
     "compileOnSave": true,
     "includes": [

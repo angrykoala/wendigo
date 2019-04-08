@@ -3,6 +3,7 @@ import * as compose from 'compositer';
 import { Page } from 'puppeteer';
 
 import Browser from './browser/browser';
+import WendigoBrowser from './browser_interface';
 import { FinalBrowserSettings, WendigoPluginInterface } from './types';
 import BrowserAssertion from './modules/assertions/browser_assertions';
 import BrowserNotAssertions from './modules/assertions/browser_not_assertions';
@@ -10,9 +11,9 @@ import BrowserNotAssertions from './modules/assertions/browser_not_assertions';
 export default class BrowserFactory {
     private static browserClass?: typeof Browser;
 
-    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
+    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): WendigoBrowser {
         if (!this.browserClass) this.browserClass = this.createBrowserClass(plugins);
-        return new this.browserClass(page, settings);
+        return new this.browserClass(page, settings) as WendigoBrowser;
     }
 
     public static clearCache(): void {
