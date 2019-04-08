@@ -61,16 +61,17 @@ class Wendigo {
         const plugins = defaultPlugins.concat(this.customPlugins);
         const page = await instance.newPage();
         const b = BrowserFactory.createBrowser(page, finalSettings, plugins);
-        this.browsers.push(b); // TODO: remove closed browser when closed with browser.close
+        this.browsers.push(b);
         return b;
     }
 
     public async stop(): Promise<void> {
         this.clearPlugins();
-        await Promise.all(this.browsers.map((b) => {
+        const p = Promise.all(this.browsers.map((b) => {
             return b.close();
         }));
-        this.browsers = []; // TODO: reset browsers before returning promise.
+        this.browsers = [];
+        await p;
     }
 
     public registerPlugin(name: string | PluginModule, plugin: WendigoPluginInterface, assertions: WendigoPluginAssertionInterface): void {

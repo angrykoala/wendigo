@@ -6,7 +6,7 @@ import { stringifyLogText } from '../utils/utils';
 import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
-import { ParsedQueryString, FinalBrowserSettings, OpenSettings } from '../types';
+import { FinalBrowserSettings, OpenSettings } from '../types';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
@@ -92,7 +92,7 @@ export default abstract class BrowserCore {
 
     public async close(): Promise<void> {
         if (this.disabled) return Promise.resolve();
-        const p = this._beforeClose(); // TODO: why noy moving this to the bottom?
+        const p = this._beforeClose();
         this.disabled = true;
         this._loaded = false;
         this.initialResponse = null;
@@ -207,7 +207,7 @@ export default abstract class BrowserCore {
         }));
     }
 
-    private generateQueryString(qs: string | ParsedQueryString): string {
+    private generateQueryString(qs: string | { [s: string]: string; }): string {
         if (typeof qs === 'string') {
             if (qs[0] !== "?") qs = `?${qs}`;
             return qs;

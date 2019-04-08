@@ -6,8 +6,6 @@ export type XPathSelector = string;
 
 export type WendigoSelector = CssSelector | XPathSelector | DomElement;
 
-export interface ParsedQueryString { [s: string]: string; }
-
 export interface BrowserSettings {
     log?: boolean;
     userAgent?: string;
@@ -34,5 +32,5 @@ export type WendigoPluginAssertionInterface = any;
 export interface OpenSettings {
     clearRequestMocks?: boolean;
     viewport?: Viewport;
-    queryString?: string | ParsedQueryString;
+    queryString?: string | { [s: string]: string; };
 }

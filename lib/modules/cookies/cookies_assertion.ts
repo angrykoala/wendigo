@@ -4,23 +4,21 @@ import Browser from '../../browser/browser';
 
 /* eslint-disable max-params */
 export default {
-    assert(browser: Browser, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
-        return cookiesModule.get(name).then((value) => {
-            if (expected === undefined) {
-                if (value === undefined) {
-                    if (!msg) {
-                        msg = `Expected cookie "${name}" to exist.`;
-                    }
-                    return assertUtils.rejectAssertion("assert.cookies", msg);
-                }
-            } else if (value !== expected) {
+    async assert(browser: Browser, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
+        const value = await cookiesModule.get(name);
+        if (expected === undefined) {
+            if (value === undefined) {
                 if (!msg) {
-                    msg = `Expected cookie "${name}" to have value "${expected}", "${value}" found.`;
+                    msg = `Expected cookie "${name}" to exist.`;
                 }
-                return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
+                return assertUtils.rejectAssertion("assert.cookies", msg);
             }
-            return Promise.resolve();
-        });
+        } else if (value !== expected) {
+            if (!msg) {
+                msg = `Expected cookie "${name}" to have value "${expected}", "${value}" found.`;
+            }
+            return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
+        }
     },
     not(browser: Browser, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
         if (!msg) {

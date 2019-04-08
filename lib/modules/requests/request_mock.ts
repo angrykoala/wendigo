@@ -5,7 +5,6 @@ import { Request } from 'puppeteer';
 import RequestFilter from './request_filter';
 import { FatalError, AssertionError, TimeoutError } from '../../errors';
 import * as utils from '../../utils/utils';
-import { ParsedQueryString } from '../../types';
 import { RequestBody, RequestMockResponseOptions, RequestMockOptions } from './types';
 
 interface MockResponse {
@@ -68,7 +67,7 @@ export default class RequestMock implements RequestMockInterface {
     public readonly auto: boolean;
     public readonly url: string | RegExp;
     public readonly assert: RequestMockAssertions;
-    public readonly queryString?: ParsedQueryString;
+    public readonly queryString?: { [s: string]: string; };
     public requestsReceived: Array<Request> = [];
 
     private events: EventEmitter;
@@ -168,7 +167,7 @@ export default class RequestMock implements RequestMockInterface {
         };
     }
 
-    private parseUrlQueryString(url: string | RegExp): ParsedQueryString | undefined {
+    private parseUrlQueryString(url: string | RegExp): { [s: string]: string; } | undefined {
         if (url instanceof RegExp) return undefined;
         else {
             const parsedUrl = new URL(url);

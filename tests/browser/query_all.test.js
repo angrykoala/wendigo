@@ -55,4 +55,10 @@ describe("Query All", function() {
         const elements = await browser.queryAll(".not-element");
         assert.strictEqual(elements.length, 0);
     });
+
+    it("QueryAll Invalid Selector", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.queryAll(10);
+        }, `Error: [queryAll] Invalid selector "10".`);
+    });
 });

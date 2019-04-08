@@ -9,7 +9,7 @@ export default class BrowserNotAssertions {
     private _assertions: BrowserAssertions;
     private _browser: Browser;
 
-    constructor(assertions: BrowserAssertions, browser: Browser) {
+    constructor(assertions: BrowserAssertions) {
         this._assertions = assertions;
         this._browser = assertions._browser;
     }

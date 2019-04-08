@@ -28,7 +28,8 @@ export default abstract class BrowserQueries extends BrowserCore {
             return elements.map((e) => {
                 return DomElement.processQueryResult(e, selector);
             }).filter(b => Boolean(b)) as Array<DomElement>;
-        } else if (!Array.isArray(selector)) { // TODO: throw error if selector is nor domelement
+        } else if (!Array.isArray(selector)) {
+            if (!(selector instanceof DomElement)) throw new WendigoError("queryAll", `Invalid selector "${selector}".`);
             return [selector];
         } else return selector;
     }
