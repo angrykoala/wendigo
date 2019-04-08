@@ -69,59 +69,6 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
-    // public waitForRequest(url: string, timeout: number = 500): Promise<void> {
-    //     this.failIfNotLoaded("waitForRequest");
-    //     const waitForPromise = this.waitForNextRequest(url, timeout);
-    //
-    //     const alreadyRequestsPromise = this.requests.filter.url(url).requests.then((requests) => {
-    //         if (requests.length > 0) return Promise.resolve();
-    //         else return Promise.reject();
-    //     });
-    //
-    //     return utils.promiseOr([alreadyRequestsPromise, waitForPromise]).catch(() => {
-    //         return Promise.reject(new TimeoutError("waitForRequest", `Waiting for request "${url}"`, timeout));
-    //     });
-    // }
-    //
-    // waitForResponse(url, timeout = 500) {
-    //     this._failIfNotLoaded("waitForResponse");
-    //     const waitForPromise = this.waitForNextResponse(url, timeout);
-    //
-    //     const alreadyResponsePromise = this.requests.filter.url(url).requests.then((requests) => {
-    //         const responded = requests.filter((request) => {
-    //             return Boolean(request.response());
-    //         });
-    //         if (responded.length > 0) return Promise.resolve();
-    //         else return Promise.reject();
-    //     });
-    //
-    //     return utils.promiseOr([alreadyResponsePromise, waitForPromise]).catch(() => {
-    //         return Promise.reject(new TimeoutError("waitForResponse", `Waiting for response "${url}"`, timeout));
-    //     });
-    // }
-
-    public async waitForNextRequest(url: string, timeout: number = 500): Promise<void> {
-        this.failIfNotLoaded("waitForNextRequest");
-        try {
-            await this.page.waitForRequest(url, {
-                timeout: timeout
-            });
-        } catch (err) {
-            throw new TimeoutError("waitForNextRequest", `Waiting for request "${url}"`, timeout);
-        }
-    }
-
-    public async waitForNextResponse(url: string, timeout: number = 500): Promise<void> {
-        this.failIfNotLoaded("waitForNextResponse");
-        try {
-            await this.page.waitForResponse(url, {
-                timeout: timeout
-            });
-        } catch (err) {
-            throw new TimeoutError("waitForNextResponse", `Waiting for response "${url}"`, timeout);
-        }
-    }
-
     public async waitForNavigation(timeout: number = 500): Promise<void> {
         this.failIfNotLoaded("waitForNavigation");
         const t1 = new Date().getTime();

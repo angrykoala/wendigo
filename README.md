@@ -491,22 +491,6 @@ await browser.waitForText("Click me!");
 await browser.clickText("Click me!");
 ```
 
-**waitForRequest(url, timeout=500)**  
-Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
-
-```js
-await browser.waitForRequest("my-url");
-```
-
-**waitForResponse(url, timeout=500)**  
-Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
-
-**waitForNextRequest(url ,timeout=500)**  
-Waits until next request with given url is done. If the request was already made, this method will wait until next one.
-
-**waitForNextResponse(url ,timeout=500)**  
-Waits until next response with given url is received. If the response was already received, this method will wait until next one.
-
 **waitForNavigation(timeout=500)**  
 Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
@@ -1318,6 +1302,23 @@ Remove all the request mocks.
 
 **getAllMocks()**  
 Returns an array with all the current request mocks set in the browser.
+
+**waitForRequest(url, timeout=500)**  
+Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
+
+```js
+await browser.requests.waitForRequest("my-url");
+```
+
+**waitForResponse(url, timeout=500)**  
+Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
+
+**waitForNextRequest(url ,timeout=500)**  
+Waits until next request with given url is done. If the request was already made, this method will wait until next one.
+
+**waitForNextResponse(url ,timeout=500)**  
+Waits until next response with given url is received. If the response was already received, this method will wait until next one.
+
 
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.

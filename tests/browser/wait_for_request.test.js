@@ -4,10 +4,9 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe.skip("Wait For Request", function() {
+describe("Wait For Request", function() {
     this.timeout(5000);
     let browser;
-
 
     before(async() => {
         browser = await Wendigo.createBrowser();
@@ -26,7 +25,7 @@ describe.skip("Wait For Request", function() {
             browser.clickText("click me");
         }, 100);
         await browser.assert.request.url(/api/).exactly(0);
-        await browser.waitForRequest("http://localhost:3456/api");
+        await browser.requests.waitForRequest("http://localhost:3456/api");
         await browser.assert.request.url(/api/);
     });
 
@@ -34,7 +33,7 @@ describe.skip("Wait For Request", function() {
         await browser.clickText("click me");
         await browser.wait(10);
         await browser.assert.request.url(/api/).exactly(1);
-        await browser.waitForRequest("http://localhost:3456/api");
+        await browser.requests.waitForRequest("http://localhost:3456/api");
         await browser.assert.request.url(/api/).exactly(1);
     });
 
@@ -44,7 +43,7 @@ describe.skip("Wait For Request", function() {
             browser.clickText("click me");
         }, 100);
         await browser.assert.request.url(/api/).exactly(0);
-        await browser.waitForRequest("http://localhost:3456/api");
+        await browser.requests.waitForRequest("http://localhost:3456/api");
         await browser.assert.request.url(/api/);
     });
 
@@ -57,7 +56,7 @@ describe.skip("Wait For Request", function() {
         await browser.wait(10);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(0);
-        await browser.waitForResponse("http://localhost:3456/api", 1000);
+        await browser.requests.waitForResponse("http://localhost:3456/api", 1000);
         await browser.assert.request.url(/api/).responseBody("test");
     });
 
@@ -69,29 +68,28 @@ describe.skip("Wait For Request", function() {
         await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
-        await browser.waitForResponse("http://localhost:3456/api");
+        await browser.requests.waitForResponse("http://localhost:3456/api");
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
     });
 
     it("Wait For Request Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
-            await browser.waitForRequest("http://localhost:3456/api", 10);
+            await browser.requests.waitForRequest("http://localhost:3456/api", 10);
         }, `TimeoutError: [waitForRequest] Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
     it("Wait For Response Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
-            await browser.waitForResponse("http://localhost:3456/api", 10);
+            await browser.requests.waitForResponse("http://localhost:3456/api", 10);
         }, `TimeoutError: [waitForResponse] Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
-
 
     it("Wait For Next Request", async() => {
         setTimeout(() => {
             browser.clickText("click me");
         }, 100);
         await browser.assert.request.url(/api/).exactly(0);
-        await browser.waitForNextRequest("http://localhost:3456/api");
+        await browser.requests.waitForNextRequest("http://localhost:3456/api");
         await browser.assert.request.url(/api/);
     });
 
@@ -100,7 +98,7 @@ describe.skip("Wait For Request", function() {
         await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await utils.assertThrowsAsync(async() => {
-            await browser.waitForNextRequest("http://localhost:3456/api", 10);
+            await browser.requests.waitForNextRequest("http://localhost:3456/api", 10);
         }, `TimeoutError: [waitForNextRequest] Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
@@ -113,7 +111,7 @@ describe.skip("Wait For Request", function() {
         await browser.wait(100);
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(0);
-        await browser.waitForNextResponse("http://localhost:3456/api", 1000);
+        await browser.requests.waitForNextResponse("http://localhost:3456/api", 1000);
         await browser.assert.request.url(/api/).responseBody("test");
     });
 
@@ -126,7 +124,7 @@ describe.skip("Wait For Request", function() {
         await browser.assert.request.url(/api/).exactly(1);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
         await utils.assertThrowsAsync(async() => {
-            await browser.waitForNextResponse("http://localhost:3456/api", 10);
+            await browser.requests.waitForNextResponse("http://localhost:3456/api", 10);
         }, `TimeoutError: [waitForNextResponse] Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
         await browser.assert.request.url(/api/).responseBody("test").exactly(1);
     });

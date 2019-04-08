@@ -3,6 +3,7 @@
 
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules
+* WaitForRequest/Response and waitForNextRequest/Response moved to requests module
 * Assertions now always return promises for consistency
 * Fixed bug where settings on dialog module where not being updated properly
 * Fixed bug where mocks with querystring where not being updated properly
