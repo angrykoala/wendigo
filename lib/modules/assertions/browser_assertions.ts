@@ -12,7 +12,7 @@ import { WendigoSelector } from '../../types';
 
 export default class BrowserAssertions extends WendigoModule {
 
-    public get request(): RequestAssertionsFilter { // TODO: make a proper plugin
+    public get requests(): RequestAssertionsFilter { // TODO: make a proper plugin
         const b = this._browser as any;
         const requests = b.requests.filter as RequestFilter;
         return new RequestAssertionsFilter((r) => {
