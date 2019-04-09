@@ -2,22 +2,11 @@ import * as utils from '../../utils/utils';
 import * as elementsAssertionUtils from './assert_elements';
 import * as assertUtils from '../../utils/assert_utils';
 
-import RequestAssertionsFilter from '../requests/request_assertions_filter';
-import RequestFilter from '../requests/request_filter';
-
 import WendigoModule from '../wendigo_module';
 import { QueryError, FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 
 export default class BrowserAssertions extends WendigoModule {
-
-    public get requests(): RequestAssertionsFilter { // TODO: make a proper plugin
-        const b = this._browser as any;
-        const requests = b.requests.filter as RequestFilter;
-        return new RequestAssertionsFilter((r) => {
-            r();
-        }, requests);
-    }
 
     public async exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to exists`;

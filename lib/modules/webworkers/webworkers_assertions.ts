@@ -1,9 +1,8 @@
 import * as assertUtils from '../../utils/assert_utils';
 import BrowserWebWorker from './browser_webworker';
-import { Browser } from 'puppeteer';
 
 /* eslint-disable complexity */
-export default function(browser: Browser, webworkerModule: BrowserWebWorker, options: { url?: string, count?: number }, msg?: string): Promise<void> {
+export default function(webworkerModule: BrowserWebWorker, options: { url?: string, count?: number }, msg?: string): Promise<void> {
     if (!options) options = {};
     let workers = webworkerModule.all();
     let urlMsg = "";

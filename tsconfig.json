@@ -9,7 +9,8 @@
         "target": "es2015",
         "typeRoots": [ "./@types", "./node_modules/@types"],
         "lib": ["es2017", "dom"],
-        "declaration": true
+        "declaration": true,
+        "noUnusedParameters": false
     },
     "compileOnSave": true,
     "includes": [

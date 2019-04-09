@@ -1,13 +1,12 @@
 import BrowserLocalStorageNotAssertions from './local_storage_not_assertions';
 import * as assertUtils from '../../utils/assert_utils';
 import { arrayfy } from '../../utils/utils';
-import { Browser } from 'puppeteer';
 import BrowserLocalStorage from './browser_local_storage';
 
 export default class BrowserLocalStorageAssertions {
     private _localStorage: BrowserLocalStorage;
     public readonly not: BrowserLocalStorageNotAssertions;
-    constructor(browser: Browser, localStorage: BrowserLocalStorage) {
+    constructor(localStorage: BrowserLocalStorage) {
         this._localStorage = localStorage;
         this.not = new BrowserLocalStorageNotAssertions(this);
     }

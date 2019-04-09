@@ -6,12 +6,12 @@ import Browser from '../../browser/browser';
 import { WendigoSelector } from '../../types';
 
 export default class BrowserNotAssertions {
-    private _assertions: BrowserAssertions;
-    private _browser: Browser;
+    protected _assertions: BrowserAssertions;
+    protected _browser: Browser;
 
-    constructor(assertions: BrowserAssertions) {
+    constructor(assertions: BrowserAssertions, browser: Browser) {
         this._assertions = assertions;
-        this._browser = assertions._browser;
+        this._browser = browser;
     }
 
     public exists(selector: WendigoSelector, msg?: string): Promise<void> {

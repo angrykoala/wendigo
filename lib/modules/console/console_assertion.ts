@@ -1,5 +1,4 @@
 import * as assertUtils from '../../utils/assert_utils';
-import { Browser } from 'puppeteer';
 import BrowserConsole from './browser_console';
 import { ConsoleFilter } from './types';
 import { isNumber } from '../../utils/utils';
@@ -20,8 +19,7 @@ function processFilterMessage(filterOptions: ConsoleFilter): string {
     return `${typeMsg}${textMsg}`;
 }
 
-/* eslint-disable complexity, max-params*/
-export default function(browser: Browser, consoleModule: BrowserConsole, filterOptions: ConsoleFilter, count?: number, msg?: string): Promise<void> {
+export default function(consoleModule: BrowserConsole, filterOptions: ConsoleFilter, count?: number, msg?: string): Promise<void> {
     const logs = consoleModule.filter(filterOptions);
     if (!isNumber(count)) {
         if (logs.length <= 0) {
@@ -36,4 +34,3 @@ export default function(browser: Browser, consoleModule: BrowserConsole, filterO
     }
     return Promise.resolve();
 }
-/* eslint-enable complexity, max-params*/
