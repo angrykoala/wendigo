@@ -16,31 +16,6 @@ const defaultSettings = {
     proxyServer: null
 };
 
-// const defaultPlugins = [];
-// const defaultPlugins = [{
-//     name: "cookies",
-//     plugin: require('./lib/modules/cookies/browser_cookies').default,
-//     assertions: require('./lib/modules/cookies/cookies_assertion').default
-// }, {
-//     name: "localStorage",
-//     plugin: require('./lib/modules/local_storage/browser_local_storage').default,
-//     assertions: require('./lib/modules/local_storage/local_storage_assertions').default
-// }, {
-//     name: "requests",
-//     plugin: require('./lib/modules/requests/browser_requests').default // Assertion plugin separate
-// }, {
-//     name: "console",
-//     plugin: require('./lib/modules/console/browser_console').default,
-//     assertions: require('./lib/modules/console/console_assertion').default
-// }, {
-//     name: "webworkers",
-//     plugin: require('./lib/modules/webworkers/browser_webworker').default,
-//     assertions: require('./lib/modules/webworkers/webworkers_assertions').default
-// }, {
-//     name: "dialog",
-//     plugin: require('./lib/modules/dialog/browser_dialog').default
-// }];
-
 interface PluginModule {
     name: string;
     plugin: WendigoPluginInterface;
