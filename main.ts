@@ -3,7 +3,7 @@ import * as puppeteer from 'puppeteer';
 import BrowserFactory from './lib/browser_factory';
 import * as Errors from './lib/errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface } from './lib/types';
-import Browser from './lib/browser/browser';
+import BrowserInterface from './lib/browser/browser_interface';
 
 const defaultSettings = {
     log: false,
@@ -49,14 +49,14 @@ interface PluginModule {
 
 class Wendigo {
     private customPlugins: Array<WendigoPluginInterface>;
-    private browsers: Array<Browser>;
+    private browsers: Array<BrowserInterface>;
 
     constructor() {
         this.customPlugins = [];
         this.browsers = [];
     }
 
-    public async createBrowser(settings: BrowserSettings = {}): Promise<Browser> {
+    public async createBrowser(settings: BrowserSettings = {}): Promise<BrowserInterface> {
         const finalSettings = this._processSettings(settings);
         const instance = await this._createInstance(finalSettings);
         const plugins = this.customPlugins;
@@ -141,7 +141,7 @@ class Wendigo {
         } else return instance;
     }
 
-    private _removeBrowser(browser: Browser): void {
+    private _removeBrowser(browser: BrowserInterface): void {
         const idx = this.browsers.indexOf(browser);
         if (idx === -1) {
             throw new Errors.FatalError("onClose", "browser not found on closing.");
