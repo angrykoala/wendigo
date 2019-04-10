@@ -2,14 +2,14 @@ import * as utils from '../../utils/utils';
 import * as assertUtils from '../../utils/assert_utils';
 import { WendigoError, QueryError } from '../../errors';
 import BrowserAssertions from '../browser_assertions';
-import Browser from '../../browser/browser';
+import BrowserInterface from '../../browser/browser_interface';
 import { WendigoSelector } from '../../types';
 
 export default class BrowserNotAssertions {
     protected _assertions: BrowserAssertions;
-    protected _browser: Browser;
+    protected _browser: BrowserInterface;
 
-    constructor(assertions: BrowserAssertions, browser: Browser) {
+    constructor(assertions: BrowserAssertions, browser: BrowserInterface) {
         this._assertions = assertions;
         this._browser = browser;
     }

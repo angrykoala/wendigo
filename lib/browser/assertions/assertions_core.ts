@@ -4,12 +4,12 @@ import * as assertUtils from '../../utils/assert_utils';
 
 import { QueryError, FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import Browser from '../browser';
+import BrowserInterface from '../browser_interface';
 
 export default class AssertionsCore {
-    protected _browser: Browser; // TODO: make it protected (not possible due to not_assertions module)
+    protected _browser: BrowserInterface;
 
-    constructor(browser: Browser) {
+    constructor(browser: BrowserInterface) {
         this._browser = browser;
     }
 

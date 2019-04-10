@@ -1,4 +1,4 @@
-import Browser from './browser';
+import BrowserInterface from './browser_interface';
 
 // Assertions
 import AssertionsCore from './assertions/assertions_core';
@@ -16,7 +16,7 @@ export default class BrowserAssertions extends AssertionsCore {
     public readonly not: NotAssertions;
     public readonly localStorage: BrowserLocalStorageAssertions;
 
-    constructor(browser: Browser) {
+    constructor(browser: BrowserInterface) {
         super(browser);
         this.not = new NotAssertions(this, browser);
         this.localStorage = new BrowserLocalStorageAssertions(this._browser.localStorage);

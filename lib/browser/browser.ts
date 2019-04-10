@@ -10,9 +10,6 @@ import BrowserConsole from '../modules/console/browser_console';
 import BrowserWebworker from '../modules/webworkers/browser_webworker';
 import BrowserDialog from '../modules/dialog/browser_dialog';
 
-// Assertions
-// import BrowserAssertions from './browser_assertions';
-
 export default class Browser extends BrowserTap {
     public readonly cookies: BrowserCookies;
     public readonly localStorage: BrowserLocalStorage;
@@ -30,6 +27,5 @@ export default class Browser extends BrowserTap {
         this.console = new BrowserConsole(this);
         this.webworkers = new BrowserWebworker(this);
         this.dialog = new BrowserDialog(this);
-        // this.assert = new assertionsClass(this);
     }
 }

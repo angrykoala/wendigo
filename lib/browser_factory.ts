@@ -9,7 +9,7 @@ import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
 
 export default class BrowserFactory {
-    private static browserClass?: typeof Browser; // NOTE: How to use an interface
+    private static browserClass?: typeof Browser; // NOTE: Possible to use interface?
 
     public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): BrowserInterface {
         if (!this.browserClass) {
