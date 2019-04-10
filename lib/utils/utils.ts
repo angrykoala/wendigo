@@ -14,15 +14,6 @@ export function stringify(element: any): string {
     return String(element);
 }
 
-export async function promiseSerial(funcs: Array<() => Promise<any>>): Promise<Array<any>> {
-    const results = [];
-    for (const f of funcs) {
-        const r = await f();
-        results.push(r);
-    }
-    return results;
-}
-
 // Returns promise resolve if any promise is resolved, reject otherwise
 export function promiseOr(promises: Array<Promise<any>>): Promise<any> {
     let resolved = false;

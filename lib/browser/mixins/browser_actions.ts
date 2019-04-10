@@ -3,7 +3,7 @@ import { Base64ScreenShotOptions } from 'puppeteer';
 import BrowserQueries from './browser_queries';
 
 import DomElement from '../../models/dom_element';
-import { promiseSerial } from '../../utils/utils';
+import { arrayfy } from '../../utils/utils';
 import { QueryError, WendigoError } from '../../errors';
 import { CssSelector, WendigoSelector } from '../../types';
 
@@ -20,17 +20,16 @@ export default abstract class BrowserActions extends BrowserQueries {
 
     public async keyPress(key: Array<string> | string, count: number = 1): Promise<void> {
         this.failIfNotLoaded("keyPress");
-        if (!Array.isArray(key)) key = [key];
-        const funcs = key.map(k => () => this.page.keyboard.press(k));
-        let funcsFinal: Array<() => Promise<any>> = [];
-        for (let i = 0; i < count; i++) {
-            funcsFinal = funcsFinal.concat(funcs);
-        }
+        const keys = arrayfy(key);
 
         try {
-            await promiseSerial(funcsFinal);
+            for (let i = 0; i < count; i++) {
+                for (const k of keys) {
+                    await this.page.keyboard.press(k);
+                }
+            }
         } catch (err) {
-            return Promise.reject(new WendigoError("keyPress", `Could not press keys "${key.join(", ")}"`));
+            return Promise.reject(new WendigoError("keyPress", `Could not press keys "${keys.join(", ")}"`));
         }
     }
 
