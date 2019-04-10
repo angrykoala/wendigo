@@ -5,7 +5,7 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe.only("Plugins", function() {
+describe("Plugins", function() {
     this.timeout(5000);
 
     class PluginTest {

@@ -11,7 +11,7 @@ import BrowserWebworker from '../modules/webworkers/browser_webworker';
 import BrowserDialog from '../modules/dialog/browser_dialog';
 
 // Assertions
-import BrowserAssertions from './browser_assertions';
+// import BrowserAssertions from './browser_assertions';
 
 export default class Browser extends BrowserTap {
     public readonly cookies: BrowserCookies;
@@ -20,9 +20,8 @@ export default class Browser extends BrowserTap {
     public readonly console: BrowserConsole;
     public readonly webworkers: BrowserWebworker;
     public readonly dialog: BrowserDialog;
-    public readonly assert: BrowserAssertions;
 
-    constructor(page: Page, settings: FinalBrowserSettings, assertionsClass: typeof BrowserAssertions, components: Array<string> = []) {
+    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string> = []) {
         components = components.concat(["cookies", "localStorage", "requests", "console", "webworkers", "dialog"]);
         super(page, settings, components);
         this.cookies = new BrowserCookies(this);
@@ -31,6 +30,6 @@ export default class Browser extends BrowserTap {
         this.console = new BrowserConsole(this);
         this.webworkers = new BrowserWebworker(this);
         this.dialog = new BrowserDialog(this);
-        this.assert = new assertionsClass(this);
+        // this.assert = new assertionsClass(this);
     }
 }

@@ -6,17 +6,17 @@ import Browser from './browser/browser';
 import BrowserAssertion from './browser/browser_assertions';
 import { FinalBrowserSettings, WendigoPluginInterface } from './types';
 import { FatalError } from './errors';
+import BrowserInterface from './browser/browser_interface';
 
 export default class BrowserFactory {
-    private static browserClass?: typeof Browser;
-    private static assertionClass?: typeof BrowserAssertion;
+    private static browserClass?: typeof Browser; // NOTE: How to use an interface
 
-    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): Browser {
-        if (!this.browserClass || !this.assertionClass) {
+    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): BrowserInterface {
+        if (!this.browserClass) {
             this.setupBrowserClass(plugins);
         }
-        if (!this.browserClass || !this.assertionClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
-        return new this.browserClass(page, settings, this.assertionClass);
+        if (!this.browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
+        return new this.browserClass(page, settings) as BrowserInterface;
     }
 
     public static clearCache(): void {
@@ -26,22 +26,22 @@ export default class BrowserFactory {
     private static setupBrowserClass(plugins: Array<WendigoPluginInterface>): void {
         const components: { [s: string]: any } = {};
         const assertComponents: { [s: string]: any } = {};
-        // const notAssertFunctions: { [s: string]: any } = {};
+
         for (const p of plugins) {
             if (p.plugin) {
                 components[p.name] = p.plugin;
             }
             if (p.assertions) {
-                assertComponents[p.name] = this._setupAssertionModule(p.assertions, p.name, p.plugin);
+                assertComponents[p.name] = this._setupAssertionModule(p.assertions, p.name);
             }
         }
 
-        this.assertionClass = compose(BrowserAssertion, assertComponents);
-        const finalComponents = Object.assign({}, components);
-        this.browserClass = compose(Browser, finalComponents);
+        const assertionClass = compose(BrowserAssertion, assertComponents);
+        const finalComponents = Object.assign({}, components, { assert: assertionClass });
+        this.browserClass = compose(Browser, finalComponents) as typeof Browser;
     }
 
-    private static _setupAssertionModule(assertionPlugin: any, name: string, plugin?: any): any { // TODO: improve typing
+    private static _setupAssertionModule(assertionPlugin: any, name: string): any { // TODO: improve typing
         if (isClass(assertionPlugin)) {
             return this._setupAssertionClass(assertionPlugin, name);
         } else if (typeof assertionPlugin === 'function') {
