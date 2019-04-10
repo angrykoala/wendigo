@@ -2,11 +2,16 @@ import * as utils from '../../utils/utils';
 import * as elementsAssertionUtils from './assert_elements';
 import * as assertUtils from '../../utils/assert_utils';
 
-import WendigoModule from '../wendigo_module';
 import { QueryError, FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
+import Browser from '../browser';
 
-export default class BrowserAssertions extends WendigoModule {
+export default class AssertionsCore {
+    protected _browser: Browser; // TODO: make it protected (not possible due to not_assertions module)
+
+    constructor(browser: Browser) {
+        this._browser = browser;
+    }
 
     public async exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to exists`;

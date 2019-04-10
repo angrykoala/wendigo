@@ -1,5 +1,6 @@
 import BrowserInfo from './browser_info';
-import { WendigoSelector } from '../types';
+
+import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserEvents extends BrowserInfo {
     public triggerEvent(selector: WendigoSelector, eventName: string, options: EventInit): Promise<void> {

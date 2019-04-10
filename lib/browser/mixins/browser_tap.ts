@@ -1,7 +1,8 @@
 import BrowserWait from './browser_wait';
-import { WendigoError, QueryError } from '../errors';
-import { WendigoSelector } from '../types';
-import DomElement from '../models/dom_element';
+
+import { WendigoError, QueryError } from '../../errors';
+import { WendigoSelector } from '../../types';
+import DomElement from '../../models/dom_element';
 
 export default abstract class BrowserTap extends BrowserWait {
     public async tap(selector: WendigoSelector | number, index?: number): Promise<number> {

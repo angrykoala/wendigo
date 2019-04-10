@@ -1,9 +1,11 @@
 import { Base64ScreenShotOptions } from 'puppeteer';
-import DomElement from '../models/dom_element';
-import { promiseSerial } from '../utils/utils';
-import { QueryError, WendigoError } from '../errors';
+
 import BrowserQueries from './browser_queries';
-import { CssSelector, WendigoSelector } from '../types';
+
+import DomElement from '../../models/dom_element';
+import { promiseSerial } from '../../utils/utils';
+import { QueryError, WendigoError } from '../../errors';
+import { CssSelector, WendigoSelector } from '../../types';
 
 export default abstract class BrowserActions extends BrowserQueries {
     public type(selector: CssSelector | DomElement, text: string, options: { delay?: number } = {}): Promise<void> {

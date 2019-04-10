@@ -1,7 +1,8 @@
-import DomElement from '../models/dom_element';
-import { FatalError, WendigoError, QueryError } from '../errors';
-import BrowserCore from './browser_core';
-import { CssSelector, XPathSelector } from '../types';
+import BrowserCore from '../browser_core';
+
+import DomElement from '../../models/dom_element';
+import { FatalError, WendigoError, QueryError } from '../../errors';
+import { CssSelector, XPathSelector } from '../../types';
 
 export default abstract class BrowserQueries extends BrowserCore {
     public async query(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<DomElement | null> {

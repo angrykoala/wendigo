@@ -1,4 +1,4 @@
-import BrowserTap from './browser_tap';
+import BrowserTap from './mixins/browser_tap';
 import { Page } from 'puppeteer';
 import { FinalBrowserSettings } from '../types';
 

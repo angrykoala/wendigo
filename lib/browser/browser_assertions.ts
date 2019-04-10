@@ -1,8 +1,8 @@
 import Browser from './browser';
 
 // Assertions
-import AssertionsModule from '../modules/assertions/browser_assertions';
-import BrowserNotAssertions from '../modules/assertions/browser_not_assertions';
+import AssertionsCore from './assertions/assertions_core';
+import BrowserNotAssertions from './assertions/browser_not_assertions';
 
 import BrowserLocalStorageAssertions from '../modules/local_storage/local_storage_assertions';
 import CookiesAssertions from '../modules/cookies/cookies_assertion';
@@ -12,7 +12,7 @@ import WebWorkerAssertion from '../modules/webworkers/webworkers_assertions';
 import RequestAssertionsFilter from '../modules/requests/request_assertions_filter';
 import { ConsoleFilter } from '../modules/console/types';
 
-export default class BrowserAssertions extends AssertionsModule {
+export default class BrowserAssertions extends AssertionsCore {
     public readonly not: NotAssertions;
     public readonly localStorage: BrowserLocalStorageAssertions;
 

@@ -1,7 +1,7 @@
 2.0.0 / ####-##-##
 ==================
 
-* Wendigo refactored into TypeScript
+* Wendigo refactored into TypeScript, support for types files
 * Changes in plugin system. Dropped support for not assertions
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules
@@ -11,7 +11,7 @@
 * Fixed bug where settings on dialog module where not being updated properly
 * Fixed bug where mocks with querystring where not being updated properly
 * Removed dependency mixwith
-* Some dependencies updated
+* Dependencies updated
 
 1.13.0 / 2018-03-29
 ===================

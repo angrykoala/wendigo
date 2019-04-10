@@ -1,7 +1,7 @@
 import * as utils from '../../utils/utils';
 import * as assertUtils from '../../utils/assert_utils';
 import { WendigoError, QueryError } from '../../errors';
-import BrowserAssertions from './browser_assertions';
+import BrowserAssertions from '../browser_assertions';
 import Browser from '../../browser/browser';
 import { WendigoSelector } from '../../types';
 
@@ -115,7 +115,7 @@ export default class BrowserNotAssertions {
     }
 
     public href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        return this.attribute(selector, "href", expected, msg).catch((err) => {
+        return this.attribute(selector, "href", expected, msg).catch((err: Error) => {
             return Promise.reject(WendigoError.overrideFnName(err, "assert.not.href"));
         });
     }
