@@ -1247,6 +1247,7 @@ Mock will return a RequestMock object, with the following read-only properties:
 * `querystring`: Mock expected querystring, parsed as an object.
 
 And the following methods:
+
 * `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 
 ```js
@@ -1318,7 +1319,6 @@ Waits until next request with given url is done. If the request was already made
 
 **waitForNextResponse(url ,timeout=500)**  
 Waits until next response with given url is received. If the response was already received, this method will wait until next one.
-
 
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.
