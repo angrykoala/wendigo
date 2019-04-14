@@ -332,6 +332,8 @@ await browser.click("button.btn");
 
 Optionally, if two numbers are passed, position x, y (in pixels) will be clicked. In this case, null with be returned instead of the clicked elements.
 
+> **Warning:** Elements are clicked sequentially, if one of them is a link to an external page, subsequent clicks will fail.
+
 **clickText(selector?, text, index?)**  
 Clicks all the elements matching given text. Returns the number of elements clicked.
 

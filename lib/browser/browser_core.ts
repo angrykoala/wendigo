@@ -63,7 +63,7 @@ export default abstract class BrowserCore {
         return this._loaded && !this.disabled;
     }
 
-    public async open(url: string, options: OpenSettings): Promise<void> {
+    public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
         if (options.queryString) {

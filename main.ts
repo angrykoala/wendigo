@@ -29,7 +29,6 @@ class Wendigo {
         const finalSettings = this._processSettings(settings);
         const instance = await this._createInstance(finalSettings);
         const plugins = this.customPlugins;
-        // const plugins = defaultPlugins.concat(this.customPlugins);
         const page = await instance.newPage();
         const b = BrowserFactory.createBrowser(page, finalSettings, plugins);
         this.browsers.push(b);
