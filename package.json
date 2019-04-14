@@ -14,10 +14,10 @@
   "scripts": {
     "test": "npm run tsc && mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
-    "lint": "eslint . --ext .js",
+    "eslint": "eslint . --ext .js",
     "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
     "tsc": "rm -rf dist && tsc",
-    "prepublishOnly": "npm run tsc && npm run lint && npm run markdown-lint && npm test",
+    "prepublishOnly": "npm run tsc && npm run eslint && npm run markdown-lint && npm test",
     "tslint": "tslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts"
   },
   "repository": {

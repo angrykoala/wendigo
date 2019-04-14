@@ -292,25 +292,24 @@ export default class AssertionsCore {
         });
     }
 
-    public global(key: string, expected?: any, msg?: string): Promise<void> {
-        return this._browser.evaluate((k: string) => {
+    public async global(key: string, expected?: any, msg?: string): Promise<void> {
+        const value = await this._browser.evaluate((k: string) => {
             return (window as any)[k];
-        }, key).then((value) => {
-            if (expected === undefined) {
-                if (value === undefined) {
-                    if (!msg) {
-                        msg = `Expected "${key}" to be defined as global variable.`;
-                    }
-                    return assertUtils.rejectAssertion("assert.global", msg);
-                }
-            } else if (value !== expected) {
+        }, key);
+        if (expected === undefined) {
+            if (value === undefined) {
                 if (!msg) {
-                    msg = `Expected "${key}" to be defined as global variable with value "${expected}", "${value}" found.`;
+                    msg = `Expected "${key}" to be defined as global variable.`;
                 }
-                return assertUtils.rejectAssertion("assert.global", msg, value, expected);
+                return assertUtils.rejectAssertion("assert.global", msg);
             }
-            return Promise.resolve();
-        });
+        } else if (value !== expected) {
+            if (!msg) {
+                msg = `Expected "${key}" to be defined as global variable with value "${expected}", "${value}" found.`;
+            }
+            return assertUtils.rejectAssertion("assert.global", msg, value, expected);
+        }
+        return Promise.resolve();
     }
 
     public async checked(selector: WendigoSelector, msg?: string): Promise<void> {
