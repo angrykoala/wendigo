@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as querystring from 'querystring';
 import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
 
-import { stringifyLogText } from '../utils/utils';
+import { stringifyLogText } from '../utils/puppeteer_utils';
 import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
@@ -51,11 +51,14 @@ export default abstract class BrowserCore {
             this.page.on("console", pageLog);
         }
 
-        this.page.on('load', (): any => {
-            if (this._loaded) return this._afterPageLoad().catch(() => {
-                // Will fail if browser is closed
-            });
-            // return Promise.resolve();
+        this.page.on('load', async (): Promise<void> => {
+            if (this._loaded) {
+                try {
+                    await this._afterPageLoad();
+                } catch (err) {
+                    // Will fail if browser is closed
+                }
+            }
         });
     }
 

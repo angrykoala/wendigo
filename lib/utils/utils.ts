@@ -1,7 +1,6 @@
 import * as querystring from 'querystring';
 import { URL } from 'url';
 import * as isClassModule from 'is-class';
-import { ConsoleMessage, JSHandle } from 'puppeteer';
 
 export function isNumber(n: any): n is number {
     return !Number.isNaN(Number(n));
@@ -76,29 +75,6 @@ export function parseQueryString(qs: string | URL | { [s: string]: string }): { 
         qs = qs.searchParams.toString();
         return Object.assign({}, querystring.parse(qs)) as { [s: string]: string; };
     } else return qs;
-}
-
-export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
-    const text = log.text();
-    if (text.includes('JSHandle@object')) {
-        const args = await Promise.all(log.args().map(stringifyArg));
-        return args.join(' ');
-    }
-    return text;
-}
-
-export function stringifyArg(arg: JSHandle): Promise<string> {
-    return arg.executionContext().evaluate(element => {
-        if (typeof element === 'object' && !(element instanceof RegExp)) {
-            try {
-                element = JSON.stringify(element);
-            } catch (err) {
-                if (err instanceof TypeError) { // Converting circular structure
-                } else throw err;
-            }
-        }
-        return String(element);
-    }, arg);
 }
 
 export function arrayfy<T>(raw: T | Array<T>): Array<T> {

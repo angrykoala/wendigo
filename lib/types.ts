@@ -26,7 +26,7 @@ export interface FinalBrowserSettings extends BrowserSettings {
     };
 }
 
-export type WendigoPluginInterface = (...args: Array<any>) => any; // TODO: improve
+export type WendigoPluginInterface = (...args: Array<any>) => any;
 export type WendigoPluginAssertionInterface = (...args: Array<any>) => any;
 
 export interface PluginModule {
