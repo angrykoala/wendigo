@@ -2,7 +2,7 @@ import * as process from 'process';
 import * as puppeteer from 'puppeteer';
 import BrowserFactory from './lib/browser_factory';
 import * as Errors from './lib/errors';
-import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface } from './lib/types';
+import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './lib/types';
 import BrowserInterface from './lib/browser/browser_interface';
 
 const defaultSettings = {
@@ -16,14 +16,8 @@ const defaultSettings = {
     proxyServer: null
 };
 
-interface PluginModule {
-    name: string;
-    plugin: WendigoPluginInterface;
-    assertions: WendigoPluginAssertionInterface;
-}
-
 class Wendigo {
-    private customPlugins: Array<WendigoPluginInterface>;
+    private customPlugins: Array<PluginModule>;
     private browsers: Array<BrowserInterface>;
 
     constructor() {
@@ -51,19 +45,22 @@ class Wendigo {
         await p;
     }
 
-    public registerPlugin(name: string | PluginModule, plugin: WendigoPluginInterface, assertions: WendigoPluginAssertionInterface): void {
-        if (!plugin && !assertions && typeof name === 'object') {
+    public registerPlugin(name: string | PluginModule, plugin?: WendigoPluginInterface, assertions?: WendigoPluginAssertionInterface): void {
+        let finalName: string;
+        if (typeof name === 'object') {
             const config = name;
-            name = config.name;
+            finalName = config.name;
             plugin = config.plugin;
             assertions = config.assertions;
+        } else {
+            finalName = name;
         }
 
-        this._validatePlugin(name as string, plugin, assertions);
+        this._validatePlugin(finalName, plugin, assertions);
 
         BrowserFactory.clearCache();
         this.customPlugins.push({
-            name: name,
+            name: finalName,
             plugin: plugin,
             assertions: assertions
         });
@@ -85,7 +82,7 @@ class Wendigo {
         };
     }
 
-    private _validatePlugin(name: string, plugin: WendigoPluginInterface, assertions: WendigoPluginAssertionInterface): void {
+    private _validatePlugin(name: string, plugin?: WendigoPluginInterface, assertions?: WendigoPluginAssertionInterface): void {
         this._validatePluginName(name);
         if (plugin && typeof plugin !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);
         this._validatePluginAssertion(name, assertions);
@@ -102,10 +99,11 @@ class Wendigo {
         if (!valid) throw new Errors.FatalError("registerPlugin", `Invalid plugin name "${name}".`);
     }
 
-    private _validatePluginAssertion(name: string, assertions: WendigoPluginAssertionInterface): void {
+    private _validatePluginAssertion(name: string, assertions?: WendigoPluginAssertionInterface): void {
         if (assertions) {
-            const isValidObject = assertions.assert || assertions.not;
-            if (typeof assertions !== 'function' && !isValidObject) throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
+            // const isValidObject = assertions.assert || assertions.not;
+            // if (typeof assertions !== 'function' && !isValidObject) throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
+            if (typeof assertions !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
         }
     }
 

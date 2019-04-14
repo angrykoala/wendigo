@@ -4,14 +4,14 @@ import { isClass } from './utils/utils';
 
 import Browser from './browser/browser';
 import BrowserAssertion from './browser/browser_assertions';
-import { FinalBrowserSettings, WendigoPluginInterface } from './types';
+import { FinalBrowserSettings, PluginModule } from './types';
 import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
 
 export default class BrowserFactory {
     private static browserClass?: typeof Browser; // NOTE: Possible to use interface?
 
-    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<WendigoPluginInterface>): BrowserInterface {
+    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<PluginModule>): BrowserInterface {
         if (!this.browserClass) {
             this.setupBrowserClass(plugins);
         }
@@ -23,7 +23,7 @@ export default class BrowserFactory {
         this.browserClass = undefined;
     }
 
-    private static setupBrowserClass(plugins: Array<WendigoPluginInterface>): void {
+    private static setupBrowserClass(plugins: Array<PluginModule>): void {
         const components: { [s: string]: any } = {};
         const assertComponents: { [s: string]: any } = {};
 

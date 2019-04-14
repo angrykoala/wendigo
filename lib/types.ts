@@ -26,8 +26,14 @@ export interface FinalBrowserSettings extends BrowserSettings {
     };
 }
 
-export type WendigoPluginInterface = any; // TODO: improve
-export type WendigoPluginAssertionInterface = any;
+export type WendigoPluginInterface = (...args: Array<any>) => any; // TODO: improve
+export type WendigoPluginAssertionInterface = (...args: Array<any>) => any;
+
+export interface PluginModule {
+    name: string;
+    plugin?: WendigoPluginInterface;
+    assertions?: WendigoPluginAssertionInterface;
+}
 
 export interface OpenSettings {
     clearRequestMocks?: boolean;
