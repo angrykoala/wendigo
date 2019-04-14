@@ -8,17 +8,11 @@ sudo: false
 env:
   - NO_SANDBOX=true
 
-addons:
-  sonarcloud:
-    organization: "angrykoala-github"
-    token:
-      secure: ${SONAR_TOKEN}
-
 script:
   - npm run lint
   - npm run tslint
   - npm run markdown-lint
-  - sonar-scanner
+  - travis_retry npm test
 
 cache:
   directories:
