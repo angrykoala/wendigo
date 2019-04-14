@@ -20,7 +20,7 @@ describe("Wait For Navigation", function() {
     it("Wait For Navigation", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");
-        await browser.waitForNavigation();
+        await browser.waitForNavigation(3000);
         await browser.assert.global("WendigoUtils");
         await browser.assert.not.title("Index Test");
         await browser.assert.url(configUrls.simple);

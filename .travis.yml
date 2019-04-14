@@ -10,6 +10,7 @@ env:
 
 script:
   - npm run lint
+  - npm run tslint
   - npm run markdown-lint
   - travis_retry npm test
 

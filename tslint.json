@@ -1,0 +1,37 @@
+{
+    "defaultSeverity": "error",
+    "extends": ["tslint:recommended"],
+    "jsRules": {},
+    "rules": {
+        "arrow-parens": false,
+        "quotemark": false,
+        "trailing-comma": false,
+        "ordered-imports": false,
+        "object-literal-shorthand": false,
+        "object-literal-sort-keys": false,
+        "curly": false,
+        "ban-types": {
+            "options": [
+                ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
+                ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
+                ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
+                ["String", "Avoid using the `String` type. Did you mean `string`?"],
+                ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
+            ]
+        },
+        "max-line-length": {
+            "options": 200
+        },
+        "array-type": false,
+        "interface-name": false,
+        "no-console": false,
+        "max-classes-per-file": false,
+        "member-ordering": false,
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "no-namespace": false,
+        "only-arrow-functions": false,
+        "typedef": [true, "call-signature"],
+        "prefer-for-of": false
+    },
+    "rulesDirectory": []
+}

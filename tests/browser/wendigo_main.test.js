@@ -39,10 +39,10 @@ describe("Wendigo Main", function() {
 
     it("Change Browser Settings", async() => {
         const browser1 = await Wendigo.createBrowser();
-        assert.strictEqual(browser1._settings.slowMo, 0);
+        assert.strictEqual(browser1.settings.slowMo, 0);
         await browser1.close();
         const browser2 = await Wendigo.createBrowser({slowMo: 1});
-        assert.strictEqual(browser2._settings.slowMo, 1);
+        assert.strictEqual(browser2.settings.slowMo, 1);
         await browser2.close();
     });
 

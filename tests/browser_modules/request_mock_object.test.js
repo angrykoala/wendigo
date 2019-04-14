@@ -196,6 +196,6 @@ describe("Requests Mock Object", function() {
         });
         await browser.wait(20);
         await browser.assert.text("#result", "MOCK2");
-        assert.strictEqual(mock._response.body, JSON.stringify({result: "MOCK"}));
+        assert.strictEqual(mock.response.body, JSON.stringify({result: "MOCK"}));
     });
 });

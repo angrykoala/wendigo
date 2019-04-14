@@ -2,7 +2,7 @@
 
 const Wendigo = require('../..');
 const assert = require('assert');
-const DomElement = require('../../lib/models/dom_element');
+const DomElement = require('../../dist/lib/models/dom_element').default;
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
@@ -59,7 +59,7 @@ describe("Query", function() {
     it("Query Sub Element Not Valid Parent", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.query(".container", "b");
-        }, "Error: [query] Invalid parent element for query");
+        }, "Error: [query] Invalid parent element.");
     });
 
     it("XPath Query", async() => {

@@ -491,22 +491,6 @@ await browser.waitForText("Click me!");
 await browser.clickText("Click me!");
 ```
 
-**waitForRequest(url, timeout=500)**  
-Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
-
-```js
-await browser.waitForRequest("my-url");
-```
-
-**waitForResponse(url, timeout=500)**  
-Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
-
-**waitForNextRequest(url ,timeout=500)**  
-Waits until next request with given url is done. If the request was already made, this method will wait until next one.
-
-**waitForNextResponse(url ,timeout=500)**  
-Waits until next response with given url is received. If the response was already received, this method will wait until next one.
-
 **waitForNavigation(timeout=500)**  
 Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
 
@@ -564,6 +548,8 @@ The following options passed as an object are supported:
 ```js
 await browser.type("input.my-input", "My Input");
 ```
+
+> Only CSS Selector And DOM Element Supported
 
 **keyPress(key, count?)**  
 Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
@@ -861,7 +847,7 @@ browser.assert.global("my-val", "dontpanic");
 
 > Assertions related to LocalStorage can be found under each section
 
-**cookie(name, expected?, msg?)**  
+**cookies(name, expected?, msg?)**  
 Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
 
 ```js
@@ -1020,7 +1006,7 @@ Assert that the first element with given selector doesn't have the expected opti
 **not.global(key, value?, msg?)**  
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
-**not.cookie(name, expected?, msg?)**  
+**not.cookies(name, expected?, msg?)**  
 Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
 
 ```js
@@ -1144,6 +1130,8 @@ All the log types are strings, but some of the most common types are accessible 
 * _warning_
 * _trace_
 
+> Keep in mind that different strings may be returned from Puppeteer
+
 ### LocalStorage
 The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return Promises.
 
@@ -1247,16 +1235,20 @@ browser.requests.mock("http://localhost:8000/api", {
 });
 ```
 
-Mock will return a RequestMock object, with the following properties:
+Mock will return a RequestMock object, with the following read-only properties:
 
 * `called`: If the mock has been called.
 * `timesCalled`: The times the mock has been called.
 * `response` : The response the mock is returning (read only).
 * `url`: Mocked url.
-* `queryString`: The mock queryString.
 * `immediate`: If the mock will return immediately (delay=0).
-* `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 * `auto`: If the request will be completed automatically.
+* `method`: Mock expected method.
+* `querystring`: Mock expected querystring, parsed as an object.
+
+And the following methods:
+
+* `waitUntilCalled(timeout=500)`: Waits until the mock is called. It will also add a slight delay to give the browser time to process the response.
 
 ```js
 const mock = browser.requests.mock("http://localhost:8000/api", {
@@ -1278,10 +1270,10 @@ The mock will also provide an assertion interface in `mock.assert` with the foll
 const mock = browser.requests.mock("http://localhost:8000/api", {
     body: {result: "ok"}
 });
-mock.assert.called(0);
+await mock.assert.called(0);
 callApi("my request"); // POST requests with given body
-mock.assert.called(0);
-mock.assert.postBody("my request");
+await mock.assert.called(0);
+await mock.assert.postBody("my request");
 ```
 
 All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.
@@ -1311,6 +1303,22 @@ Remove all the request mocks.
 
 **getAllMocks()**  
 Returns an array with all the current request mocks set in the browser.
+
+**waitForRequest(url, timeout=500)**  
+Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
+
+```js
+await browser.requests.waitForRequest("my-url");
+```
+
+**waitForResponse(url, timeout=500)**  
+Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
+
+**waitForNextRequest(url ,timeout=500)**  
+Waits until next request with given url is done. If the request was already made, this method will wait until next one.
+
+**waitForNextResponse(url ,timeout=500)**  
+Waits until next response with given url is received. If the response was already received, this method will wait until next one.
 
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.request.filter`.
@@ -1384,21 +1392,21 @@ Like filters, request assertion don't need `await` and can be concatenated. All 
 Asserts that at least one request is made to the given url. The url can be a string or regex.
 
 ```js
-await browser.assert.request.url(/api/);
+await browser.assert.requests.url(/api/);
 ```
 
 **method(expected, msg?)**  
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
-await browser.assert.request.method("GET");
+await browser.assert.requests.method("GET");
 ```
 
 **status(expected, msg?)**  
 Asserts that a response was received with the given status.
 
 ```js
-await browser.assert.request.status(200);
+await browser.assert.requests.status(200);
 ```
 
 > Note that this method requires the request to be finished.
@@ -1407,7 +1415,7 @@ await browser.assert.request.status(200);
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
-await browser.assert.request.responseHeaders({
+await browser.assert.requests.responseHeaders({
     'content-type': /html/,
 })
 ```
@@ -1419,30 +1427,30 @@ Asserts that an successful response was received (status is between 200 and 299)
 Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
 
 ```js
-await browser.assert.request.postBody({status: "OK"});
+await browser.assert.requests.postBody({status: "OK"});
 ```
 
 **responseBody(expected, msg?)**  
 Asserts that a request response contains the given body. The expected value can be a string, regex or object.
 
 ```js
-await browser.assert.request.responseBody({response: "OK"});
+await browser.assert.requests.responseBody({response: "OK"});
 ```
 
 **exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
 
 ```js
-await browser.assert.request.url("localhost:800/api"); // asserts that at least one request is made to given url
-await browser.assert.request.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
-await browser.assert.request.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
+await browser.assert.requests.url("localhost:800/api"); // asserts that at least one request is made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(2); // asserts that 2 requests are made to given url
+await browser.assert.requests.url("localhost:800/api").exactly(0); // asserts that no requests are made to given url
 ```
 
 Concatenating multiple assertions is possible:
 
 ```js
 // Asserts that a POST method was done to the api endpoint
-await browser.assert.request.method("POST").url("localhost:8000/api");
+await browser.assert.requests.method("POST").url("localhost:8000/api");
 ```
 
 > Negative assertions are not supported for requests
@@ -1488,6 +1496,7 @@ Dialog objects are returned by the `all` and `waitForDialog` methods. These prov
 
 * **text**: The dialog message
 * **type**: The dialog type (`alert`, `beforeunload`, `confirm`, `promp`). Same as those provided by Puppeteer.
+* **handled**: Whether the dialog has already been handled or not.
 
 **dismiss()**  
 Dismisses the dialog, if the dialog is a prompt, `null` will be returned.
