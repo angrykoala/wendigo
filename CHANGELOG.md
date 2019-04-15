@@ -3,6 +3,8 @@
 
 * Wendigo refactored into TypeScript, support for types files
 * Browser.query and browser.queryAll now support XPath selectors
+* Browser.queryXPath removed
+* DomElement class methods changed
 * Complex subqueries with multiple parent elements supported
 * New methods added to DomElement and subqueries improved
 * Changes in plugin system. Dropped support for not assertions

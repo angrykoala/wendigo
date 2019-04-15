@@ -15,7 +15,7 @@ export default abstract class BrowserClick extends BrowserActions {
             let elements: Array<DomElement>;
             if (Array.isArray(selector)) elements = selector;
             else elements = await this.queryAll(selector);
-            const indexErrorMsg = `invalid index "${index}" for selector "${selector}", ${elements.length} elements found.`;
+            const indexErrorMsg = `Invalid index "${index}" for selector "${selector}", ${elements.length} elements found.`;
             const notFoundMsg = `No element "${selector}" found.`;
             return this.clickElements(elements, index, new WendigoError("click", indexErrorMsg), new QueryError("click", notFoundMsg));
         }
@@ -27,9 +27,13 @@ export default abstract class BrowserClick extends BrowserActions {
             index = optionalText;
             optionalText = undefined;
         }
-        const elements = await this.findByText(text, optionalText);
-
-        const indexErrorMsg = `invalid index "${index}" for text "${optionalText || text}", ${elements.length} elements found.`;
+        let elements: Array<DomElement>;
+        try {
+            elements = await this.findByText(text, optionalText);
+        } catch (err) {
+            throw new WendigoError("clickText", "Invalid selector.");
+        }
+        const indexErrorMsg = `Invalid index "${index}" for text "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text "${optionalText || text}" found.`;
         return this.clickElements(elements, index, new WendigoError("clickText", indexErrorMsg), new QueryError("clickText", notFoundMsg));
     }
@@ -40,8 +44,14 @@ export default abstract class BrowserClick extends BrowserActions {
             index = optionalText;
             optionalText = undefined;
         }
-        const elements = await this.findByTextContaining(text, optionalText);
-        const indexErrorMsg = `invalid index "${index}" for text containing "${optionalText || text}", ${elements.length} elements found.`;
+        let elements: Array<DomElement>;
+        try {
+            elements = await this.findByTextContaining(text, optionalText);
+        } catch (err) {
+            throw new WendigoError("clickTextContaining", "Invalid selector.");
+        }
+
+        const indexErrorMsg = `Invalid index "${index}" for text containing "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text containing "${optionalText || text}" found.`;
         return this.clickElements(elements, index, new WendigoError("clickTextContaining", indexErrorMsg), new QueryError("clickTextContaining", notFoundMsg));
 

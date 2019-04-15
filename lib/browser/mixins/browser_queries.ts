@@ -26,7 +26,6 @@ export default abstract class BrowserQueries extends BrowserCore {
             if (!result) return null;
             else return result.query(optionalSelector);
         }
-
     }
 
     public async queryAll(selector: WendigoSelector, optionalSelector?: string): Promise<Array<DomElement>> {
@@ -53,14 +52,6 @@ export default abstract class BrowserQueries extends BrowserCore {
                 return acc.concat(res);
             }, []);
         }
-    }
-
-    public async queryXPath(xPath: XPathSelector): Promise<Array<DomElement>> {
-        this.failIfNotLoaded("queryXPath");
-        const elements = await this.page.$x(xPath);
-        return elements.map((e) => {
-            return DomElement.processQueryResult(e, xPath);
-        }).filter(b => Boolean(b)) as Array<DomElement>;
     }
 
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
@@ -120,10 +111,4 @@ export default abstract class BrowserQueries extends BrowserCore {
             return element;
         }, x, y);
     }
-
-    // private subQueryXpath(parent: DomElement, selector: XPathSelector): Promise<Array<DomElement>> {
-    //     if (selector[0] === "/") selector = `.${selector}`;
-    //     // return parent.queryXPath(selector);
-    //     return Promise.resolve([]);
-    // }
 }

@@ -55,7 +55,7 @@ describe("Click", function() {
         await browser.assert.text("#switch", "On");
         await utils.assertThrowsAsync(async() => {
             await browser.click("button", 10);
-        }, `Error: [click] invalid index "10" for selector "button", 2 elements found.`);
+        }, `Error: [click] Invalid index "10" for selector "button", 2 elements found.`);
         await browser.assert.text("#switch", "On");
     });
 
@@ -106,7 +106,7 @@ describe("Click", function() {
     it("Click Text With Index Out Of Bounds", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickText("click me delay", 10);
-        }, `Error: [clickText] invalid index "10" for text "click me delay", 2 elements found.`);
+        }, `Error: [clickText] Invalid index "10" for text "click me delay", 2 elements found.`);
     });
 
     it("Click Text With Index And Selector", async() => {
@@ -160,9 +160,18 @@ describe("Click", function() {
     it("Click Text Containing With Index Out Of Bounds", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.clickTextContaining("weird", 10);
-        }, `Error: [clickTextContaining] invalid index "10" for text containing "weird", 1 elements found.`);
+        }, `Error: [clickTextContaining] Invalid index "10" for text containing "weird", 1 elements found.`);
     });
 
-    it("Click Text With Invalid Selector"); // a.k.a. using an object as selector
-    it("Click Text Containing With Invalid Selector");
+    it("Click Text With Invalid Selector", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickText({}, "dsa");
+        }, `Error: [clickText] Invalid selector.`);
+    });
+
+    it("Click Text Containing With Invalid Selector", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.clickTextContaining({}, "dsa");
+        }, `Error: [clickTextContaining] Invalid selector.`);
+    });
 });

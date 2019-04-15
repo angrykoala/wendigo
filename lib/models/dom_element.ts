@@ -31,22 +31,6 @@ export default class DomElement {
         }).filter(b => Boolean(b)) as Array<DomElement>;
     }
 
-    // public async queryXPath(selector: string): Promise<Array<DomElement>> {
-    //     return this.element.$x(selector).then((elements) => {
-    //         return elements.map((e) => {
-    //             return new DomElement(e, selector);
-    //         });
-    //     });
-    // }
-    //
-    // public async queryAll(selector: string): Promise<Array<DomElement>> {
-    //     return this.element.$$(selector).then((elements) => {
-    //         return elements.map((e) => {
-    //             return DomElement.processQueryResult(e, selector);
-    //         }).filter(b => Boolean(b)) as Array<DomElement>;
-    //     });
-    // }
-
     public click(): Promise<void> {
         return this.element.click();
     }
