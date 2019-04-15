@@ -162,4 +162,7 @@ describe("Click", function() {
             await browser.clickTextContaining("weird", 10);
         }, `Error: [clickTextContaining] invalid index "10" for text containing "weird", 1 elements found.`);
     });
+
+    it("Click Text With Invalid Selector"); // a.k.a. using an object as selector
+    it("Click Text Containing With Invalid Selector");
 });

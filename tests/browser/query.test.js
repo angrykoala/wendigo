@@ -31,6 +31,7 @@ describe("Query", function() {
     it("Query Multiple Elements", async() => {
         const element = await browser.query("p");
         assert(element);
+        assert(element instanceof DomElement);
     });
 
     it("Query Not Element Found", async() => {
@@ -42,12 +43,14 @@ describe("Query", function() {
         const element = await browser.query("h1");
         const element2 = await browser.query(element);
         assert(element2);
+        assert(element instanceof DomElement);
     });
 
     it("Query Sub Element", async() => {
         const container = await browser.query(".container");
         const element = await browser.query(container, "p");
         assert(element);
+        assert(element instanceof DomElement);
     });
 
     it("Query Sub Element Not Found", async() => {
@@ -56,15 +59,17 @@ describe("Query", function() {
         assert.strictEqual(element, null);
     });
 
-    it("Query Sub Element Not Valid Parent", async() => {
-        await utils.assertThrowsAsync(async() => {
-            await browser.query(".container", "b");
-        }, "Error: [query] Invalid parent element.");
+    it("Query Sub Element With String", async() => {
+        const container = await browser.query(".container");
+        const element = await browser.query(container, "p");
+        assert(element);
+        assert(element instanceof DomElement);
     });
 
     it("XPath Query", async() => {
-        const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
-        assert.strictEqual(elements.length, 1);
+        const element = await browser.query('//p[contains(text(),"My first paragraph")]');
+        assert(element);
+        assert(element instanceof DomElement);
     });
 
     it("Query Dom Selector", async() => {
@@ -77,6 +82,11 @@ describe("Query", function() {
     it("Query Invalid Selector", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.query({});
-        }, "FatalError: [query] Invalid Selector on browser.query.");
+        }, "Error: [query] Invalid selector.");
     });
+
+    it("XPath SubsQuery Not Found");
+
+    it("QueryAll With XPath Children");
+    it("QueryAll With Multiple Parents");
 });

@@ -45,12 +45,6 @@ describe("Query All", function() {
         assert(elements[0]);
     });
 
-    it("QueryAll Sub Element Not Valid Parent", async() => {
-        await utils.assertThrowsAsync(async() => {
-            await browser.queryAll(".container", "b");
-        }, "Error: [queryAll] Invalid parent element.");
-    });
-
     it("QueryAll Element Not Found", async() => {
         const elements = await browser.queryAll(".not-element");
         assert.strictEqual(elements.length, 0);
@@ -59,6 +53,10 @@ describe("Query All", function() {
     it("QueryAll Invalid Selector", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.queryAll(10);
-        }, `Error: [queryAll] Invalid selector "10".`);
+        }, `Error: [queryAll] Invalid selector.`);
     });
+
+    it("QueryAll With XPath");
+    it("QueryAll With XPath Children");
+    it("QueryAll With Multiple Parents");
 });

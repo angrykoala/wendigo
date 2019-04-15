@@ -6,6 +6,10 @@ export function isNumber(n: any): n is number {
     return !Number.isNaN(Number(n));
 }
 
+export function isXPathQuery(s: string): boolean {
+    return s[0] === '/';
+}
+
 export function stringify(element: any): string {
     if (typeof element === 'object' && !(element instanceof RegExp)) {
         element = JSON.stringify(element);

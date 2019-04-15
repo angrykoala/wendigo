@@ -1,38 +1,58 @@
 import BrowserCore from '../browser_core';
+import { ElementHandle } from 'puppeteer';
 
 import DomElement from '../../models/dom_element';
-import { FatalError, WendigoError, QueryError } from '../../errors';
-import { CssSelector, XPathSelector } from '../../types';
+import { FatalError, WendigoError } from '../../errors';
+import { CssSelector, XPathSelector, WendigoSelector } from '../../types';
+import { isXPathQuery } from '../../utils/utils';
 
 export default abstract class BrowserQueries extends BrowserCore {
-    public async query(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<DomElement | null> {
+    public async query(selector: WendigoSelector, optionalSelector?: string): Promise<DomElement | null> {
         this.failIfNotLoaded("query");
-        if (optionalSelector) {
-            if (!(selector instanceof DomElement)) return Promise.reject(new WendigoError("query", "Invalid parent element."));
-            return this.subQuery(selector, optionalSelector);
-        }
+
+        let result: DomElement | null;
         if (typeof selector === 'string') {
-            const elementHandle = await this.page.$(selector);
-            return DomElement.processQueryResult(elementHandle, selector);
-        } else if (selector instanceof DomElement) return Promise.resolve(selector);
-        else return Promise.reject(new FatalError("query", "Invalid Selector on browser.query."));
+            let elementHandle: ElementHandle | null;
+            if (isXPathQuery(selector)) {
+                const results = await this.page.$x(selector);
+                elementHandle = results[0] || null;
+            } else elementHandle = await this.page.$(selector);
+            result = DomElement.processQueryResult(elementHandle, selector);
+        } else if (selector instanceof DomElement) result = selector;
+        else throw new WendigoError("query", "Invalid selector.");
+
+        if (!optionalSelector) return result;
+        else {
+            if (!result) return null;
+            else return result.query(optionalSelector);
+        }
+
     }
 
-    public async queryAll(selector: CssSelector | DomElement, optionalSelector?: CssSelector): Promise<Array<DomElement>> {
+    public async queryAll(selector: WendigoSelector, optionalSelector?: string): Promise<Array<DomElement>> {
         this.failIfNotLoaded("queryAll");
-        if (optionalSelector) {
-            if (!(selector instanceof DomElement)) throw new WendigoError("queryAll", "Invalid parent element.");
-            return this.subQueryAll(selector, optionalSelector);
-        }
+        let result: Array<DomElement>;
+
         if (typeof selector === 'string') {
-            const elements = await this.page.$$(selector);
-            return elements.map((e) => {
+            let rawElements: Array<ElementHandle>;
+            if (isXPathQuery(selector)) rawElements = await this.page.$x(selector);
+            else rawElements = await this.page.$$(selector);
+            result = rawElements.map((e) => {
                 return DomElement.processQueryResult(e, selector);
             }).filter(b => Boolean(b)) as Array<DomElement>;
-        } else if (!Array.isArray(selector)) {
-            if (!(selector instanceof DomElement)) throw new WendigoError("queryAll", `Invalid selector "${selector}".`);
-            return [selector];
-        } else return selector;
+        } else if (selector instanceof DomElement) result = [selector];
+        else throw new WendigoError("queryAll", "Invalid selector.");
+
+        if (!optionalSelector) return result;
+        else {
+            const subQueryPromises = result.map((r) => {
+                return r.queryAll(optionalSelector);
+            });
+            const nestedResults = await Promise.all(subQueryPromises);
+            return nestedResults.reduce((acc, res) => {
+                return acc.concat(res);
+            }, []);
+        }
     }
 
     public async queryXPath(xPath: XPathSelector): Promise<Array<DomElement>> {
@@ -48,11 +68,9 @@ export default abstract class BrowserQueries extends BrowserCore {
         const xPathText = optionalText || text;
         const xPath = `//*[text()='${xPathText}']`;
         if (optionalText) {
-            const elem = await this.query(text);
-            if (!elem) throw new QueryError("findByText", `Element ${text} not found.`);
-            return this.subQueryXpath(elem, xPath);
+            return this.queryAll(text, xPath);
         } else {
-            return this.queryXPath(xPath);
+            return this.queryAll(xPath);
         }
     }
 
@@ -61,11 +79,10 @@ export default abstract class BrowserQueries extends BrowserCore {
         const xPathText = optionalText || text;
         const xPath = `//*[contains(text(),'${xPathText}')]`;
         if (optionalText) {
-            const elem = await this.query(text);
-            if (!elem) throw new QueryError("findByTextContaining", `Element ${text} not found.`);
-            return this.subQueryXpath(elem, xPath);
+            return this.queryAll(text, xPath);
         } else {
-            return this.queryXPath(xPath);
+            const result = this.queryAll(xPath);
+            return result;
         }
     }
 
@@ -104,16 +121,9 @@ export default abstract class BrowserQueries extends BrowserCore {
         }, x, y);
     }
 
-    private subQueryXpath(parent: DomElement, selector: XPathSelector): Promise<Array<DomElement>> {
-        if (selector[0] === "/") selector = `.${selector}`;
-        return parent.queryXPath(selector);
-    }
-
-    private subQuery(parent: DomElement, selector: CssSelector): Promise<DomElement | null> {
-        return parent.query(selector);
-    }
-
-    private subQueryAll(parent: DomElement, selector: CssSelector): Promise<Array<DomElement>> {
-        return parent.queryAll(selector);
-    }
+    // private subQueryXpath(parent: DomElement, selector: XPathSelector): Promise<Array<DomElement>> {
+    //     if (selector[0] === "/") selector = `.${selector}`;
+    //     // return parent.queryXPath(selector);
+    //     return Promise.resolve([]);
+    // }
 }

@@ -66,4 +66,6 @@ describe("Find By Text", function() {
         await browser.assert.text("#switch", "Off");
         assert.strictEqual(clicked, 3);
     });
+
+    it("Find By Text With Invalid Selector");
 });

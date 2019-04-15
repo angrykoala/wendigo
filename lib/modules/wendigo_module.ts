@@ -8,7 +8,7 @@ export default abstract class WendigoModule {
         this._browser = browser;
     }
 
-    protected _beforeOpen(options: OpenSettings): Promise<void> {
+    protected _beforeOpen(_options: OpenSettings): Promise<void> {
         return Promise.resolve();
     }
 
@@ -16,7 +16,7 @@ export default abstract class WendigoModule {
         return Promise.resolve();
     }
 
-    protected _afterOpen(options: OpenSettings): Promise<void> {
+    protected _afterOpen(_options: OpenSettings): Promise<void> {
         return Promise.resolve();
     }
 }

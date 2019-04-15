@@ -5,14 +5,16 @@ import DomElement from '../../models/dom_element';
 import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserClick extends BrowserActions {
-    public async click(selector: WendigoSelector | number, index?: number): Promise<number> {
+    public async click(selector: WendigoSelector | number | Array<DomElement>, index?: number): Promise<number> {
         this.failIfNotLoaded("click");
         if (typeof selector === 'number') {
             if (!index || typeof index !== 'number') throw new WendigoError("click", `Invalid coordinates [${selector}, ${index}]`);
             await this.clickCoordinates(selector, index);
             return 1; // Returns always one click made
         } else {
-            const elements = await this.queryAll(selector);
+            let elements: Array<DomElement>;
+            if (Array.isArray(selector)) elements = selector;
+            else elements = await this.queryAll(selector);
             const indexErrorMsg = `invalid index "${index}" for selector "${selector}", ${elements.length} elements found.`;
             const notFoundMsg = `No element "${selector}" found.`;
             return this.clickElements(elements, index, new WendigoError("click", indexErrorMsg), new QueryError("click", notFoundMsg));

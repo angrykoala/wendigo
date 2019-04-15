@@ -2,6 +2,9 @@
 ==================
 
 * Wendigo refactored into TypeScript, support for types files
+* Browser.query and browser.queryAll now support XPath selectors
+* Complex subqueries with multiple parent elements supported
+* New methods added to DomElement and subqueries improved
 * Changes in plugin system. Dropped support for not assertions
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules

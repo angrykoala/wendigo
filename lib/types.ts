@@ -1,5 +1,5 @@
-import DomElement from './models/dom_element';
 import { Viewport } from 'puppeteer';
+import DomElement from './models/dom_element';
 
 export type CssSelector = string;
 export type XPathSelector = string;
