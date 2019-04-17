@@ -8,7 +8,7 @@ import { isXPathQuery } from '../../utils/utils';
 
 export default abstract class BrowserQueries extends BrowserCore {
     public async query(selector: WendigoSelector, optionalSelector?: string): Promise<DomElement | null> {
-        this.failIfNotLoaded("query");
+        this._failIfNotLoaded("query");
 
         let result: DomElement | null;
         if (typeof selector === 'string') {
@@ -29,7 +29,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public async queryAll(selector: WendigoSelector, optionalSelector?: string): Promise<Array<DomElement>> {
-        this.failIfNotLoaded("queryAll");
+        this._failIfNotLoaded("queryAll");
         let result: Array<DomElement>;
 
         if (typeof selector === 'string') {
@@ -55,7 +55,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
-        this.failIfNotLoaded("findByText");
+        this._failIfNotLoaded("findByText");
         const xPathText = optionalText || text as string;
         const xPath = `//*[text()='${xPathText}']`;
 
@@ -71,7 +71,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
-        this.failIfNotLoaded("findByTextContaining");
+        this._failIfNotLoaded("findByTextContaining");
         const xPathText = optionalText || text as string;
         const xPath = `//*[contains(text(),'${xPathText}')]`;
         if (optionalText) {
@@ -87,7 +87,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public findByAttribute(attributeName: string, attributeValue?: string): Promise<Array<DomElement>> {
-        this.failIfNotLoaded("findByAttribute");
+        this._failIfNotLoaded("findByAttribute");
         if (attributeValue === undefined) {
             attributeValue = "";
         } else {
@@ -97,7 +97,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public findCssPath(domElement: DomElement): Promise<string> {
-        this.failIfNotLoaded("findCssPath");
+        this._failIfNotLoaded("findCssPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findCssPath", "Invalid element for css path query."));
         else return this.evaluate((e) => {
             return WendigoUtils.findCssPath(e);
@@ -105,7 +105,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public findXPath(domElement: DomElement): Promise<string> {
-        this.failIfNotLoaded("findXPath");
+        this._failIfNotLoaded("findXPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findXPath", "Invalid element for xPath query."));
         else return this.evaluate((e) => {
             return WendigoUtils.findXPath(e);
@@ -113,7 +113,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     public elementFromPoint(x: number, y: number): Promise<DomElement | null> {
-        this.failIfNotLoaded("elementFromPoint");
+        this._failIfNotLoaded("elementFromPoint");
         if (typeof x !== 'number' || typeof y !== 'number') return Promise.reject(new FatalError("elementFromPoint", `Invalid coordinates [${x},${y}].`));
         return this.evaluate((evalX, evalY) => {
             const element = document.elementFromPoint(evalX, evalY);

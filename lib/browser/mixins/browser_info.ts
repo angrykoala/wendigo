@@ -5,7 +5,7 @@ import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserInfo extends BrowserClick {
     public text(selector: WendigoSelector): Promise<Array<string>> {
-        this.failIfNotLoaded("text");
+        this._failIfNotLoaded("text");
         return this.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             const result = [];
@@ -17,24 +17,24 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public title(): Promise<string> {
-        this.failIfNotLoaded("title");
+        this._failIfNotLoaded("title");
         return this.page.title();
     }
 
     public html(): string {
-        this.failIfNotLoaded("html");
+        this._failIfNotLoaded("html");
         return this.originalHtml || "";
     }
 
     public async url(): Promise<string | null> {
-        this.failIfNotLoaded("url");
+        this._failIfNotLoaded("url");
         let url = await this.evaluate(() => window.location.href);
         if (url === "about:blank") url = null;
         return url;
     }
 
     public tag(selector: WendigoSelector): Promise<string | null> {
-        this.failIfNotLoaded("tag");
+        this._failIfNotLoaded("tag");
         return this.evaluate((q) => {
             const element = WendigoUtils.queryElement(q);
             if (!element) return null;
@@ -43,7 +43,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public innerHtml(selector: WendigoSelector): Promise<Array<string>> {
-        this.failIfNotLoaded("innerHtml");
+        this._failIfNotLoaded("innerHtml");
         return this.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             return elements.map(e => e.innerHTML);
@@ -51,7 +51,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async options(selector: WendigoSelector): Promise<Array<string>> {
-        this.failIfNotLoaded("options");
+        this._failIfNotLoaded("options");
         try {
             return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLSelectElement;
@@ -69,7 +69,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async selectedOptions(selector: WendigoSelector): Promise<Array<string>> {
-        this.failIfNotLoaded("selectedOptions");
+        this._failIfNotLoaded("selectedOptions");
         try {
             const result = await this.evaluate((q) => {
                 const elements = WendigoUtils.queryElement(q) as HTMLSelectElement;
@@ -86,7 +86,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async class(selector: WendigoSelector): Promise<Array<string>> {
-        this.failIfNotLoaded("class");
+        this._failIfNotLoaded("class");
         try {
             const result = await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
@@ -101,7 +101,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public value(selector: WendigoSelector): Promise<string | null> {
-        this.failIfNotLoaded("value");
+        this._failIfNotLoaded("value");
         return this.evaluate((q) => {
             const element = WendigoUtils.queryElement(q) as HTMLInputElement;
             if (!element) return null;
@@ -111,7 +111,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async attribute(selector: WendigoSelector, attributeName: string): Promise<string | null> {
-        this.failIfNotLoaded("attribute");
+        this._failIfNotLoaded("attribute");
         try {
             return await this.evaluate((q, attr) => {
                 const element = WendigoUtils.queryElement(q);
@@ -124,7 +124,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async styles(selector: WendigoSelector): Promise<{ [s: string]: string }> {
-        this.failIfNotLoaded("styles");
+        this._failIfNotLoaded("styles");
         try {
             return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
@@ -137,7 +137,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async style(selector: WendigoSelector, styleName: string): Promise<string> {
-        this.failIfNotLoaded("style");
+        this._failIfNotLoaded("style");
         try {
             return await this.styles(selector).then((styles) => {
                 return styles[styleName];
@@ -148,7 +148,7 @@ export default abstract class BrowserInfo extends BrowserClick {
     }
 
     public async checked(selector: WendigoSelector): Promise<boolean | undefined> {
-        this.failIfNotLoaded("checked");
+        this._failIfNotLoaded("checked");
         try {
             return await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLInputElement;

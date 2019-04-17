@@ -6,7 +6,7 @@ import DomElement from '../../models/dom_element';
 
 export default abstract class BrowserTap extends BrowserWait {
     public async tap(selector: WendigoSelector | number, index?: number): Promise<number> {
-        this.failIfNotLoaded("tap");
+        this._failIfNotLoaded("tap");
         if (typeof selector === 'number') {
             if (typeof index !== 'number') throw new WendigoError("tap", "Invalid coordinates");
             return this.tapCoordinates(selector, index);

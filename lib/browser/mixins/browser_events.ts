@@ -4,7 +4,7 @@ import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserEvents extends BrowserInfo {
     public triggerEvent(selector: WendigoSelector, eventName: string, options: EventInit): Promise<void> {
-        this.failIfNotLoaded("triggerEvent");
+        this._failIfNotLoaded("triggerEvent");
         return this.evaluate((q, evName, opt) => {
             const ev = new Event(evName, opt);
             const elements = WendigoUtils.queryAll(q);

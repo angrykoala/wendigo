@@ -2,19 +2,19 @@ import BrowserEvents from './browser_events';
 
 export default abstract class BrowserNavigation extends BrowserEvents {
     public async back(): Promise<void> {
-        this.failIfNotLoaded("back");
+        this._failIfNotLoaded("back");
         await this.page.goBack();
         await this._afterPageLoad();
     }
 
     public async forward(): Promise<void> {
-        this.failIfNotLoaded("forward");
+        this._failIfNotLoaded("forward");
         await this.page.goForward();
         await this._afterPageLoad();
     }
 
     public async refresh(): Promise<void> {
-        this.failIfNotLoaded("refresh");
+        this._failIfNotLoaded("refresh");
         await this.page.reload();
         await this._afterPageLoad();
 

@@ -70,7 +70,7 @@ export default abstract class BrowserCore {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
         if (options.queryString) {
-            const qs = this.generateQueryString(options.queryString);
+            const qs = this._generateQueryString(options.queryString);
             url = `${url}${qs}`;
         }
         try {
@@ -109,8 +109,8 @@ export default abstract class BrowserCore {
     }
 
     public async evaluate(cb: (...args: Array<any>) => any, ...args: Array<any>): Promise<any> {
-        this.failIfNotLoaded("evaluate");
-        args = this.setupEvaluateArguments(args);
+        this._failIfNotLoaded("evaluate");
+        args = this._setupEvaluateArguments(args);
         const rawResult = await this.page.evaluateHandle(cb, ...args);
         const resultAsElement = rawResult.asElement();
         if (resultAsElement) {
@@ -140,7 +140,7 @@ export default abstract class BrowserCore {
     }
 
     public async addScript(scriptPath: string): Promise<void> {
-        this.failIfNotLoaded("addScript");
+        this._failIfNotLoaded("addScript");
         try {
             await this.page.addScriptTag({
                 path: scriptPath
@@ -150,7 +150,7 @@ export default abstract class BrowserCore {
         }
     }
 
-    protected failIfNotLoaded(fnName: string): void {
+    protected _failIfNotLoaded(fnName: string): void {
         if (!this.loaded) {
             throw new FatalError(fnName, `Cannot perform action before opening a page.`);
         }
@@ -159,7 +159,7 @@ export default abstract class BrowserCore {
     protected async _beforeClose(): Promise<void> {
         this.settings.__onClose(this);
         if (!this._loaded) return Promise.resolve();
-        await this.callComponentsMethod("_beforeClose");
+        await this._callComponentsMethod("_beforeClose");
     }
 
     protected async _beforeOpen(options: OpenSettings): Promise<void> {
@@ -171,22 +171,22 @@ export default abstract class BrowserCore {
             await this.page.setBypassCSP(true);
         }
         await this.setViewport(options.viewport);
-        await this.callComponentsMethod("_beforeOpen", options);
+        await this._callComponentsMethod("_beforeOpen", options);
     }
 
     protected async _afterPageLoad(): Promise<void> {
         try {
             const content = await this.page.content();
             this.originalHtml = content;
-            await this.addJsScripts();
+            await this._addJsScripts();
         } catch (err) {
             if (err.message === "Evaluation failed: Event") throw new InjectScriptError("open", err.message); // CSP error
         }
         this._loaded = true;
-        await this.callComponentsMethod("_afterOpen");
+        await this._callComponentsMethod("_afterOpen");
     }
 
-    private async addJsScripts(): Promise<void> {
+    private async _addJsScripts(): Promise<void> {
         const promises = injectionScripts.map((s) => {
             return this.page.addScriptTag({ // Not using wrapper as this is before loaded is true
                 path: path.join(injectionScriptsPath, s)
@@ -195,14 +195,14 @@ export default abstract class BrowserCore {
         await Promise.all(promises);
     }
 
-    private setupEvaluateArguments(args: Array<any>): Array<any> {
+    private _setupEvaluateArguments(args: Array<any>): Array<any> {
         return args.map((e) => {
             if (e instanceof DomElement) return e.element;
             else return e;
         });
     }
 
-    private async callComponentsMethod(method: string, options?: any): Promise<void> {
+    private async _callComponentsMethod(method: string, options?: any): Promise<void> {
         await Promise.all(this.components.map((c) => {
             const anyThis = this as any;
             if (typeof anyThis[c][method] === 'function')
@@ -210,7 +210,7 @@ export default abstract class BrowserCore {
         }));
     }
 
-    private generateQueryString(qs: string | { [s: string]: string; }): string {
+    private _generateQueryString(qs: string | { [s: string]: string; }): string {
         if (typeof qs === 'string') {
             if (qs[0] !== "?") qs = `?${qs}`;
             return qs;

@@ -6,10 +6,10 @@ import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserClick extends BrowserActions {
     public async click(selector: WendigoSelector | number | Array<DomElement>, index?: number): Promise<number> {
-        this.failIfNotLoaded("click");
+        this._failIfNotLoaded("click");
         if (typeof selector === 'number') {
             if (!index || typeof index !== 'number') throw new WendigoError("click", `Invalid coordinates [${selector}, ${index}]`);
-            await this.clickCoordinates(selector, index);
+            await this._clickCoordinates(selector, index);
             return 1; // Returns always one click made
         } else {
             let elements: Array<DomElement>;
@@ -22,7 +22,7 @@ export default abstract class BrowserClick extends BrowserActions {
     }
 
     public async clickText(text: string | DomElement, optionalText?: string | number, index?: number): Promise<number> {
-        this.failIfNotLoaded("clickText");
+        this._failIfNotLoaded("clickText");
         if (typeof optionalText === 'number') {
             index = optionalText;
             optionalText = undefined;
@@ -39,7 +39,7 @@ export default abstract class BrowserClick extends BrowserActions {
     }
 
     public async clickTextContaining(text: string | DomElement, optionalText?: string | number, index?: number): Promise<number> {
-        this.failIfNotLoaded("clickTextContaining");
+        this._failIfNotLoaded("clickTextContaining");
         if (typeof optionalText === 'number') {
             index = optionalText;
             optionalText = undefined;
@@ -59,13 +59,13 @@ export default abstract class BrowserClick extends BrowserActions {
 
     private clickElements(elements: Array<DomElement>, index: number | undefined, indexError: Error, notFoundError: Error): Promise<number> {
         if (index !== undefined) {
-            return this.validateAndClickElementByIndex(elements, index, indexError);
+            return this._validateAndClickElementByIndex(elements, index, indexError);
         } else {
-            return this.validateAndClickElements(elements, notFoundError);
+            return this._validateAndClickElements(elements, notFoundError);
         }
     }
 
-    private async validateAndClickElementByIndex(elements: Array<DomElement>, index: number, error: Error): Promise<number> {
+    private async _validateAndClickElementByIndex(elements: Array<DomElement>, index: number, error: Error): Promise<number> {
         if (index > elements.length || index < 0 || !elements[index]) {
             throw error;
         }
@@ -73,7 +73,7 @@ export default abstract class BrowserClick extends BrowserActions {
         return 1;
     }
 
-    private async validateAndClickElements(elements: Array<DomElement>, error: Error): Promise<number> {
+    private async _validateAndClickElements(elements: Array<DomElement>, error: Error): Promise<number> {
         if (elements.length <= 0 || !elements[0]) {
             throw error;
         }
@@ -83,7 +83,7 @@ export default abstract class BrowserClick extends BrowserActions {
         return elements.length;
     }
 
-    private clickCoordinates(x: number, y: number): Promise<void> {
+    private _clickCoordinates(x: number, y: number): Promise<void> {
         return this.page.mouse.click(x, y);
     }
 }

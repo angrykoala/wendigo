@@ -9,12 +9,12 @@ import { CssSelector, WendigoSelector } from '../../types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
     public wait(ms: number = 250): Promise<void> {
-        this.failIfNotLoaded("wait");
+        this._failIfNotLoaded("wait");
         return utils.delay(ms);
     }
 
     public async waitFor(selector: CssSelector | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
-        this.failIfNotLoaded("waitFor");
+        this._failIfNotLoaded("waitFor");
         args = args.map((e) => {
             if (e instanceof DomElement) return e.element;
             else return e;
@@ -33,7 +33,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     public async waitUntilNotVisible(selector: WendigoSelector, timeout = 500): Promise<void> {
-        this.failIfNotLoaded("waitUntilNotVisible");
+        this._failIfNotLoaded("waitUntilNotVisible");
         try {
             await this.waitFor((q) => {
                 const element = WendigoUtils.queryElement(q);
@@ -45,7 +45,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     public async waitForUrl(url: string | RegExp, timeout: number = 500): Promise<void> {
-        this.failIfNotLoaded("waitForUrl");
+        this._failIfNotLoaded("waitForUrl");
         if (!url) return Promise.reject(new WendigoError("waitForUrl", `Invalid parameter url.`));
         let parsedUrl: string | RegExp | { source: string, flags: string } = url;
         if (url instanceof RegExp) {
@@ -71,7 +71,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     public async waitForNavigation(timeout: number = 500): Promise<void> {
-        this.failIfNotLoaded("waitForNavigation");
+        this._failIfNotLoaded("waitForNavigation");
         const t1 = new Date().getTime();
         try {
             await this.page.waitForNavigation({
