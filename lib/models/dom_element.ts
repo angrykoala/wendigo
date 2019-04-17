@@ -13,6 +13,7 @@ export default class DomElement {
     public async query(selector: string): Promise<DomElement | null> {
         let elementHandle: ElementHandle | null;
         if (isXPathQuery(selector)) {
+            selector = this.processXPath(selector);
             const results = await this.element.$x(selector);
             elementHandle = results[0] || null;
         } else elementHandle = await this.element.$(selector);
@@ -22,7 +23,7 @@ export default class DomElement {
     public async queryAll(selector: string): Promise<Array<DomElement>> {
         let elements: Array<ElementHandle>;
         if (isXPathQuery(selector)) {
-            if (selector[0] === "/") selector = `.${selector}`;
+            selector = this.processXPath(selector);
             elements = await this.element.$x(selector);
         } else elements = await this.element.$$(selector);
 
@@ -53,5 +54,10 @@ export default class DomElement {
         const elementHandle = element.asElement();
         if (elementHandle) return new DomElement(elementHandle, name);
         else return null;
+    }
+
+    private processXPath(selector: string): string {
+        selector = `.${selector}`;
+        return selector;
     }
 }

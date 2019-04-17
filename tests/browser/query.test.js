@@ -72,6 +72,20 @@ describe("Query", function() {
         assert(element instanceof DomElement);
     });
 
+    it("XPath SubQuery", async() => {
+        const container = await browser.query(".container");
+        const element = await browser.query(container, "/p");
+        assert(element);
+        assert(element instanceof DomElement);
+    });
+
+    it("XPath SubQuery With Global Path", async() => {
+        const container = await browser.query(".container");
+        const element = await browser.query(container, "//p");
+        assert(element);
+        assert(element instanceof DomElement);
+    });
+
     it("Query Dom Selector", async() => {
         const element = await browser.query("p");
         const element2 = await browser.query(element);
@@ -85,8 +99,15 @@ describe("Query", function() {
         }, "Error: [query] Invalid selector.");
     });
 
-    it("XPath SubsQuery Not Found");
+    it("XPath SubsQuery Not Found", async() => {
+        const container = await browser.query(".container");
+        const element = await browser.query(container, "/b");
+        assert.strictEqual(element, null);
+    });
 
-    it("QueryAll With XPath Children");
-    it("QueryAll With Multiple Parents");
+    it("XPath SubsQuery Not Found With Global Path", async() => {
+        const container = await browser.query(".container");
+        const element = await browser.query(container, "//b");
+        assert.strictEqual(element, null);
+    });
 });

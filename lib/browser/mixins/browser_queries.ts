@@ -3,7 +3,7 @@ import { ElementHandle } from 'puppeteer';
 
 import DomElement from '../../models/dom_element';
 import { FatalError, WendigoError } from '../../errors';
-import { CssSelector, XPathSelector, WendigoSelector } from '../../types';
+import { WendigoSelector } from '../../types';
 import { isXPathQuery } from '../../utils/utils';
 
 export default abstract class BrowserQueries extends BrowserCore {
@@ -56,10 +56,15 @@ export default abstract class BrowserQueries extends BrowserCore {
 
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         this.failIfNotLoaded("findByText");
-        const xPathText = optionalText || text;
+        const xPathText = optionalText || text as string;
         const xPath = `//*[text()='${xPathText}']`;
+
         if (optionalText) {
-            return this.queryAll(text, xPath);
+            try {
+                return await this.queryAll(text, xPath);
+            } catch (err) {
+                throw WendigoError.overrideFnName(err, "findByText");
+            }
         } else {
             return this.queryAll(xPath);
         }
@@ -67,10 +72,14 @@ export default abstract class BrowserQueries extends BrowserCore {
 
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         this.failIfNotLoaded("findByTextContaining");
-        const xPathText = optionalText || text;
+        const xPathText = optionalText || text as string;
         const xPath = `//*[contains(text(),'${xPathText}')]`;
         if (optionalText) {
-            return this.queryAll(text, xPath);
+            try {
+                return await this.queryAll(text, xPath);
+            } catch (err) {
+                throw WendigoError.overrideFnName(err, "findByTextContaining");
+            }
         } else {
             const result = this.queryAll(xPath);
             return result;
@@ -87,7 +96,7 @@ export default abstract class BrowserQueries extends BrowserCore {
         return this.queryAll(`[${attributeName}${attributeValue}]`);
     }
 
-    public findCssPath(domElement: DomElement): Promise<CssSelector> {
+    public findCssPath(domElement: DomElement): Promise<string> {
         this.failIfNotLoaded("findCssPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findCssPath", "Invalid element for css path query."));
         else return this.evaluate((e) => {
@@ -95,7 +104,7 @@ export default abstract class BrowserQueries extends BrowserCore {
         }, domElement);
     }
 
-    public findXPath(domElement: DomElement): Promise<XPathSelector> {
+    public findXPath(domElement: DomElement): Promise<string> {
         this.failIfNotLoaded("findXPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findXPath", "Invalid element for xPath query."));
         else return this.evaluate((e) => {

@@ -31,7 +31,7 @@ export default abstract class BrowserClick extends BrowserActions {
         try {
             elements = await this.findByText(text, optionalText);
         } catch (err) {
-            throw new WendigoError("clickText", "Invalid selector.");
+            throw WendigoError.overrideFnName(err, "clickText");
         }
         const indexErrorMsg = `Invalid index "${index}" for text "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text "${optionalText || text}" found.`;
@@ -48,7 +48,7 @@ export default abstract class BrowserClick extends BrowserActions {
         try {
             elements = await this.findByTextContaining(text, optionalText);
         } catch (err) {
-            throw new WendigoError("clickTextContaining", "Invalid selector.");
+            throw WendigoError.overrideFnName(err, "clickTextContaining");
         }
 
         const indexErrorMsg = `Invalid index "${index}" for text containing "${optionalText || text}", ${elements.length} elements found.`;

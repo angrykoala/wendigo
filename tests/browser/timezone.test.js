@@ -32,9 +32,7 @@ describe("Timezone", function() {
         browser = await Wendigo.createBrowser({
             timezone: "Asia/Tokyo"
         });
-        await browser.open(configUrls.simple, {
-            timezone: "Asia/Tokyo"
-        });
+        await browser.open(configUrls.simple);
         const tz = await getTimezone();
         assert.strictEqual(tz, "Asia/Tokyo");
     });
@@ -43,9 +41,7 @@ describe("Timezone", function() {
         browser = await Wendigo.createBrowser({
             timezone: "Japan"
         });
-        await browser.open(configUrls.simple, {
-            timezone: "Asia/Tokyo"
-        });
+        await browser.open(configUrls.simple);
         const tz = await getTimezone();
         assert.strictEqual(tz, "Asia/Tokyo");
     });
