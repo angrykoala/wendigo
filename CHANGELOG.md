@@ -1,3 +1,9 @@
+1.13.1 / 2018-04-19
+===================
+
+* Some dependencies updated
+* Deprecation notice in favor of 2.0
+
 1.13.0 / 2018-03-29
 ===================
 
