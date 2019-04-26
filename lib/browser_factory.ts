@@ -9,7 +9,7 @@ import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
 
 export default class BrowserFactory {
-    private static browserClass?: typeof Browser; // NOTE: Possible to use interface?
+    private static browserClass?: typeof Browser;
 
     public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<PluginModule>): BrowserInterface {
         if (!this.browserClass) {
