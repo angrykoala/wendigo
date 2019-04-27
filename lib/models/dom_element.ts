@@ -48,6 +48,10 @@ export default class DomElement {
         return this.element.hover();
     }
 
+    public type(text: string, options?: { delay: number }): Promise<void> {
+        return this.element.type(text, options);
+    }
+
     public toString(): string {
         if (this.name) return this.name;
         else return `DomElement`;

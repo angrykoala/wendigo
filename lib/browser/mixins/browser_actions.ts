@@ -2,20 +2,17 @@ import { Base64ScreenShotOptions } from 'puppeteer';
 
 import BrowserQueries from './browser_queries';
 
-import DomElement from '../../models/dom_element';
 import { arrayfy } from '../../utils/utils';
 import { QueryError, WendigoError } from '../../errors';
 import { CssSelector, WendigoSelector } from '../../types';
 
 export default abstract class BrowserActions extends BrowserQueries {
-    public type(selector: CssSelector | DomElement, text: string, options: { delay?: number } = {}): Promise<void> {
+    public async type(selector: WendigoSelector, text: string, options?: { delay: number }): Promise<void> {
         this._failIfNotLoaded("type");
         if (typeof text !== "string") return Promise.reject(new WendigoError("type", `Invalid text.`));
-        if (typeof selector === "string") {
-            return this.page.type(selector, text, { delay: options.delay || 0 });
-        } else if (selector instanceof DomElement) {
-            return selector.element.type(text);
-        } else return Promise.reject(new WendigoError("type", `Invalid selector.`));
+        const element = await this.query(selector);
+        if (!element) throw new QueryError("type", `Element "${selector}" not found.`);
+        await element.type(text, options);
     }
 
     public async keyPress(key: Array<string> | string, count: number = 1): Promise<void> {
