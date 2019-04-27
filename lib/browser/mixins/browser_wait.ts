@@ -5,7 +5,7 @@ import BrowserNavigation from './browser_navigation';
 import * as utils from '../../utils/utils';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
-import { CssSelector, WendigoSelector } from '../../types';
+import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
     public wait(ms: number = 250): Promise<void> {
@@ -13,7 +13,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         return utils.delay(ms);
     }
 
-    public async waitFor(selector: CssSelector | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
+    // TODO: Only css selector supported
+    public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
         this._failIfNotLoaded("waitFor");
         args = args.map((e) => {
             if (e instanceof DomElement) return e.element;
@@ -35,7 +36,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     public async waitUntilNotVisible(selector: WendigoSelector, timeout = 500): Promise<void> {
         this._failIfNotLoaded("waitUntilNotVisible");
         try {
-            await this.waitFor((q) => {
+            await this.waitFor((q: string | HTMLElement) => {
                 const element = WendigoUtils.queryElement(q);
                 return !WendigoUtils.isVisible(element);
             }, timeout, selector);
@@ -104,7 +105,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
     public async waitForText(text: string, timeout: number = 500): Promise<void> {
         try {
-            await this.waitFor((txt) => {
+            await this.waitFor((txt: string) => {
                 const xpath = `//*[text()='${txt}']`; // NOTE: Duplicate of findByText
                 return Boolean(WendigoUtils.xPathQuery(xpath).length > 0);
             }, timeout, text);
@@ -113,7 +114,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
-    public async waitAndClick(selector: CssSelector, timeout: number = 500): Promise<number> {
+    // NOTE: Only Css Selector supported
+    public async waitAndClick(selector: string, timeout: number = 500): Promise<number> {
         try {
             await this.waitFor(selector, timeout);
             return await this.click(selector);
@@ -124,7 +126,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
     public async waitUntilEnabled(selector: WendigoSelector, timeout: number = 500): Promise<void> {
         try {
-            await this.waitFor((q) => {
+            await this.waitFor((q: string | HTMLElement) => {
                 const element = WendigoUtils.queryElement(q);
                 if (!element) return false;
                 const value = element.getAttribute("disabled");

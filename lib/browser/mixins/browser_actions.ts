@@ -4,7 +4,7 @@ import BrowserQueries from './browser_queries';
 
 import { arrayfy } from '../../utils/utils';
 import { QueryError, WendigoError } from '../../errors';
-import { CssSelector, WendigoSelector } from '../../types';
+import { WendigoSelector } from '../../types';
 
 export default abstract class BrowserActions extends BrowserQueries {
     public async type(selector: WendigoSelector, text: string, options?: { delay: number }): Promise<void> {
@@ -42,14 +42,14 @@ export default abstract class BrowserActions extends BrowserQueries {
         });
     }
 
-    public async select(selector: CssSelector, values: Array<string> | string): Promise<Array<string>> {
+    public async select(cssSelector: string, values: Array<string> | string): Promise<Array<string>> {
         this._failIfNotLoaded("select");
         if (!Array.isArray(values)) values = [values];
         try {
-            const result = await this.page.select(selector, ...values);
+            const result = await this.page.select(cssSelector, ...values);
             return result;
         } catch (err) {
-            throw new QueryError("select", `Element "${selector}" not found.`);
+            throw new QueryError("select", `Element "${cssSelector}" not found.`);
         }
     }
 

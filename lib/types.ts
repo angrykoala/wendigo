@@ -1,9 +1,6 @@
 import { Viewport } from 'puppeteer';
 import DomElement from './models/dom_element';
 
-export type CssSelector = string;
-export type XPathSelector = string;
-
 export type WendigoSelector = string | DomElement;
 
 export interface BrowserSettings {
