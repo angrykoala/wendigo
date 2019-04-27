@@ -32,10 +32,17 @@ describe("Focus", function() {
         }, `QueryError: [focus] Element ".btn10" not found.`);
     });
 
-    it("Focus DomElement", async() => {
+    it("Focus DomElement Selector", async() => {
         const element = await browser.query(".btn2");
         await browser.assert.not.focus(".btn2");
         await browser.focus(element);
+        await browser.assert.focus(".btn2");
+    });
+
+    it("Focus DomElement", async() => {
+        const element = await browser.query(".btn2");
+        await browser.assert.not.focus(".btn2");
+        await element.focus();
         await browser.assert.focus(".btn2");
     });
 
@@ -43,5 +50,11 @@ describe("Focus", function() {
         await browser.assert.not.focus(".btn2");
         await browser.focus("//*[contains(@class,'btn2')]");
         await browser.assert.focus(".btn2");
+    });
+
+    it("Focus Non Existing XPath", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.focus("//*[contains(@class,'btn10')]");
+        }, `QueryError: [focus] Element "//*[contains(@class,'btn10')]" not found.`);
     });
 });

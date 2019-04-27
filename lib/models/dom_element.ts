@@ -44,6 +44,10 @@ export default class DomElement {
         return this.element.focus();
     }
 
+    public hover(): Promise<void> {
+        return this.element.hover();
+    }
+
     public toString(): string {
         if (this.name) return this.name;
         else return `DomElement`;

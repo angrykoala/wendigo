@@ -110,7 +110,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
-    public async focus(selector: CssSelector): Promise<void> {
+    public async focus(selector: WendigoSelector): Promise<void> {
         this._failIfNotLoaded("focus");
         const element = await this.query(selector);
         if (!element) throw new QueryError("focus", `Element "${selector}" not found.`);
@@ -119,13 +119,11 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
-    public async hover(selector: CssSelector): Promise<void> {
+    public async hover(selector: WendigoSelector): Promise<void> {
         this._failIfNotLoaded("hover");
-        try {
-            await this.page.hover(selector);
-        } catch (err) {
-            throw new QueryError("hover", `Element "${selector}" not found.`);
-        }
+        const element = await this.query(selector);
+        if (!element) throw new QueryError("hover", `Element "${selector}" not found.`);
+        await element.hover();
     }
 
     public async scroll(value: number, xvalue?: number): Promise<void> {
