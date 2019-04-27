@@ -1,4 +1,3 @@
-// declare var WendigoUtils: any;
 declare namespace WendigoUtils {
     function isVisible(element: HTMLElement): boolean;
     function queryElement(selector: string | HTMLElement): HTMLElement;

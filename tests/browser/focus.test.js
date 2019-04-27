@@ -21,7 +21,6 @@ describe("Focus", function() {
     });
 
     it("Focus", async() => {
-        await browser.click(".btn");
         await browser.assert.not.focus(".btn2");
         await browser.focus(".btn2");
         await browser.assert.focus(".btn2");
@@ -31,5 +30,18 @@ describe("Focus", function() {
         await utils.assertThrowsAsync(async() => {
             await browser.focus(".btn10");
         }, `QueryError: [focus] Element ".btn10" not found.`);
+    });
+
+    it("Focus DomElement", async() => {
+        const element = await browser.query(".btn2");
+        await browser.assert.not.focus(".btn2");
+        await browser.focus(element);
+        await browser.assert.focus(".btn2");
+    });
+
+    it("Focus XPath", async() => {
+        await browser.assert.not.focus(".btn2");
+        await browser.focus("//*[contains(@class,'btn2')]");
+        await browser.assert.focus(".btn2");
     });
 });

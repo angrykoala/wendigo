@@ -6,8 +6,9 @@
 * Browser.queryXPath removed
 * Minor fixes to xPath queries
 * DomElement class methods changed
+* Multiple methods now support DOMElement and Css Selectors
 * Complex subqueries with multiple parent elements supported
-* New methods added to DomElement and subqueries improved
+* New methods added to DomElement
 * Changes in plugin system. Dropped support for not assertions
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules

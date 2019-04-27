@@ -112,10 +112,10 @@ export default abstract class BrowserActions extends BrowserQueries {
 
     public async focus(selector: CssSelector): Promise<void> {
         this._failIfNotLoaded("focus");
-        try {
-            await this.page.focus(selector);
-        } catch (err) {
-            throw new QueryError("focus", `Element "${selector}" not found.`);
+        const element = await this.query(selector);
+        if (!element) throw new QueryError("focus", `Element "${selector}" not found.`);
+        else {
+            await element.focus();
         }
     }
 
