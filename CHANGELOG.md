@@ -20,6 +20,7 @@
 * Fixed bug where mocks with querystring where not being updated properly
 * Removed dependency mixwith
 * Dependencies updated
+* Puppeteer 1.15
 
 1.13.0 / 2018-03-29
 ===================
