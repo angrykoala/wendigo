@@ -2,25 +2,27 @@ import * as assertUtils from '../../utils/assert_utils';
 import BrowserCookies from './browser_cookies';
 import BrowserInterface from '../../browser/browser_interface';
 
-/* eslint-disable max-params */
 export default {
-    async assert(browser: BrowserInterface, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
-        const value = await cookiesModule.get(name);
+    async assert(_browser: BrowserInterface, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
+        const cookie = await cookiesModule.get(name);
         if (expected === undefined) {
-            if (value === undefined) {
+            if (cookie === undefined) {
                 if (!msg) {
                     msg = `Expected cookie "${name}" to exist.`;
                 }
                 return assertUtils.rejectAssertion("assert.cookies", msg);
             }
-        } else if (value !== expected) {
-            if (!msg) {
-                msg = `Expected cookie "${name}" to have value "${expected}", "${value}" found.`;
+        } else {
+            const value = cookie ? cookie.value : undefined;
+            if (value !== expected) {
+                if (!msg) {
+                    msg = `Expected cookie "${name}" to have value "${expected}", "${value}" found.`;
+                }
+                return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
             }
-            return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
         }
     },
-    not(browser: BrowserInterface, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
+    not(browser: BrowserInterface, _cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
         if (!msg) {
             msg = expected === undefined ?
                 `Expected cookie "${name}" to not exist.` :
@@ -31,4 +33,3 @@ export default {
         }, "assert.not.cookies", msg);
     }
 };
-/* eslint-enable max-params */
