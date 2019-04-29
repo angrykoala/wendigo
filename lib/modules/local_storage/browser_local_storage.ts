@@ -12,35 +12,44 @@ export default class BrowserLocalStorage extends WendigoModule {
         }
     }
 
-    public setItem(key: string, value: string): Promise<void> {
-        return this._browser.evaluate((k, v) => {
-            return localStorage.setItem(k, v);
-        }, key, value).catch((err) => {
+    public async setItem(key: string, value: string): Promise<void> {
+        try {
+            await this._browser.evaluate((k, v) => {
+                return localStorage.setItem(k, v);
+            }, key, value);
+        } catch (err) {
             return Promise.reject(WendigoError.overrideFnName(err, "localStorage.setItem"));
-        });
+        }
     }
 
-    public removeItem(key: string): Promise<void> {
-        return this._browser.evaluate((k) => {
-            return localStorage.removeItem(k);
-        }, key).catch((err) => {
+    public async removeItem(key: string): Promise<void> {
+        try {
+            await this._browser.evaluate((k) => {
+                return localStorage.removeItem(k);
+            }, key);
+        } catch (err) {
             return Promise.reject(WendigoError.overrideFnName(err, "localStorage.removeItem"));
-        });
+        }
     }
 
-    public clear(): Promise<void> {
-        return this._browser.evaluate(() => {
-            return localStorage.clear();
-        }).catch((err) => {
+    public async clear(): Promise<void> {
+        try {
+            await this._browser.evaluate(() => {
+                return localStorage.clear();
+            });
+        } catch (err) {
             return Promise.reject(WendigoError.overrideFnName(err, "localStorage.clear"));
-        });
+        }
     }
 
-    public length(): Promise<number> {
-        return this._browser.evaluate(() => {
-            return localStorage.length;
-        }).catch((err) => {
+    public async length(): Promise<number> {
+        try {
+            const result = await this._browser.evaluate(() => {
+                return localStorage.length;
+            });
+            return result;
+        } catch (err) {
             return Promise.reject(WendigoError.overrideFnName(err, "localStorage.length"));
-        });
+        }
     }
 }

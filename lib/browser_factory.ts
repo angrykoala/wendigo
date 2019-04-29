@@ -41,7 +41,7 @@ export default class BrowserFactory {
         this.browserClass = compose(Browser, finalComponents) as typeof Browser;
     }
 
-    private static _setupAssertionModule(assertionPlugin: any, name: string): any { // TODO: improve typing
+    private static _setupAssertionModule(assertionPlugin: any, name: string): any {
         if (isClass(assertionPlugin)) {
             return this._setupAssertionClass(assertionPlugin, name);
         } else if (typeof assertionPlugin === 'function') {
