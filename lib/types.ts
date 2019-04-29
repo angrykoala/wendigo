@@ -33,7 +33,6 @@ export interface PluginModule {
 }
 
 export interface OpenSettings {
-    clearRequestMocks?: boolean;
     viewport?: Viewport;
     queryString?: string | { [s: string]: string; };
 }

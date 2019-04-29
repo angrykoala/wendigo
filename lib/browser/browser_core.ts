@@ -21,7 +21,6 @@ async function pageLog(log: ConsoleMessage): Promise<void> {
 }
 
 const defaultOpenOptions: OpenSettings = {
-    clearRequestMocks: true,
     viewport: {
         width: 1440,
         height: 900,

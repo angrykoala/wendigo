@@ -104,8 +104,7 @@ export default class BrowserRequests extends WendigoModule {
         }
     }
 
-    protected _beforeOpen(options: OpenSettings): Promise<void> {
-        if (options.clearRequestMocks) this.clearMocks();
+    protected _beforeOpen(_options: OpenSettings): Promise<void> {
         this.clearRequests();
         if (this._interceptorReady) return Promise.resolve();
         return this._startRequestInterceptor();

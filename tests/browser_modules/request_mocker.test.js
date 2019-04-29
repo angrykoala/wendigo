@@ -129,14 +129,6 @@ describe("Requests Mocker", function() {
         assert.strictEqual(browser.requests._requestMocker._mockedRequests.length, 2);
     });
 
-    it("Mocks Clears On Open", async() => {
-        await browser.requests.mock(configUrls.api, mockResponse);
-        await browser.open(configUrls.requests);
-        await browser.clickText("click me");
-        await browser.wait(100);
-        await browser.assert.text("#result", "DUMMY");
-    });
-
     it("Clear Mocks", async() => {
         await browser.requests.mock(configUrls.api, mockResponse);
         await browser.requests.clearMocks();
@@ -174,7 +166,7 @@ describe("Requests Mocker", function() {
 
     it("Keep Mocks On Open", async() => {
         browser.requests.mock(configUrls.api, mockResponse);
-        await browser.open(configUrls.requests, {clearRequestMocks: false});
+        await browser.open(configUrls.requests);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");

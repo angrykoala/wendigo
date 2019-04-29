@@ -4,6 +4,7 @@
 * Wendigo refactored into TypeScript, support for types files
 * Browser.query and browser.queryAll now support XPath selectors
 * Browser.queryXPath removed
+* Removed clearRequestMocks option, mocks are only removed on close
 * XPath improvements with axis support
 * Cookies now support full Puppeteer API
 * Minor fixes to xPath queries
