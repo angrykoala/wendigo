@@ -11,6 +11,8 @@ _by @angrykoala_
 
 **Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier. Install it with `npm install --save-dev wendigo`.
 
+> **DEPRECATION NOTICE:** Wendigo 2.0 is planned for release soon, this documentation refers to Wendigo 1.x Only critical bugs will be released for version 1.x until v2 is ready with new features. Up to date development can be seen [here](https://github.com/angrykoala/wendigo/tree/major-release-2) and beta versions are available at <https://www.npmjs.com/package/wendigo>
+
 Consider the following example of a test using Puppeteer:
 
 ```javascript

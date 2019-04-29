@@ -24,6 +24,12 @@
 * Dependencies updated
 * Puppeteer 1.15
 
+1.13.1 / 2018-04-20
+===================
+
+* Some dependencies updated
+* Deprecation notice in favor of 2.0
+
 1.13.0 / 2018-03-29
 ===================
 
