@@ -65,7 +65,7 @@ export default class DomElement {
     }
 
     private processXPath(selector: string): string {
-        selector = `.${selector}`;
+        if (selector[0] === '/') selector = `.${selector}`;
         return selector;
     }
 }

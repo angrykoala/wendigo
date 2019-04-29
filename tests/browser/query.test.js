@@ -110,4 +110,9 @@ describe("Query", function() {
         const element = await browser.query(container, "//b");
         assert.strictEqual(element, null);
     });
+
+    it("Query XPath Axis", async() => {
+        const element = await browser.query('ancestor::p[contains(text(),"My first paragraph")]');
+        assert(!element);
+    });
 });
