@@ -86,14 +86,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
 
     private _assertFilter(fnName: string, filter: RequestFilter, msg: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
-            return this.then(() => {
-                return filter.requests.then((reqs) => {
-                    if (reqs.length > 0) resolve();
-                    else {
-                        const err = new AssertionError(fnName, msg);
-                        reject(err);
-                    }
-                });
+            return this.then(async () => {
+                const reqs = await filter.requests;
+                if (reqs.length > 0) resolve();
+                else {
+                    const err = new AssertionError(fnName, msg);
+                    reject(err);
+                }
             }).catch((err) => {
                 reject(err);
             });
