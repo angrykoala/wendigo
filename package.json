@@ -17,7 +17,7 @@
     "eslint": "eslint . --ext .js",
     "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
     "tsc": "rm -rf dist && tsc",
-    "prepublishOnly": "npm run tsc && npm run eslint && npm run markdown-lint && npm test",
+    "prepublishOnly": "npm run eslint && npm run markdown-lint && npm test",
     "tslint": "tslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts"
   },
   "repository": {
