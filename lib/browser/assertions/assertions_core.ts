@@ -24,22 +24,24 @@ export default class AssertionsCore {
         if (!element) return assertUtils.rejectAssertion("assert.exists", msg);
     }
 
-    public visible(selector: WendigoSelector, msg?: string): Promise<void> {
-        return this._browser.evaluate((q) => {
-            const elements = WendigoUtils.queryAll(q);
-            if (elements.length === 0) throw new WendigoError("assert.visible", "Element not Found");
-            for (const e of elements) {
-                if (WendigoUtils.isVisible(e)) return true;
-            }
-            return false;
-        }, selector).catch(() => {
+    public async visible(selector: WendigoSelector, msg?: string): Promise<void> {
+        let visible;
+        try {
+            visible = await this._browser.evaluate((q) => {
+                const elements = WendigoUtils.queryAll(q);
+                if (elements.length === 0) throw new WendigoError("assert.visible", "Element not Found");
+                for (const e of elements) {
+                    if (WendigoUtils.isVisible(e)) return true;
+                }
+                return false;
+            }, selector);
+        } catch (err) {
             return assertUtils.rejectAssertion("assert.visible", `Selector "${selector}" doesn't match any elements.`);
-        }).then((visible: boolean) => {
-            if (!visible) {
-                if (!msg) msg = `Expected element "${selector}" to be visible.`;
-                return assertUtils.rejectAssertion("assert.visible", msg);
-            } else return Promise.resolve();
-        });
+        }
+        if (!visible) {
+            if (!msg) msg = `Expected element "${selector}" to be visible.`;
+            return assertUtils.rejectAssertion("assert.visible", msg);
+        }
     }
 
     public async tag(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
@@ -63,47 +65,42 @@ export default class AssertionsCore {
         return assertUtils.rejectAssertion("assert.tag", msg);
     }
 
-    public text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
+    public async text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
-            return Promise.reject(new WendigoError("assert.text", `Missing expected text for assertion.`));
+            throw new WendigoError("assert.text", `Missing expected text for assertion.`);
         }
         const processedExpected = utils.arrayfy(expected);
-        return this._browser.text(selector).then((texts) => {
-            for (const expectedText of processedExpected) {
-                if (!utils.matchTextList(texts, expectedText)) {
-                    if (!msg) {
-                        const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
-                        msg = `Expected element "${selector}" to have text "${expectedText}", ${foundText} found.`;
-                    }
-                    return assertUtils.rejectAssertion("assert.text", msg);
+        const texts = await this._browser.text(selector);
+        for (const expectedText of processedExpected) {
+            if (!utils.matchTextList(texts, expectedText)) {
+                if (!msg) {
+                    const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
+                    msg = `Expected element "${selector}" to have text "${expectedText}", ${foundText} found.`;
                 }
+                return assertUtils.rejectAssertion("assert.text", msg);
             }
-            return Promise.resolve();
-        });
+        }
     }
 
-    public textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        return this._browser.text(selector).then((texts) => {
-            for (const text of texts) {
-                if (text && text.includes(expected)) return Promise.resolve();
-            }
-            if (!msg) {
-                const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
-                msg = `Expected element "${selector}" to contain text "${expected}", ${foundText} found.`;
-            }
-            return assertUtils.rejectAssertion("assert.textContains", msg);
-        });
+    public async textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        const texts = await this._browser.text(selector);
+        for (const text of texts) {
+            if (text && text.includes(expected)) return Promise.resolve();
+        }
+        if (!msg) {
+            const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
+            msg = `Expected element "${selector}" to contain text "${expected}", ${foundText} found.`;
+        }
+        return assertUtils.rejectAssertion("assert.textContains", msg);
     }
 
-    public title(expected: string | RegExp, msg?: string): Promise<void> {
-        return this._browser.title().then((title) => {
-            const foundTitle = title ? `"${title}"` : "no title";
-            if (!utils.matchText(title, expected)) {
-                if (!msg) msg = `Expected page title to be "${expected}", ${foundTitle} found.`;
-                return assertUtils.rejectAssertion("assert.title", msg);
-            }
-            return Promise.resolve();
-        });
+    public async title(expected: string | RegExp, msg?: string): Promise<void> {
+        const title = await this._browser.title();
+        const foundTitle = title ? `"${title}"` : "no title";
+        if (!utils.matchText(title, expected)) {
+            if (!msg) msg = `Expected page title to be "${expected}", ${foundTitle} found.`;
+            return assertUtils.rejectAssertion("assert.title", msg);
+        }
     }
 
     public async class(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
@@ -135,38 +132,36 @@ export default class AssertionsCore {
         }
     }
 
-    public value(selector: WendigoSelector, expected: string | null, msg?: string): Promise<void> {
-        return this._browser.value(selector).then((value) => {
-            if (value !== expected) {
-                if (!msg) {
-                    if (value === null) msg = `Expected element "${selector}" to have value "${expected}", no value found`;
-                    else msg = `Expected element "${selector}" to have value "${expected}", "${value}" found`;
-                }
-                return assertUtils.rejectAssertion("assert.value", msg, value, expected);
+    public async value(selector: WendigoSelector, expected: string | null, msg?: string): Promise<void> {
+        const value = await this._browser.value(selector);
+        if (value !== expected) {
+            if (!msg) {
+                if (value === null) msg = `Expected element "${selector}" to have value "${expected}", no value found`;
+                else msg = `Expected element "${selector}" to have value "${expected}", "${value}" found`;
             }
-            return Promise.resolve();
-        });
+            return assertUtils.rejectAssertion("assert.value", msg, value, expected);
+        }
     }
 
-    public element(selector: WendigoSelector, msg?: string): Promise<void> {
-        return this.elements(selector, 1, msg).catch((err: Error) => {
-            return Promise.reject(WendigoError.overrideFnName(err, "assert.element"));
-        });
+    public async element(selector: WendigoSelector, msg?: string): Promise<void> {
+        try {
+            return await this.elements(selector, 1, msg);
+        } catch (err) {
+            throw WendigoError.overrideFnName(err, "assert.element");
+        }
     }
 
-    public elements(selector: WendigoSelector, count: number, msg?: string): Promise<void> {
+    public async elements(selector: WendigoSelector, count: number, msg?: string): Promise<void> {
         const assertCountData = elementsAssertionUtils.parseCountInput(count);
         const countCase = elementsAssertionUtils.getCountCase(assertCountData);
         if (!countCase) {
-            return Promise.reject(new WendigoError("assert.elements", `parameter count (${count}) is not valid.`));
+            throw new WendigoError("assert.elements", `parameter count (${count}) is not valid.`);
         }
-        return this._browser.queryAll(selector).then((elements) => {
-            const elementsCount = elements.length;
-            return elementsAssertionUtils.makeAssertion(selector, assertCountData, countCase, elementsCount, msg);
-        });
+        const elements = await this._browser.queryAll(selector);
+        const elementsCount = elements.length;
+        return elementsAssertionUtils.makeAssertion(selector, assertCountData, countCase, elementsCount, msg);
     }
 
-    /* eslint-disable complexity */
     public async attribute(selector: WendigoSelector, attribute: string, expectedValue?: string | null, msg?: string): Promise<void> {
         const customMessage = Boolean(msg);
         if (!customMessage) {
@@ -210,86 +205,82 @@ export default class AssertionsCore {
         }
         return assertUtils.rejectAssertion("assert.attribute", msg as string);
     }
-    /* eslint-enable complexity */
 
-    public style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
-        return this._browser.evaluate((sel, sty) => {
-            const element = WendigoUtils.queryElement(sel);
-            if (!element) return Promise.reject();
-            const styles = getComputedStyle(element);
-            return styles.getPropertyValue(sty);
-        }, selector, style).catch(() => {
-            const error = new QueryError("assert.style", `Element "${selector}" not found.`);
-            return Promise.reject(error);
-        }).then((value) => {
-            if (value !== expected) {
-                if (!msg) {
-                    msg = `Expected element "${selector}" to have style "${style}" with value "${expected}"`;
-                    if (value) msg = `${msg}, "${value}" found.`;
-                    else msg = `${msg}, style not found.`;
-                }
-                return assertUtils.rejectAssertion("assert.style", msg);
+    public async style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
+        let value;
+        try {
+            value = await this._browser.evaluate((sel, sty) => {
+                const element = WendigoUtils.queryElement(sel);
+                if (!element) return Promise.reject();
+                const styles = getComputedStyle(element);
+                return styles.getPropertyValue(sty);
+            }, selector, style);
+        } catch (err) {
+            throw new QueryError("assert.style", `Element "${selector}" not found.`);
+        }
+        if (value !== expected) {
+            if (!msg) {
+                msg = `Expected element "${selector}" to have style "${style}" with value "${expected}"`;
+                if (value) msg = `${msg}, "${value}" found.`;
+                else msg = `${msg}, style not found.`;
             }
-            return Promise.resolve();
-        });
+            return assertUtils.rejectAssertion("assert.style", msg);
+        }
     }
 
-    public href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        return this.attribute(selector, "href", expected, msg).catch((err: Error) => {
+    public async href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        try {
+            return await this.attribute(selector, "href", expected, msg);
+        } catch (err) {
             return Promise.reject(WendigoError.overrideFnName(err, "assert.href"));
-        });
+        }
     }
 
-    public innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
+    public async innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
         if (!expected && expected !== "") return Promise.reject(new WendigoError("assert.innerHtml", "Missing expected html for assertion."));
 
-        return this._browser.innerHtml(selector).then((found) => {
-            if (found.length === 0) {
-                const error = new QueryError("assert.innerHtml", `Element "${selector}" not found.`);
-                return Promise.reject(error);
-            }
-            for (const html of found) {
-                if (utils.matchText(html, expected)) return Promise.resolve();
-            }
+        const found = await this._browser.innerHtml(selector);
+        if (found.length === 0) {
+            const error = new QueryError("assert.innerHtml", `Element "${selector}" not found.`);
+            return Promise.reject(error);
+        }
+        for (const html of found) {
+            if (utils.matchText(html, expected)) return Promise.resolve();
+        }
 
+        if (!msg) {
+            msg = `Expected element "${selector}" to have inner html "${expected}", "${found.join(" ")}" found.`;
+        }
+
+        return assertUtils.rejectAssertion("assert.innerHtml", msg, found, expected);
+    }
+
+    public async options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
+        const parsedExpected = utils.arrayfy(expected);
+        const options = await this._browser.options(selector);
+        const sameMembers = assertUtils.sameMembers(parsedExpected, options);
+        if (!sameMembers) {
             if (!msg) {
-                msg = `Expected element "${selector}" to have inner html "${expected}", "${found.join(" ")}" found.`;
+                const expectedText = parsedExpected.join(", ");
+                const optionsText = options.join(", ");
+                msg = `Expected element "${selector}" to have options "${expectedText}", "${optionsText}" found.`;
             }
-
-            return assertUtils.rejectAssertion("assert.innerHtml", msg, found, expected);
-        });
+            return assertUtils.rejectAssertion("assert.options", msg, options, expected);
+        }
     }
 
-    public options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
+    public async selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         const parsedExpected = utils.arrayfy(expected);
-        return this._browser.options(selector).then((options) => {
-            const sameMembers = assertUtils.sameMembers(parsedExpected, options);
-            if (!sameMembers) {
-                if (!msg) {
-                    const expectedText = parsedExpected.join(", ");
-                    const optionsText = options.join(", ");
-                    msg = `Expected element "${selector}" to have options "${expectedText}", "${optionsText}" found.`;
-                }
-                return assertUtils.rejectAssertion("assert.options", msg, options, expected);
+        const selectedOptions = await this._browser.selectedOptions(selector);
+        const sameMembers = assertUtils.sameMembers(parsedExpected, selectedOptions);
+        if (!sameMembers) {
+            if (!msg) {
+                const expectedText = parsedExpected.join(", ");
+                const optionsText = selectedOptions.join(", ");
+                msg = `Expected element "${selector}" to have options "${expectedText}" selected, "${optionsText}" found.`;
             }
-            return Promise.resolve();
-        });
-    }
-
-    public selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
-        const parsedExpected = utils.arrayfy(expected);
-        return this._browser.selectedOptions(selector).then((selectedOptions) => {
-            const sameMembers = assertUtils.sameMembers(parsedExpected, selectedOptions);
-            if (!sameMembers) {
-                if (!msg) {
-                    const expectedText = parsedExpected.join(", ");
-                    const optionsText = selectedOptions.join(", ");
-                    msg = `Expected element "${selector}" to have options "${expectedText}" selected, "${optionsText}" found.`;
-                }
-                return assertUtils.rejectAssertion("assert.selectedOptions", msg, selectedOptions, expected);
-            }
-            return Promise.resolve();
-        });
+            return assertUtils.rejectAssertion("assert.selectedOptions", msg, selectedOptions, expected);
+        }
     }
 
     public async global(key: string, expected?: any, msg?: string): Promise<void> {
@@ -351,24 +342,24 @@ export default class AssertionsCore {
         }
     }
 
-    public focus(selector: WendigoSelector, msg?: string): Promise<void> {
-        return this._browser.evaluate((q) => {
-            const elements = WendigoUtils.queryAll(q);
-            if (elements.length === 0) return Promise.reject();
-            for (const el of elements) {
-                if (document.activeElement === el) return true;
-            }
-            return false;
-        }, selector).catch(() => {
-            const error = new QueryError("assert.focus", `Element "${selector}" not found.`);
-            return Promise.reject(error);
-        }).then((focused) => {
-            if (!focused) {
-                if (!msg) msg = `Expected element "${selector}" to be focused.`;
-                return assertUtils.rejectAssertion("assert.focus", msg);
-            }
-            return Promise.resolve();
-        });
+    public async focus(selector: WendigoSelector, msg?: string): Promise<void> {
+        let focused;
+        try {
+            focused = await this._browser.evaluate((q) => {
+                const elements = WendigoUtils.queryAll(q);
+                if (elements.length === 0) return Promise.reject();
+                for (const el of elements) {
+                    if (document.activeElement === el) return true;
+                }
+                return false;
+            }, selector);
+        } catch (err) {
+            throw new QueryError("assert.focus", `Element "${selector}" not found.`);
+        }
+        if (!focused) {
+            if (!msg) msg = `Expected element "${selector}" to be focused.`;
+            return assertUtils.rejectAssertion("assert.focus", msg);
+        }
     }
 
     public redirect(msg?: string): Promise<void> {

@@ -703,7 +703,6 @@ await browser.assert.text("p", "My First Paragraph");
 
 **assert.textContains(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector contains the expected text.
-If expected is an array, all texts in it should be contained in an element.
 
 ```js
 await browser.assert.textContains("p", "My First");
