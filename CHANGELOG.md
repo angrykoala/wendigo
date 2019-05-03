@@ -1,28 +1,26 @@
 2.0.0 / ####-##-##
 ==================
 
-* Wendigo refactored into TypeScript, support for types files
+* Wendigo refactored into TypeScript
 * Browser.query and browser.queryAll now support XPath selectors
 * Browser.queryXPath removed
-* Removed clearRequestMocks option, mocks are only removed on close
-* XPath improvements with axis support
-* Cookies now support full Puppeteer API
-* Minor fixes to xPath queries
-* DomElement class methods changed
-* Multiple methods now support DOMElement and Css Selectors
+* Removed clearRequestMocks option, mocks are only removed on browser close
+* Cookies now support extra cookie parameters
+* XPath improvements with axis support and minor fixes
+* Added new methods to DomElement class
+* More support for XPath and DOMElement selectors
 * Complex subqueries with multiple parent elements supported
-* New methods added to DomElement
 * Changes in plugin system. Dropped support for not assertions
 * Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
 * Browser.request.all changed into a function to make it consistent with other modules
 * WaitForRequest/Response and waitForNextRequest/Response moved to requests module
-* Browser.assert.request renamed browser.assert.requests to keep consistency
+* Browser.assert.request renamed to browser.assert.requests to keep consistency
 * Assertions now always return promises for consistency
 * Fixed bug where settings on dialog module where not being updated properly
 * Fixed bug where mocks with querystring where not being updated properly
 * Removed dependency mixwith
 * Dependencies updated
-* Puppeteer 1.15
+* Puppeteer updated to 1.15
 * Readme updated and several minor fixes in it
 
 1.13.1 / 2018-04-20
