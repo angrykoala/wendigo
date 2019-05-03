@@ -29,8 +29,9 @@ describe("Value", function() {
     });
 
     it("Get Value Element Doesn't Exist", async() => {
-        const value = await browser.value("input.not-exists");
-        assert.strictEqual(value, null);
+        await utils.assertThrowsAsync(async() => {
+            await browser.value("input.not-exists");
+        }, `QueryError: [value] Element "input.not-exists" not found.`);
     });
 
     it("Get Value Element Not Input", async() => {

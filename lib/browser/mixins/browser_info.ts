@@ -100,14 +100,18 @@ export default abstract class BrowserInfo extends BrowserClick {
         }
     }
 
-    public value(selector: WendigoSelector): Promise<string | null> {
+    public async value(selector: WendigoSelector): Promise<string | null> {
         this._failIfNotLoaded("value");
-        return this.evaluate((q) => {
-            const element = WendigoUtils.queryElement(q) as HTMLInputElement;
-            if (!element) return null;
-            else if (element.value === undefined) return null;
-            else return element.value;
-        }, selector);
+        try {
+            return await this.evaluate((q) => {
+                const element = WendigoUtils.queryElement(q) as HTMLInputElement;
+                if (!element) return Promise.reject();
+                else if (element.value === undefined) return null;
+                else return element.value;
+            }, selector);
+        } catch (err) {
+            throw new QueryError("value", `Element "${selector}" not found.`);
+        }
     }
 
     public async attribute(selector: WendigoSelector, attributeName: string): Promise<string | null> {
