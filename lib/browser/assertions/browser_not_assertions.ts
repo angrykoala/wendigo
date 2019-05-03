@@ -35,21 +35,19 @@ export default class BrowserNotAssertions {
         }, "assert.not.tag", msg);
     }
 
-    public text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
+    public async text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
-            return Promise.reject(new WendigoError("assert.not.text", `Missing expected text for assertion.`));
+            throw new WendigoError("assert.not.text", `Missing expected text for assertion.`);
         }
         const processedExpected = utils.arrayfy(expected);
 
-        return this._browser.text(selector).then((texts) => {
-            for (const expectedText of processedExpected) {
-                if (utils.matchTextList(texts, expectedText)) {
-                    if (!msg) msg = `Expected element "${selector}" not to have text "${expectedText}".`;
-                    return assertUtils.rejectAssertion("assert.not.text", msg);
-                }
+        const texts = await this._browser.text(selector);
+        for (const expectedText of processedExpected) {
+            if (utils.matchTextList(texts, expectedText)) {
+                if (!msg) msg = `Expected element "${selector}" not to have text "${expectedText}".`;
+                return assertUtils.rejectAssertion("assert.not.text", msg);
             }
-            return Promise.resolve();
-        });
+        }
     }
 
     public textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
@@ -87,24 +85,23 @@ export default class BrowserNotAssertions {
         }, "assert.not.value", msg);
     }
 
-    public attribute(selector: WendigoSelector, attribute: string, expectedValue?: string, msg?: string): Promise<void> {
+    public async attribute(selector: WendigoSelector, attribute: string, expectedValue?: string, msg?: string): Promise<void> {
         const customMessage = Boolean(msg);
         if (!customMessage) {
             msg = `Expected element "${selector}" not to have attribute "${attribute}"`;
             if (expectedValue) msg = `${msg} with value "${expectedValue}"`;
         }
-        return this._browser.query(selector).then((elementFound) => {
-            if (elementFound === null) {
-                if (!customMessage) {
-                    msg = `${msg}, no element found.`;
-                }
-                return assertUtils.rejectAssertion("assert.not.attribute", msg as string);
+        const elementFound = await this._browser.query(selector);
+        if (elementFound === null) {
+            if (!customMessage) {
+                msg = `${msg}, no element found.`;
             }
-            if (!customMessage) msg = `${msg}.`;
-            return assertUtils.invertify(() => {
-                return this._assertions.attribute(selector, attribute, expectedValue, "x");
-            }, "assert.not.attribute", msg as string);
-        });
+            return assertUtils.rejectAssertion("assert.not.attribute", msg as string);
+        }
+        if (!customMessage) msg = `${msg}.`;
+        return assertUtils.invertify(() => {
+            return this._assertions.attribute(selector, attribute, expectedValue, "x");
+        }, "assert.not.attribute", msg as string);
     }
 
     public style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
@@ -114,10 +111,12 @@ export default class BrowserNotAssertions {
         }, "assert.not.style", msg);
     }
 
-    public href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        return this.attribute(selector, "href", expected, msg).catch((err: Error) => {
-            return Promise.reject(WendigoError.overrideFnName(err, "assert.not.href"));
-        });
+    public async href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        try {
+            await this.attribute(selector, "href", expected, msg);
+        } catch (err) {
+            throw WendigoError.overrideFnName(err, "assert.not.href");
+        }
     }
 
     public innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
@@ -189,10 +188,12 @@ export default class BrowserNotAssertions {
         }, "assert.not.redirect", msg);
     }
 
-    public element(selector: WendigoSelector, msg?: string): Promise<void> {
+    public async element(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected selector "${selector}" not to find any elements.`;
-        return this._assertions.elements(selector, 0, msg).catch((err) => {
-            return Promise.reject(WendigoError.overrideFnName(err, "assert.not.element"));
-        });
+        try {
+            await this._assertions.elements(selector, 0, msg);
+        } catch (err) {
+            throw WendigoError.overrideFnName(err, "assert.not.element");
+        }
     }
 }
