@@ -1,21 +1,24 @@
 {
   "name": "wendigo",
-  "version": "1.13.1",
+  "version": "2.0.0",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
   },
   "files": [
     "injection_scripts",
-    "lib",
-    "config.js"
+    "dist"
   ],
-  "main": "main.js",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
-    "test": "mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
+    "test": "npm run tsc && mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
-    "lint": "eslint . --ext .js",
-    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md"
+    "eslint": "eslint . --ext .js",
+    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
+    "tsc": "rm -rf dist && tsc",
+    "prepublishOnly": "npm run eslint && npm run markdown-lint && npm test",
+    "tslint": "tslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts"
   },
   "repository": {
     "type": "git",
@@ -27,7 +30,8 @@
     "frontend",
     "browser",
     "automation",
-    "chrome"
+    "chrome",
+    "chromium"
   ],
   "author": "angrykoala <angrykoala@outlook.es>",
   "license": "GPL-3.0",
@@ -36,15 +40,19 @@
   },
   "homepage": "https://github.com/angrykoala/wendigo#readme",
   "dependencies": {
-    "compositer": "^1.3.3",
+    "compositer": "^1.3.4",
     "is-class": "0.0.7",
-    "mixwith": "^0.1.1",
-    "puppeteer": "~1.14.0"
+    "puppeteer": "~1.15.0",
+    "@types/puppeteer": "^1.12.4"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.13.9",
     "eslint": "^5.16.0",
     "express": "^4.16.4",
     "markdownlint-cli": "^0.15.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
   }
 }

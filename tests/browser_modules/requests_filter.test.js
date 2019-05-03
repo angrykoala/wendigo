@@ -21,21 +21,21 @@ describe("Requests Filter", function() {
     });
 
     it("All Requests", async() => {
-        const requests = browser.requests.all.length;
+        const requests = browser.requests.all().length;
         await browser.clickText("click me");
         await browser.wait(10);
-        assert.strictEqual(browser.requests.all.length, requests + 1);
+        assert.strictEqual(browser.requests.all().length, requests + 1);
         await browser.clickText("click me");
         await browser.wait(10);
-        assert.strictEqual(browser.requests.all.length, requests + 2);
+        assert.strictEqual(browser.requests.all().length, requests + 2);
     });
 
     it("Request Between Multiple Browsers", async() => {
-        const requests = await browser.requests.all.length;
+        const requests = await browser.requests.all().length;
         await browser.close();
         browser = await Wendigo.createBrowser();
         await browser.open(configUrls.requests);
-        assert.strictEqual(await browser.requests.all.length, requests);
+        assert.strictEqual(await browser.requests.all().length, requests);
     });
 
     it("Requests Filter By URL", async() => {

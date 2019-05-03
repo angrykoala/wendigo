@@ -33,7 +33,7 @@ describe("Cookies", function() {
 
     it("Get Cookie", async() => {
         const cookie = await browser.cookies.get("username");
-        assert.strictEqual(cookie, "arthur_dent");
+        assert.strictEqual(cookie.value, "arthur_dent");
     });
 
     it("Get Cookie Fails", async() => {
@@ -42,6 +42,16 @@ describe("Cookies", function() {
     });
 
     it("Set Cookie", async() => {
+        await browser.cookies.set("android", {
+            value: "marvin"
+        });
+        const cookies = await browser.cookies.all();
+        assert.strictEqual(Object.keys(cookies).length, 2);
+        assert.strictEqual(cookies.username, "arthur_dent");
+        assert.strictEqual(cookies.android, "marvin");
+    });
+
+    it("Set Cookie With Only Value", async() => {
         await browser.cookies.set("android", "marvin");
         const cookies = await browser.cookies.all();
         assert.strictEqual(Object.keys(cookies).length, 2);

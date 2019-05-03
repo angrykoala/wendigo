@@ -35,7 +35,6 @@ describe("Assert Value", function() {
     it("Assert Null Value", async() => {
         await browser.open(configUrls.forms);
         await browser.assert.value("h1", null);
-        await browser.assert.value("input.not-exists", null);
     });
 
     it("Assert Value Throws", async() => {
@@ -48,9 +47,9 @@ describe("Assert Value", function() {
             await browser.assert.value("input.input2", "False Text");
         }, `[assert.value] Expected element "input.input2" to have value "False Text", "default value" found`, "default value", "False Text");
 
-        await utils.assertThrowsAssertionAsync(async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.assert.value("input.not-exists", "False Text");
-        }, `[assert.value] Expected element "input.not-exists" to have value "False Text", no value found`, null, "False Text");
+        }, `QueryError: [value] Element "input.not-exists" not found.`);
     });
 
     it("Assert Value Throws Custom Message", async() => {
