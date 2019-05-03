@@ -7,13 +7,13 @@ _by @angrykoala_
 [![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo/master.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo/master.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
 
-> A proper monster for front-end automated testing
+> A proper monster for front-end automated testing.
 
-**Wendigo** (_/wɛndɪɡo/_)  is a wrapper of [Puppeteer](https://github.com/GoogleChrome/puppeteer) with the purpose of making automated testing easier. Install it with `npm install --save-dev wendigo`.
+**Wendigo** (_/wɛndɪɡo/_) simplify your front-end and end-to-end automated testing using [Puppeteer](https://github.com/GoogleChrome/puppeteer). Install it with `npm install --save-dev wendigo`.
 
-> **DEPRECATION NOTICE:** Wendigo 2.0 is planned for release soon, this documentation refers to Wendigo 1.x Only critical bugs will be released for version 1.x until v2 is ready with new features. Up to date development can be seen [here](https://github.com/angrykoala/wendigo/tree/major-release-2) and beta versions are available at <https://www.npmjs.com/package/wendigo>
+> **WARNING:** This documentation refers to Wendigo 2, if you are using previous versions of Wendigo, go to [here](https://github.com/angrykoala/wendigo/blob/1.13.1/README.md).
 
-Consider the following example of a test using Puppeteer:
+Consider the following example using just Puppeteer:
 
 ```javascript
 await page.click(".my-btn");
@@ -25,7 +25,7 @@ const modalText = await page.evaluate(() => {
 assert.strictEqual(modalText, "Button Clicked");
 ```
 
-Using Wendigo, the same test could be written like this:
+The same test can be written like this with Wendigo:
 
 ```javascript
 await browser.click(".my-btn");
@@ -33,7 +33,6 @@ await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
-> Recommended Node 10.15.1 LTS or superior
 
 **Contents**  
 
@@ -66,7 +65,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 ## Getting Started
 
 ### Requirements
-To start using Wendigo for testing or browser automation. Make sure you've got [NodeJS](https://nodejs.org/en/) 8.0.0 or higher and npm installed in your system. You can check if they are installed and their versions with the following commands:
+To start using Wendigo for testing or browser automation. Make sure you've got [NodeJS](https://nodejs.org/en/) 8.16.0 or higher and npm installed in your system. You can check if they are installed and their versions with the following commands:
 
 ```bash
 node -v
@@ -89,7 +88,7 @@ You can use it with your favorite test suite or standalone in a JavaScript file
 ```js
 const Wendigo = require('wendigo');
 
-async function getMyPageHeader(){
+async function getMyPageHeader() {
   const browser = await Wendigo.createBrowser();
   await browser.open("http://my-page");
   const text = await browser.text("h1");
@@ -102,17 +101,37 @@ getMyPageHeader().then((text)=>{
 });
 ```
 
-If you find any problem, please check our [Troubleshooting](#troubleshooting) for solutions to the most common problems, or fill an [issue](https://github.com/angrykoala/wendigo/issues/new) if it appears to be a bug or lacking feature with Wendigo. More information and guides on how to use Wendigo available at the [wiki](https://github.com/angrykoala/wendigo/wiki)
+#### Queries With Wendigo
+Most methods in Wendigo will receive a _selector_ parameter to query for DOM elements on which execute actions or get data. Unless specified these queries can be performed by passing a CSS selector (e.g. `div`, `.container`), an xPath selector (`//*[text()='my text']`) or passing a [DOM Element](#dom-element).
+
+For example:
+
+```js
+const myElement = await browser.query(".div");
+
+await browser.text(".div"); // My Element Text
+await browser.text(myElement); // My Element Text
+```
+
+#### Using Wendigo With TypesScript
+
+Wendigo 2.0 and higher contains typings, so importing it in a TyeScript project is enough for types support:
+
+```typescript
+import * as Wendigo from 'wendigo';
+```
+
+> If you find any problem, please check our [Troubleshooting](#troubleshooting) for solutions, or fill an [issue](https://github.com/angrykoala/wendigo/issues/new) if it appears to be a bug or lacking feature with Wendigo. More information and guides on how to use Wendigo available at the [wiki](https://github.com/angrykoala/wendigo/wiki)
 
 ## Api
 
 ### Wendigo Class
-Wendigo is the main static class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
+Wendigo is the only class exported by the package. It provides the methods necessary to create browsers and disconnect from chrome, can be imported with `require('wendigo')`:
 
 **createBrowser(settings)**  
-Will create and return a [Browser](#Browser) instance. It will automatically launch and connect Puppeteer and Chrome if an instance is not running.
+Will create and return a promise to a [Browser](#Browser) instance. It will automatically launch and connect Puppeteer and Chrome.
 
-* _settings_ is an optional object with the settings to build the browser
+* _settings_: an optional object with the configuration for the browser
   * `log: false`: If true, it will log all the console events of the browser.
   * `incognito: false`: If true, the browser will open as an incognito browser.
   * `userAgent`: If defined, the default user agent will be overridden.
@@ -121,20 +140,18 @@ Will create and return a [Browser](#Browser) instance. It will automatically lau
   * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
   * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
-  * Any settings that can be passed to Puppeteer can be passed in createBrowser, for example:
+  * Any settings that can be passed to Puppeteer can be passed to createBrowser, for example:
     * `headless: true`: If true, the browser will run on headless mode.
     * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
 
 Examples:
 
 ```js
-const Wendigo = require('wendigo');
-const browser = Wendigo.createBrowser(); // Using default options
+const browser = await Wendigo.createBrowser(); // Using default options
 ```
 
 ```js
-const Wendigo = require('wendigo');
-const browser = Wendigo.createBrowser({
+const browser = await Wendigo.createBrowser({
     headless: false,
     slowMo: 500
 }); // Using options to see what's happening
@@ -183,19 +200,18 @@ await browser.open("http://localhost:8000");
 
 The following options can be passed:
 
-* `clearRequestMocks` (default: true): Clears all previous mocks in the requests module
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url
 
 **openFile(path, options?)**  
-Opens the given file from the browser. Same options as `open` can be passed. The file will be passed by appending `file://` to the absolute path.
+Opens the given file. Same options as `open` can be passed. The file will be passed by appending `file://` to the absolute path.
 
 ```js
 await browser.open("static/index.html");
 ```
 
 **close()**  
-Close the browser, it should be called after finishing using the browser. Avoid creating a new browser before closing the previous one if possible. Having multiple open browsers will cause performance degradation in your tests.
+Close the browser, it should be called after finishing using the browser instance. Avoid creating a new browser before closing the previous one if possible. Having multiple open browsers will cause performance degradation in your tests.
 
 ```js
 await browser.close();
@@ -211,49 +227,31 @@ const elementText = await browser.evaluate((s) => {
 }, selector); // My Title
 ```
 
-This method, unlike `browser.page.evaluate` will automatically parse DOMElements arguments and DOMElements returns:
-
-```js
-const selector = "h1";
-const element = await browser.evaluate((s) => {
-    return document.querySelector(s);
-}, selector); // DOMElement
-
-const elementText = await browser.evaluate((e)=>{
-    return e.textContent;
-}, element); // My Title
-```
+This method, unlike `browser.page.evaluate` will automatically parse any argument if possible:
 
 **query(selector, childSelector?)**  
-Queries the given css selector and returns a DOM element. If multiple elements are matched, only the first will be returned. Returns null if no element found.
+Queries the given selector (css, xpath or DomElement) and returns a [DOMElement](#dom-element). If multiple elements match, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
 ```
 
-Optionally, query supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
+Optionally, 2 parameters can be passed. A query will be performed only on the nested elements of the first selector:
+
+```js
+const element = await browser.query(".div");
+const children = await browser.query(element, "p"); // First paragraph under element .div
+```
 
 **queryAll(selector, childSelector?)**  
-Returns an array with all the DOM elements that match the given css selector.
+Returns an array with all the [DOMElement](#dom-element) matching the given selector.
 
 ```js
 const elements = await browser.queryAll("h1");
 elements.length; // 2
 ```
 
-Optionally, queryAll supports 2 parameters, the first being a DOMElement and the selector as the second one. The query will then be performed only on the elements under the parent.
-
-> All the Dom elements returned by queryElement and queryAll can be used instead of a selector in other methods and assertions.
-
-**queryXPath(xPathSelector)**  
-Returns an array with the DOM elements matching the xPath selector.
-
-```js
-const elements = await browser.queryXPath('//p[contains(text(),"My first paragraph")]');
-elements[0].textContent; // "My first paragraph"
-```
-
-> The DomElement class returned by all query methods provides an interface to Puppeteer's ElementHandle class, it can be accesed with the property `element`
+Optionally, queryAll supports 2 parameters. The query will then be performed only on the elements under the first selector.
 
 **elementFromPoint(x, y)**  
 Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `null` if no element is present.
@@ -261,22 +259,21 @@ Given the coordinates (in pixels) as two numbers, returns the topmost DomElement
 ```js
 const element = await browser.elementFromPoint(500, 150);
 await browser.text(element); // ["My Title"]
-
 ```
 
 **addScript(scriptPath)**  
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
 
-It is heavily recommended to only use this to load helper functions, and not execute anything that might cause side effects. Anything loaded as a script may interfere with the behavior of the page or Wendigo. It is recommended to **always** check if the object of function you are loading already exists before loading, remember that `WendigoUtils` and `WendigoQuery` objects in `window` are required for Wendigo to work, so do not override them.
+It is heavily recommended to only use this to load helper functions, and not execute anything that might cause side effects. Anything loaded as a script may interfere with the behavior of the page or Wendigo. It is recommended to **always** check if the object of function you are loading already exists before loading, remember that `WendigoUtils`, `WendigoQuery` and `WendigoPathFinder` objects are required for Wendigo to work and overriding them will cause problems.
 
 **class(selector)**  
-Returns and array with the classes of the first element returned from the given css selector. Throws if no element is found.
+Returns and array with the classes of the first element found, throws if no element found.
 
 ```js
 const classes = await browser.class("div.container.main"); // Returns ["container", "main", "another-class"]
 ```
 
-Using a dom node:
+Using a DOMElement:
 
 ```js
 const node = await browser.query("div.container.main");
@@ -284,7 +281,7 @@ const classes = await browser.class(node); // Returns ["container", "main", "ano
 ```
 
 **value(selector)**  
-Returns the value of the first element with given selector. Returns _null_ if no element or value found.
+Returns the value of the first element with given selector. Throws if no element or value found.
 
 ```js
 const value = await browser.value("input.my-input");
@@ -301,7 +298,7 @@ const hiddentAttr2 = await browser.attribute(".not-hidden-element", "hidden"); /
 ```
 
 **styles(selector)**  
-Returns an object with all the computed css styles of the first element matching the given selector.
+Returns an object with all the computed css styles of the first element matching the given selector, throws if no element is found.
 
 ```js
 const styles = await browser.styles("h1.my-title");
@@ -309,28 +306,49 @@ styles.color; // 'rgb(255, 0, 0)'
 ```
 
 **style(selector, style)**  
-Returns the value of the given style of the first element matching the give nselector. Returns undefined if the style doesn't exists. Throws if the element is not found.
+Returns the value of the given style of the first element matching the given selector. Returns undefined if the style doesn't exists. Throws if no element found.
 
 ```js
 const style = await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
 ```
 
 **checked(selector)**  
-Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined.
+Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined. Throws if no element is found.
 
 **text(selector)**  
-Returns an array with all text contents of the elements matching the css selector
+Returns an array with the texts of the elements matching the given selector.
 
 ```js
 const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
 ```
 
+**innerHtml(selector)**  
+Returns an array with the innerHtml strings of all the elements matching the given selector
+
+```js
+await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
+```
+
+**title()**  
+Returns the page title.
+
+**html()**  
+Returns the page HTML as string. It will return the HTML as it was before performing any actions.
+
+**frames()**  
+Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
+
+**url()**  
+Returns the current url of the page.
+
 **click(selector, index?)**  
-Clicks all the elements with the matching css selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
+Clicks all the elements with the matching selector, if the index parameter is set, only the nth element will be clicked. Returns the number of elements clicked.
 
 ```js
 await browser.click("button.btn");
 ```
+
+An array of DOMElements is also supported as selector.
 
 Optionally, if two numbers are passed, position x, y (in pixels) will be clicked. In this case, null with be returned instead of the clicked elements.
 
@@ -352,7 +370,7 @@ await browser.clickText(".container", "Click Me!", 2); // Clicks the second elem
 ```
 
 **clickTextContaining(selector?, text, index?)**  
-Same as clickText, but matches with any text containing the given parameter.
+Same as clickText, but matches with any text containing the given string.
 
 **clickAndWaitForNavigation(selector, timeout=500)**  
 Clicks an element and waits until a navigation event is triggered. Recommended for links to different pages. Keep in mind that not all the clicks will trigger a navigation event.
@@ -363,35 +381,35 @@ await browser.clickAndWaitForNavigation(".home-button");
 await browser.url(); // my-page/home
 ```
 
-> clickAndWaitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
+> clickAndWaitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load.
 
 **waitAndClick(selector, timeout=500)**  
-Waits for an element to exists and be visible before clicking it. Recommended for clicking elements that may have a delay before appearing.
+Waits for an element to exists and be visible before clicking it. Useful for clicking elements that may have a delay before appearing.
 
-> Only Css and XPath Selectors supported
+> Only Css Selectors supported.
 
 **tap(selector, index?)**  
-Performs a touchscreen tap action, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click
+Performs a touchscreen tap action on all the elements matching the given selector, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click.
 
 If two numbers are passed, the given coordinates are clicked.
 
 **check(selector)**  
-Checks the first element matching given selector. Setting its checked property to true.
+Checks the first element matching given selector. Setting its checked property to true. Throws if no element is found.
 
 **uncheck(selector)**  
-Unchecks the first element matching given selector. Setting its checked property to false.
+Unchecks the first element matching given selector. Setting its checked property to false. Throws if no element is found
 
-**title()**  
-Returns the page title.
+**focus(selector)**  
+Focus the first element matching the given selector.
 
-**html()**  
-Returns the page html as string. It will return the html as it was before performing any actions.
+**blur(selector)**  
+Unfocus the first element matching the given selector.
 
-**frames()**  
-Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
+**hover(selector)**  
+Hovers over the first element matching the given selector.
 
-**url()**  
-Returns the current url of the page.
+**scroll(value, xValue?)**  
+Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
 
 **screenshot(options?)**  
 Takes a screenshot of the page. This is just a direct interface to [Puppeteer's screenshot method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagescreenshotoptions) and will use the same options, please check Puppeteer docs for the updated usage. It will return the image as a string (base64) or Buffer depending on the encoding. If an option path is defined, the image will be created on given path.
@@ -412,6 +430,207 @@ Takes a screenshot of the first element matching the given selector. Will fail i
 const base64Image = await browser.screenshotOfElement("#my-dashboard", {
     encoding: "base64"
 })
+```
+
+**type(selector, text, options?)**  
+Types given text in the first element matching the selector. If a value is already present, writes the new value at the beginning. Throws if no elements is found.
+
+The following options passed as an object are supported:
+
+* _delay_:  If a delay is given, it will delay the given ms for each key press.
+
+```js
+await browser.type("input.my-input", "My Input");
+```
+
+**keyPress(key, count?)**  
+Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
+
+If an array is passed, all the keys will be pressed consecutively. If count parameter is passed, all the keys will be pressed that given count times.
+
+```js
+await browser.keyPress("Enter"); // Press Enter once
+await browser.keyPress("Escape", 2); // Press Enter twice
+
+await browser.keyPress(["Enter", "Escape", "Enter"]);
+```
+
+**uploadFile(selector, path)**  
+Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
+
+```js
+await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
+```
+
+**select(selector, value)**  
+Will select the given value in the _select_ tag of the first element matching the given selector, removing all previous selections. Returns an array with the values that could be selected correctly.
+
+Value can be a string or an array. If the select is multiple all elements in value will be selected, if not only the first element in the select options will.
+
+Will throw if no elements were found.
+
+```js
+await browser.select("select.language-select", ["spanish", "english"]); // Returns ["spanish", "english"]
+```
+
+If the option doesn't have a value, the text should be provided.
+
+> Only Css Selectors supported
+
+**clearValue(selector)**  
+Clears any value that exists in any of the elements matched by the given selector. Setting the value to `""`.
+
+```js
+await browser.clearValue("input.my-input");
+```
+
+**wait(ms=250)**  
+Waits the given milliseconds.
+
+**waitFor(selector, timeout=500, ...args?)**  
+Waits for given selector to exists and be visible, with the given timeout in milliseconds.
+
+```js
+await browser.waitFor(".popup");
+```
+
+If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
+
+```js
+await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
+    const docs = document.querySelectorAll(s);
+    return docs.length > 2;
+}, 600, ".my-elements");
+```
+
+> Css selectors supported only.
+
+**waitUntilNotVisible(selector, timeout=500)**  
+Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
+
+```js
+await browser.waitUntilNotVisible(".toast");
+```
+
+> Css selectors supported only.
+
+**waitForUrl(url, timeout=500)**  
+Waits for the page to have the given url. The url can be a string or a RegExp.
+
+```js
+await browser.click("a");
+await browser.waitForUrl("my-url");
+```
+
+**waitForText(text, timeout=500)**  
+Waits for the given text to exists.
+
+```js
+await browser.waitForText("Click me!");
+await browser.clickText("Click me!");
+```
+
+**waitForNavigation(timeout=500)**  
+Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
+
+> waitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
+
+**waitUntilEnabled(selector, timeout=500)**  
+Waits until the first element matching the given selector has the attribute `disabled` set to null.
+
+**waitForPageLoad()**  
+Waits until a dom ready event is fired, this method will also wait until Wendigo is ready to perform assertions on the given page.
+
+**findByText(selector?, text)**  
+Returns an array with the elements with text content matching the given text.  
+
+```js
+const elements = await browser.findByText("My First Paragraph");
+elements.length; // 1
+```
+
+Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
+
+**findByTextContaining(selector?, text)**  
+Returns an array with all the elements with a text that contains the given text.
+
+```js
+const elements = await browser.findByTextContaining("Paragraph");
+elements.length; // 2
+```
+
+Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
+
+**findByAttribute(attributeName, attributeValue?)**  
+Returns an array with all elements having an attribute matching the given name and value. If no value is assigned, it will match all elements with that attribute, regardless of the value. Use empty string as value to match all the elements with an attribute without value (e.g. `<div hidden>`).
+
+```js
+const hiddenElements = await browser.findByAttribute("hidden"); // Returns all the elements with the hidden attribute
+const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
+```
+
+**findCssPath(element)**  
+Will return the CSS path string (e.g. `body > div > button`) of a DomElement.
+
+```js
+const elem = await browser.query(".my-element")
+const path = await browser.findCssPath(elem); // body > div > p.my-element
+```
+
+**findXPath(element)**  
+Will return the xPath string (e.g. `/html/body/div/button`) of a DomElement.
+
+**tag(selector)**  
+Returns the tag name of the first element matching the given selector, keep in mind that the tag will **always** be returned lowercase. Returns null if no element was found.
+
+```js
+await browser.tag(".my-header"); // "h1"
+```
+
+**setValue(selector, value)**  
+Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
+
+```js
+await browser.setValue("input", "new val"); // Returns 1
+await browser.assert.value("input", "new val");
+```
+
+This method won't trigger certain events, use `type` and `select` when possible.
+
+**options(selector)**  
+Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
+
+```js
+const options = await browser.options("selector.my-selector"); // ["value1", "value2"]
+```
+
+**selectedOptions(selector)**  
+Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned. Throws if no element is found.
+
+**back()**  
+Navigates to previous page in history.
+
+**forward()**  
+Navigates to next page in history.
+
+**refresh()**  
+Reloads current page.
+
+**setViewport(viewportConfig)**  
+Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
+
+```js
+await browser.setViewport({width: 300});
+```
+
+> Unlike Puppeteer setViewport, the current values will be used for the new viewport for any option not set.
+
+**triggerEvent(selector, eventName, options?)**  
+Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
+
+```js
+await browser.triggerEvent("button", "click"); // Triggers a click event on all buttons. This won't emulate mouse movement like browser.click
+await browser.triggerEvent(".listener", "my-custom-event"); // Triggers a custom event to an element that may have a listener atached
 ```
 
 **mockDate(date, options?)**  
@@ -449,275 +668,33 @@ await browser.evaluate(() => {
 **clearDateMock()**  
 Clears the date mock, if any, returning to the native Date object.
 
-**wait(ms=250)**  
-Waits for the given milliseconds.
-
-**waitFor(selector, timeout=500, ...args?)**  
-Waits for given selector to exists and be visible, with the given timeout in milliseconds.
-
-```js
-await browser.waitFor(".popup");
-```
-
-If a function is passed instead of a selector, it will wait for that function to resolve in the browser context to true, the optional arguments are passed to the function.
-
-```js
-await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
-    const docs = document.querySelectorAll(s);
-    return docs.length > 2;
-}, 600, ".my-elements");
-```
-
-> Css and Xpath selectors supported only.
-
-**waitUntilNotVisible(selector, timeout=500)**  
-Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.
-
-```js
-await browser.waitUntilNotVisible(".toast");
-```
-
-> Css and XPath selectors supported only.
-
-**waitForUrl(url, timeout=500)**  
-Waits for the page to have the given url. The url can be a string or a RegExp.
-
-```js
-await browser.click("a");
-await browser.waitForUrl("my-url");
-```
-
-**waitForText(text, timeout=500)**  
-Waits for the given text to exists.
-
-```js
-await browser.waitForText("Click me!");
-await browser.clickText("Click me!");
-```
-
-**waitForNavigation(timeout=500)**  
-Waits until next page is loaded, recommended after following a link to a different page. Keep in mind that a navigation within a SPA won't necessarily trigger a navigation event.
-
-> waitForNavigation may delay up to 100ms after the given timeout while waiting for the page to load
-
-**waitUntilEnabled(selector, timeout=500)**  
-Waits until the first element matching the given selector has the attribute `disabled` set to null.
-
-**findByText(selector?, text)**  
-Returns an array with the elements with text content matching the given text.  
-
-```js
-const elements = await browser.findByText("My First Paragraph");
-elements.length; // 1
-```
-
-Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
-
-**findByTextContaining(selector?, text)**  
-Returns an array with all the elements with a text that contains the given text.
-
-```js
-const elements = await browser.findByTextContaining("Paragraph");
-elements.length; // 2
-```
-
-Optionally, a selector can be passed as first argument to perform a text search on children of that element only.
-
-**findByAttribute(attributeName, attributeValue?)**  
-Returns an array with all elements having an attribute matching the given name and value. If no value is assigned, it will match all elements with that attribute, regardless of the value. Use empty string as value to match all the elements with an attribute without value (e.g. `<div hidden>`)
-
-```js
-const hiddenElements = await browser.findByAttribute("hidden"); // Returns all the elements with the hidden attribute
-const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
-```
-
-**findCssPath(element)**  
-Will return the css path string (e.g. `body > div > button`) of a DomElement.
-
-```js
-const elem = await browser.query(".my-element")
-const path = await browser.findCssPath(elem); // body > div > p.my-element
-```
-
-**findXPath(element)**  
-Will return the xPath string (e.g. `/html/body/div/button`) of a DomElement.
-
-**type(selector, text, options?)**  
-Types given text in the first element matching given selector. If a value is already present, writes the new value at the beginning.
-
-The following options passed as an object are supported:
-
-* _delay_:  If a delay is given, it will delay the given ms for each key press.
-
-```js
-await browser.type("input.my-input", "My Input");
-```
-
-> Only CSS Selector And DOM Element Supported
-
-**keyPress(key, count?)**  
-Press a keyboard key, the key can be the name of any key supporter by [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/lib/USKeyboardLayout.js)
-
-If an array is passed, all the keys will be pressed consecutively. If count parameter is passed, all the keys will be pressed that given count times.
-
-```js
-await browser.keyPress("Enter"); // Press Enter once
-await browser.keyPress("Escape", 2); // Press Enter twice
-```
-
-**uploadFile(selector, path)**  
-Sets the value of an input file element matching given selector. Path can be absolute or relative to the current working directory.
-
-```js
-await browser.uploadFile("input.my-file-input", "./my/file/path.txt");
-```
-
-**select(selector, value)**  
-Will select the given value in the _select_ tag of the first element matching the given selector, removing all previous selections. Returns an array with the values that could be selected correctly.
-
-Value can be a string or an array. If the select is multiple all elements in value will be selected, if not only the first element in the select options will.
-
-Will throw if no elements were found.
-
-```js
-await browser.select("select.language-select", ["spanish", "english"]); // Returns ["spanish", "english"]
-```
-
-If the option doesn't have a value, the text should be provided.
-
-> Only Css Selectors supported
-
-**clearValue(selector)**  
-Clears any value that exists in any of the elements matched by the given selector. Setting the value to "".
-
-```js
-await browser.clearValue("input.my-input");
-```
-
-**innerHtml(selector)**  
-Returns an array with the innerHtml strings of all the elements matching the given selector
-
-```js
-await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
-```
-
-> Css, Xpath and Dom selectors supported
-
-**tag(selector)**  
-Returns the tag name of the first element matching the given selector, keep in mind that the tag will **always** be returned lowercase. Returns null if no element was found.
-
-```js
-await browser.tag(".my-header"); // "h1"
-```
-
-> Css, Xpath and Dom selectors supported
-
-**setValue(selector, value)**  
-Sets the given value on all the elements matching the given selector. Returns the number of elements changed, throws if no element found.
-
-```js
-await browser.setValue("input", "new val"); // Returns 1
-await browser.assert.value("input", "new val");
-```
-
-This method won't trigger certain events, use `type` and `select` when possible.
-
-> Css, Xpath and Dom selectors supported
-
-**options(selector)**  
-Returns the selector options values of the first element matching the given selector. Throws if no element is found. If the element doesn't have options (i.e. is not a selector) an empty array is returned.
-
-```js
-const options = await browser.options("selector.my-selector"); // ["value1", "value2"]
-```
-
-> Css, Xpath and Dom selectors supported
-
-**selectedOptions(selector)**  
-Returns all the selected options of the first element matching the given selector. If no value is set, the text of the option will be returned.
-
-Will throw if no element is found.
-
-> Css, Xpath and Dom selectors supported
-
-**back()**  
-Navigates to previous page in history.
-
-**forward()**  
-Navigates to next page in history.
-
-**refresh()**  
-Reloads current page.
-
-**setViewport(viewportConfig)**  
-Sets the configuration of the page viewport, using the same config as [Puppeteer method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagesetviewportviewport).
-
-```js
-await browser.setViewport({width: 300});
-```
-
-> Unlike Puppeteer setViewport, no parameter is required, as the current values will be used for the new viewport.
-
-**waitForPageLoad()**  
-Waits until a dom ready event is fired, this method will also wait until Wendigo is ready to perform assertions on the given page.
-
-**focus(selector)**  
-Focus the first element matching the given selector.
-
-> Only CSS selectors supported
-
-**blur(selector)**  
-Unfocus the first element matching the given selector.
-
-> Css, XPath and DOM selectors supported
-
-**hover(selector)**  
-Hovers over the first element matching the given selector.
-
-> Only CSS selectors supported
-
-**scroll(value, xValue?)**  
-Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
-
-> Css, Xpath and Dom selectors supported
-
-**triggerEvent(selector, eventName, options?)**  
-Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
-
-```js
-await browser.triggerEvent("button", "click"); // Triggers a click event on all buttons. This won't emulate mouse movement like browser.click
-await browser.triggerEvent(".listener", "my-custom-event"); // Triggers a custom event to an element that may have a listener atached
-```
-
-> Css, Xpath and Dom selectors supported
-
 ### Assert
-The submodule `browser.assert` provide some out-of-the-box assertions that can be used to easily write tests that are readable without having to specifically query for elements o perform evaluations. All the assertions have a last optional parameter (msg?) to define a custom assertion message.
+`browser.assert` provide some out-of-the-box assertions to easily write tests that are readable without having to specifically perform evaluations. All the assertions have a last optional parameter to define a custom assertion message. All assertions will return a Promise that will fail if the assertion fails. Unless specified, any selector will support css, xPath and DOMElements.
 
-**exists(selector, msg?)**  
-Asserts that at least one element with given css exists
+**assert.exists(selector, msg?)**  
+Asserts that at least one element with given selector exists.
 
 ```js
 await browser.assert.exists("h1.main-title");
 ```
 
-**visible(selector, msg?)**  
+**assert.visible(selector, msg?)**  
 Asserts that the at least one element matching the selector is visible.
 
 An element will considered visible if:
 
-* Exists
-* The computed style doesn't contain display: none or visibility: hidden
-* All the parents are visible
+* Exists.
+* The computed style doesn't contain display: none or visibility: hidden.
+* All the parents are visible.
 
-**tag(selector, expected, msg?)**  
+**assert.tag(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the given tag name.
 
 ```js
 await browser.assert.tag("my-header", "h1");
 ```
 
-**text(selector, expected, msg?)**  
+**assert.text(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected string or regex.
 If expected is an array, all texts in it should match.
 
@@ -725,27 +702,28 @@ If expected is an array, all texts in it should match.
 await browser.assert.text("p", "My First Paragraph");
 ```
 
-**textContains(selector, expected, msg?)**  
+**assert.textContains(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector contains the expected text.
+If expected is an array, all texts in it should be contained in an element.
 
 ```js
 await browser.assert.textContains("p", "My First");
 ```
 
-**title(expected, msg?)**  
+**assert.title(expected, msg?)**  
 Asserts that the page title matches the expected string or regex.
 
-**class(selector, expected, msg?)**  
+**assert.class(selector, expected, msg?)**  
 Asserts that the first element matching the selector contains the expected class.
 
 ```js
 await browser.assert.class("div.container.main-div", "container");
 ```
 
-**url(expected, msg?)**  
+**assert.url(expected, msg?)**  
 Asserts that the current url matches the given string or RegExp.
 
-**value(selector, expected, msg?)**  
+**assert.value(selector, expected, msg?)**  
 Asserts that the first element matching the selector has the expected value.
 
 ```js
@@ -753,10 +731,10 @@ await browser.type("input.my-input", "Dont Panic");
 await browser.assert.value("input.my-input", "Dont Panic");
 ```
 
-**element(selector, msg?)**  
+**assert.element(selector, msg?)**  
 Asserts that exactly one element matches given selector. Same as `elements(selector, 1)`.
 
-**elements(selector, count, msg?)**  
+**assert.elements(selector, count, msg?)**  
 Asserts the number of element that matches given selector.
 
 The count parameter can be a number of the exact number of elements expected or an object with the following properties:
@@ -780,8 +758,8 @@ await browser.assert.elements("p.second", 2); // Fails
 await browser.assert.elements("p.second", {atLeast: 1}); // Ok
 ```
 
-**attribute(selector, attribute, expected?, msg?)**  
-Asserts that at least one element element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass. The expected value can be a string or regex
+**assert.attribute(selector, attribute, expected?, msg?)**  
+Asserts that at least one element element matching the given selector contains an attribute matching the expected value. If no expected value is given, any not null value for the attribute will pass. The expected value can be a string or regex.
 
 ```js
 await browser.assert.attribute(".hidden-class", "class", "hidden-class");
@@ -794,18 +772,18 @@ To pass a custom message without specifying an expected value, you can pass `und
 await browser.assert.attribute(".hidden-class", "hidden", undefined, "hidden-class doesn't have attribute hidden");
 ```
 
-You can check an attribute doesn't exists passing `null` as expected argument or using `assert.not.attribute`
+You can check an attribute doesn't exists passing `null` as expected argument or using `assert.not.attribute`.
 
 If the element doesn't exists, the assertion will fail.
 
-**style(selector, style, expected, msg?)**  
+**assert.style(selector, style, expected, msg?)**  
 Asserts that the first element matching the given selector has an style with the expected value. The assertion will throw an error if no element is found.
 
 ```js
 await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
 ```
 
-**href(selector, expected, msg?)**  
+**assert.href(selector, expected, msg?)**  
 Asserts that the any matching the given selector contains an attribute href with expected value.
 
 ```js
@@ -815,7 +793,7 @@ browser.assert.href("link", "styles.css");
 
 > Same as `browser.assert.attribute(selector, "href", expected, msg?)`
 
-**innerHtml(selector, expected, msg?)**  
+**assert.innerHtml(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected innerHtml.
 The expected html can be either a _string_ or a _Regex_ value.
 
@@ -825,23 +803,17 @@ The assertion will throw if no element is found.
 await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
 ```
 
-> Css, Xpath and Dom selectors supported
-
-**options(selector, expected, msg?)**  
+**assert.options(selector, expected, msg?)**  
 Assets that the first element with given selector has the expected options value. Expected can be a string, if only one option is given, or an array if multiple options are given. All expected options must match in the same order.
 
 ```js
 await browser.assert.options("select.my-select", ["value1", "value2"]);
 ```
 
-> Css, Xpath and Dom selectors supported
-
-**selectedOptions(selector, expected, msg?)**  
+**assert.selectedOptions(selector, expected, msg?)**  
 Assert that the first element with given selector has the expected options selected. Expected can be a string, if only one option is given or an array. All the selected options must match the expected options in the same order.
 
-> Css, Xpath and Dom selectors supported
-
-**global(key, value?, msg?)**  
+**assert.global(key, value?, msg?)**  
 Asserts that the global object (window) has the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key exists with a not undefined value.
 
 ```js
@@ -849,32 +821,16 @@ browser.assert.global("localStorage");
 browser.assert.global("my-val", "dontpanic");
 ```
 
-> Assertions related to LocalStorage can be found under each section
-
-**cookies(name, expected?, msg?)**  
-Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
-
-```js
-browser.assert.cookies("username");
-browser.assert.cookies("username", "arthur_dent");
-```
-
-**checked(selector, msg?)**  
+**assert.checked(selector, msg?)**  
 Asserts that the first element matching the given selector has a checked value set to true.
 
-> Css, Xpath and Dom selectors supported
-
-**disabled(selector, msg?)**  
+**assert.disabled(selector, msg?)**  
 Asserts that the first element matching the given selector is disabled (has attribute disabled).
 
-> Css, Xpath and Dom selectors supported
-
-**enabled(selector, msg?)**  
+**assert.enabled(selector, msg?)**  
 Asserts that the first element matching the given selector is enabled (doesn't have attribute disabled).
 
-> Css, Xpath and Dom selectors supported
-
-**focus(selector, msg?)**  
+**assert.focus(selector, msg?)**  
 Asserts that an element matching the given selector is focused.
 
 ```js
@@ -882,89 +838,62 @@ browser.click(".btn");
 browser.assert.focus(".btn");
 ```
 
-> Css, Xpath and Dom selectors supported
-
-**redirect(msg?)**  
+**assert.redirect(msg?)**  
 Asserts that the opened url is a redirection.
 
-**console(options, count?, msg?)**  
-Assets that at least one console event with given options exists, if count is set, asserts that the exact number of events exists. The options can be:
-
-* `text`: Asserts for the console event to have a text matching the given string or regex
-* `type`: Asserts that the event is of the given type (log, info, error,...)
-
-```js
-await browser.assert.console({
-    text: "Hello World!",
-    type: browser.console.LogType.log
-});
-```
-
-> Objects logged will be converted to string using JSON.stringify, if the object fails to be stringified (circular structure) `[object Object]` will be returned
-
-**webworker(options, msg?)**  
-Assert that at least one webworker is running, the following options can be passes:
-
-* `url`: Matches only the webworkers with given url
-* `count`: Matches exactly the given number of webworkers running.
-
-```js
-await browser.assert.webworkers({url: "foo.js"}); // At least one webworker with given url running
-await browser.assert.webworkers(); // at least one webworker running
-await browser.assert.webworkers({count: 0}); // No webworkers running
-```
-
 #### Negative assertions
-Most of the browser assertions have a negative version that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
+Most of assertions have a negative counterpart that can be used with `browser.assert.not`. Most of the "not" assertions are simply the inverse of the positive version.
 
-**not.exists(selector, msg?)**  
+**assert.not.exists(selector, msg?)**  
 Asserts that no element matching given selector exists.
 
 ```js
 await browser.not.exists("h1.foo.bar");
 ```
 
-**not.visible(selector, msg?)**  
-Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well.
+**assert.not.visible(selector, msg?)**  
+Asserts that no elements with given selector is visible. If no element matches, it will be considered as not visible as well and will pass.
 
-**tag(selector, expected, msg?)**  
-Asserts that at least no element matching the given selector has the given tag name.
+**assert.not.tag(selector, expected, msg?)**  
+Asserts that no element matching the given selector has the given tag name.
 
 ```js
 await browser.assert.not.tag("my-main-header", "h4");
 ```
 
-**not.text(selector, expected, msg?)**  
+**assert.not.text(selector, expected, msg?)**  
 Asserts that no element matching the given selector matches the expected text.
-If expected is an array, no element in it should match any element with given selector
+If expected is an array, no text in it should match any element with given selector
 
 ```js
 await browser.assert.not.text("p", "This text doesn't exists");
+await browser.assert.not.text("p", ["This text doesn't exists", "neither do this"]);
 ```
 
-**not.textContains(selector, expected, msg?)**  
+**assert.not.textContains(selector, expected, msg?)**  
 Asserts that no elements matching the given selector contain the expected text.
+If expected is an array, no text in it should be contained any element with given selector
 
 ```js
-await browser.assert.not.textContains("p", "doesn't exis");
+await browser.assert.not.textContains("p", "doesn't exist");
 ```
 
-**not.title(expected, msg?)**  
-Asserts that the title of the page is not the expected string.
+**assert.not.title(expected, msg?)**  
+Asserts that the title of the page is not the given string.
 
-**not.class(selector, expected, msg?)**  
-Asserts that the first element matching the selector doesn't contain the expected class. It will throw if the element is not found.
+**assert.not.class(selector, expected, msg?)**  
+Asserts that the first element matching the selector doesn't contain the expected class. It will throw if no element is found.
 
-**not.url(expected, msgs)**  
+**assert.not.url(expected, msgs)**  
 Asserts that the url of the page doesn't match the expected string.
 
-**not.value(selector, expected, msg?)**  
+**assert.not.value(selector, expected, msg?)**  
 Asserts that the first element with the given selector doesn't have the expected value.
 
-**not.element(selector, msg?)**  
+**assert.not.element(selector, msg?)**  
 Asserts that the number of elements matching the given selector is 0.
 
-**not.attribute(selector, attribute, expected?, msg?)**  
+**assert.not.attribute(selector, attribute, expected?, msg?)**  
 Asserts that no element matching the given selector doesn't contain an attribute with the expected value. If no expected value is given, any not null value on the attribute will fail.
 
 ```js
@@ -978,21 +907,21 @@ To pass a custom message without specifying an expected value, you can pass unde
 await browser.assert.not.attribute(".hidden-class", "href", undefined, "hidden-class has attribute href");
 ```
 
-If the element doesn't exists, the assertion will fail.
+The assertion will throw if no element is found.
 
-> Keep in mind that passing null as expected value will assert that the attribute exists and it is not recommended
+> Keep in mind that passing null as expected value will assert that the attribute exists and it is not recommended.
 
-**not.style(selector, style, expected, msg?)**  
+**assert.not.style(selector, style, expected, msg?)**  
 Asserts the first element matching the selector doesn't has a style with given value.
 
-**not.href(selector, expected, msg?)**  
+**assert.not.href(selector, expected, msg?)**  
 Asserts that no element matching the given selector doesn't contain an attribute href with the expected value.
 
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg?)`
 
-**not.innerHtml(selector, expected, msg?)**  
+**assert.not.innerHtml(selector, expected, msg?)**  
 Asserts that at least no element matching the given selector has the expected innerHtml.
-The expected html can be either a _string_ or a _Regex_ value.
+The expected HTML can be either a _string_ or a _Regex_ value.
 
 The assertion will throw if no element is found.
 
@@ -1000,76 +929,58 @@ The assertion will throw if no element is found.
 await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
 ```
 
-> Css, Xpath and Dom selectors supported
-
-**not.selectedOptions(selector, expected, msg?)**  
+**assert.not.selectedOptions(selector, expected, msg?)**  
 Assert that the first element with given selector doesn't have the expected options selected. Expected can be a string, if only one option is given or an array. The assertion will only fail if all the expected options match the selected options in the same order.
 
-> Css, Xpath and Dom selectors supported
-
-**not.global(key, value?, msg?)**  
+**assert.not.global(key, value?, msg?)**  
 Asserts that the global object (window) doesn't have the given key with the expected value. If not value (or undefined value) is provided, it will assert that the key doesn't exist or it is undefined.
 
-**not.cookies(name, expected?, msg?)**  
-Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
-
-```js
-browser.assert.not.cookies("not-a-cookie");
-browser.assert.not.cookies("username", "not-user");
-```
-
-> Assertions related to LocalStorage can be found under each section
-
-**not.checked(selector, msg?)**  
+**assert.not.checked(selector, msg?)**  
 Asserts that the first element matching the given selector has a checked value set to false.
 
 Note that if the element doesn't have a checked value (i.e. is not a checkbox) this assertion will throw.
 
-> Css, Xpath and Dom selectors supported
-
-**not.disabled(selector, msg?)**  
+**assert.not.disabled(selector, msg?)**  
 Asserts that the first element matching the given selector is not disabled (same as assert.enabled).
 
-> Css, Xpath and Dom selectors supported
-
-**not.enabled(selector, msg?)**  
+**assert.not.enabled(selector, msg?)**  
 Asserts that the first element matching the given selector is not enabled (same as assert.disabled).
 
-> Css, Xpath and Dom selectors supported
-
-**not.focus(selector, msg?)**  
+**assert.not.focus(selector, msg?)**  
 Asserts that none of the elements matching the given selector is focused.
 
-> Css, Xpath and Dom selectors supported
-
-**not.redirect(msg?)**  
+**assert.not.redirect(msg?)**  
 Asserts that the current opened page is not a redirection.
 
 ### Cookies
-The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's api. All methods return Promises.
+The module `browser.cookies` provides a way to easily handle cookies through Puppeteer's API. All methods return Promises.
 
-**all()**  
-Returns all the cookies in the current page as an object
+Most methods in the cookies module accept or return a [Puppeteer's Cookie object](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagecookiesurls).
+
+**cookies.all()**  
+Returns all the cookies in the current page as an object with key being the name and value a string with the cookie value.
 
 ```js
 const cookies = await browser.cookies.all(); // {username: "arthur_dent", email: "arthur@dent.com"}
 ```
 
-**get(name)**  
-Returns the value of the cookie with given name. Returns undefined if the cookie doesn't exists
+**cookies.get(name)**  
+Returns the cookie object with given name. Returns undefined if the cookie doesn't exists.
 
 ```js
-const cookie = await browser.cookies.get("username"); // "arthur_dent"
+const cookie = await browser.cookies.get("username");
+cookie.name; // "username"
+cookie.value; // "arthur_dent"
 ```
 
-**set(name, value)**  
-Sets the value of the cookie with given name. If it already exists it will be replaced.
+**cookies.set(name, value)**  
+Sets the value of the cookie with given name. If it already exists it will be replaced. The value can be a string (it will only set the cookie value) or a whole cookie object.
 
 ```js
 await browser.cookies.set("username", "marvin");
 ```
 
-**delete(name)**  
+**cookies.delete(name)**  
 Deletes the cookie with given name if exists. Optionally an array can be passed and all the cookies will be removed. Won't do anything if the cookie doesn't exists.
 
 ```js
@@ -1077,17 +988,38 @@ await browser.cookies.delete("username");
 await browser.cookies.delete(["username", "email"]);
 ```
 
-**clear()**  
+**cookies.clear()**  
 Deletes all the cookies of the current page.
 
 ```js
 await browser.cookies.clear()
 ```
 
-### Console
-`browser.console` provides a list of the logs generated by the current page (a.k.a console.* methods). The logs are given as a custom class [Log](#log) Note that none of these methods requires the user of async/await.
+#### Cookies Assertions
+It is possible to assert the existence or not of a cookie in the current url with the following assertions:
 
-**all()**  
+**assert.cookies(name, expected?, msg?)**  
+Asserts that the cookie with the given name exists. If the expected parameter is passed, it will check that the cookie has that value.
+
+```js
+browser.assert.cookies("username");
+browser.assert.cookies("username", "arthur_dent");
+```
+
+
+**assert.not.cookies(name, expected?, msg?)**  
+Asserts that the cookie with given name doesn't have the expected value. If no expected value is passed, it will check that the cookie doesn't exists (is undefined).
+
+```js
+browser.assert.not.cookies("not-a-cookie");
+browser.assert.not.cookies("username", "not-user");
+```
+
+
+### Console
+`browser.console` provides a list of all logs generated by the current page (a.k.a `console.*` methods). The logs are returned as an instance of [Log](#log). Note that none of these methods requires the use of async/await.
+
+**console.all()**  
 Returns an array with all the logs generated by the page.
 
 ```js
@@ -1095,10 +1027,10 @@ const logs = browser.console.all();
 logs[0].text; // "Hello World!"
 ```
 
-**clear()**  
+**console.clear()**  
 Clear all the current logs. Note that logs are cleared when `browser.close()` is called, but not when a new page is opened.
 
-**filter(options)**  
+**console.filter(options)**  
 Returns an array with all the logs matching the given parameters, options can be:
 
 * `type`: The log type (`log`, `info`, `error`), it must be a string matching [Puppeteer's Console Types](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype), some of the most common types are accessible through `browser.console.LogTypes`.
@@ -1116,15 +1048,32 @@ const logs = browser.console.filter({text: /Hello/});
 logs[0].text; // "Hello World!"
 ```
 
-### Log
+#### Console Assertions
+The following assertions can be used to check the existence of a console log.
+
+**assert.console(options, count?, msg?)**  
+Assets that at least one console event with given options exists, if count is set, asserts that the exact number of events exists. The options can be:
+
+* `text`: Asserts for the console event to have a text matching the given string or regex
+* `type`: Asserts that the event is of the given type (log, info, error,...)
+
+```js
+await browser.assert.console({
+    text: "Hello World!",
+    type: browser.console.LogType.log
+});
+```
+
+> Objects logged will be converted to string using JSON.stringify, if the object fails to be stringified (circular structure) `[object Object]` will be returned
+
+#### Log
 The class Log provides an abstraction over Puppeteer's [ConsoleMessage class](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-consolemessage). Log has the following attributes:
 
-* _text_: The Log text, if multiple parameters were passed to console method, these will be concatenated with spaces
-* _type_: The Log type (string)
+* _text_: The Log text, if multiple parameters were passed to console method, these will be concatenated with spaces.
+* _type_: The Log type (string).
+* _message_: The native Puppeteer Log instance.
 
-> The core Puppeteer class is also accessible through myLog.message
-
-#### LogTypes
+##### LogTypes
 All the log types are strings, but some of the most common types are accessible in `browser.console.LogTypes`. For more possible types, check [Puppeteer Docs](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-consolemessagetype):
 
 * _log_
@@ -1134,32 +1083,32 @@ All the log types are strings, but some of the most common types are accessible 
 * _warning_
 * _trace_
 
-> Keep in mind that different strings may be returned from Puppeteer
+> Keep in mind that this list **does not** contain all possible log types.
 
 ### LocalStorage
-The module `browser.localStorage` provides a simple wrapper around the browser localStorage. All the methods return Promises.
+The module `browser.localStorage` provides a wrapper around the browser localStorage. All the methods return Promises.
 
-**getItem(key)**  
-Returns the item with the given key. If no item exists return null.
+**localStorage.getItem(key)**  
+Returns the item with the given key. Returns null if no element exists.
 
 ```js
 const value = await browser.localStorage.getItem("my-key"); // returns my-value
 ```
 
-**setItem(key, value)**  
-Sets the given key with the given value.
+**localStorage.setItem(key, value)**  
+Sets a localStorage entry.
 
 ```js
 await browser.localStorage.setItem("my-key", "my-value");
 ```
 
-**removeItem(key)**  
+**localStorage.removeItem(key)**  
 Removes the item with given key.
 
-**clear()**  
+**localStorage.clear()**  
 Removes all the items on the store.
 
-**length()**  
+**localStorage.length()**  
 Returns the number of items in the store.
 
 ```js
@@ -1169,7 +1118,7 @@ const itemsLength = await browser.localStorage.length(); // 3
 #### LocalStorage Assertions
 Assertions related local storage can be accessed through `browser.assert.localStorage`.
 
-**exist(key, msg?)**  
+**assert.localStorage.exist(key, msg?)**  
 Asserts that the item with given key exists in the localStorage (i.e. not null).
 
 ```js
@@ -1178,7 +1127,7 @@ browser.assert.localStorage.exist("my-key");
 
 Alternatively, if an array is passed as key, all the elements will be checked.
 
-**value(key, expected, msg?)**  
+**assert.localStorage.value(key, expected, msg?)**  
 Asserts that the item with given key has the expected value.
 
 ```js
@@ -1191,42 +1140,42 @@ Alternatively, an object can be passed instead of key/expected with the elements
 browser.assert.localStorage.value({arthur: "dontpanic", marvin:"the paranoid"});
 ```
 
-**length(expected, msg?)**  
+**assert.localStorage.length(expected, msg?)**  
 Asserts that the localStorage has the expected length.
 
-**empty(msg?)**  
-Asserts that the localStorage is empty (i.e. length>0)
+**assert.localStorage.empty(msg?)**  
+Asserts that the localStorage is empty (i.e. length>0).
 
 > All these assertions have the negative `browser.assert.localStorage.not`.
 
 ### Requests
-The Requests module allows to get and filter the requests made by the browser since the page was opened.
+The Requests module allows to get, filter and mock the requests made by the browser since the page was opened.
 
-> All the requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
+> Returned requests objects are [Puppeteer's Requests](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-request)
 
-**filter**  
+**requests.filter**  
 Returns a filter over the requests. Check [Filtering Requests](#filtering-requests) for examples.
 
-**all()**  
+**requests.all()**  
 Returns all requests, ordered by when it was dispatched.
 
 ```js
 await browser.requests.all();
 ```
 
-**mock(url, options)**  
-Mocks all the requests to the given url, sending the given response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked. The url can be a full url string (`http://...`) or a regex. If multiple mocks match a requests, the more specific will be used.
+**requests.mock(url, options)**  
+Mocks all the requests to an url, sending a fake response instead. If a method (`GET`, `POST`...) is specified, only requests to given method will be mocked. The url can be a full url string (`http://...`) or a regex. If multiple mocks match a requests, the more specific will be used.
 
 The following options are supported:
 
 * `status` Response status code, defaults to 200.
 * `headers` Optional response headers.
 * `contentType` If set, equals to setting Content-Type response header.
-* `body` Optional response body. It can be a string or a json-serializable object
-* `delay` Optional delay to wait for the response to be fullfilled, in ms
-* `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true
-* `method` defines the method (`GET`, `POST`, ...) to mock
-* `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object
+* `body` Optional response body. It can be a string or a json-serializable object.
+* `delay` Optional delay to wait for the response to be fullfilled, in ms.
+* `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true.
+* `method` defines the method (`GET`, `POST`, ...) to mock. Empty to mock any method.
+* `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object.
   * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
 * `redirectTo`: If set, the mock will return the response of the given url instead of the original call, maintaining the query string, keep in mind that the redirected request won't trigger any mocks. E.g. `request.mock("http://localhost:8010", {redirectTo: "http://localhost:9010"})` will change the port where all request in the page are sent.
 
@@ -1296,32 +1245,32 @@ mock.trigger();
 
 Trigger supports an optional response that will be used instead of the mock default response. It uses the same syntax (body, status, ...).
 
-**removeMock(url, options?)**  
+**requests.removeMock(url, options?)**  
 Removes the mock with the given url. If the original mock has a method or queryString, these must be provided in options.
 
-**clearRequests()**  
+**requests.clearRequests()**  
 Clears the list of requests.
 
-**clearMocks()**  
+**requests.clearMocks()**  
 Remove all the request mocks.
 
-**getAllMocks()**  
+**requests.getAllMocks()**  
 Returns an array with all the current request mocks set in the browser.
 
-**waitForRequest(url, timeout=500)**  
+**requests.waitForRequest(url, timeout=500)**  
 Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
 
 ```js
 await browser.requests.waitForRequest("my-url");
 ```
 
-**waitForResponse(url, timeout=500)**  
+**requests.waitForResponse(url, timeout=500)**  
 Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
 
-**waitForNextRequest(url ,timeout=500)**  
+**requests.waitForNextRequest(url ,timeout=500)**  
 Waits until next request with given url is done. If the request was already made, this method will wait until next one.
 
-**waitForNextResponse(url ,timeout=500)**  
+**requests.waitForNextResponse(url ,timeout=500)**  
 Waits until next response with given url is received. If the response was already received, this method will wait until next one.
 
 #### Filtering Requests
@@ -1388,7 +1337,7 @@ const byResponseFilter = await browser.requests.filter.url(/api/).responseBody({
 > Keep in mind that some filters like status require the requests to be finished. Use `await browser.waitForResponse()` before filtering to make sure the requests was completed.
 
 #### Requests Assertions
-Assertions related requests can be accessed through `browser.assert.request`. Note that in assertions, request is singular.
+Assertions related requests can be accessed through `browser.assert.requests`.
 
 Like filters, request assertion don't need `await` and can be concatenated. All the assertions will check that at least one request with the given constraints was made.
 
@@ -1462,22 +1411,43 @@ await browser.assert.requests.method("POST").url("localhost:8000/api");
 ### Webworkers
 The webworkers module allows to retrieve all the webworkers in the current page:
 
-**all()**  
+**webworkers.all()**  
 Returns all the webworkers currently executing in the page. Each webworker will have the following properties:
 
 * _url_: Returns the webworker file url
 * _worker_: Returns the [Puppeteer's Worker instance](https://pptr.dev/#?product=Puppeteer&version=v1.5.0&show=api-class-worker)
 
+> Note that this method does not require await
+
+```js
+const webworkersList = browser.webworkers.all();
+webworkersList.length; // 3
+```
+
+#### Webworkers Assertions
+
+**assert.webworker(options, msg?)**  
+Assert that at least one webworker is running, the following options can be passes:
+
+* `url`: Matches only the webworkers with given url
+* `count`: Matches exactly the given number of webworkers running.
+
+```js
+await browser.assert.webworkers({url: "foo.js"}); // At least one webworker with given url running
+await browser.assert.webworkers(); // at least one webworker running
+await browser.assert.webworkers({count: 0}); // No webworkers running
+```
+
 ### Dialog
 The dialog module allows handling of native dialog such as those created by `alert` and `prompt`:
 
-**all()**  
+**dialog.all()**  
 Returns the full ordered list of all dialogs triggered since the page was opened.
 
-**clear()**  
+**dialog.clear()**  
 Clears the list of dialogs, it will invalid `dismissLast` and may cause `waitForDialog` to misbehave.
 
-**waitForDialog(timeout=500)**  
+**dialog.waitForDialog(timeout=500)**  
 Waits until the next dialog is triggered. Returns a promise with the dialog object. If the dialog was already triggered, it will resolve the promise immediately.
 
 ```js
@@ -1492,15 +1462,15 @@ browser.dialog.all().length; // 1
 
 > Keep in mind that until the dialog is dismissed or confirmed, events such as click will be blocked, so await shouldn't be used on events that may trigger an alert unless `dismissAllDialogs` option is set to true.
 
-**dismissLast()**  
+**dialog.dismissLast()**  
 Dismiss the last dialog triggered (if any) and if it is still active. This can safely be used whether a dialog appeared or not or it has already been dismissed. Problems may happen if the alert is dismissed manually (for example, by using the not-headless mode).
 
 ### Dialog Objects
 Dialog objects are returned by the `all` and `waitForDialog` methods. These provide a wrapper around [Puppeteer's dialog](https://pptr.dev/#?product=Puppeteer&show=api-class-dialog) with the following attributes:
 
-* **text**: The dialog message
-* **type**: The dialog type (`alert`, `beforeunload`, `confirm`, `promp`). Same as those provided by Puppeteer.
-* **handled**: Whether the dialog has already been handled or not.
+* _text_: The dialog message
+* _type_: The dialog type (`alert`, `beforeunload`, `confirm`, `promp`). Same as those provided by Puppeteer.
+* _handled_: Whether the dialog has already been handled or not.
 
 **dismiss()**  
 Dismisses the dialog, if the dialog is a prompt, `null` will be returned.
@@ -1511,7 +1481,7 @@ Accepts the dialog, if the dialog is a prompt, text will be returned. If not, it
 > Remember that the option `dismissAllDialogs` on browser.open will automatically dismiss any dialog.
 
 ### Errors
-Wendigo errors can be accessed through `Wendigo.Errors`. These Errors will be thrown by Wendigo browser:
+Wendigo errors can be accessed through `Wendigo.Errors`. These are errors that will be thrown by Wendigo browser:
 
 **AssertionError**  
 Extends from Node.js Assertion Error. It will be throw for any assertion.
@@ -1520,23 +1490,23 @@ Extends from Node.js Assertion Error. It will be throw for any assertion.
 Error defining a problem with a DOM query. Generally Thrown as an unexpected result of a query made in an action or assertion.
 
 **TimeoutError**
-Timeout error, it will be thrown in waitFor methods. Keep in mind that this error is **not** the same as [Puppeteer's TimeoutError](https://pptr.dev/#?product=Puppeteer&show=api-class-timeouterror)
+Timeout error, it will be thrown in waitFor methods. Keep in mind that this error is **not** the same as [Puppeteer's TimeoutError](https://pptr.dev/#?product=Puppeteer&show=api-class-timeouterror).
 
 **FatalError**  
-Defines a Fatal Error with Puppeteer (e.g. a connection error)
+Defines a Fatal Error with Puppeteer (e.g. a connection error).
 
 **InjectScriptError**
-Defines an error injecting scripts on the page. This may be caused on open if the option `bypassCSP` is set to false.
+Defines an error injecting scripts on the page. This may be caused on open if the option `bypassCSP` is set to false. This error extends from FatalError.
 
 ### Selectors
-Most Wendigo methods and assertions will require a selector to localize the element in the DOM, unless specified, any method will accept 3 different kind of selectors:
+Most Wendigo methods and assertions will require a selector to localize one or more elements in the DOM, unless specified, any method will accept 3 different kinds of selectors:
 
 * **css**: Such as `#my-id` or `.container`, any selector supported by the standard `document.querySelector`.
 * **xpath**: The standard [XML Path Language](https://en.wikipedia.org/wiki/XPath) allowing more complex queries.
-* **DomElement**: The result of `browser.query` can be directly used as a selector. Check [DOM Element](#dom-element)
+* **DomElement**: The result of `browser.query` can be directly used as a selector. Check [DOM Element](#dom-element).
 
 ### Injected Scripts
-For Wendigo to work properly, it must inject some scripts into the web page within the browser's context at runtime. Usually these scripts will only be used by Wendigo, but you can still access them when using `evaluate` in your code or when writing a plugin.
+For Wendigo to work properly, it must inject some scripts into the web page within the browser's context at runtime. Usually these scripts will only be used by Wendigo, but you can still access them when using `evaluate` in your code or when writing a plugin. The following objects are declared as global variables:
 
 #### WendigoUtils
 Wendigo Utils contain several methods and utilities for wendigo, it can be accessed in the browser's context (in an `evaluate` callback) through the global variable `WendigoUtils` or `window.WendigoUtils`. The following methods are exposed:
@@ -1546,12 +1516,19 @@ Wendigo Utils contain several methods and utilities for wendigo, it can be acces
 * **queryAll(selector)**: Returns all the elements matching the given selector (css, xpath or dom element).
 * **xPathQuery(xPath)**: Returns all the elements matching the given xPath selector.
 * **getStyles(element)**: Returns all the styles of the given element.
+* **mockDate(timestamp, freeze)**: Mocks the browsers date and time. Used by `browser.mockDate`.
+* **clearDateMock()**: Clears the Datetime mock (if any). User by `browser.clearDateMock`.
+* **findCssPath(node)**: Returns the full CSS path of a DOM node as a string.
+* **findXPath(node)**: Returns the full XPath of a DOM node as a string.
 
 #### WendigoQuery
 The variable `WendigoQuery` or `window.WendigoQuery` exposes several utilities regarding Wendigo querying system, these shouldn't be used by user's code or plugins as `WendigoUtils` already exposes the methods to perform these queries.
 
+#### WendigoPathFinder
+Exposes utilities to find the full CSS path or XPath of an element. This should not be directly accessed as the methods `findCssPath` and `findXPath` in WendigoUtils provide the interface to access these utilities.
+
 ### DOM Element
-Any query for an element will return an instance of a DOMElement. This class insterfaces with Puppeteer's ElementHandle and can be used as a selector for other methods and assertions. A DOMElement contains the following attributes:
+Any query that returns a DOM node will return an instance of DOMElement. This class provides an abstraction over Puppeteer's [ElementHandle](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-elementhandle) and can be used as a selector for other methods and assertions. A DOMElement contains the following attributes:
 
 * **element**: Puppeteer's ElementHandle object.
 * **name**: Name to be used when displaying errors.
@@ -1564,15 +1541,18 @@ A DOMElement also provides the following methods:
 * **click()**: Clicks the given element.
 * **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
+* **focus()**: Focus the element.
+* **hover()**: Hovers the mouse over the element.
+* **type(text, options?)**: Types the given text on the element (input element). A _delay_ between keystrokes can be set in the options parameters
 
 ## Plugins
-Wendigo supports plugins to extends its capabilities with custom features and assertions. These plugins can be added with `registerPlugin`
+Wendigo supports plugins to extends its capabilities with custom features and assertions. These plugins can be added with `registerPlugin`.
 
-[**wendigo-vue-plugin**](https://github.com/angrykoala/wendigo-vue-plugin)  
+* [**wendigo-vue-plugin**](https://github.com/angrykoala/wendigo-vue-plugin)  
 This plugin support several methods and assertions to use along with pages using [Vue](https://vuejs.org).
 
 ### Writing A Plugin
-To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin`
+To write a plugin you must write classes defining the new methods and then registering them in Wendigo with `registerPlugin` before creating a browser.
 
 ```js
 class MyPlugin {
@@ -1663,35 +1643,19 @@ Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
 browser.assert.koalafied(); // note the assertion is called directly
 ```
 
-An object with 2 functions "assert" and "not" can also be passed as an assertion to registerModule. In this case, both will be attached to the main modules `assert` and `assert.not`:
-
-```js
-const myAssertion = {
-    assert(browser, myPlugin, count){
-        // koala count assertion
-    },
-    not(browser, myPlugin, count){
-        // not assertion check
-    }
-
-}
-
-Wendigo.registerPlugin("koalafied", MyPlugin, MyPluginAssertions);
-browser.assert.koalafied();
-browser.assert.not.koalafied();
-```
-
 ### Publishing a plugin
 If you want to create a new plugin and publish it in the npm store. Please, follow these steps:
 
-1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually unless you want them to be imported that way.
+1. Make sure your package exports a single object compatible with the interface described above to make it easier to import. Do not export the classes individually.
 2. Make sure your code is tested using Node.js 8 and above.
 3. Set Wendigo as a [peer dependency](https://docs.npmjs.com/files/package.json#peerdependencies) in you package.json.
     * If you are writing tests, also set Wendigo as a dev dependency, **never** as a normal dependency.
 4. Wendigo usually follows [semantic versioning](https://semver.org) so your plugin should be compatible with any minor version above the version you wrote it, but a lot of things may break, so it is good to make sure your plugin still works properly in the latest version after a release.
-5. Let people know about it!.
+5. Make a PR to update this document withyour plugin.
+6. Let people know about it!.
 
 ## Examples
+These are some examples on how to use Wendigo. More examples can be found [here](https://github.com/angrykoala/wendigo/wiki)
 
 **Testing a simple page with Mocha and Wendigo**
 
@@ -1741,20 +1705,20 @@ These instructions assume node>8.0.0 and npm installed:
    * `npm run lint` to execute the linting tests
    * `npm run dummy-server` to start the testing server on port 8002
 
-Before doing a commit or PR to the `dev` branch, make sure both the tests and lint tests pass.
+Before doing a commit or PR to the `dev` branch, make sure both the tests and all lint tests pass. This can be checked by running `npm run prepublishOnly`.
 
 ### Architecture
 
 * `Wendigo`: The main class exported by the module, provides the base interface to instantiate the browser class.
   * `BrowserFactory`: class takes care of the creation of the browser instance
 * `Browser`: Provides all the API to connect, retrieve information and perform assertions on a webpage. The BrowserFactory will compose this class from multiple mixins and modules.
-  * `mixins`: A Browser is divided in several mixins (found on the folder with the same name). These will be composed in the Browser class at runtime.
-* `Modules`: A module (or plugin) represents an object that will be attached to the browser at runtime with a given name (e.g. localStorage).
+  * `mixins`: A Browser is divided in several mixins (found on the folder with the same name). These will be composed in the final Browser class.
+  * `assertions`: All core assertions in the browser class. Module-related assertions exists within each module folder.
+* `Modules`: A module represents an object that will be attached to the browser with a given name (e.g. localStorage).
   * Modules are different from mixins in that the modules are attached as a separate class instance whereas mixins are composed into the same class.
-  * Note that each module is composed by 2 parts, one attached to the main browser class and other to the assertion module.
-* `Injection Scripts`: These scripts will be injected at runtime into the browser, and are required to perform most of wendigo actions within the browser context, these scripts cannot access other parts of the code, and the rest of the code should not use these scripts out of the browser's context. These scripts can be used in the context of `browser.evaluate` by the user and other plugins
-  * `ẀendigoUtils`: Several utilities required by Wendigo in the browser's context.
-  * `WendigoQuery`: Wrapper of the different types of selectors (css, xpath and DOM node)
+  * Note that each module can be composed by 2 parts, one attached to the main browser class and other to the assertion module.
+  * Each module and all related code is stored in a separate folder.
+* `Injection Scripts`: These scripts will be injected at runtime into the browser, and are required to perform most of Wendigo actions within the browser context, these scripts cannot access other parts of the code, and the rest of the code should not use these scripts out of the browser's context. These scripts can be used in the context of `browser.evaluate` by the user and other plugins.
 
 ## Troubleshooting
 
@@ -1835,7 +1799,7 @@ CMD ["npm", "run", "test"]
 
 ```
 
-> Warning: while the image is updated and maintained, it is still an early feature and not as stable as plain Wendigo
+> **Warning**: This image is updated and maintained, but it is still an early feature and may not be as stable as using Wendigo directly.
 
 ### Assertion failed messages without error
 If you are using node@10 and puppeteer 1.4.0 or less, you may experience messages such as `Assertion failed: No node found for selector`, this is due to a change in how `console.assertion` works in node 10 and how puppeteer uses it, these messages won't affect the tests, if the messages are a big problem for you, consider downgrading your node.js version, upgrading puppeteer if possible or overriding console.assert: `console.assert=()=>{}`.

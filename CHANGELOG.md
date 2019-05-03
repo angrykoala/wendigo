@@ -23,6 +23,7 @@
 * Removed dependency mixwith
 * Dependencies updated
 * Puppeteer 1.15
+* Readme updated and several minor fixes in it
 
 1.13.1 / 2018-04-20
 ===================
