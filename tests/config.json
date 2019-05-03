@@ -29,6 +29,8 @@
         "duplicateElements": "http://localhost:3456/duplicate_elements.html",
         "dialogAlert": "http://localhost:3456/dialog_alert.html",
         "emptyText": "http://localhost:3456/empty_text.html",
-        "triggerEvent": "http://localhost:3456/trigger_event.html"
+        "triggerEvent": "http://localhost:3456/trigger_event.html",
+        "weirdText": "http://localhost:3456/weird_text.html",
+        "nestedElements": "http://localhost:3456/nested_elements.html"
     }
 }

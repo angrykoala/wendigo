@@ -83,4 +83,11 @@ describe("Tap", function() {
         await browser.open(configUrls.difficultClick);
         await browser.tap(4000, 4000);
     });
+
+    it("Tap With XPath Selector", async() => {
+        await browser.assert.text("#switch", "On");
+        const tappedElements = await browser.tap("//*[@class='btn']");
+        await browser.assert.text("#switch", "Off");
+        assert.strictEqual(tappedElements, 1);
+    });
 });

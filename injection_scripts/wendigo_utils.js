@@ -61,11 +61,11 @@ if (!window.WendigoUtils) {
         clearDateMock() {
             window.Date = _origDate;
         },
-        findCssPath(...args) {
-            return WendigoPathFinder.cssPath(...args);
+        findCssPath(node) {
+            return WendigoPathFinder.cssPath(node);
         },
-        findXPath(...args) {
-            return WendigoPathFinder.xPath(...args);
+        findXPath(node) {
+            return WendigoPathFinder.xPath(node);
         }
     };
 }

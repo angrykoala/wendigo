@@ -48,13 +48,13 @@ describe("Type", function() {
         await browser.assert.value("input.input2", "default value");
     });
 
-    it("Type Node", async() => {
+    it("Type DomElement Selector", async() => {
         const node = await browser.query("input.input1");
         await browser.type(node, "firstText");
         await browser.assert.value("input.input1", "firstText");
     });
 
-    it("Type Invalid Selector", async() => {
+    it.skip("Type Invalid Selector", async() => { // TODO:  Some generic way to validate selectors
         await utils.assertThrowsAsync(async() => {
             await browser.type({}, "firstText");
         }, `Error: [type] Invalid selector.`);
@@ -110,5 +110,16 @@ describe("Type", function() {
         await utils.assertThrowsAsync(async() => {
             await browser.type("input.input1", undefined);
         }, `Error: [type] Invalid text.`);
+    });
+
+    it("Type XPath", async() => {
+        await browser.type("//*[contains(@class,'input1')]", "firstText");
+        await browser.assert.value("input.input1", "firstText");
+    });
+
+    it("Type DomElement", async() => {
+        const node = await browser.query("input.input1");
+        await node.type("firstText");
+        await browser.assert.value("input.input1", "firstText");
     });
 });

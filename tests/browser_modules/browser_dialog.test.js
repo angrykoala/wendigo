@@ -138,4 +138,23 @@ describe("Dialog Alerts", function() {
         const alerts = browser.dialog.all();
         assert.strictEqual(alerts.length, 1);
     });
+
+    it("dismissAllDialogs Setting Updated Properly", async() => {
+        await browser.open(configUrls.dialogAlert, {
+            dismissAllDialogs: true
+        });
+        assert.strictEqual(browser.dialog.options.dismissAllDialogs, true);
+        await browser.open(configUrls.dialogAlert);
+        assert.strictEqual(browser.dialog.options.dismissAllDialogs, false);
+    });
+
+    it("Dialog Handled", async() => {
+        const p = browser.click(".alert-btn");
+        const dialog = await browser.dialog.waitForDialog();
+        assert.ok(dialog);
+        assert.strictEqual(dialog.handled, false);
+        await dialog.dismiss();
+        assert.strictEqual(dialog.handled, true);
+        await p;
+    });
 });

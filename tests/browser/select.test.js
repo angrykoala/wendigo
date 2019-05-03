@@ -121,7 +121,7 @@ describe("Select", function() {
     });
 
     it("Options Invalid Element", async() => {
-        utils.assertThrowsAsync(async() => {
+        await utils.assertThrowsAsync(async() => {
             await browser.options("#not-element");
         }, `QueryError: [options] Element "#not-element" not found.`);
     });

@@ -1,10 +1,35 @@
-1.13.1 / 2018-04-20
+2.0.0 / 2019-05-03
+==================
+
+* Wendigo refactored into TypeScript
+* Browser.query and browser.queryAll now support XPath selectors
+* Browser.queryXPath removed
+* Removed clearRequestMocks option, mocks are only removed on browser close
+* Cookies now support extra cookie parameters
+* XPath improvements with axis support and minor fixes
+* Added new methods to DomElement class
+* More support for XPath and DOMElement selectors
+* Complex subqueries with multiple parent elements supported
+* Changes in plugin system. Dropped support for not assertions
+* Removed deprecated methods assert.cookie, assert.webworker and assert.not.cookie
+* Browser.request.all changed into a function to make it consistent with other modules
+* WaitForRequest/Response and waitForNextRequest/Response moved to requests module
+* Browser.assert.request renamed to browser.assert.requests to keep consistency
+* Assertions now always return promises for consistency
+* Fixed bug where settings on dialog module where not being updated properly
+* Fixed bug where mocks with querystring where not being updated properly
+* Removed dependency mixwith
+* Dependencies updated
+* Puppeteer updated to 1.15
+* Readme updated and several minor fixes in it
+
+1.13.1 / 2019-04-20
 ===================
 
 * Some dependencies updated
 * Deprecation notice in favor of 2.0
 
-1.13.0 / 2018-03-29
+1.13.0 / 2019-03-29
 ===================
 
 * Support for an object with assert and not functions for a plugin
@@ -15,13 +40,13 @@
 * Cookies is now fully implemented as a plugin
 * ElementFromPoint not returns null if no element is found
 
-1.12.1 / 2018-03-25
+1.12.1 / 2019-03-25
 ===================
 
 * Minor improvements to dockerfile
 * Fix of console.warn logs when set the option log: true
 
-1.12.0 / 2018-03-25
+1.12.0 / 2019-03-25
 ===================
 
 * Browser.assert.tag and browser.assert.not.tag
@@ -30,7 +55,7 @@
 * Added proxyServer option in create browser
 * Minor fixes in some error messages
 
-1.11.0 / 2018-03-24
+1.11.0 / 2019-03-24
 ===================
 
 * Browser.triggerEvent

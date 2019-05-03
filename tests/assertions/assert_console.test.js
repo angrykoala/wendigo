@@ -62,7 +62,7 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 type: browser.console.LogType.error
             });
-        }, `[assert.console] Expected console events of type "error", 0 found.`);
+        }, `[assert.console] Expected at least one console event of type "error", none found.`);
     });
 
     it("Assert Log With Text Throws", async() => {
@@ -70,13 +70,13 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 text: "Invalid Text"
             });
-        }, `[assert.console] Expected console events with text "Invalid Text", 0 found.`);
+        }, `[assert.console] Expected at least one console event with text "Invalid Text", none found.`);
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.console({
                 text: "Invalid Text",
                 type: browser.console.LogType.log
             });
-        }, `[assert.console] Expected console events of type "log" with text "Invalid Text", 0 found.`);
+        }, `[assert.console] Expected at least one console event of type "log" with text "Invalid Text", none found.`);
     });
 
 
@@ -91,7 +91,7 @@ describe("Assert Console", function() {
             await browser.assert.console({
                 text: /NotText/
             });
-        }, `[assert.console] Expected console events with text "/NotText/", 0 found.`);
+        }, `[assert.console] Expected at least one console event with text "/NotText/", none found.`);
     });
 
     it("Assert Log Throws Custom Message", async() => {

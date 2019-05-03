@@ -45,7 +45,6 @@ describe("Assert Attribute", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.attribute(".hidden-text", "class", "hidden");
         }, `[assert.attribute] Expected element ".hidden-text" to have attribute "class" with value "hidden", ["hidden-text"] found.`);
-
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.attribute(".second-element", "hidden");
         }, `[assert.attribute] Expected element ".second-element" to have attribute "hidden".`);

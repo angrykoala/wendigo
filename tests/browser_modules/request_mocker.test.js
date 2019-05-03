@@ -97,12 +97,36 @@ describe("Requests Mocker", function() {
         await browser.assert.text("#result", "MOCK");
     });
 
-    it("Mocks Clears On Open", async() => {
-        await browser.requests.mock(configUrls.api, mockResponse);
-        await browser.open(configUrls.requests);
-        await browser.clickText("click me");
-        await browser.wait(100);
-        await browser.assert.text("#result", "DUMMY");
+    it("Mocked Request Override With Qs", async() => {
+        const mockResponse1 = {
+            body: JSON.stringify({result: "DUMMY"}),
+            queryString: {
+                foo: "bar"
+            }
+        };
+        const mockResponse2 = {
+            body: JSON.stringify({result: "DUMMY"}),
+            queryString: "foo=bar"
+        };
+        browser.requests.mock(configUrls.api, mockResponse2);
+        browser.requests.mock(configUrls.api, mockResponse1); // Overrides
+        assert.strictEqual(browser.requests._requestMocker._mockedRequests.length, 1);
+    });
+
+    it("Mocked Request With Qs Won't Override", async() => {
+        const mockResponse1 = {
+            body: JSON.stringify({result: "DUMMY"}),
+            queryString: {
+                foo: "bar2"
+            }
+        };
+        const mockResponse2 = {
+            body: JSON.stringify({result: "DUMMY"}),
+            queryString: "foo=bar"
+        };
+        browser.requests.mock(configUrls.api, mockResponse2);
+        browser.requests.mock(configUrls.api, mockResponse1);
+        assert.strictEqual(browser.requests._requestMocker._mockedRequests.length, 2);
     });
 
     it("Clear Mocks", async() => {
@@ -142,7 +166,7 @@ describe("Requests Mocker", function() {
 
     it("Keep Mocks On Open", async() => {
         browser.requests.mock(configUrls.api, mockResponse);
-        await browser.open(configUrls.requests, {clearRequestMocks: false});
+        await browser.open(configUrls.requests);
         await browser.clickText("click me");
         await browser.wait(100);
         await browser.assert.text("#result", "MOCK");
@@ -217,8 +241,10 @@ describe("Requests Mocker", function() {
 
     it("Mock With Explicit QueryString Fails Multiple Elements", async() => {
         const response = Object.assign({
-            queryString: {query: "hi",
-                user: "dent"}
+            queryString: {
+                query: "hi",
+                user: "dent"
+            }
         }, mockResponse);
         browser.requests.mock(configUrls.api, response);
         await browser.clickText("query");

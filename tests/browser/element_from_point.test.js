@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
-const DomElement = require('../../lib/models/dom_element');
+const DomElement = require('../../dist/lib/models/dom_element').default;
 
 describe("Element From Point", function() {
     this.timeout(5000);
