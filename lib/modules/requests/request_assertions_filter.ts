@@ -100,19 +100,14 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         }, filter);
     }
 
-    private _assertNumber(fnName: string, expected: number, msg: string | undefined, resolve: () => void, reject: (e: Error) => void): Promise<void> {
-        return this._requestFilter.requests.then((reqs) => {
-            const requestsNumber = reqs.length;
-            if (!msg) msg = `Expected exactly ${expected} requests, ${requestsNumber} found.`;
-            if (requestsNumber === expected) return Promise.resolve();
-            else {
-                const err = new AssertionError(fnName, msg);
-                return Promise.reject(err);
-            }
-        }).then(() => {
-            resolve();
-        }).catch((err) => {
-            reject(err);
-        });
+    private async _assertNumber(fnName: string, expected: number, msg: string | undefined, resolve: () => void, reject: (e: Error) => void): Promise<void> {
+        const reqs = await this._requestFilter.requests;
+        const requestsNumber = reqs.length;
+        if (!msg) msg = `Expected exactly ${expected} requests, ${requestsNumber} found.`;
+        if (requestsNumber === expected) return resolve();
+        else {
+            const err = new AssertionError(fnName, msg);
+            return reject(err);
+        }
     }
 }
