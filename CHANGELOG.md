@@ -1,4 +1,4 @@
-2.0.1 / ####-##-##
+2.0.1 / 2019-05-08
 ==================
 
 * Puppeteer reverted to 1.14.0 (bug in mock with status 422)
