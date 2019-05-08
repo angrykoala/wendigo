@@ -1173,7 +1173,7 @@ The following options are supported:
 * `method` defines the method (`GET`, `POST`, ...) to mock. Empty to mock any method.
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object.
   * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
-* `redirectTo`: If set, the mock will return the response of the given url instead of the original call, maintaining the query string, keep in mind that the redirected request won't trigger any mocks. E.g. `request.mock("http://localhost:8010", {redirectTo: "http://localhost:9010"})` will change the port where all request in the page are sent.
+* `redirectTo`: If set, the mock will return the response of the given url instead of the original call, maintaining the query string, keep in mind that the redirected request won't trigger any mocks. E.g. `requests.mock("http://localhost:8010", {redirectTo: "http://localhost:9010"})` will change the port where all request in the page are sent.
 
 > This object properties will be used with the interface of Puppeteer's [respond method](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestrespondresponse)
 
@@ -1225,7 +1225,7 @@ await mock.assert.called(0);
 await mock.assert.postBody("my request");
 ```
 
-All mocks are removed when opening a different page with `browser.open` unless the option `clearRequestMocks` is set to false.
+All mocks are removed on `browser.close`.
 
 If the mock is not auto, it can be manually triggered with the method `trigger()`, this method cannot be called with auto mocks:
 
@@ -1270,7 +1270,7 @@ Waits until next request with given url is done. If the request was already made
 Waits until next response with given url is received. If the response was already received, this method will wait until next one.
 
 #### Filtering Requests
-To filter the requests made by the browser, you can use `browser.request.filter`.
+To filter the requests made by the browser, you can use `browser.requests.filter`.
 
 For example, to filter requests with status code of 200:
 
