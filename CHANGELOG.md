@@ -1,3 +1,9 @@
+2.0.1 / 2019-05-08
+==================
+
+* Puppeteer reverted to 1.14.0 (bug in mock with status 422)
+* Minor fix in readme
+
 2.0.0 / 2019-05-03
 ==================
 

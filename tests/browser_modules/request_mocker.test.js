@@ -337,4 +337,28 @@ describe("Requests Mocker", function() {
         assert.strictEqual(browser.requests.getAllMocks().length, 1);
         assert.strictEqual(browser.requests.getAllMocks()[0], mock);
     });
+
+    it("Mock Status 422", async() => {
+        const response = Object.assign({}, mockResponse, {
+            status: 422,
+            method: 'GET'
+        });
+        const mock = await browser.requests.mock(/api/, response);
+        await browser.clickText("click me");
+        // await browser.wait(500);
+        await mock.waitUntilCalled();
+        // console.log(browser.requests.all());
+        await browser.assert.text("#result", "MOCK");
+    });
+
+    it("Mock Status 400", async() => {
+        const response = Object.assign({}, mockResponse, {
+            status: 400,
+            method: 'GET'
+        });
+        const mock = await browser.requests.mock(/api/, response);
+        await browser.clickText("click me");
+        await mock.waitUntilCalled();
+        await browser.assert.text("#result", "MOCK");
+    });
 });
