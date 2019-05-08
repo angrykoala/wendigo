@@ -19,7 +19,7 @@
                 res.json().then((res) => {
                     el.innerText = res.result;
                 });
-            })
+            });
         }
 
         function doQueryRequest() {
@@ -31,8 +31,8 @@
             })
         }
 
-        function doPostRequest(){
-            fetch("/api",{
+        function doPostRequest() {
+            fetch("/api", {
                 body: JSON.stringify({
                     data: "example data"
                 }),
