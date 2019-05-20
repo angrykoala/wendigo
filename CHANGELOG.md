@@ -2,6 +2,7 @@
 ==================
 
 * Puppeteer reverted to 1.14.0 (bug in mock with status 422)
+* FindByText and FindByTextContaining now support simple quotes (')
 * Minor fix in readme
 
 2.0.0 / 2019-05-03

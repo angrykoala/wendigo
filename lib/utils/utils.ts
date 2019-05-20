@@ -98,3 +98,16 @@ export function arrayfy<T>(raw: T | Array<T>): Array<T> {
 export function isClass(c: any): boolean { // Wrapper to allow typing on isClass
     return Boolean(isClassModule(c));
 }
+
+export function cleanStringForXpath(str: string): string {
+    const parts = str.split('\'');
+    if (parts.length === 1) return `'${parts[0]}'`;
+
+    const formattedParts = parts.map((part: string): string => {
+        if (part === "") {
+            return '"\'"';
+        }
+        return "'" + part + "'";
+    });
+    return "concat(" + formattedParts.join(",") + ")";
+}
