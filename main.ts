@@ -1,5 +1,5 @@
 import * as process from 'process';
-import * as puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer';
 import BrowserFactory from './lib/browser_factory';
 import * as Errors from './lib/errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './lib/types';

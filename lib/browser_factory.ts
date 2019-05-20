@@ -1,6 +1,6 @@
-import * as compose from 'compositer';
+import compose from 'compositer';
+import isClass from 'is-class';
 import { Page } from 'puppeteer';
-import { isClass } from './utils/utils';
 
 import Browser from './browser/browser';
 import BrowserAssertion from './browser/browser_assertions';
