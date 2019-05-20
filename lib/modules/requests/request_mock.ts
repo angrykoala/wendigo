@@ -105,8 +105,7 @@ export default class RequestMock implements RequestMockInterface {
     }
 
     public async waitUntilCalled(timeout: number = 500): Promise<void> {
-        if (this.called) return Promise.resolve();
-        await new Promise((resolve, reject) => {
+        if (!this.called) await new Promise((resolve, reject) => {
             let rejected = false;
             const tid = setTimeout(() => {
                 rejected = true;
@@ -119,7 +118,7 @@ export default class RequestMock implements RequestMockInterface {
                 }
             });
         });
-        await utils.delay(30); // Give time to the browser to handle the response
+        await utils.delay(20); // Give time to the browser to handle the response
     }
 
     public async onRequest(request: Request): Promise<void> {
