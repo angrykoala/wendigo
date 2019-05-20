@@ -106,13 +106,13 @@ describe("Find By Text", function() {
     it("Find By Text Containing With Quotes Character", async() => {
         await browser.open(configUrls.weirdText);
         const elems = await browser.findByTextContaining("\"quo");
-        assert.strictEqual(elems.length, 1);
+        assert.strictEqual(elems.length, 2);
     });
 
     it("Find By Text Containing With Simple Quote Character", async() => {
         await browser.open(configUrls.weirdText);
         const elems = await browser.findByTextContaining("es'");
-        assert.strictEqual(elems.length, 1);
+        assert.strictEqual(elems.length, 2);
     });
 
     it("Find By Text With Colon Character", async() => {

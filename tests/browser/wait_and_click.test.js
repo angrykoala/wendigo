@@ -30,6 +30,15 @@ describe("Wait And Click", function() {
         await browser.assert.text(".text", "text");
     });
 
+    it("Wait For XPath And Click", async() => {
+        await browser.assert.not.text(".text", "text");
+        await browser.assert.not.element(".btn2");
+        await browser.click(".btn");
+        const clickedElements = await browser.waitAndClick("//*[contains(@class,'btn2')]", 800);
+        assert.strictEqual(clickedElements, 1);
+        await browser.assert.text(".text", "text");
+    });
+
     it("Wait For Button Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitAndClick(".btn2", 1);
