@@ -85,11 +85,16 @@ describe("Find By Text", function() {
         }, "Error: [findByTextContaining] Invalid selector.");
     });
 
-    // Tests #342
-    it.skip("Find By Text With Quotes Character", async() => {
+    it("Find By Text With Quotes Character", async() => {
         await browser.open(configUrls.weirdText);
         const elems = await browser.findByText("\"quotes'");
         assert.strictEqual(elems.length, 1);
+    });
+
+    it("Find By Text With Multiple Quotes Character Fail", async() => {
+        await browser.open(configUrls.weirdText);
+        const elems = await browser.findByText("\"quo'tes''");
+        assert.strictEqual(elems.length, 0);
     });
 
     it("Find By Text With Quotes Character Fails", async() => {
@@ -101,14 +106,13 @@ describe("Find By Text", function() {
     it("Find By Text Containing With Quotes Character", async() => {
         await browser.open(configUrls.weirdText);
         const elems = await browser.findByTextContaining("\"quo");
-        assert.strictEqual(elems.length, 1);
+        assert.strictEqual(elems.length, 2);
     });
 
-    // Tests #342
-    it.skip("Find By Text Containing With Simple Quote Character", async() => {
+    it("Find By Text Containing With Simple Quote Character", async() => {
         await browser.open(configUrls.weirdText);
         const elems = await browser.findByTextContaining("es'");
-        assert.strictEqual(elems.length, 1);
+        assert.strictEqual(elems.length, 2);
     });
 
     it("Find By Text With Colon Character", async() => {

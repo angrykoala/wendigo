@@ -4,7 +4,7 @@ import { ElementHandle } from 'puppeteer';
 import DomElement from '../../models/dom_element';
 import { FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import { isXPathQuery } from '../../utils/utils';
+import { isXPathQuery, cleanStringForXpath } from '../../utils/utils';
 
 export default abstract class BrowserQueries extends BrowserCore {
     public async query(selector: WendigoSelector, optionalSelector?: string): Promise<DomElement | null> {
@@ -57,7 +57,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         this._failIfNotLoaded("findByText");
         const xPathText = optionalText || text as string;
-        const xPath = `//*[text()='${xPathText}']`;
+        const xPath = `//*[text()=${cleanStringForXpath(xPathText)}]`;
 
         if (optionalText) {
             try {
@@ -73,7 +73,7 @@ export default abstract class BrowserQueries extends BrowserCore {
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         this._failIfNotLoaded("findByTextContaining");
         const xPathText = optionalText || text as string;
-        const xPath = `//*[contains(text(),'${xPathText}')]`;
+        const xPath = `//*[contains(text(),${cleanStringForXpath(xPathText)})]`;
         if (optionalText) {
             try {
                 return await this.queryAll(text, xPath);

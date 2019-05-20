@@ -385,7 +385,7 @@ await browser.url(); // my-page/home
 **waitAndClick(selector, timeout=500)**  
 Waits for an element to exists and be visible before clicking it. Useful for clicking elements that may have a delay before appearing.
 
-> Only Css Selectors supported.
+> DomElements selectors not supported.
 
 **tap(selector, index?)**  
 Performs a touchscreen tap action on all the elements matching the given selector, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click.
@@ -502,7 +502,7 @@ await browser.waitFor((s) => { // Waits for 2 or more elements to be in the page
 }, 600, ".my-elements");
 ```
 
-> Css selectors supported only.
+> DomElements selectors not supported.
 
 **waitUntilNotVisible(selector, timeout=500)**  
 Waits until the given selector is no longer visible or doesn't exists, with the given timeout in milliseconds.

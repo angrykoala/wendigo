@@ -1,3 +1,10 @@
+2.0.2 / 2019-05-21
+==================
+
+* FindByText and FindByTextContaining now support simple quotes (')
+* Proper support for XPath on waitFor and watAndClick
+* Some dependencies updated
+
 2.0.1 / 2019-05-08
 ==================
 
