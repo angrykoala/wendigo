@@ -1,4 +1,4 @@
-2.0.2 / ####-##-##
+2.0.2 / 2019-05-21
 ==================
 
 * FindByText and FindByTextContaining now support simple quotes (')
