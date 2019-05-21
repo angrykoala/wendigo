@@ -65,6 +65,10 @@ export default abstract class BrowserCore {
         return this._loaded && !this.disabled;
     }
 
+    public get incognito(): boolean {
+        return Boolean(this.settings.incognito);
+    }
+
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);

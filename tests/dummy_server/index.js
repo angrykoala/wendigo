@@ -13,7 +13,6 @@ app.use((req, res, next) => { // To avoid 304
 });
 app.use("/", express.static(path.join(__dirname, "static")));
 
-
 app.get("/api", (req, res) => {
     if (req.query.query === "hi2") res.json({result: "QUERY"});
     else res.json({result: "DUMMY"});

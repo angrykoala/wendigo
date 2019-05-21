@@ -187,6 +187,9 @@ await browser.page.evaluate(() => {
 **loaded**  
 True if the page has already opened and loaded.
 
+**incognito**  
+True if the browser is configured as incognito page.
+
 #### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 

@@ -1,6 +1,7 @@
 2.0.3 / ####-##-##
 ==================
 
+* Added incognito attribute to browser
 * Minor delay added to waitUntilCalled method in request mocks
 
 2.0.2 / 2019-05-21
