@@ -165,11 +165,13 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
-    // async dragAndDrop(from, to) {
+    // public async dragAndDrop(from: WendigoSelector, to: WendigoSelector): Promise<void> {
     //     const fromElement = await this.query(from);
     //     const toElement = await this.query(to);
+    //     if (!fromElement || !toElement) throw new QueryError("dragAndDrop", `Elements "${from} and ${to} not found."`);
     //     const boxFrom = await fromElement.element.boundingBox();
     //     const boxTo = await toElement.element.boundingBox();
+    //     if (!boxFrom || !boxTo) throw new FatalError("dragAndDrop", "Bounding box not found");
     //     const mouse = this.page.mouse;
     //     await mouse.up();
     //     await mouse.move(boxFrom.x + (boxFrom.width / 2), boxFrom.y + (boxFrom.height / 2));
