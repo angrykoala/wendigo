@@ -516,8 +516,6 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 await browser.waitUntilNotVisible(".toast");
 ```
 
-> Css selectors supported only.
-
 **waitForUrl(url, timeout=500)**  
 Waits for the page to have the given url. The url can be a string or a RegExp.
 

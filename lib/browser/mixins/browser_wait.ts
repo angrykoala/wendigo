@@ -13,7 +13,6 @@ export default abstract class BrowserWait extends BrowserNavigation {
         return utils.delay(ms);
     }
 
-    // TODO: Only css selector supported
     public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
         this._failIfNotLoaded("waitFor");
         args = args.map((e) => {
