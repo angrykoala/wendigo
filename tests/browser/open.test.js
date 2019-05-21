@@ -20,8 +20,8 @@ describe("Open", function() {
 
     it("Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
-            await browser.open("not-a-page");
-        }, `FatalError: [open] Failed to open "http://not-a-page". net::ERR_NAME_RESOLUTION_FAILED at http://not-a-page`);
+            await browser.open(`http://localhost:3433/not-a-page.html`);
+        }, `FatalError: [open] Failed to open "http://localhost:3433/not-a-page.html". net::ERR_CONNECTION_REFUSED at http://localhost:3433/not-a-page.html`);
     });
 
     it("Before Open Fails", async() => {
