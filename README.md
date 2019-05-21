@@ -202,8 +202,10 @@ await browser.open("http://localhost:8000");
 
 The following options can be passed:
 
-* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
-* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url
+* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`.
+* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
+
+If no protocol is defined (e.g. `https://`), `http://` will be used.
 
 **openFile(path, options?)**  
 Opens the given file. Same options as `open` can be passed. The file will be passed by appending `file://` to the absolute path.

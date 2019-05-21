@@ -2,6 +2,7 @@
 ==================
 
 * Added incognito attribute to browser
+* Support for urls without protocol
 * Minor delay added to waitUntilCalled method in request mocks
 
 2.0.2 / 2019-05-21
