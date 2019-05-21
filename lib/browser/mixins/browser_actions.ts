@@ -2,9 +2,10 @@ import { Base64ScreenShotOptions } from 'puppeteer';
 
 import BrowserQueries from './browser_queries';
 
-import { arrayfy } from '../../utils/utils';
+import { arrayfy, isXPathQuery } from '../../utils/utils';
 import { QueryError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
+import DOMELement from '../../models/dom_element';
 
 export default abstract class BrowserActions extends BrowserQueries {
     public async type(selector: WendigoSelector, text: string, options?: { delay: number }): Promise<void> {
@@ -42,14 +43,20 @@ export default abstract class BrowserActions extends BrowserQueries {
         });
     }
 
-    public async select(cssSelector: string, values: Array<string> | string): Promise<Array<string>> {
+    public async select(selector: WendigoSelector, values: Array<string> | string): Promise<Array<string>> {
         this._failIfNotLoaded("select");
         if (!Array.isArray(values)) values = [values];
         try {
-            const result = await this.page.select(cssSelector, ...values);
-            return result;
+            let cssPath: string;
+            // Native select only support css selectors
+            if (selector instanceof DOMELement || isXPathQuery(selector)) {
+                const element = await this.query(selector);
+                if (!element) throw new Error();
+                cssPath = await this.findCssPath(element);
+            } else cssPath = selector;
+            return await this.page.select(cssPath, ...values);
         } catch (err) {
-            throw new QueryError("select", `Element "${cssSelector}" not found.`);
+            throw new QueryError("select", `Element "${selector}" not found.`);
         }
     }
 

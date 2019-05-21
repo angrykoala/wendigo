@@ -479,8 +479,6 @@ await browser.select("select.language-select", ["spanish", "english"]); // Retur
 
 If the option doesn't have a value, the text should be provided.
 
-> Only Css Selectors supported
-
 **clearValue(selector)**  
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to `""`.
 
