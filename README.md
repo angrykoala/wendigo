@@ -967,8 +967,8 @@ Returns all the cookies in the current page as an object with key being the name
 const cookies = await browser.cookies.all(); // {username: "arthur_dent", email: "arthur@dent.com"}
 ```
 
-**cookies.get(name)**  
-Returns the cookie object with given name. Returns undefined if the cookie doesn't exists.
+**cookies.get(name, url?)**  
+Returns the cookie object with given name. Returns undefined if the cookie doesn't exists. Cookies from current page will be returned by default.
 
 ```js
 const cookie = await browser.cookies.get("username");
@@ -976,11 +976,18 @@ cookie.name; // "username"
 cookie.value; // "arthur_dent"
 ```
 
+If parameter url is set, cookies from the given url domain will be returned.
+
 **cookies.set(name, value)**  
-Sets the value of the cookie with given name. If it already exists it will be replaced. The value can be a string (it will only set the cookie value) or a whole cookie object.
+Sets the value of the cookie with given name. If it already exists it will be replaced. The value can be a string (it will only set the cookie value) or a [cookie object](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagecookiesurls).
 
 ```js
 await browser.cookies.set("username", "marvin");
+
+await browser.cookies.set("another-cookie", {
+    value: "foo",
+    secure: false
+})
 ```
 
 **cookies.delete(name)**  

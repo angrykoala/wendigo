@@ -12,8 +12,11 @@ export default class BrowserCookies extends WendigoModule {
         }, {} as { [s: string]: string });
     }
 
-    public async get(name: string): Promise<CookieData | void> {
-        const cookies = await this._browser.page.cookies();
+    public async get(name: string, url?: string): Promise<CookieData | void> {
+        let cookies: Array<CookieData>;
+        if (url) {
+            cookies = await this._browser.page.cookies(url);
+        } else cookies = await this._browser.page.cookies();
         return cookies.find((cookie) => {
             return cookie.name === name;
         });
