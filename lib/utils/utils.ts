@@ -94,7 +94,13 @@ export function arrayfy<T>(raw: T | Array<T>): Array<T> {
     else return [raw];
 }
 
-export function cleanStringForXpath(str: string): string {
+export function createFindTextXPath(text: string, contains: boolean = false): string {
+    const cleanedString = cleanStringForXpath(text);
+    if (contains) return `//*[contains(text(),${cleanedString})]`;
+    else return `//*[text()=${cleanedString}]`;
+}
+
+function cleanStringForXpath(str: string): string {
     const parts = str.split('\'');
     if (parts.length === 1) return `'${parts[0]}'`;
 

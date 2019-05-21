@@ -132,6 +132,15 @@ describe("Wait For", function() {
         }, `TimeoutError: [waitForText] Waiting for text "Off", timeout of 10ms exceeded.`);
     });
 
+    it("Wait For Text With Quotes Timeout", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text("#switch", "On");
+        await browser.click(".btn2");
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitForText(`"'Off`, 10);
+        }, `TimeoutError: [waitForText] Waiting for text ""'Off", timeout of 10ms exceeded.`);
+    });
+
     it("Wait For Url Regexp", async() => {
         await browser.open(configUrls.index);
         await browser.click("a");

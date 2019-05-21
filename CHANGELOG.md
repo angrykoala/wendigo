@@ -4,6 +4,7 @@
 * Added incognito attribute to browser
 * Support for urls without protocol
 * Get cookies from different domain
+* WaitForText support for simple quotes
 * Minor delay added to waitUntilCalled method in request mocks
 
 2.0.2 / 2019-05-21
