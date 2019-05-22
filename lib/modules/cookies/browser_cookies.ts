@@ -1,4 +1,4 @@
-import { Cookie as CookieData, SetCookie } from 'puppeteer';
+import { Cookie as CookieData, SetCookie, DeleteCookie } from 'puppeteer';
 import WendigoModule from '../wendigo_module';
 import { WendigoError } from '../../errors';
 import { arrayfy } from '../../utils/utils';
@@ -35,8 +35,13 @@ export default class BrowserCookies extends WendigoModule {
         return this._browser.page.setCookie(data);
     }
 
-    public delete(name: string | Array<string>): Promise<void> {
+    public delete(name: string | Array<string> | DeleteCookie): Promise<void> {
         if (name === undefined || name === null) throw new WendigoError("cookies.delete", "Delete cookie name missing");
+
+        if (this.isDeleteCookieInterface(name)) {
+            return this._browser.page.deleteCookie(name);
+        }
+
         const cookiesList = arrayfy(name);
         if (cookiesList.length === 0) return Promise.resolve();
         const cookiesObjects = cookiesList.map((n) => {
@@ -49,5 +54,10 @@ export default class BrowserCookies extends WendigoModule {
         const cookies = await this._browser.page.cookies();
         const cookiesList = cookies.map(c => c.name);
         return this.delete(cookiesList);
+    }
+
+    private isDeleteCookieInterface(data: any): data is DeleteCookie {
+        if (data.name) return true;
+        else return false;
     }
 }

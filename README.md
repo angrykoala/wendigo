@@ -986,6 +986,18 @@ await browser.cookies.set("another-cookie", {
 })
 ```
 
+The possible parameters of the object are:
+
+* _name_ (required)
+* _value_ (required)
+* _url_
+* _domain_
+* _path_
+* _expires_ Unix time in seconds.
+* _httpOnly_
+* _secure_
+* _sameSite_ Can be Strict or Lax.
+
 **cookies.delete(name)**  
 Deletes the cookie with given name if exists. Optionally an array can be passed and all the cookies will be removed. Won't do anything if the cookie doesn't exists.
 
@@ -993,6 +1005,13 @@ Deletes the cookie with given name if exists. Optionally an array can be passed 
 await browser.cookies.delete("username");
 await browser.cookies.delete(["username", "email"]);
 ```
+
+Optionally, an object with same interface as [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagedeletecookiecookies) can be passed to delete cookies from different pages. This object can provide the following arguments:
+
+* _name_ (required)
+* _domain_
+* _path_
+* _url_
 
 **cookies.clear()**  
 Deletes all the cookies of the current page.
