@@ -8,7 +8,7 @@ export default class BrowserLocalStorage extends WendigoModule {
                 return localStorage.getItem(k);
             }, key);
         } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "localStorage.getItem"));
+            throw WendigoError.overrideFnName(err, "localStorage.getItem");
         }
     }
 
@@ -18,7 +18,7 @@ export default class BrowserLocalStorage extends WendigoModule {
                 return localStorage.setItem(k, v);
             }, key, value);
         } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "localStorage.setItem"));
+            throw WendigoError.overrideFnName(err, "localStorage.setItem");
         }
     }
 
@@ -28,7 +28,7 @@ export default class BrowserLocalStorage extends WendigoModule {
                 return localStorage.removeItem(k);
             }, key);
         } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "localStorage.removeItem"));
+            throw WendigoError.overrideFnName(err, "localStorage.removeItem");
         }
     }
 
@@ -38,7 +38,7 @@ export default class BrowserLocalStorage extends WendigoModule {
                 return localStorage.clear();
             });
         } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "localStorage.clear"));
+            throw WendigoError.overrideFnName(err, "localStorage.clear");
         }
     }
 
@@ -49,7 +49,7 @@ export default class BrowserLocalStorage extends WendigoModule {
             });
             return result;
         } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "localStorage.length"));
+            throw WendigoError.overrideFnName(err, "localStorage.length");
         }
     }
 }

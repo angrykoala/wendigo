@@ -486,6 +486,15 @@ Clears any value that exists in any of the elements matched by the given selecto
 await browser.clearValue("input.my-input");
 ```
 
+**setAttribute(selector, attributeName, value)**  
+Sets the attribute of given name to a string value. If null is passed, the attribute will be removed from the element.
+
+**addClass(selector, className)**  
+Adds the given css class to the element.
+
+**removeClass(selector, className)**  
+Removes the given css class from the element if exists.
+
 **wait(ms=250)**  
 Waits the given milliseconds.
 

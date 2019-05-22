@@ -4,6 +4,7 @@
 * Added incognito attribute to browser
 * Support for urls without protocol
 * Get cookies from different domain
+* AddClass, removeClass and setAttribute methods
 * Delete cookie support for Puppeteer's interface
 * Browser.selector support for DOMElement and XPath
 * WaitForText support for simple quotes

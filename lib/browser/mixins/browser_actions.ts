@@ -7,6 +7,7 @@ import { QueryError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import DOMELement from '../../models/dom_element';
 
+// Mixin with user actions
 export default abstract class BrowserActions extends BrowserQueries {
     public async type(selector: WendigoSelector, text: string, options?: { delay: number }): Promise<void> {
         this._failIfNotLoaded("type");
