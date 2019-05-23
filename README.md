@@ -33,7 +33,18 @@ await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
-**Contents**  
+## Features
+
+* Assertion library built-in.
+* Cookies, LocalStorage and WebWorkers handling.
+* Requests mocker.
+* Plugins!
+* Full access to Puppeteer methods.
+* Easy and flexible query system with support for CSS selectors and XPath.
+* Docker and CI friendly.
+* Easy to setup, just node required.
+
+## Contents
 
 * [Getting Started](#getting-started)
   * [Requirements](#requirements)
