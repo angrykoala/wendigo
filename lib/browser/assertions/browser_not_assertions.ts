@@ -50,11 +50,22 @@ export default class BrowserNotAssertions {
         }
     }
 
-    public textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        if (!msg) msg = `Expected element "${selector}" to not contain text "${expected}".`;
-        return assertUtils.invertify(() => {
-            return this._assertions.textContains(selector, expected, "x");
-        }, "assert.not.textContains", msg);
+    public async textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
+            throw new WendigoError("assert.not.textContains", `Missing expected text for assertion.`);
+        }
+
+        const processedExpected = utils.arrayfy(expected);
+        const texts = await this._browser.text(selector);
+
+        for (const expectedText of processedExpected) {
+            if (utils.matchTextContainingList(texts, expectedText)) {
+                if (!msg) {
+                    msg = `Expected element "${selector}" to not contain text "${expectedText}".`;
+                }
+                return assertUtils.rejectAssertion("assert.not.textContains", msg);
+            }
+        }
     }
 
     public title(expected: string | RegExp, msg?: string): Promise<void> {

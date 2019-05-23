@@ -83,15 +83,22 @@ export default class AssertionsCore {
     }
 
     public async textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
+            throw new WendigoError("assert.textContains", `Missing expected text for assertion.`);
+        }
+
+        const processedExpected = utils.arrayfy(expected);
         const texts = await this._browser.text(selector);
-        for (const text of texts) {
-            if (text && text.includes(expected)) return Promise.resolve();
+
+        for (const expectedText of processedExpected) {
+            if (!utils.matchTextContainingList(texts, expectedText)) {
+                if (!msg) {
+                    const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
+                    msg = `Expected element "${selector}" to contain text "${expectedText}", ${foundText} found.`;
+                }
+                return assertUtils.rejectAssertion("assert.textContains", msg);
+            }
         }
-        if (!msg) {
-            const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
-            msg = `Expected element "${selector}" to contain text "${expected}", ${foundText} found.`;
-        }
-        return assertUtils.rejectAssertion("assert.textContains", msg);
     }
 
     public async title(expected: string | RegExp, msg?: string): Promise<void> {

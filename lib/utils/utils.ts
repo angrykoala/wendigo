@@ -60,6 +60,13 @@ export function matchTextList(list: Array<string>, expected: string | RegExp): b
     return false;
 }
 
+export function matchTextContainingList(list: Array<string>, expected: string): boolean {
+    for (const text of list) {
+        if (text.includes(expected)) return true;
+    }
+    return false;
+}
+
 export function delay(ms: number): Promise<void> {
     return new Promise((resolve) => {
         setTimeout(() => {

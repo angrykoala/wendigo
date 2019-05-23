@@ -1,11 +1,12 @@
 2.1.0 / ####-##-##
 ==================
 
-* Added incognito attribute to browser
 * Support for urls without protocol
 * Get cookies from different domain
 * AddClass, removeClass and setAttribute methods
 * Delete cookie support for Puppeteer's interface
+* Added incognito attribute to browser
+* assert.textContains and not.textContains support for an array as expected texts
 * Browser.selector support for DOMElement and XPath
 * WaitForText support for simple quotes
 * Minor delay added to waitUntilCalled method in request mocks

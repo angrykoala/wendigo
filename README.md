@@ -723,7 +723,7 @@ await browser.assert.text("p", "My First Paragraph");
 ```
 
 **assert.textContains(selector, expected, msg?)**  
-Asserts that at least one element matching the given selector contains the expected text.
+Asserts that at least one element matching the given selector contains the expected text. Expected text can be an array of strings, in this case **all** expected texts should match at least one element.
 
 ```js
 await browser.assert.textContains("p", "My First");
@@ -890,8 +890,7 @@ await browser.assert.not.text("p", ["This text doesn't exists", "neither do this
 ```
 
 **assert.not.textContains(selector, expected, msg?)**  
-Asserts that no elements matching the given selector contain the expected text.
-If expected is an array, no text in it should be contained any element with given selector
+Asserts that no elements matching the given selector contain the expected text. If expected is an array, no text in it should be contained any element with given selector.
 
 ```js
 await browser.assert.not.textContains("p", "doesn't exist");
