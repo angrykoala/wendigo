@@ -11,7 +11,7 @@ export async function invertify(cb: () => Promise<void>, fnName: string, msg: st
             return Promise.reject(newError);
         } else return Promise.reject(err);
     }
-    return rejectAssertion(fnName, msg);
+    throw new AssertionError(fnName, msg);
 }
 
 export function sameMembers<T>(arr1: Array<T>, arr2: Array<T>): boolean {
@@ -21,8 +21,4 @@ export function sameMembers<T>(arr1: Array<T>, arr2: Array<T>): boolean {
         if (arr1[i] !== arr2[i]) return false;
     }
     return true;
-}
-
-export function rejectAssertion(fnName: string, msg: string, actual?: any, expected?: any): Promise<void> {
-    return Promise.reject(new AssertionError(fnName, msg, actual, expected));
 }

@@ -10,6 +10,7 @@
 * Browser.selector support for DOMElement and XPath
 * WaitForText support for simple quotes
 * Minor delay added to waitUntilCalled method in request mocks
+* Minor improvements in assertion error handling
 
 2.0.2 / 2019-05-21
 ==================

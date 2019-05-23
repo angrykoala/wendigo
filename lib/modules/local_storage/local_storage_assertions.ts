@@ -1,7 +1,7 @@
 import BrowserLocalStorageNotAssertions from './local_storage_not_assertions';
-import * as assertUtils from '../../utils/assert_utils';
 import { arrayfy } from '../../utils/utils';
 import BrowserLocalStorage from './browser_local_storage';
+import { AssertionError } from '../../errors';
 
 export default class BrowserLocalStorageAssertions {
     private _localStorage: BrowserLocalStorage;
@@ -23,7 +23,7 @@ export default class BrowserLocalStorageAssertions {
         });
         if (nullValues.length !== 0) {
             if (!msg) msg = `Expected ${itemWord} "${keyList.join(" ")}" to exist in localStorage.`;
-            return assertUtils.rejectAssertion("assert.localStorage.exist", msg);
+            throw new AssertionError("assert.localStorage.exist", msg);
         }
     }
 
@@ -49,7 +49,7 @@ export default class BrowserLocalStorageAssertions {
                     const realVals = values.map(val => String(val[1])).join(" ");
                     msg = `Expected ${itemText} "${keys.join(" ")}" to have ${valuesText} "${expectedVals}" in localStorage, "${realVals}" found.`; // eslint-disable-line max-len
                 }
-                return assertUtils.rejectAssertion("assert.localStorage.value", msg);
+                throw new AssertionError("assert.localStorage.value", msg);
             }
         }
     }
@@ -58,7 +58,7 @@ export default class BrowserLocalStorageAssertions {
         const res = await this._localStorage.length();
         if (res !== expected) {
             if (!msg) msg = `Expected localStorage to have ${expected} items, ${res} found.`;
-            return assertUtils.rejectAssertion("assert.localStorage.length", msg, res, expected);
+            throw new AssertionError("assert.localStorage.length", msg, res, expected);
         }
     }
 
@@ -69,7 +69,7 @@ export default class BrowserLocalStorageAssertions {
                 const itemText = res === 1 ? "item" : "items";
                 msg = `Expected localStorage to be empty, ${res} ${itemText} found.`;
             }
-            return assertUtils.rejectAssertion("assert.localStorage.empty", msg);
+            throw new AssertionError("assert.localStorage.empty", msg);
         }
     }
 }

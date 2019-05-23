@@ -1,6 +1,6 @@
 import * as utils from '../../utils/utils';
-import * as assertUtils from '../../utils/assert_utils';
-import { WendigoError, QueryError } from '../../errors';
+import {invertify} from '../../utils/assert_utils';
+import { WendigoError, QueryError, AssertionError } from '../../errors';
 import BrowserAssertions from '../browser_assertions';
 import BrowserInterface from '../../browser/browser_interface';
 import { WendigoSelector } from '../../types';
@@ -16,21 +16,21 @@ export default class BrowserNotAssertions {
 
     public exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to not exists.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.exists(selector, "x");
         }, "assert.not.exists", msg);
     }
 
     public visible(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to not be visible.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.visible(selector, "x");
         }, "assert.not.visible", msg);
     }
 
     public tag(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to not have "${expected}" tag.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.tag(selector, expected, "x");
         }, "assert.not.tag", msg);
     }
@@ -45,7 +45,7 @@ export default class BrowserNotAssertions {
         for (const expectedText of processedExpected) {
             if (utils.matchTextList(texts, expectedText)) {
                 if (!msg) msg = `Expected element "${selector}" not to have text "${expectedText}".`;
-                return assertUtils.rejectAssertion("assert.not.text", msg);
+                throw new AssertionError("assert.not.text", msg);
             }
         }
     }
@@ -63,35 +63,35 @@ export default class BrowserNotAssertions {
                 if (!msg) {
                     msg = `Expected element "${selector}" to not contain text "${expectedText}".`;
                 }
-                return assertUtils.rejectAssertion("assert.not.textContains", msg);
+                throw new AssertionError("assert.not.textContains", msg);
             }
         }
     }
 
     public title(expected: string | RegExp, msg?: string): Promise<void> {
         if (!msg) msg = `Expected page title not to be "${expected}".`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.title(expected, "x");
         }, "assert.not.title", msg);
     }
 
     public class(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to contain class "${expected}".`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.class(selector, expected, "x");
         }, "assert.not.class", msg);
     }
 
     public url(expected: string | RegExp, msg?: string): Promise<void> {
         if (!msg) msg = `Expected url not to be "${expected}"`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.url(expected, "x");
         }, "assert.not.url", msg);
     }
 
     public value(selector: WendigoSelector, expected: string | null, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to have value "${expected}".`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.value(selector, expected, "x");
         }, "assert.not.value", msg);
     }
@@ -107,17 +107,17 @@ export default class BrowserNotAssertions {
             if (!customMessage) {
                 msg = `${msg}, no element found.`;
             }
-            return assertUtils.rejectAssertion("assert.not.attribute", msg as string);
+            throw new AssertionError("assert.not.attribute", msg as string);
         }
         if (!customMessage) msg = `${msg}.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.attribute(selector, attribute, expectedValue, "x");
         }, "assert.not.attribute", msg as string);
     }
 
     public style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to have style "${style}" with value "${expected}".`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.style(selector, style, expected, "x");
         }, "assert.not.style", msg);
     }
@@ -132,7 +132,7 @@ export default class BrowserNotAssertions {
 
     public innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to have inner html "${expected}".`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.innerHtml(selector, expected, "x");
         }, "assert.not.innerHtml", msg);
     }
@@ -143,7 +143,7 @@ export default class BrowserNotAssertions {
             const expectedText = parsedExpected.join(", ");
             msg = `Expected element "${selector}" not to have options "${expectedText}" selected.`;
         }
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.selectedOptions(selector, expected, "x");
         }, "assert.not.selectedOptions", msg);
     }
@@ -153,7 +153,7 @@ export default class BrowserNotAssertions {
             if (expected === undefined) msg = `Expected "${key}" not to be defined as global variable.`;
             else msg = `Expected "${key}" not to be defined as global variable with value "${expected}".`;
         }
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.global(key, expected, "x");
         }, "assert.not.global", msg);
     }
@@ -167,34 +167,34 @@ export default class BrowserNotAssertions {
         }
         if (value !== false) {
             if (!msg) msg = `Expected element "${selector}" to not be checked.`;
-            return assertUtils.rejectAssertion("assert.not.checked", msg, value, false);
+            throw new AssertionError("assert.not.checked", msg, value, false);
         }
     }
 
     public disabled(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to be disabled.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.disabled(selector, "x");
         }, "assert.not.disabled", msg);
     }
 
     public enabled(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" not to be enabled.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.enabled(selector, "x");
         }, "assert.not.enabled", msg);
     }
 
     public focus(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to be unfocused.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.focus(selector, "x");
         }, "assert.not.focus", msg);
     }
 
     public redirect(msg?: string): Promise<void> {
         if (!msg) msg = `Expected current url not to be a redirection.`;
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return this._assertions.redirect("x");
         }, "assert.not.redirect", msg);
     }
