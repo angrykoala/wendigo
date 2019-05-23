@@ -6,6 +6,7 @@ import * as utils from '../../utils/utils';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
+import { createFindTextXPath } from '../../utils/utils';
 
 export default abstract class BrowserWait extends BrowserNavigation {
     public wait(ms: number = 250): Promise<void> {
@@ -13,7 +14,6 @@ export default abstract class BrowserWait extends BrowserNavigation {
         return utils.delay(ms);
     }
 
-    // TODO: Only css selector supported
     public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
         this._failIfNotLoaded("waitFor");
         args = args.map((e) => {
@@ -105,16 +105,15 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
     public async waitForText(text: string, timeout: number = 500): Promise<void> {
         try {
-            await this.waitFor((txt: string) => {
-                const xpath = `//*[text()='${txt}']`; // NOTE: Duplicate of findByText
-                return Boolean(WendigoUtils.xPathQuery(xpath).length > 0);
-            }, timeout, text);
+            const xPath = createFindTextXPath(text);
+            await this.waitFor((xp: string) => {
+                return Boolean(WendigoUtils.xPathQuery(xp).length > 0);
+            }, timeout, xPath);
         } catch (err) {
             throw new TimeoutError("waitForText", `Waiting for text "${text}"`, timeout);
         }
     }
 
-    // NOTE: Only Css Selector supported
     public async waitAndClick(selector: string, timeout: number = 500): Promise<number> {
         try {
             await this.waitFor(selector, timeout);

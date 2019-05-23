@@ -2,7 +2,7 @@ import * as utils from '../../utils/utils';
 import * as elementsAssertionUtils from './assert_elements';
 import * as assertUtils from '../../utils/assert_utils';
 
-import { QueryError, FatalError, WendigoError } from '../../errors';
+import { QueryError, FatalError, WendigoError, AssertionError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import BrowserInterface from '../browser_interface';
 
@@ -21,7 +21,7 @@ export default class AssertionsCore {
         } catch (err) {
             throw WendigoError.overrideFnName(err, "assert.exists");
         }
-        if (!element) return assertUtils.rejectAssertion("assert.exists", msg);
+        if (!element) throw new AssertionError("assert.exists", msg);
     }
 
     public async visible(selector: WendigoSelector, msg?: string): Promise<void> {
@@ -36,11 +36,11 @@ export default class AssertionsCore {
                 return false;
             }, selector);
         } catch (err) {
-            return assertUtils.rejectAssertion("assert.visible", `Selector "${selector}" doesn't match any elements.`);
+            throw new AssertionError("assert.visible", `Selector "${selector}" doesn't match any elements.`);
         }
         if (!visible) {
             if (!msg) msg = `Expected element "${selector}" to be visible.`;
-            return assertUtils.rejectAssertion("assert.visible", msg);
+            throw new AssertionError("assert.visible", msg);
         }
     }
 
@@ -62,7 +62,7 @@ export default class AssertionsCore {
         if (!msg) {
             msg = `No element with tag "${expected}" found.`;
         }
-        return assertUtils.rejectAssertion("assert.tag", msg);
+        throw new AssertionError("assert.tag", msg);
     }
 
     public async text(selector: WendigoSelector, expected: string | RegExp | Array<string | RegExp>, msg?: string): Promise<void> {
@@ -77,21 +77,28 @@ export default class AssertionsCore {
                     const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
                     msg = `Expected element "${selector}" to have text "${expectedText}", ${foundText} found.`;
                 }
-                return assertUtils.rejectAssertion("assert.text", msg);
+                throw new AssertionError("assert.text", msg);
             }
         }
     }
 
     public async textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+        if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
+            throw new WendigoError("assert.textContains", `Missing expected text for assertion.`);
+        }
+
+        const processedExpected = utils.arrayfy(expected);
         const texts = await this._browser.text(selector);
-        for (const text of texts) {
-            if (text && text.includes(expected)) return Promise.resolve();
+
+        for (const expectedText of processedExpected) {
+            if (!utils.matchTextContainingList(texts, expectedText)) {
+                if (!msg) {
+                    const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
+                    msg = `Expected element "${selector}" to contain text "${expectedText}", ${foundText} found.`;
+                }
+                throw new AssertionError("assert.textContains", msg);
+            }
         }
-        if (!msg) {
-            const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
-            msg = `Expected element "${selector}" to contain text "${expected}", ${foundText} found.`;
-        }
-        return assertUtils.rejectAssertion("assert.textContains", msg);
     }
 
     public async title(expected: string | RegExp, msg?: string): Promise<void> {
@@ -99,7 +106,7 @@ export default class AssertionsCore {
         const foundTitle = title ? `"${title}"` : "no title";
         if (!utils.matchText(title, expected)) {
             if (!msg) msg = `Expected page title to be "${expected}", ${foundTitle} found.`;
-            return assertUtils.rejectAssertion("assert.title", msg);
+            throw new AssertionError("assert.title", msg);
         }
     }
 
@@ -115,7 +122,7 @@ export default class AssertionsCore {
                 const foundClasses = classes.length === 0 ? "no classes" : `"${classes.join(" ")}"`;
                 msg = `Expected element "${selector}" to contain class "${expected}", ${foundClasses} found.`;
             }
-            return assertUtils.rejectAssertion("assert.class", msg);
+            throw new AssertionError("assert.class", msg);
         }
     }
 
@@ -128,7 +135,7 @@ export default class AssertionsCore {
         }
         if (!utils.matchText(url, expected)) {
             if (!msg) msg = `Expected url to be "${utils.stringify(expected)}", "${url}" found`;
-            return assertUtils.rejectAssertion("assert.url", msg, url, expected);
+            throw new AssertionError("assert.url", msg, url, expected);
         }
     }
 
@@ -139,7 +146,7 @@ export default class AssertionsCore {
                 if (value === null) msg = `Expected element "${selector}" to have value "${expected}", no value found`;
                 else msg = `Expected element "${selector}" to have value "${expected}", "${value}" found`;
             }
-            return assertUtils.rejectAssertion("assert.value", msg, value, expected);
+            throw new AssertionError("assert.value", msg, value, expected);
         }
     }
 
@@ -179,7 +186,7 @@ export default class AssertionsCore {
 
         if (attributes.length === 0) {
             if (!customMessage) msg = `${msg}, no element found.`;
-            return assertUtils.rejectAssertion("assert.attribute", msg as string);
+            throw new AssertionError("assert.attribute", msg as string);
         }
 
         const filteredAttributes = attributes.filter(a => a !== null);
@@ -203,7 +210,7 @@ export default class AssertionsCore {
                 msg = `${msg}, ["${foundArr.join('", "')}"] found.`;
             }
         }
-        return assertUtils.rejectAssertion("assert.attribute", msg as string);
+        throw new AssertionError("assert.attribute", msg as string);
     }
 
     public async style(selector: WendigoSelector, style: string, expected: string, msg?: string): Promise<void> {
@@ -224,7 +231,7 @@ export default class AssertionsCore {
                 if (value) msg = `${msg}, "${value}" found.`;
                 else msg = `${msg}, style not found.`;
             }
-            return assertUtils.rejectAssertion("assert.style", msg);
+            throw new AssertionError("assert.style", msg);
         }
     }
 
@@ -252,7 +259,7 @@ export default class AssertionsCore {
             msg = `Expected element "${selector}" to have inner html "${expected}", "${found.join(" ")}" found.`;
         }
 
-        return assertUtils.rejectAssertion("assert.innerHtml", msg, found, expected);
+        throw new AssertionError("assert.innerHtml", msg, found, expected);
     }
 
     public async options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
@@ -265,7 +272,7 @@ export default class AssertionsCore {
                 const optionsText = options.join(", ");
                 msg = `Expected element "${selector}" to have options "${expectedText}", "${optionsText}" found.`;
             }
-            return assertUtils.rejectAssertion("assert.options", msg, options, expected);
+            throw new AssertionError("assert.options", msg, options, expected);
         }
     }
 
@@ -279,7 +286,7 @@ export default class AssertionsCore {
                 const optionsText = selectedOptions.join(", ");
                 msg = `Expected element "${selector}" to have options "${expectedText}" selected, "${optionsText}" found.`;
             }
-            return assertUtils.rejectAssertion("assert.selectedOptions", msg, selectedOptions, expected);
+            throw new AssertionError("assert.selectedOptions", msg, selectedOptions, expected);
         }
     }
 
@@ -292,13 +299,13 @@ export default class AssertionsCore {
                 if (!msg) {
                     msg = `Expected "${key}" to be defined as global variable.`;
                 }
-                return assertUtils.rejectAssertion("assert.global", msg);
+                throw new AssertionError("assert.global", msg);
             }
         } else if (value !== expected) {
             if (!msg) {
                 msg = `Expected "${key}" to be defined as global variable with value "${expected}", "${value}" found.`;
             }
-            return assertUtils.rejectAssertion("assert.global", msg, value, expected);
+            throw new AssertionError("assert.global", msg, value, expected);
         }
         return Promise.resolve();
     }
@@ -312,7 +319,7 @@ export default class AssertionsCore {
         }
         if (value !== true) {
             if (!msg) msg = `Expected element "${selector}" to be checked.`;
-            return assertUtils.rejectAssertion("assert.checked", msg, value, true);
+            throw new AssertionError("assert.checked", msg, value, true);
         }
     }
 
@@ -325,7 +332,7 @@ export default class AssertionsCore {
         }
         if (value === null) {
             if (!msg) msg = `Expected element "${selector}" to be disabled.`;
-            return assertUtils.rejectAssertion("assert.disabled", msg);
+            throw new AssertionError("assert.disabled", msg);
         }
     }
 
@@ -338,7 +345,7 @@ export default class AssertionsCore {
         }
         if (value !== null) {
             if (!msg) msg = `Expected element "${selector}" to be enabled.`;
-            return assertUtils.rejectAssertion("assert.enabled", msg);
+            throw new AssertionError("assert.enabled", msg);
         }
     }
 
@@ -358,20 +365,19 @@ export default class AssertionsCore {
         }
         if (!focused) {
             if (!msg) msg = `Expected element "${selector}" to be focused.`;
-            return assertUtils.rejectAssertion("assert.focus", msg);
+            throw new AssertionError("assert.focus", msg);
         }
     }
 
-    public redirect(msg?: string): Promise<void> {
+    public async redirect(msg?: string): Promise<void> {
         if (!msg) msg = `Expected current url to be a redirection.`;
 
-        if (!this._browser.initialResponse) assertUtils.rejectAssertion("assert.redirect", msg);
+        if (!this._browser.initialResponse) throw new AssertionError("assert.redirect", msg);
         else {
             const chain = this._browser.initialResponse.request().redirectChain();
             if (chain.length === 0) {
-                return assertUtils.rejectAssertion("assert.redirect", msg);
+                throw new AssertionError("assert.redirect", msg);
             }
         }
-        return Promise.resolve();
     }
 }

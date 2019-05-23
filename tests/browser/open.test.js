@@ -20,8 +20,8 @@ describe("Open", function() {
 
     it("Open Fails", async() => {
         await utils.assertThrowsAsync(async() => {
-            await browser.open("not-a-page");
-        }, `FatalError: [open] Failed to open "not-a-page". Protocol error (Page.navigate): Cannot navigate to invalid URL`);
+            await browser.open(`http://localhost:3433/not-a-page.html`);
+        }, `FatalError: [open] Failed to open "http://localhost:3433/not-a-page.html". net::ERR_CONNECTION_REFUSED at http://localhost:3433/not-a-page.html`);
     });
 
     it("Before Open Fails", async() => {
@@ -91,5 +91,11 @@ describe("Open", function() {
             }
         });
         await browser.assert.text(".qs", "test=foo");
+    });
+
+    it("Open Without Protocol", async() => {
+        await browser.open("localhost:3456/index.html");
+        await browser.assert.url(configUrls.index);
+        await browser.close();
     });
 });

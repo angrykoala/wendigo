@@ -1,6 +1,7 @@
-import * as assertUtils from '../../utils/assert_utils';
+import { invertify } from '../../utils/assert_utils';
 import BrowserCookies from './browser_cookies';
 import BrowserInterface from '../../browser/browser_interface';
+import { AssertionError } from '../../errors';
 
 export default {
     async assert(_browser: BrowserInterface, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {
@@ -10,7 +11,7 @@ export default {
                 if (!msg) {
                     msg = `Expected cookie "${name}" to exist.`;
                 }
-                return assertUtils.rejectAssertion("assert.cookies", msg);
+                throw new AssertionError("assert.cookies", msg);
             }
         } else {
             const value = cookie ? cookie.value : undefined;
@@ -18,7 +19,7 @@ export default {
                 if (!msg) {
                     msg = `Expected cookie "${name}" to have value "${expected}", "${value}" found.`;
                 }
-                return assertUtils.rejectAssertion("assert.cookies", msg, value, expected);
+                throw new AssertionError("assert.cookies", msg, value, expected);
             }
         }
     },
@@ -28,7 +29,7 @@ export default {
                 `Expected cookie "${name}" to not exist.` :
                 `Expected cookie "${name}" to not have value "${expected}".`;
         }
-        return assertUtils.invertify(() => {
+        return invertify(() => {
             return browser.assert.cookies(name, expected, "x");
         }, "assert.not.cookies", msg);
     }

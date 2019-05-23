@@ -1,8 +1,8 @@
-import BrowserInfo from './browser_info';
+import BrowserEdit from './browser_edit';
 
 import { WendigoSelector } from '../../types';
 
-export default abstract class BrowserEvents extends BrowserInfo {
+export default abstract class BrowserEvents extends BrowserEdit {
     public triggerEvent(selector: WendigoSelector, eventName: string, options: EventInit): Promise<void> {
         this._failIfNotLoaded("triggerEvent");
         return this.evaluate((q, evName, opt) => {

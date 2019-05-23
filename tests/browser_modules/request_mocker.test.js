@@ -345,9 +345,7 @@ describe("Requests Mocker", function() {
         });
         const mock = await browser.requests.mock(/api/, response);
         await browser.clickText("click me");
-        // await browser.wait(500);
         await mock.waitUntilCalled();
-        // console.log(browser.requests.all());
         await browser.assert.text("#result", "MOCK");
     });
 

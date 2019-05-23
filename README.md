@@ -33,7 +33,18 @@ await browser.waitFor("#my-modal");
 await browser.assert.text("#my-modal", "Button Clicked");
 ```
 
-**Contents**  
+## Features
+
+* Assertion library built-in.
+* Cookies, LocalStorage and WebWorkers handling.
+* Requests mocker.
+* Plugins!
+* Full access to Puppeteer methods.
+* Easy and flexible query system with support for CSS selectors and XPath.
+* Docker and CI friendly.
+* Easy to setup, just node required.
+
+## Contents
 
 * [Getting Started](#getting-started)
   * [Requirements](#requirements)
@@ -187,6 +198,9 @@ await browser.page.evaluate(() => {
 **loaded**  
 True if the page has already opened and loaded.
 
+**incognito**  
+True if the browser is configured as incognito page.
+
 #### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 
@@ -199,8 +213,10 @@ await browser.open("http://localhost:8000");
 
 The following options can be passed:
 
-* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`
-* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url
+* `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`.
+* `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
+
+If no protocol is defined (e.g. `https://`), `http://` will be used.
 
 **openFile(path, options?)**  
 Opens the given file. Same options as `open` can be passed. The file will be passed by appending `file://` to the absolute path.
@@ -474,14 +490,21 @@ await browser.select("select.language-select", ["spanish", "english"]); // Retur
 
 If the option doesn't have a value, the text should be provided.
 
-> Only Css Selectors supported
-
 **clearValue(selector)**  
 Clears any value that exists in any of the elements matched by the given selector. Setting the value to `""`.
 
 ```js
 await browser.clearValue("input.my-input");
 ```
+
+**setAttribute(selector, attributeName, value)**  
+Sets the attribute of given name to a string value. If null is passed, the attribute will be removed from the element.
+
+**addClass(selector, className)**  
+Adds the given css class to the element.
+
+**removeClass(selector, className)**  
+Removes the given css class from the element if exists.
 
 **wait(ms=250)**  
 Waits the given milliseconds.
@@ -510,8 +533,6 @@ Waits until the given selector is no longer visible or doesn't exists, with the 
 ```js
 await browser.waitUntilNotVisible(".toast");
 ```
-
-> Css selectors supported only.
 
 **waitForUrl(url, timeout=500)**  
 Waits for the page to have the given url. The url can be a string or a RegExp.
@@ -702,7 +723,7 @@ await browser.assert.text("p", "My First Paragraph");
 ```
 
 **assert.textContains(selector, expected, msg?)**  
-Asserts that at least one element matching the given selector contains the expected text.
+Asserts that at least one element matching the given selector contains the expected text. Expected text can be an array of strings, in this case **all** expected texts should match at least one element.
 
 ```js
 await browser.assert.textContains("p", "My First");
@@ -869,8 +890,7 @@ await browser.assert.not.text("p", ["This text doesn't exists", "neither do this
 ```
 
 **assert.not.textContains(selector, expected, msg?)**  
-Asserts that no elements matching the given selector contain the expected text.
-If expected is an array, no text in it should be contained any element with given selector
+Asserts that no elements matching the given selector contain the expected text. If expected is an array, no text in it should be contained any element with given selector.
 
 ```js
 await browser.assert.not.textContains("p", "doesn't exist");
@@ -962,8 +982,8 @@ Returns all the cookies in the current page as an object with key being the name
 const cookies = await browser.cookies.all(); // {username: "arthur_dent", email: "arthur@dent.com"}
 ```
 
-**cookies.get(name)**  
-Returns the cookie object with given name. Returns undefined if the cookie doesn't exists.
+**cookies.get(name, url?)**  
+Returns the cookie object with given name. Returns undefined if the cookie doesn't exists. Cookies from current page will be returned by default.
 
 ```js
 const cookie = await browser.cookies.get("username");
@@ -971,12 +991,31 @@ cookie.name; // "username"
 cookie.value; // "arthur_dent"
 ```
 
+If parameter url is set, cookies from the given url domain will be returned.
+
 **cookies.set(name, value)**  
-Sets the value of the cookie with given name. If it already exists it will be replaced. The value can be a string (it will only set the cookie value) or a whole cookie object.
+Sets the value of the cookie with given name. If it already exists it will be replaced. The value can be a string (it will only set the cookie value) or a [cookie object](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagecookiesurls).
 
 ```js
 await browser.cookies.set("username", "marvin");
+
+await browser.cookies.set("another-cookie", {
+    value: "foo",
+    secure: false
+})
 ```
+
+The possible parameters of the object are:
+
+* _name_ (required)
+* _value_ (required)
+* _url_
+* _domain_
+* _path_
+* _expires_ Unix time in seconds.
+* _httpOnly_
+* _secure_
+* _sameSite_ Can be Strict or Lax.
 
 **cookies.delete(name)**  
 Deletes the cookie with given name if exists. Optionally an array can be passed and all the cookies will be removed. Won't do anything if the cookie doesn't exists.
@@ -985,6 +1024,13 @@ Deletes the cookie with given name if exists. Optionally an array can be passed 
 await browser.cookies.delete("username");
 await browser.cookies.delete(["username", "email"]);
 ```
+
+Optionally, an object with same interface as [Puppeteer](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagedeletecookiecookies) can be passed to delete cookies from different pages. This object can provide the following arguments:
+
+* _name_ (required)
+* _domain_
+* _path_
+* _url_
 
 **cookies.clear()**  
 Deletes all the cookies of the current page.

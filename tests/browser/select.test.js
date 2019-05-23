@@ -64,6 +64,27 @@ describe("Select", function() {
         assert.strictEqual(selectResult[0], "Value 4");
     });
 
+    it("Select Option DOMElement", async() => {
+        const element = await browser.query("#normal-select");
+        const selectResult = await browser.select(element, "value2");
+        await browser.assert.value("#normal-select", "value2");
+        const selectedOptions = await browser.selectedOptions("#normal-select");
+        assert.strictEqual(selectedOptions.length, 1);
+        assert.strictEqual(selectedOptions[0], "value2");
+        assert.strictEqual(selectResult.length, 1);
+        assert.strictEqual(selectResult[0], "value2");
+    });
+
+    it("Select Option XPath", async() => {
+        const selectResult = await browser.select("//*[@id='normal-select']", "value2");
+        await browser.assert.value("#normal-select", "value2");
+        const selectedOptions = await browser.selectedOptions("#normal-select");
+        assert.strictEqual(selectedOptions.length, 1);
+        assert.strictEqual(selectedOptions[0], "value2");
+        assert.strictEqual(selectResult.length, 1);
+        assert.strictEqual(selectResult[0], "value2");
+    });
+
     it("Select Multiple Values On Single Select", async() => {
         const selectResult = await browser.select("#normal-select", ["Value 4", "value2"]);
         await browser.assert.value("#normal-select", "value2");

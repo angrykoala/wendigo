@@ -1,6 +1,6 @@
-import * as assertUtils from '../../utils/assert_utils';
 import BrowserWebWorker from './browser_webworker';
 import WebWorker from './webworker';
+import { AssertionError } from '../../errors';
 
 interface WebWorkersOptions {
     url?: string;
@@ -18,11 +18,11 @@ export default async function(webworkerModule: BrowserWebWorker, options?: WebWo
     if (options.count !== undefined && options.count !== null) {
         if (workers.length !== options.count) {
             if (!msg) msg = `Expected ${options.count} webworkers running${urlMsg}, ${workers.length} found.`;
-            await assertUtils.rejectAssertion("assert.webworkers", msg);
+            throw new AssertionError("assert.webworkers", msg);
         }
     } else if (workers.length === 0) {
         if (!msg) msg = `Expected at least 1 webworker running${urlMsg}, 0 found.`;
-        await assertUtils.rejectAssertion("assert.webworkers", msg);
+        throw new AssertionError("assert.webworkers", msg);
     }
 }
 

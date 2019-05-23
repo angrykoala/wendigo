@@ -65,9 +65,14 @@ export default abstract class BrowserCore {
         return this._loaded && !this.disabled;
     }
 
+    public get incognito(): boolean {
+        return Boolean(this.settings.incognito);
+    }
+
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
+        url = this._processUrl(url);
         if (options.queryString) {
             const qs = this._generateQueryString(options.queryString);
             url = `${url}${qs}`;
@@ -86,7 +91,7 @@ export default abstract class BrowserCore {
     public async openFile(filepath: string, options: OpenSettings): Promise<void> {
         const absolutePath = path.resolve(filepath);
         try {
-            await this.open(`file:${absolutePath}`, options);
+            await this.open(`file://${absolutePath}`, options);
         } catch (err) {
             return Promise.reject(new FatalError("openFile", `Failed to open "${filepath}". File not found.`));
         }
@@ -216,5 +221,11 @@ export default abstract class BrowserCore {
         } else {
             return `?${querystring.stringify(qs)}`;
         }
+    }
+
+    private _processUrl(url: string): string {
+        if (url.split("://").length === 1) {
+            return `http://${url}`;
+        } else return url;
     }
 }

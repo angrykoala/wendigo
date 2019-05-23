@@ -1,4 +1,4 @@
-import { rejectAssertion } from '../../utils/assert_utils';
+import {AssertionError} from '../../errors';
 import { isNumber } from '../../utils/utils';
 import { WendigoSelector } from '../../types';
 
@@ -57,7 +57,7 @@ async function equalAssertion(countData: CountConfig, elementsFound: number, msg
     const expected = Number(countData.equal);
     if (elementsFound !== expected) {
         if (!msg) msg = `Expected selector "${selector}" to find exactly ${countData.equal} elements, ${elementsFound} found`;
-        return rejectAssertion("assert.elements", msg, elementsFound, expected);
+        throw new AssertionError("assert.elements", msg, elementsFound, expected);
     }
 }
 
@@ -65,7 +65,7 @@ async function atLeastAssertion(countData: CountConfig, elementsFound: number, m
     const expected = Number(countData.atLeast);
     if (elementsFound < expected) {
         if (!msg) msg = `Expected selector "${selector}" to find at least ${countData.atLeast} elements, ${elementsFound} found`;
-        return rejectAssertion("assert.elements", msg);
+        throw new AssertionError("assert.elements", msg);
     }
 }
 
@@ -73,7 +73,7 @@ async function atMostAssertion(countData: CountConfig, elementsFound: number, ms
     const expected = Number(countData.atMost);
     if (elementsFound > expected) {
         if (!msg) msg = `Expected selector "${selector}" to find up to ${countData.atMost} elements, ${elementsFound} found`;
-        return rejectAssertion("assert.elements", msg);
+        throw new AssertionError("assert.elements", msg);
     }
 }
 
@@ -82,6 +82,6 @@ async function bothAssertion(countData: CountConfig, elementsFound: number, msg:
     const least = Number(countData.atLeast);
     if (elementsFound < least || elementsFound > most) {
         if (!msg) msg = `Expected selector "${selector}" to find between ${countData.atLeast} and ${countData.atMost} elements, ${elementsFound} found`; // eslint-disable-line max-len
-        return rejectAssertion("assert.elements", msg);
+        throw new AssertionError("assert.elements", msg);
     }
 }
