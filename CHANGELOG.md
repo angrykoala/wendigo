@@ -1,6 +1,8 @@
 2.1.1 / ####-##-##
 ==================
 
+* Improvements on XPath recognition in wendigoQuery
+
 2.1.0 / 2019-05-23
 ==================
 
