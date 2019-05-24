@@ -2,6 +2,7 @@
 ==================
 
 * Improvements on XPath recognition in wendigoQuery
+* XPath queries will now filter any not-element result
 
 2.1.0 / 2019-05-23
 ==================

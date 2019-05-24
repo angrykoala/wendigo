@@ -49,16 +49,18 @@ if (!window.WendigoQuery) {
             else return [elements];
         },
         queryXPath(xPath) {
-            const xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
+            const xPathResult = document.evaluate(xPath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
             const result = xPathResult.iterateNext();
+            if (result.nodeType !== 1) return null;
             return result;
         },
         queryXPathAll(xPath) {
-            const xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
+            const xPathResult = document.evaluate(xPath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
             const result = [];
             let r = xPathResult.iterateNext();
             while (r !== null) {
-                result.push(r);
+                if (r.nodeType === 1) // Not an element
+                    result.push(r);
                 r = xPathResult.iterateNext();
             }
             return result;
