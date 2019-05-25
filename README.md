@@ -245,7 +245,7 @@ const elementText = await browser.evaluate((s) => {
 This method, unlike `browser.page.evaluate` will automatically parse any argument if possible:
 
 **query(selector, childSelector?)**  
-Queries the given selector (css, xpath or DomElement) and returns a [DOMElement](#dom-element). If multiple elements match, only the first will be returned. Returns null if no element found.
+Queries the given selector (CSS, XPath or DomElement) and returns a [DOMElement](#dom-element). If multiple elements match, only the first will be returned. Returns null if no element found.
 
 ```js
 const element = await browser.query("h1");
@@ -258,6 +258,8 @@ const element = await browser.query(".div");
 const children = await browser.query(element, "p"); // First paragraph under element .div
 ```
 
+Note that any result that is not an element node will be filtered for XPath requests.
+
 **queryAll(selector, childSelector?)**  
 Returns an array with all the [DOMElement](#dom-element) matching the given selector.
 
@@ -267,6 +269,8 @@ elements.length; // 2
 ```
 
 Optionally, queryAll supports 2 parameters. The query will then be performed only on the elements under the first selector.
+
+Note that any result that is not an element node will be filtered for XPath requests.
 
 **elementFromPoint(x, y)**  
 Given the coordinates (in pixels) as two numbers, returns the topmost DomElement in that position or `null` if no element is present.

@@ -1,3 +1,9 @@
+2.1.1 / 2018-05-24
+==================
+
+* Improvements on XPath recognition in wendigoQuery
+* XPath queries will now filter any not-element result
+
 2.1.0 / 2019-05-23
 ==================
 

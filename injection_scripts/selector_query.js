@@ -49,16 +49,18 @@ if (!window.WendigoQuery) {
             else return [elements];
         },
         queryXPath(xPath) {
-            const xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
+            const xPathResult = document.evaluate(xPath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
             const result = xPathResult.iterateNext();
+            if (result.nodeType !== 1) return null;
             return result;
         },
         queryXPathAll(xPath) {
-            const xPathResult = document.evaluate(xPath, document, null, XPathResult.ANY_TYPE, null);
+            const xPathResult = document.evaluate(xPath, document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null);
             const result = [];
             let r = xPathResult.iterateNext();
             while (r !== null) {
-                result.push(r);
+                if (r.nodeType === 1) // Not an element
+                    result.push(r);
                 r = xPathResult.iterateNext();
             }
             return result;
@@ -66,16 +68,27 @@ if (!window.WendigoQuery) {
 
         _parseSelectorType(selector) {
             if (typeof(selector) === "string") {
-                return this._parseStringSelector(selector);
+                if (selector.length === 0) return null;
+                if (this._isXPathQuery(selector)) return this.selectorTypes.xpath;
+                else return this.selectorTypes.css;
             } else if (typeof(selector) === "object") {
                 return this.selectorTypes.domElement;
             } else return null;
         },
 
-        _parseStringSelector(selector) {
-            if (selector.length === 0) return null;
-            if (selector[0] === "/") return this.selectorTypes.xpath;
-            else return this.selectorTypes.css;
+        // NOTE: Duplicate of utils.isXPathQuery
+        _isXPathQuery(s) {
+            if (s[0] === '/') return true;
+            if (/^.\./.test(s)) return true;
+            const axisSplit = s.split("::");
+            if (axisSplit.length > 1) {
+                const validAxis = ["ancestor", "ancestor-or-self", "attribute", "child", "descendant", "descendant-or-self",
+                    "following", "following-sibling", "namespace", "parent", "preceding", "preceding-sibling", "self"
+                ];
+                const axe = axisSplit[0];
+                if (validAxis.indexOf(axe) !== -1) return true;
+            }
+            return false;
         }
     };
 }
