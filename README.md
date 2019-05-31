@@ -1611,7 +1611,7 @@ class MyPlugin {
     }
 
     findKoalas() {
-        return this._browser.findByTextContaining(/koala/);
+        return this._browser.findByTextContaining("koala");
     }
 
     _beforeOpen(options) { // This hook will be called anytime `browser.open` is executed
