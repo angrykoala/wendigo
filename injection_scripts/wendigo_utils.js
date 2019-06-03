@@ -9,8 +9,9 @@ if (!window.WendigoUtils) {
             if (!element) return false;
             if (element === document) return true; // Top element, always visible
             const style = window.getComputedStyle(element);
-            if (style.display === 'none') return false;
-            if (style.visibility === 'hidden') return false;
+            if (style.display === 'none' ||
+            style.visibility === 'hidden' ||
+            style.opacity === '0') return false;
             return this.isVisible(element.parentNode);
         },
         queryElement(selector) {

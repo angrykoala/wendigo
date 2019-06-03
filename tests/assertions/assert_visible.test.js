@@ -84,8 +84,17 @@ describe("Assert Visible", function() {
     });
 
     it("Not Visible Child", async() => {
-        await browser.open(configUrls.hiddenChild);
+        await browser.open(configUrls.hidden);
         await browser.assert.not.visible(".hidden-div");
         await browser.assert.not.visible(".child");
+    });
+
+    it("Is Not Visible With Opacity 0", async() => {
+        await browser.open(configUrls.hidden);
+        await browser.assert.not.visible(".hidden-opacity");
+
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.visible(".hidden-opacity");
+        }, `[assert.visible] Expected element ".hidden-opacity" to be visible.`);
     });
 });

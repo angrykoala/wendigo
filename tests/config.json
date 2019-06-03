@@ -10,7 +10,7 @@
         "requests": "http://localhost:3456/request.html",
         "requestsFake": "http://localhost:3456/request_fake.html",
         "viewport": "http://localhost:3456/viewport.html",
-        "hiddenChild": "http://localhost:3456/hidden_child.html",
+        "hidden": "http://localhost:3456/hidden.html",
         "disabledItems": "http://localhost:3456/disabled_items.html",
         "hover": "http://localhost:3456/hover.html",
         "userAgent": "http://localhost:3456/user_agent.html",

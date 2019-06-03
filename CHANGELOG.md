@@ -1,6 +1,7 @@
 2.1.2 / ####-##-##
 ==================
 
+* Element is considered not visible if opacity is 0
 * Dependencies updated
 
 2.1.1 / 2018-05-24
