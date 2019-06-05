@@ -1,4 +1,4 @@
-import * as process from 'process';
+import process from 'process';
 import puppeteer from 'puppeteer';
 import BrowserFactory from './lib/browser_factory';
 import * as Errors from './lib/errors';
@@ -100,8 +100,6 @@ class Wendigo {
 
     private _validatePluginAssertion(name: string, assertions?: WendigoPluginAssertionInterface): void {
         if (assertions) {
-            // const isValidObject = assertions.assert || assertions.not;
-            // if (typeof assertions !== 'function' && !isValidObject) throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
             if (typeof assertions !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid assertion module for plugin "${name}".`);
         }
     }

@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as querystring from 'querystring';
+import path from 'path';
+import querystring from 'querystring';
 import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
 
 import { stringifyLogText } from '../utils/puppeteer_utils';

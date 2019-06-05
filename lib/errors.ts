@@ -1,6 +1,6 @@
-import * as assert from 'assert';
+import { AssertionError as NativeAssertionError } from 'assert';
 
-export class AssertionError extends assert.AssertionError {
+export class AssertionError extends NativeAssertionError {
     public readonly extraMessage: string;
     constructor(fn: string, message: string, actual?: any, expected?: any) {
         if (actual !== undefined) actual = String(actual);

@@ -709,6 +709,7 @@ An element will considered visible if:
 
 * Exists.
 * The computed style doesn't contain display: none or visibility: hidden.
+* Opacity is not 0.
 * All the parents are visible.
 
 **assert.tag(selector, expected, msg?)**  
