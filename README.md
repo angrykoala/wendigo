@@ -709,6 +709,7 @@ An element will considered visible if:
 
 * Exists.
 * The computed style doesn't contain display: none or visibility: hidden.
+* Opacity is not 0.
 * All the parents are visible.
 
 **assert.tag(selector, expected, msg?)**  
@@ -1611,7 +1612,7 @@ class MyPlugin {
     }
 
     findKoalas() {
-        return this._browser.findByTextContaining(/koala/);
+        return this._browser.findByTextContaining("koala");
     }
 
     _beforeOpen(options) { // This hook will be called anytime `browser.open` is executed

@@ -1,4 +1,4 @@
-import * as querystring from 'querystring';
+import querystring from 'querystring';
 import { URL } from 'url';
 
 export function isNumber(n: any): n is number {

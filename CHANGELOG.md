@@ -1,3 +1,10 @@
+2.1.2 / 2018-06-06
+==================
+
+* Elements considered not visible if opacity is 0
+* Minor dependencies updated
+* Minor code improvements
+
 2.1.1 / 2018-05-24
 ==================
 

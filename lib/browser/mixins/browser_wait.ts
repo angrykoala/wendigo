@@ -2,16 +2,15 @@ import { EvaluateFn } from 'puppeteer';
 
 import BrowserNavigation from './browser_navigation';
 
-import * as utils from '../../utils/utils';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import { createFindTextXPath } from '../../utils/utils';
+import { createFindTextXPath, delay} from '../../utils/utils';
 
 export default abstract class BrowserWait extends BrowserNavigation {
     public wait(ms: number = 250): Promise<void> {
         this._failIfNotLoaded("wait");
-        return utils.delay(ms);
+        return delay(ms);
     }
 
     public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
