@@ -5,7 +5,7 @@ import { arrayfy } from '../../utils/utils';
 
 export default class BrowserCookies extends WendigoModule {
     public async all(): Promise<{ [s: string]: string }> {
-        const cookies = await this._browser.page.cookies();
+        const cookies = await this._page.cookies();
         return cookies.reduce((acc, cookie): { [s: string]: string } => {
             acc[cookie.name] = cookie.value;
             return acc;
@@ -15,8 +15,8 @@ export default class BrowserCookies extends WendigoModule {
     public async get(name: string, url?: string): Promise<CookieData | void> {
         let cookies: Array<CookieData>;
         if (url) {
-            cookies = await this._browser.page.cookies(url);
-        } else cookies = await this._browser.page.cookies();
+            cookies = await this._page.cookies(url);
+        } else cookies = await this._page.cookies();
         return cookies.find((cookie) => {
             return cookie.name === name;
         });
@@ -32,14 +32,14 @@ export default class BrowserCookies extends WendigoModule {
         } else {
             data = Object.assign({}, value, { name: name });
         }
-        return this._browser.page.setCookie(data);
+        return this._page.setCookie(data);
     }
 
     public delete(name: string | Array<string> | DeleteCookie): Promise<void> {
         if (name === undefined || name === null) throw new WendigoError("cookies.delete", "Delete cookie name missing");
 
         if (this.isDeleteCookieInterface(name)) {
-            return this._browser.page.deleteCookie(name);
+            return this._page.deleteCookie(name);
         }
 
         const cookiesList = arrayfy(name);
@@ -47,11 +47,11 @@ export default class BrowserCookies extends WendigoModule {
         const cookiesObjects = cookiesList.map((n) => {
             return { name: n };
         });
-        return this._browser.page.deleteCookie(...cookiesObjects);
+        return this._page.deleteCookie(...cookiesObjects);
     }
 
     public async clear(): Promise<void> {
-        const cookies = await this._browser.page.cookies();
+        const cookies = await this._page.cookies();
         const cookiesList = cookies.map(c => c.name);
         return this.delete(cookiesList);
     }

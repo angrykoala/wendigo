@@ -53,7 +53,7 @@ export default class BrowserRequests extends WendigoModule {
 
     public async waitForNextRequest(url: string, timeout: number = 500): Promise<void> {
         try {
-            await this._browser.page.waitForRequest(url, {
+            await this._page.waitForRequest(url, {
                 timeout: timeout
             });
         } catch (err) {
@@ -63,7 +63,7 @@ export default class BrowserRequests extends WendigoModule {
 
     public async waitForNextResponse(url: string, timeout: number = 500): Promise<void> {
         try {
-            await this._browser.page.waitForResponse(url, {
+            await this._page.waitForResponse(url, {
                 timeout: timeout
             });
         } catch (err) {
@@ -118,8 +118,8 @@ export default class BrowserRequests extends WendigoModule {
 
     protected async _startRequestInterceptor(): Promise<void> {
         this._interceptorReady = true;
-        await this._browser.page.setRequestInterception(true);
-        this._browser.page.on('request', request => {
+        await this._page.setRequestInterception(true);
+        this._page.on('request', request => {
             this._requests.push(request);
             const mock = this._requestMocker.getMockedResponse(request);
             if (mock) {

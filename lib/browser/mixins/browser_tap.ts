@@ -46,7 +46,7 @@ export default abstract class BrowserTap extends BrowserWait {
     }
 
     private async tapCoordinates(x: number, y: number): Promise<number> {
-        await this.page.touchscreen.tap(x, y);
+        await this._page.touchscreen.tap(x, y);
         return 1;
     }
 }

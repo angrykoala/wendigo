@@ -1,5 +1,5 @@
 import BrowserTap from './mixins/browser_tap';
-import { Page } from 'puppeteer';
+import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
 import { FinalBrowserSettings } from '../types';
 
 // Modules
@@ -18,7 +18,7 @@ export default class Browser extends BrowserTap {
     public readonly webworkers: BrowserWebworker;
     public readonly dialog: BrowserDialog;
 
-    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string> = []) {
+    constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         components = components.concat(["cookies", "localStorage", "requests", "console", "webworkers", "dialog"]);
         super(page, settings, components);
         this.cookies = new BrowserCookies(this);

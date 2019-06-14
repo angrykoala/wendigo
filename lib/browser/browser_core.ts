@@ -1,23 +1,27 @@
 import path from 'path';
 import querystring from 'querystring';
-import { ConsoleMessage, Page, Response, Viewport, Frame } from 'puppeteer';
+import { ConsoleMessage, Page, Response, Frame } from 'puppeteer';
 
 import { stringifyLogText } from '../utils/puppeteer_utils';
 import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
+import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
+import { ViewportOptions } from './puppeteer_wrapper/puppeteer_types';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
 
-async function pageLog(log: ConsoleMessage): Promise<void> {
-    const text = await stringifyLogText(log);
-    let logType = log.type() as string;
-    if (logType === 'warning') logType = 'warn';
-    const con = console as any;
-    if (!(con[logType])) logType = 'log';
-    con[logType](text);
+async function pageLog(log?: ConsoleMessage): Promise<void> {
+    if (log) {
+        const text = await stringifyLogText(log);
+        let logType = log.type() as string;
+        if (logType === 'warning') logType = 'warn';
+        const con = console as any;
+        if (!(con[logType])) logType = 'log';
+        con[logType](text);
+    }
 }
 
 const defaultOpenOptions: OpenSettings = {
@@ -29,9 +33,9 @@ const defaultOpenOptions: OpenSettings = {
 };
 
 export default abstract class BrowserCore {
-    public page: Page;
     public initialResponse: Response | null;
 
+    protected _page: PuppeteerPage;
     protected originalHtml?: string;
     protected settings: FinalBrowserSettings;
 
@@ -39,18 +43,18 @@ export default abstract class BrowserCore {
     private disabled: boolean;
     private components: Array<string>;
 
-    constructor(page: Page, settings: FinalBrowserSettings, components: Array<string> = []) {
-        this.page = page;
+    constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
+        this._page = page;
         this.settings = settings;
         this._loaded = false;
         this.initialResponse = null;
         this.disabled = false;
         this.components = components;
         if (this.settings.log) {
-            this.page.on("console", pageLog);
+            this._page.on("console", pageLog);
         }
 
-        this.page.on('load', async (): Promise<void> => {
+        this._page.on('load', async (): Promise<void> => {
             if (this._loaded) {
                 try {
                     await this._afterPageLoad();
@@ -61,6 +65,9 @@ export default abstract class BrowserCore {
         });
     }
 
+    public get page(): Page {
+        return this._page.page;
+    }
     public get loaded(): boolean {
         return this._loaded && !this.disabled;
     }
@@ -79,7 +86,7 @@ export default abstract class BrowserCore {
         }
         try {
             await this._beforeOpen(options);
-            const response = await this.page.goto(url);
+            const response = await this._page.goto(url);
             this.initialResponse = response;
             return this._afterPageLoad();
         } catch (err) {
@@ -106,7 +113,7 @@ export default abstract class BrowserCore {
         this.originalHtml = undefined;
         try {
             await p;
-            await this.page.browser().close();
+            await this._page.browser().close();
         } catch (err) {
             return Promise.reject(new FatalError("close", `Failed to close browser. ${err.message}`));
         }
@@ -115,20 +122,19 @@ export default abstract class BrowserCore {
     public async evaluate(cb: (...args: Array<any>) => any, ...args: Array<any>): Promise<any> {
         this._failIfNotLoaded("evaluate");
         args = this._setupEvaluateArguments(args);
-        const rawResult = await this.page.evaluateHandle(cb, ...args);
+        const rawResult = await this._page.evaluateHandle(cb, ...args);
         const resultAsElement = rawResult.asElement();
         if (resultAsElement) {
             return new DomElement(resultAsElement);
         } else return rawResult.jsonValue();
     }
 
-    public setViewport(config = {}): Promise<void> {
-        const finalConfig = Object.assign({}, this.page.viewport(), config) as Viewport;
-        return this.page.setViewport(finalConfig);
+    public setViewport(config: ViewportOptions = {}): Promise<void> {
+        return this._page.setViewport(config);
     }
 
     public frames(): Array<Frame> {
-        return this.page.frames();
+        return this._page.frames();
     }
 
     public async mockDate(date: Date, options = { freeze: true }): Promise<void> {
@@ -146,7 +152,7 @@ export default abstract class BrowserCore {
     public async addScript(scriptPath: string): Promise<void> {
         this._failIfNotLoaded("addScript");
         try {
-            await this.page.addScriptTag({
+            await this._page.addScriptTag({
                 path: scriptPath
             });
         } catch (err) {
@@ -168,11 +174,11 @@ export default abstract class BrowserCore {
 
     protected async _beforeOpen(options: OpenSettings): Promise<void> {
         if (this.settings.userAgent) {
-            await this.page.setUserAgent(this.settings.userAgent);
+            await this._page.setUserAgent(this.settings.userAgent);
         }
 
         if (this.settings.bypassCSP) {
-            await this.page.setBypassCSP(true);
+            await this._page.setBypassCSP(true);
         }
         await this.setViewport(options.viewport);
         await this._callComponentsMethod("_beforeOpen", options);
@@ -180,7 +186,7 @@ export default abstract class BrowserCore {
 
     protected async _afterPageLoad(): Promise<void> {
         try {
-            const content = await this.page.content();
+            const content = await this._page.content();
             this.originalHtml = content;
             await this._addJsScripts();
         } catch (err) {
@@ -192,7 +198,7 @@ export default abstract class BrowserCore {
 
     private async _addJsScripts(): Promise<void> {
         const promises = injectionScripts.map((s) => {
-            return this.page.addScriptTag({ // Not using wrapper as this is before loaded is true
+            return this._page.addScriptTag({ // Not using wrapper as this is before loaded is true
                 path: path.join(injectionScriptsPath, s)
             });
         });

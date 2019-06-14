@@ -53,6 +53,6 @@
     "markdownlint-cli": "^0.17.0",
     "mocha": "^6.1.4",
     "tslint": "^5.17.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.2"
   }
 }

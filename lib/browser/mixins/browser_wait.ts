@@ -20,7 +20,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
             else return e;
         });
         try {
-            await this.page.waitFor(selector, {
+            await this._page.waitFor(selector, {
                 timeout: timeout,
                 visible: true
             }, ...args);
@@ -74,7 +74,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
         this._failIfNotLoaded("waitForNavigation");
         const t1 = new Date().getTime();
         try {
-            await this.page.waitForNavigation({
+            await this._page.waitForNavigation({
                 timeout: timeout
             });
             const t2 = new Date().getTime();

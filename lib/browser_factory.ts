@@ -7,6 +7,7 @@ import BrowserAssertion from './browser/browser_assertions';
 import { FinalBrowserSettings, PluginModule } from './types';
 import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
+import PuppeteerPage from './browser/puppeteer_wrapper/puppeteer_page';
 
 export default class BrowserFactory {
     private static browserClass?: typeof Browser;
@@ -16,7 +17,9 @@ export default class BrowserFactory {
             this.setupBrowserClass(plugins);
         }
         if (!this.browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
-        return new this.browserClass(page, settings) as BrowserInterface;
+
+        const puppeteerPage = new PuppeteerPage(page);
+        return new this.browserClass(puppeteerPage, settings) as BrowserInterface;
     }
 
     public static clearCache(): void {

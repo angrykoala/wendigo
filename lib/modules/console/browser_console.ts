@@ -12,9 +12,11 @@ export default class BrowserConsole extends WendigoModule {
     constructor(browser: Browser) {
         super(browser);
         this.logs = [];
-        this._browser.page.on("console", async (log) => {
-            const text = await stringifyLogText(log);
-            this.logs.push(new Log(log, text));
+        this._page.on("console", async (log) => {
+            if (log) {
+                const text = await stringifyLogText(log);
+                this.logs.push(new Log(log, text));
+            }
         });
     }
 

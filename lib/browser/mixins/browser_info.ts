@@ -18,7 +18,7 @@ export default abstract class BrowserInfo extends BrowserClick {
 
     public title(): Promise<string> {
         this._failIfNotLoaded("title");
-        return this.page.title();
+        return this._page.title();
     }
 
     public html(): string {
