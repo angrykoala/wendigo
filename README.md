@@ -348,6 +348,13 @@ Returns an array with the innerHtml strings of all the elements matching the giv
 await browser.innerHtml("p"); // ["my <b>first</b> paragraph"]
 ```
 
+**elementHtml(selector)**  
+Returns an array with the html strings of all the elements matching the given selector
+
+```js
+await browser.elementHtml("p"); // ["<p>my <b>first</b> paragraph</p>"]
+```
+
 **title()**  
 Returns the page title.
 
@@ -827,6 +834,16 @@ The assertion will throw if no element is found.
 await browser.assert.innerHtml("p", "my <b>first</b> paragraph");
 ```
 
+**assert.elementHtml(selector, expected, msg?)**  
+Asserts that at least one element matching the given selector has the expected html.
+The expected html can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.elementHtml("p", "<p>my <b>first</b> paragraph</p>");
+```
+
 **assert.options(selector, expected, msg?)**  
 Assets that the first element with given selector has the expected options value. Expected can be a string, if only one option is given, or an array if multiple options are given. All expected options must match in the same order.
 
@@ -943,13 +960,23 @@ Asserts that no element matching the given selector doesn't contain an attribute
 > Same as `browser.assert.not.attribute(selector, "href", expected, msg?)`
 
 **assert.not.innerHtml(selector, expected, msg?)**  
-Asserts that at least no element matching the given selector has the expected innerHtml.
+Asserts that at no element matching the given selector has the expected innerHtml.
 The expected HTML can be either a _string_ or a _Regex_ value.
 
 The assertion will throw if no element is found.
 
 ```js
 await browser.assert.not.innerHtml("p", "not <b>a</b> paragraph");
+```
+
+**assert.not.elementHtml(selector, expected, msg?)**  
+Asserts that at no element matching the given selector has the expected html.
+The expected HTML can be either a _string_ or a _Regex_ value.
+
+The assertion will throw if no element is found.
+
+```js
+await browser.assert.not.elementHtml("p", "<div>not <b>a</b> paragraph</div>");
 ```
 
 **assert.not.selectedOptions(selector, expected, msg?)**  
