@@ -2,6 +2,7 @@
 =================
 
 * Internal Puppeteer wrapper
+* Puppeteer updated to 1.18.0
 
 2.1.2 / 2018-06-06
 ==================
