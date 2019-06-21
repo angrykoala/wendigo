@@ -1374,6 +1374,9 @@ Filter requests by post body, the body can be a String, Object or regex.
 await browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
 
+**resourceType(resource)**  
+Filter requests by given resource type (`xhr`, `fetch`, ...). Possible resource types are defined [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestresourcetype).
+
 **pending()**  
 Filter requests by pending (response not retrieved).
 
@@ -1442,6 +1445,9 @@ await browser.assert.requests.responseBody({response: "OK"});
 
 **pending(msg?)**  
 Asserts that at least one request is still pending (no response received).
+
+**resourceType(resourceType: string, msg?)**  
+Asserts that at least one request has the given resource type (`fetch`, `xhr`, ...).
 
 **exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.

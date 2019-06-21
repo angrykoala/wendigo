@@ -189,4 +189,24 @@ describe("Requests Filter", function() {
         const pending3 = await browser.requests.filter.pending().requests;
         assert.strictEqual(pending3.length, 0);
     });
+
+    it("Filter By Resource Type", async() => {
+        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending2.length, 0);
+        const docReqs = await browser.requests.filter.resourceType("document").requests;
+        assert.strictEqual(docReqs.length, 1);
+        const styleReqs = await browser.requests.filter.resourceType("stylesheet").requests;
+        assert.strictEqual(styleReqs.length, 1);
+    });
+
+    it("Filter By Resource Type Multiple Fetch Requests", async() => {
+        const pending1 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending1.length, 0);
+
+        await browser.clickText("click me");
+        await browser.clickText("click me");
+        await browser.wait(10);
+        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending2.length, 2);
+    });
 });

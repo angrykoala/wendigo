@@ -2,6 +2,7 @@ import { AssertionError } from '../../errors';
 import { stringify } from '../../utils/utils';
 import RequestFilter from './request_filter';
 import { ExpectedHeaders } from './types';
+import { ResourceType } from 'puppeteer';
 
 type PromiseExecutor<T> = (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void;
 
@@ -74,6 +75,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         if (!msg) msg = `Expected pending request to exist.`;
 
         return this._assertFilter("assert.requests.pending", responseBodyFilter, msg);
+    }
+
+    public resourceType(expected: ResourceType, msg?: string): RequestAssertionsFilter {
+        const responseBodyFilter = this._requestFilter.resourceType(expected);
+        if (!msg) msg = `Expected request with resourceType "${expected}" to exist.`;
+
+        return this._assertFilter("assert.requests.resourceType", responseBodyFilter, msg);
     }
 
     public exactly(expected: number, msg?: string): RequestAssertionsFilter {

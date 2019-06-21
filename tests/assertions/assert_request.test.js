@@ -287,4 +287,24 @@ describe("Assert Requests", function() {
             await browser.assert.requests.pending("pending fails");
         }, `[assert.requests.pending] pending fails`);
     });
+
+    it("Assert Requests By Resource Type", async() => {
+        await browser.assert.requests.resourceType("fetch").exactly(0);
+        await browser.assert.requests.resourceType("document").exactly(1);
+        await browser.assert.requests.resourceType("stylesheet").exactly(1);
+        await browser.assert.requests.resourceType("document");
+        await browser.assert.requests.resourceType("stylesheet");
+    });
+
+    it("Assert Requests By Resource Type Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.resourceType("fetch");
+        }, `[assert.requests.resourceType] Expected request with resourceType "fetch" to exist.`);
+    });
+
+    it("Assert Requests By Resource Type Throws Custom Message", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.resourceType("fetch", "resource fails");
+        }, `[assert.requests.resourceType] resource fails`);
+    });
 });

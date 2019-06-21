@@ -1,8 +1,8 @@
 2.2.0 / ####-##-##
 ==================
 
-* Filter by pending requests
-* Assert by pending requests
+* Filter by pending requests and resourceType
+* Assert by pending requests and resourceType
 
 2.1.3/ 2018-06-21
 =================
