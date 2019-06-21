@@ -8,7 +8,6 @@ describe("Assert Requests", function() {
     this.timeout(5000);
     let browser;
 
-
     before(async() => {
         browser = await Wendigo.createBrowser();
     });
@@ -258,5 +257,34 @@ describe("Assert Requests", function() {
         await browser.clickText("click me");
         await browser.wait();
         await browser.assert.requests.method("GET").exactly(3).url(/api/);
+    });
+
+    it("Assert Requests By Pending", async() => {
+        const response = Object.assign({
+            auto: false,
+            body: {result: "DUMMY"}
+        });
+        const mock = browser.requests.mock(configUrls.api, response);
+        await browser.assert.requests.pending().exactly(0);
+
+        await browser.clickText("click me");
+        await browser.wait(10);
+        await browser.assert.requests.pending().exactly(1);
+        await browser.assert.requests.pending();
+        mock.trigger();
+        await browser.wait(10);
+        await browser.assert.requests.pending().exactly(0);
+    });
+
+    it("Assert Requests By Pending Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.pending();
+        }, `[assert.requests.pending] Expected pending request to exist.`);
+    });
+
+    it("Assert Requests By Pending Throws With Custom Message", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.pending("pending fails");
+        }, `[assert.requests.pending] pending fails`);
     });
 });

@@ -96,6 +96,14 @@ export default class RequestFilter {
         return new RequestFilter(requests);
     }
 
+    public pending(): RequestFilter {
+        const requests = filterPromise(this.requests, el => {
+            const response = el.response();
+            return !response;
+        });
+        return new RequestFilter(requests);
+    }
+
     private responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
         const response = request.response();
         if (!response) return false;

@@ -69,6 +69,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         return this._assertFilter("assert.requests.responseBody", responseBodyFilter, msg);
     }
 
+    public pending(msg?: string): RequestAssertionsFilter {
+        const responseBodyFilter = this._requestFilter.pending();
+        if (!msg) msg = `Expected pending request to exist.`;
+
+        return this._assertFilter("assert.requests.pending", responseBodyFilter, msg);
+    }
+
     public exactly(expected: number, msg?: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
             this.then(() => {

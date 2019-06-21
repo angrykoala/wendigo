@@ -1367,12 +1367,15 @@ await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
 **postBody(expected)**  
-Filters requests by post body, the body can be a String, Object or regex.
+Filter requests by post body, the body can be a String, Object or regex.
 
 ```js
 // Filters all DELETE requests made to with json body
 await browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
 ```
+
+**pending()**  
+Filter requests by pending (response not retrieved).
 
 **responseBody(expected)**  
 Filters requests by response body, the body can be a String, Object or regex.
@@ -1436,6 +1439,9 @@ Asserts that a request response contains the given body. The expected value can 
 ```js
 await browser.assert.requests.responseBody({response: "OK"});
 ```
+
+**pending(msg?)**  
+Asserts that at least one request is still pending (no response received).
 
 **exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.

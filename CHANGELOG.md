@@ -1,3 +1,9 @@
+2.2.0 / ####-##-##
+==================
+
+* Filter by pending requests
+* Assert by pending requests
+
 2.1.3/ 2018-06-21
 =================
 
