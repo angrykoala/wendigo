@@ -1331,23 +1331,23 @@ const filteredRequests = await browser.requests.filter.status(200).requests;
 
 The available filters are:
 
-**url(value)**  
+**requests.filter.url(value)**  
 Filters by the given url. The url can be a string or a regex.
 
 ```js
 await browser.requests.filter.url("http://localhost:8002/api").requests;
 ```
 
-**method(value)**  
+**requests.filter.method(value)**  
 Filters by request method (`GET`, `POST`,...)
 
-**status(value)**  
+**requests.filter.status(value)**  
 Filters by response status (`200`, `400`)
 
-**fromCache(value=true)**  
+**requests.filter.fromCache(value=true)**  
 Filters whether the response comes from the browser cache or not.
 
-**responseHeaders(headers)**  
+**requests.filter.responseHeaders(headers)**  
 Filters requests where the response has all the given headers with the given values. The expected value can be a string or regex.
 
 ```js
@@ -1356,7 +1356,7 @@ await browser.requests.filter.responseHeaders({
 })
 ```
 
-**ok(isOk=true)**  
+**requests.filter.ok(isOk=true)**  
 Filters request which response are considered successfull (status is between 200 and 299).
 
 Filters can be joined to perform a filter of several fields.
@@ -1366,21 +1366,21 @@ Filters can be joined to perform a filter of several fields.
 await browser.filter.url(/api/).method("POST").ok().fromCache(false).requests;
 ```
 
-**postBody(expected)**  
+**requests.filter.postBody(expected)**  
 Filter requests by post body, the body can be a String, Object or regex.
 
 ```js
 // Filters all DELETE requests made to with json body
-await browser.filter.url(/api/).method("DELETE").body({id: 5}).requests;
+await browser.filter.url(/api/).method("DELETE").postBody({id: 5}).requests;
 ```
 
-**resourceType(resource)**  
+**requests.filter.resourceType(resource)**  
 Filter requests by given resource type (`xhr`, `fetch`, ...). Possible resource types are defined [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestresourcetype).
 
-**pending()**  
+**requests.filter.pending()**  
 Filter requests by pending (response not retrieved).
 
-**responseBody(expected)**  
+**requests.filter.responseBody(expected)**  
 Filters requests by response body, the body can be a String, Object or regex.
 
 ```js
@@ -1394,21 +1394,21 @@ Assertions related requests can be accessed through `browser.assert.requests`.
 
 Like filters, request assertion don't need `await` and can be concatenated. All the assertions will check that at least one request with the given constraints was made.
 
-**url(expected, msg?)**  
+**assert.requests.url(expected, msg?)**  
 Asserts that at least one request is made to the given url. The url can be a string or regex.
 
 ```js
 await browser.assert.requests.url(/api/);
 ```
 
-**method(expected, msg?)**  
+**assert.requests.method(expected, msg?)**  
 Asserts that at least one request was made with the given method (`GET`, `POST`, ...).
 
 ```js
 await browser.assert.requests.method("GET");
 ```
 
-**status(expected, msg?)**  
+**assert.requests.status(expected, msg?)**  
 Asserts that a response was received with the given status.
 
 ```js
@@ -1417,7 +1417,7 @@ await browser.assert.requests.status(200);
 
 > Note that this method requires the request to be finished.
 
-**responseHeaders(expected, msg?)**  
+**assert.requests.responseHeaders(expected, msg?)**  
 Asserts that a response was received with the given headers. The expected variable is an object with one or more key values representing the expected headers. The value can be either a string or regex.
 
 ```js
@@ -1426,30 +1426,30 @@ await browser.assert.requests.responseHeaders({
 })
 ```
 
-**ok(expected=true, msg?)**  
+**assert.requests.ok(expected=true, msg?)**  
 Asserts that an successful response was received (status is between 200 and 299), or false if false is given.
 
-**postBody(expected, msg?)**  
+**assert.requests.postBody(expected, msg?)**  
 Asserts that a request contains the given post body (regardless of method). The expected value can be a string, regex or object.
 
 ```js
 await browser.assert.requests.postBody({status: "OK"});
 ```
 
-**responseBody(expected, msg?)**  
+**assert.requests.responseBody(expected, msg?)**  
 Asserts that a request response contains the given body. The expected value can be a string, regex or object.
 
 ```js
 await browser.assert.requests.responseBody({response: "OK"});
 ```
 
-**pending(msg?)**  
+**assert.requests.pending(msg?)**  
 Asserts that at least one request is still pending (no response received).
 
-**resourceType(resourceType: string, msg?)**  
+**assert.requests.resourceType(resourceType: string, msg?)**  
 Asserts that at least one request has the given resource type (`fetch`, `xhr`, ...).
 
-**exactly(expected, msg?)**  
+**assert.requests.exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.
 
 ```js
