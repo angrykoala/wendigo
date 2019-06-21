@@ -84,6 +84,6 @@ export default abstract class BrowserClick extends BrowserActions {
     }
 
     private _clickCoordinates(x: number, y: number): Promise<void> {
-        return this.page.mouse.click(x, y);
+        return this._page.mouse.click(x, y);
     }
 }

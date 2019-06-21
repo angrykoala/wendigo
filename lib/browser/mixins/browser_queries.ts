@@ -14,9 +14,9 @@ export default abstract class BrowserQueries extends BrowserCore {
         if (typeof selector === 'string') {
             let elementHandle: ElementHandle | null;
             if (isXPathQuery(selector)) {
-                const results = await this.page.$x(selector);
+                const results = await this._page.$x(selector);
                 elementHandle = results[0] || null;
-            } else elementHandle = await this.page.$(selector);
+            } else elementHandle = await this._page.$(selector);
             result = DomElement.processQueryResult(elementHandle, selector);
         } else if (selector instanceof DomElement) result = selector;
         else throw new WendigoError("query", "Invalid selector.");
@@ -34,8 +34,8 @@ export default abstract class BrowserQueries extends BrowserCore {
 
         if (typeof selector === 'string') {
             let rawElements: Array<ElementHandle>;
-            if (isXPathQuery(selector)) rawElements = await this.page.$x(selector);
-            else rawElements = await this.page.$$(selector);
+            if (isXPathQuery(selector)) rawElements = await this._page.$x(selector);
+            else rawElements = await this._page.$$(selector);
             result = rawElements.map((e) => {
                 return DomElement.processQueryResult(e, selector);
             }).filter(b => Boolean(b)) as Array<DomElement>;

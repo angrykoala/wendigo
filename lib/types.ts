@@ -1,5 +1,5 @@
-import { Viewport } from 'puppeteer';
 import DomElement from './models/dom_element';
+import { ViewportOptions } from './browser/puppeteer_wrapper/puppeteer_types';
 
 export type WendigoSelector = string | DomElement;
 
@@ -33,6 +33,6 @@ export interface PluginModule {
 }
 
 export interface OpenSettings {
-    viewport?: Viewport;
+    viewport?: ViewportOptions;
     queryString?: string | { [s: string]: string; };
 }

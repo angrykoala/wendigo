@@ -1,3 +1,9 @@
+2.1.3/ 2018-06-21
+=================
+
+* Internal Puppeteer wrapper
+* Puppeteer updated to 1.18.0
+
 2.1.2 / 2018-06-06
 ==================
 

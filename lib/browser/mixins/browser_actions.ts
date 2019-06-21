@@ -24,7 +24,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         try {
             for (let i = 0; i < count; i++) {
                 for (const k of keys) {
-                    await this.page.keyboard.press(k);
+                    await this._page.keyboard.press(k);
                 }
             }
         } catch (err) {
@@ -55,7 +55,7 @@ export default abstract class BrowserActions extends BrowserQueries {
                 if (!element) throw new Error();
                 cssPath = await this.findCssPath(element);
             } else cssPath = selector;
-            return await this.page.select(cssPath, ...values);
+            return await this._page.select(cssPath, ...values);
         } catch (err) {
             throw new QueryError("select", `Element "${selector}" not found.`);
         }
@@ -150,7 +150,7 @@ export default abstract class BrowserActions extends BrowserQueries {
 
     public screenshot(args?: Base64ScreenShotOptions): Promise<string | Buffer> {
         this._failIfNotLoaded("screenshot");
-        return this.page.screenshot(args);
+        return this._page.screenshot(args);
     }
 
     public async screenshotOfElement(selector: WendigoSelector, options?: Base64ScreenShotOptions): Promise<string | Buffer> {
@@ -180,7 +180,7 @@ export default abstract class BrowserActions extends BrowserQueries {
     //     const boxFrom = await fromElement.element.boundingBox();
     //     const boxTo = await toElement.element.boundingBox();
     //     if (!boxFrom || !boxTo) throw new FatalError("dragAndDrop", "Bounding box not found");
-    //     const mouse = this.page.mouse;
+    //     const mouse = this._page.mouse;
     //     await mouse.up();
     //     await mouse.move(boxFrom.x + (boxFrom.width / 2), boxFrom.y + (boxFrom.height / 2));
     //     await mouse.down();
