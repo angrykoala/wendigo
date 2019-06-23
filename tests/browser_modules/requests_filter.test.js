@@ -33,7 +33,7 @@ describe("Requests Filter", function() {
     it("Request Between Multiple Browsers", async() => {
         const requests = await browser.requests.all().length;
         await browser.close();
-        browser = await Wendigo.createBrowser();
+        browser = await Wendigo.createBrowser(); // eslint-disable-line require-atomic-updates
         await browser.open(configUrls.requests);
         assert.strictEqual(await browser.requests.all().length, requests);
     });

@@ -2,7 +2,7 @@
 
 if (!window.WendigoQuery) {
     window.WendigoQuery = {
-        selectorTypes: { // Warning: Same as selector type
+        selectorTypes: {// Warning: Same as selector type
             css: "css",
             xpath: "xpath",
             domElement: "domElement"
