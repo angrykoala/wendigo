@@ -22,4 +22,12 @@ export function clearPlugins(): void {
 }
 
 // Types
-export  { WendigoPluginInterface, WendigoPluginAssertionInterface, PluginModule, BrowserSettings } from './lib/types';
+
+export {
+    WendigoPluginInterface, WendigoPluginAssertionInterface,
+    PluginModule, BrowserSettings, WendigoSelector
+} from './lib/types';
+
+export { default as DomElement } from './lib/models/dom_element'; // TODO: export only interface
+
+export { default as Browser } from './lib/browser/browser_interface'; // TODO: export only interface
