@@ -4,6 +4,7 @@
 * Filter by pending requests and resourceType
 * Assert by pending requests and resourceType
 * Browser.elementHtml and assertions
+* Types export for TypeScript improved
 
 2.1.3/ 2018-06-21
 =================
