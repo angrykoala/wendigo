@@ -28,6 +28,8 @@ export {
     PluginModule, BrowserSettings, WendigoSelector
 } from './lib/types';
 
-export { default as DomElement } from './lib/models/dom_element'; // TODO: export only interface
+import { default as DomElementClass } from './lib/models/dom_element';
 
-export { default as Browser } from './lib/browser/browser_interface'; // TODO: export only interface
+export interface DomElement extends DomElementClass {} // tslint:disable-line no-empty-interface
+
+export { default as Browser } from './lib/browser/browser_interface';
