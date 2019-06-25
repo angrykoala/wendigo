@@ -4,6 +4,7 @@ import { WendigoError, QueryError, AssertionError } from '../../errors';
 import BrowserAssertions from '../browser_assertions';
 import BrowserInterface from '../../browser/browser_interface';
 import { WendigoSelector } from '../../types';
+import OverrideError from '../../decorators/override_error';
 
 export default class BrowserNotAssertions {
     protected _assertions: BrowserAssertions;
@@ -122,12 +123,9 @@ export default class BrowserNotAssertions {
         }, "assert.not.style", msg);
     }
 
+    @OverrideError("assert.not")
     public async href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        try {
-            await this.attribute(selector, "href", expected, msg);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "assert.not.href");
-        }
+        await this.attribute(selector, "href", expected, msg);
     }
 
     public innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
@@ -206,12 +204,9 @@ export default class BrowserNotAssertions {
         }, "assert.not.redirect", msg);
     }
 
+    @OverrideError("assert.not")
     public async element(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected selector "${selector}" not to find any elements.`;
-        try {
-            await this._assertions.elements(selector, 0, msg);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "assert.not.element");
-        }
+        await this._assertions.elements(selector, 0, msg);
     }
 }

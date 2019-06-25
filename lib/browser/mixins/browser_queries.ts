@@ -6,10 +6,11 @@ import { FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import { isXPathQuery, createFindTextXPath } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import OverrideError from '../../decorators/override_error';
 
 export default abstract class BrowserQueries extends BrowserCore {
 
-        @FailIfNotLoaded
+    @FailIfNotLoaded
     public async query(selector: WendigoSelector, optionalSelector?: string): Promise<DomElement | null> {
 
         let result: DomElement | null;
@@ -57,32 +58,26 @@ export default abstract class BrowserQueries extends BrowserCore {
     }
 
     @FailIfNotLoaded
+    @OverrideError()
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         const xPathText = optionalText || text as string;
         const xPath = createFindTextXPath(xPathText);
 
         if (optionalText) {
-            try {
-                return await this.queryAll(text, xPath);
-            } catch (err) {
-                throw WendigoError.overrideFnName(err, "findByText");
-            }
+            return await this.queryAll(text, xPath);
         } else {
             return this.queryAll(xPath);
         }
     }
 
     @FailIfNotLoaded
+    @OverrideError()
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
         const xPathText = optionalText || text as string;
         const xPath = createFindTextXPath(xPathText, true);
 
         if (optionalText) {
-            try {
-                return await this.queryAll(text, xPath);
-            } catch (err) {
-                throw WendigoError.overrideFnName(err, "findByTextContaining");
-            }
+            return await this.queryAll(text, xPath);
         } else {
             const result = this.queryAll(xPath);
             return result;

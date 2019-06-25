@@ -68,4 +68,11 @@ describe("Assert Exists", function() {
             await browser.assert.not.exists("h1", "not exists failed");
         }, `[assert.not.exists] not exists failed`);
     });
+
+    it("Invalid Query Selector", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.assert.exists(48);
+        }, `Error: [assert.exists] Invalid selector.`);
+    });
 });

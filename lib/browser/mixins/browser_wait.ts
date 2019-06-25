@@ -5,8 +5,9 @@ import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import { createFindTextXPath, delay} from '../../utils/utils';
+import { createFindTextXPath, delay } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import OverrideError from '../../decorators/override_error';
 
 export default abstract class BrowserWait extends BrowserNavigation {
 
@@ -92,16 +93,13 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
+    @OverrideError()
     public async clickAndWaitForNavigation(selector: WendigoSelector, timeout: number = 500): Promise<number> {
-        try {
-            const result = await Promise.all([
-                this.waitForNavigation(timeout),
-                this.click(selector)
-            ]);
-            return result[1];
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "clickAndWaitForNavigation");
-        }
+        const result = await Promise.all([
+            this.waitForNavigation(timeout),
+            this.click(selector)
+        ]);
+        return result[1];
     }
 
     public async waitForText(text: string, timeout: number = 500): Promise<void> {
