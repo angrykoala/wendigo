@@ -1,4 +1,4 @@
-2.2.0 / ####-##-##
+2.2.0 / 2019-06-25
 ==================
 
 * Filter by pending requests and resourceType
