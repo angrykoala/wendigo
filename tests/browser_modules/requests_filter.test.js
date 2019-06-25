@@ -33,7 +33,7 @@ describe("Requests Filter", function() {
     it("Request Between Multiple Browsers", async() => {
         const requests = await browser.requests.all().length;
         await browser.close();
-        browser = await Wendigo.createBrowser();
+        browser = await Wendigo.createBrowser(); // eslint-disable-line require-atomic-updates
         await browser.open(configUrls.requests);
         assert.strictEqual(await browser.requests.all().length, requests);
     });
@@ -169,5 +169,44 @@ describe("Requests Filter", function() {
         assert.strictEqual(afterFilter.length, 1);
         const afterFilter2 = await browser.requests.filter.url(/api/).responseBody("not response").requests;
         assert.strictEqual(afterFilter2.length, 0);
+    });
+
+    it("Filter By Pending", async() => {
+        const response = Object.assign({
+            auto: false,
+            body: {result: "DUMMY"}
+        });
+        const mock = browser.requests.mock(configUrls.api, response);
+        const pending1 = await browser.requests.filter.pending().requests;
+        assert.strictEqual(pending1.length, 0);
+
+        await browser.clickText("click me");
+        await browser.wait(10);
+        const pending2 = await browser.requests.filter.pending().requests;
+        assert.strictEqual(pending2.length, 1);
+        mock.trigger();
+        await browser.wait(10);
+        const pending3 = await browser.requests.filter.pending().requests;
+        assert.strictEqual(pending3.length, 0);
+    });
+
+    it("Filter By Resource Type", async() => {
+        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending2.length, 0);
+        const docReqs = await browser.requests.filter.resourceType("document").requests;
+        assert.strictEqual(docReqs.length, 1);
+        const styleReqs = await browser.requests.filter.resourceType("stylesheet").requests;
+        assert.strictEqual(styleReqs.length, 1);
+    });
+
+    it("Filter By Resource Type Multiple Fetch Requests", async() => {
+        const pending1 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending1.length, 0);
+
+        await browser.clickText("click me");
+        await browser.clickText("click me");
+        await browser.wait(10);
+        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(pending2.length, 2);
     });
 });

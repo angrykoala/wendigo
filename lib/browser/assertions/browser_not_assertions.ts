@@ -137,6 +137,13 @@ export default class BrowserNotAssertions {
         }, "assert.not.innerHtml", msg);
     }
 
+    public elementHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
+        if (!msg) msg = `Expected element "${selector}" not to have html "${expected}".`;
+        return invertify(() => {
+            return this._assertions.elementHtml(selector, expected, "x");
+        }, "assert.not.elementHtml", msg);
+    }
+
     public selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         if (!msg) {
             const parsedExpected = utils.arrayfy(expected);

@@ -50,6 +50,14 @@ export default abstract class BrowserInfo extends BrowserClick {
         }, selector);
     }
 
+    public elementHtml(selector: WendigoSelector): Promise<Array<string>> {
+        this._failIfNotLoaded("elementHtml");
+        return this.evaluate((q) => {
+            const elements = WendigoUtils.queryAll(q);
+            return elements.map(e => e.outerHTML);
+        }, selector);
+    }
+
     public async options(selector: WendigoSelector): Promise<Array<string>> {
         this._failIfNotLoaded("options");
         try {

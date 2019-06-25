@@ -262,6 +262,25 @@ export default class AssertionsCore {
         throw new AssertionError("assert.innerHtml", msg, found, expected);
     }
 
+    public async elementHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {
+        if (!expected && expected !== "") return Promise.reject(new WendigoError("assert.elementHtml", "Missing expected html for assertion."));
+
+        const found = await this._browser.elementHtml(selector);
+        if (found.length === 0) {
+            const error = new QueryError("assert.elementHtml", `Element "${selector}" not found.`);
+            return Promise.reject(error);
+        }
+        for (const html of found) {
+            if (utils.matchText(html, expected)) return Promise.resolve();
+        }
+
+        if (!msg) {
+            msg = `Expected element "${selector}" to have html "${expected}".`;
+        }
+
+        throw new AssertionError("assert.elementHtml", msg, found, expected);
+    }
+
     public async options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         const parsedExpected = utils.arrayfy(expected);
         const options = await this._browser.options(selector);

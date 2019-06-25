@@ -1,4 +1,4 @@
-import { Request } from 'puppeteer';
+import { Request, ResourceType } from 'puppeteer';
 import { matchText } from '../../utils/utils';
 import { ExpectedHeaders } from './types';
 
@@ -92,6 +92,22 @@ export default class RequestFilter {
             const response = el.response();
             if (!response) return false;
             else return response.ok() === isOk;
+        });
+        return new RequestFilter(requests);
+    }
+
+    public pending(): RequestFilter {
+        const requests = filterPromise(this.requests, el => {
+            const response = el.response();
+            return !response;
+        });
+        return new RequestFilter(requests);
+    }
+
+    public resourceType(type: ResourceType): RequestFilter {
+        const requests = filterPromise(this.requests, el => {
+            const resourceType = el.resourceType();
+            return resourceType === type;
         });
         return new RequestFilter(requests);
     }

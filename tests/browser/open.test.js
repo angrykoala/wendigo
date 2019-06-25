@@ -43,16 +43,14 @@ describe("Open", function() {
     });
 
     it("Open And Close", async() => {
-        assert.strictEqual(browser.loaded, false);
-        await browser.open(configUrls.index);
-        assert.strictEqual(browser.loaded, true);
-        assert.strictEqual(Wendigo.browsers.length, 1);
-        assert(browser.originalHtml);
-        await browser.close();
-        assert.strictEqual(Wendigo.browsers.length, 0);
-        assert.strictEqual(browser.loaded, false);
-        assert.strictEqual(browser.originalHtml, undefined);
-        browser = await Wendigo.createBrowser();
+        const browser2 = await Wendigo.createBrowser();
+        assert.strictEqual(browser2.loaded, false);
+        await browser2.open(configUrls.index);
+        assert.strictEqual(browser2.loaded, true);
+        assert(browser2.originalHtml);
+        await browser2.close();
+        assert.strictEqual(browser2.loaded, false);
+        assert.strictEqual(browser2.originalHtml, undefined);
     });
 
     it("Open Fails CSP", async() => {
