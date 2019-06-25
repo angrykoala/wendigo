@@ -6,19 +6,21 @@ import { arrayfy, isXPathQuery } from '../../utils/utils';
 import { QueryError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import DOMELement from '../../models/dom_element';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 
 // Mixin with user actions
 export default abstract class BrowserActions extends BrowserQueries {
+
+    @FailIfNotLoaded
     public async type(selector: WendigoSelector, text: string, options?: { delay: number }): Promise<void> {
-        this._failIfNotLoaded("type");
         if (typeof text !== "string") return Promise.reject(new WendigoError("type", `Invalid text.`));
         const element = await this.query(selector);
         if (!element) throw new QueryError("type", `Element "${selector}" not found.`);
         await element.type(text, options);
     }
 
+    @FailIfNotLoaded
     public async keyPress(key: Array<string> | string, count: number = 1): Promise<void> {
-        this._failIfNotLoaded("keyPress");
         const keys = arrayfy(key);
 
         try {
@@ -32,8 +34,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public async uploadFile(selector: WendigoSelector, path: string): Promise<void> {
-        this._failIfNotLoaded("uploadFile");
         return this.query(selector).then(fileInput => {
             if (fileInput) {
                 return fileInput.element.uploadFile(path);
@@ -44,8 +46,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         });
     }
 
+    @FailIfNotLoaded
     public async select(selector: WendigoSelector, values: Array<string> | string): Promise<Array<string>> {
-        this._failIfNotLoaded("select");
         if (!Array.isArray(values)) values = [values];
         try {
             let cssPath: string;
@@ -61,8 +63,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public clearValue(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("clearValue");
         return this.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q) as Array<HTMLInputElement>;
             for (const element of elements) {
@@ -71,8 +73,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }, selector);
     }
 
+    @FailIfNotLoaded
     public async setValue(selector: WendigoSelector, value: any): Promise<number> {
-        this._failIfNotLoaded("setValue");
         try {
             return await this.evaluate((q, v) => {
                 const elements = WendigoUtils.queryAll(q) as Array<HTMLInputElement>;
@@ -87,8 +89,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public async check(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("check");
         try {
             await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLInputElement;
@@ -101,8 +103,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public async uncheck(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("uncheck");
         try {
             await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q) as HTMLInputElement;
@@ -115,8 +117,8 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public async focus(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("focus");
         const element = await this.query(selector);
         if (!element) throw new QueryError("focus", `Element "${selector}" not found.`);
         else {
@@ -124,15 +126,15 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public async hover(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("hover");
         const element = await this.query(selector);
         if (!element) throw new QueryError("hover", `Element "${selector}" not found.`);
         await element.hover();
     }
 
+    @FailIfNotLoaded
     public async scroll(value: number, xvalue?: number): Promise<void> {
-        this._failIfNotLoaded("scroll");
         try {
             await this.evaluate((val, xval) => {
                 if (typeof val === 'number') {
@@ -148,20 +150,20 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
+    @FailIfNotLoaded
     public screenshot(args?: Base64ScreenShotOptions): Promise<string | Buffer> {
-        this._failIfNotLoaded("screenshot");
         return this._page.screenshot(args);
     }
 
+    @FailIfNotLoaded
     public async screenshotOfElement(selector: WendigoSelector, options?: Base64ScreenShotOptions): Promise<string | Buffer> {
-        this._failIfNotLoaded("screenshotOfElement");
         const element = await this.query(selector);
         if (!element) throw new QueryError("screenshotOfElement", `Selector "${selector}" not found.`);
         return element.element.screenshot(options);
     }
 
+    @FailIfNotLoaded
     public async blur(selector: WendigoSelector): Promise<void> {
-        this._failIfNotLoaded("selector");
         try {
             const result = await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);

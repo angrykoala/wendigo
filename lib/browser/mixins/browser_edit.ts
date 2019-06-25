@@ -2,11 +2,13 @@ import BrowserInfo from './browser_info';
 
 import { WendigoSelector } from '../../types';
 import { WendigoError, QueryError } from '../../errors';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 
 // Mixin with methods to edit the DOM and state
 export default abstract class BrowserEdit extends BrowserInfo {
+
+    @FailIfNotLoaded
     public async addClass(selector: WendigoSelector, className: string): Promise<void> {
-        this._failIfNotLoaded("addClass");
         try {
             const rawClasses = await this.attribute(selector, "class");
             await this.setAttribute(selector, "class", `${rawClasses} ${className}`);
@@ -15,8 +17,8 @@ export default abstract class BrowserEdit extends BrowserInfo {
         }
     }
 
+    @FailIfNotLoaded
     public async removeClass(selector: WendigoSelector, className: string): Promise<void> {
-        this._failIfNotLoaded("removeClass");
         try {
             const classList = await this.class(selector);
             const finalClassList = classList.filter((cl) => {
@@ -28,8 +30,8 @@ export default abstract class BrowserEdit extends BrowserInfo {
         }
     }
 
+    @FailIfNotLoaded
     public async setAttribute(selector: WendigoSelector, attribute: string, value: string): Promise<void> {
-        this._failIfNotLoaded("setAttribute");
         try {
             await this.evaluate((q, attr, val) => {
                 const element = WendigoUtils.queryElement(q);

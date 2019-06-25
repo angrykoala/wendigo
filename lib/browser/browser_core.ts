@@ -9,6 +9,7 @@ import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
 import { ViewportOptions } from './puppeteer_wrapper/puppeteer_types';
+import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
@@ -119,8 +120,8 @@ export default abstract class BrowserCore {
         }
     }
 
+    @FailIfNotLoaded
     public async evaluate(cb: (...args: Array<any>) => any, ...args: Array<any>): Promise<any> {
-        this._failIfNotLoaded("evaluate");
         args = this._setupEvaluateArguments(args);
         const rawResult = await this._page.evaluateHandle(cb, ...args);
         const resultAsElement = rawResult.asElement();
@@ -137,32 +138,28 @@ export default abstract class BrowserCore {
         return this._page.frames();
     }
 
+    @FailIfNotLoaded
     public async mockDate(date: Date, options = { freeze: true }): Promise<void> {
         await this.evaluate((d: number, f: boolean) => {
             WendigoUtils.mockDate(d, f);
         }, date.getTime(), options.freeze);
     }
 
+    @FailIfNotLoaded
     public clearDateMock(): Promise<void> {
         return this.evaluate(() => {
             WendigoUtils.clearDateMock();
         });
     }
 
+    @FailIfNotLoaded
     public async addScript(scriptPath: string): Promise<void> {
-        this._failIfNotLoaded("addScript");
         try {
             await this._page.addScriptTag({
                 path: scriptPath
             });
         } catch (err) {
             return Promise.reject(new InjectScriptError("open", err));
-        }
-    }
-
-    protected _failIfNotLoaded(fnName: string): void {
-        if (!this.loaded) {
-            throw new FatalError(fnName, `Cannot perform action before opening a page.`);
         }
     }
 

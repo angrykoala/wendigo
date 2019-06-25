@@ -6,15 +6,16 @@ import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import { createFindTextXPath, delay} from '../../utils/utils';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 
 export default abstract class BrowserWait extends BrowserNavigation {
+
     public wait(ms: number = 250): Promise<void> {
-        this._failIfNotLoaded("wait");
         return delay(ms);
     }
 
+    @FailIfNotLoaded
     public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
-        this._failIfNotLoaded("waitFor");
         args = args.map((e) => {
             if (e instanceof DomElement) return e.element;
             else return e;
@@ -32,8 +33,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
+    @FailIfNotLoaded
     public async waitUntilNotVisible(selector: WendigoSelector, timeout = 500): Promise<void> {
-        this._failIfNotLoaded("waitUntilNotVisible");
         try {
             await this.waitFor((q: string | HTMLElement) => {
                 const element = WendigoUtils.queryElement(q);
@@ -44,8 +45,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
+    @FailIfNotLoaded
     public async waitForUrl(url: string | RegExp, timeout: number = 500): Promise<void> {
-        this._failIfNotLoaded("waitForUrl");
         if (!url) return Promise.reject(new WendigoError("waitForUrl", `Invalid parameter url.`));
         let parsedUrl: string | RegExp | { source: string, flags: string } = url;
         if (url instanceof RegExp) {
@@ -70,8 +71,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
+    @FailIfNotLoaded
     public async waitForNavigation(timeout: number = 500): Promise<void> {
-        this._failIfNotLoaded("waitForNavigation");
         const t1 = new Date().getTime();
         try {
             await this._page.waitForNavigation({
@@ -90,6 +91,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
+    @FailIfNotLoaded
     public async clickAndWaitForNavigation(selector: WendigoSelector, timeout: number = 500): Promise<number> {
         try {
             const result = await Promise.all([
