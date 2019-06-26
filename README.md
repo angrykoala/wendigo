@@ -361,6 +361,20 @@ Returns the page title.
 **html()**  
 Returns the page HTML as string. It will return the HTML as it was before performing any actions.
 
+**pdf(options)**  
+Generates a pdf, if options is a string or contains the value `path` a pdf file will be generated on given path. [Buffer](https://nodejs.org/api/buffer.html) will be returned otherwise.
+
+```js
+await browser.pdf("my_page.pdf");
+const myBuffer = await browser.pdf();
+await browser.pdf({ // Using Puppeteer pdf options
+    path: 'page.pdf',
+    width: "10cm"
+})
+```
+
+This methods is just a wrapper on Puppeteer's pdf method, the full list of possible options can be found [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#pagepdfoptions)
+
 **frames()**  
 Returns all the [frames](https://github.com/GoogleChrome/puppeteer/blob/v1.8.0/docs/api.md#class-frame) attached to the page
 

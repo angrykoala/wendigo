@@ -3,6 +3,7 @@ import BrowserClick from './browser_click';
 import { QueryError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import { PDFOptions } from 'puppeteer';
 
 export default abstract class BrowserInfo extends BrowserClick {
 
@@ -172,5 +173,15 @@ export default abstract class BrowserInfo extends BrowserClick {
         } catch (err) {
             throw new QueryError("checked", `Element "${selector}" not found.`);
         }
+    }
+
+    @FailIfNotLoaded
+    public async pdf(options?: PDFOptions | string): Promise<Buffer> {
+        if (typeof options === 'string') {
+            options = {
+                path: options
+            };
+        }
+        return this._page.pdf(options);
     }
 }

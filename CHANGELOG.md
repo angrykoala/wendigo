@@ -1,6 +1,7 @@
 2.3.0 / ####-##-##
 ==================
 
+* Browser.pdf
 * Internal error handling improvements
 
 2.2.0 / 2019-06-25

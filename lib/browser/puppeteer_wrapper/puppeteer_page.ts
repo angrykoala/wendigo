@@ -1,7 +1,7 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, Request, Timeoutable
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, Request, Timeoutable, PDFOptions
 } from 'puppeteer';
 import { ViewportOptions } from './puppeteer_types';
 
@@ -135,6 +135,9 @@ export default class PuppeteerPage {
 
     public setRequestInterception(b: boolean): Promise<void> {
         return this.page.setRequestInterception(b);
+    }
 
+    public pdf(options?: PDFOptions): Promise<Buffer> {
+        return this.page.pdf(options);
     }
 }
