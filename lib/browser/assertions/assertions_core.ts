@@ -5,6 +5,7 @@ import * as assertUtils from '../../utils/assert_utils';
 import { QueryError, FatalError, WendigoError, AssertionError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import BrowserInterface from '../browser_interface';
+import OverrideError from '../../decorators/override_error';
 
 export default class AssertionsCore {
     protected _browser: BrowserInterface;
@@ -13,14 +14,11 @@ export default class AssertionsCore {
         this._browser = browser;
     }
 
+    @OverrideError("assert")
     public async exists(selector: WendigoSelector, msg?: string): Promise<void> {
         if (!msg) msg = `Expected element "${selector}" to exists`;
         let element;
-        try {
-            element = await this._browser.query(selector);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "assert.exists");
-        }
+        element = await this._browser.query(selector);
         if (!element) throw new AssertionError("assert.exists", msg);
     }
 
@@ -150,12 +148,10 @@ export default class AssertionsCore {
         }
     }
 
+    @OverrideError("assert")
     public async element(selector: WendigoSelector, msg?: string): Promise<void> {
-        try {
-            return await this.elements(selector, 1, msg);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "assert.element");
-        }
+        return await this.elements(selector, 1, msg);
+
     }
 
     public async elements(selector: WendigoSelector, count: number, msg?: string): Promise<void> {
@@ -235,12 +231,9 @@ export default class AssertionsCore {
         }
     }
 
+    @OverrideError("assert")
     public async href(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
-        try {
-            return await this.attribute(selector, "href", expected, msg);
-        } catch (err) {
-            return Promise.reject(WendigoError.overrideFnName(err, "assert.href"));
-        }
+        return await this.attribute(selector, "href", expected, msg);
     }
 
     public async innerHtml(selector: WendigoSelector, expected: string | RegExp, msg?: string): Promise<void> {

@@ -5,10 +5,13 @@ import DomElement from '../../models/dom_element';
 import { FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import { isXPathQuery, createFindTextXPath } from '../../utils/utils';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import OverrideError from '../../decorators/override_error';
 
 export default abstract class BrowserQueries extends BrowserCore {
+
+    @FailIfNotLoaded
     public async query(selector: WendigoSelector, optionalSelector?: string): Promise<DomElement | null> {
-        this._failIfNotLoaded("query");
 
         let result: DomElement | null;
         if (typeof selector === 'string') {
@@ -28,8 +31,8 @@ export default abstract class BrowserQueries extends BrowserCore {
         }
     }
 
+    @FailIfNotLoaded
     public async queryAll(selector: WendigoSelector, optionalSelector?: string): Promise<Array<DomElement>> {
-        this._failIfNotLoaded("queryAll");
         let result: Array<DomElement>;
 
         if (typeof selector === 'string') {
@@ -54,41 +57,35 @@ export default abstract class BrowserQueries extends BrowserCore {
         }
     }
 
+    @FailIfNotLoaded
+    @OverrideError()
     public async findByText(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
-        this._failIfNotLoaded("findByText");
         const xPathText = optionalText || text as string;
         const xPath = createFindTextXPath(xPathText);
 
         if (optionalText) {
-            try {
-                return await this.queryAll(text, xPath);
-            } catch (err) {
-                throw WendigoError.overrideFnName(err, "findByText");
-            }
+            return await this.queryAll(text, xPath);
         } else {
             return this.queryAll(xPath);
         }
     }
 
+    @FailIfNotLoaded
+    @OverrideError()
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {
-        this._failIfNotLoaded("findByTextContaining");
         const xPathText = optionalText || text as string;
         const xPath = createFindTextXPath(xPathText, true);
 
         if (optionalText) {
-            try {
-                return await this.queryAll(text, xPath);
-            } catch (err) {
-                throw WendigoError.overrideFnName(err, "findByTextContaining");
-            }
+            return await this.queryAll(text, xPath);
         } else {
             const result = this.queryAll(xPath);
             return result;
         }
     }
 
+    @FailIfNotLoaded
     public findByAttribute(attributeName: string, attributeValue?: string): Promise<Array<DomElement>> {
-        this._failIfNotLoaded("findByAttribute");
         if (attributeValue === undefined) {
             attributeValue = "";
         } else {
@@ -97,24 +94,24 @@ export default abstract class BrowserQueries extends BrowserCore {
         return this.queryAll(`[${attributeName}${attributeValue}]`);
     }
 
+    @FailIfNotLoaded
     public findCssPath(domElement: DomElement): Promise<string> {
-        this._failIfNotLoaded("findCssPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findCssPath", "Invalid element for css path query."));
         else return this.evaluate((e) => {
             return WendigoUtils.findCssPath(e);
         }, domElement);
     }
 
+    @FailIfNotLoaded
     public findXPath(domElement: DomElement): Promise<string> {
-        this._failIfNotLoaded("findXPath");
         if (!(domElement instanceof DomElement)) return Promise.reject(new WendigoError("findXPath", "Invalid element for xPath query."));
         else return this.evaluate((e) => {
             return WendigoUtils.findXPath(e);
         }, domElement);
     }
 
+    @FailIfNotLoaded
     public elementFromPoint(x: number, y: number): Promise<DomElement | null> {
-        this._failIfNotLoaded("elementFromPoint");
         if (typeof x !== 'number' || typeof y !== 'number') return Promise.reject(new FatalError("elementFromPoint", `Invalid coordinates [${x},${y}].`));
         return this.evaluate((evalX, evalY) => {
             const element = document.elementFromPoint(evalX, evalY);
