@@ -1934,10 +1934,10 @@ const browser = await Wendigo.createBrowser({
 * [ZombieJs](https://github.com/assaf/zombie) as inspiration of the assertion library.
 * [NightmareJs](http://www.nightmarejs.org) as inspiration for part of the browser interface.
 
-Some code is based on the following:
+Some code based on the following:
 
-* https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/elements/DOMPath.js
-* https://github.com/capaj/proxy-date
+* <https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/elements/DOMPath.js>
+* <https://github.com/capaj/proxy-date>
 
 ## License
 
