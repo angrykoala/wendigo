@@ -43,7 +43,7 @@ export default abstract class BrowserCore {
     private _loaded: boolean;
     private disabled: boolean;
     private components: Array<string>;
-    private cache: boolean = true;
+    private cache: boolean;
 
     constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
@@ -51,7 +51,7 @@ export default abstract class BrowserCore {
         this._loaded = false;
         this.initialResponse = null;
         this.disabled = false;
-        this.setCache(settings.cache !== undefined ? settings.cache : true);
+        this.cache = settings.cache !== undefined ? settings.cache : true;
         this.components = components;
         if (this.settings.log) {
             this._page.on("console", pageLog);
@@ -87,6 +87,7 @@ export default abstract class BrowserCore {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
         url = this._processUrl(url);
+        await this.setCache(this.cache);
         if (options.queryString) {
             const qs = this._generateQueryString(options.queryString);
             url = `${url}${qs}`;

@@ -21,8 +21,6 @@ describe("Checkbox", function() {
         browser = await Wendigo.createBrowser({
             cache: false
         });
-        assert.strictEqual(browser.cacheEnabled, true);
-        await browser.wait(10);
         assert.strictEqual(browser.cacheEnabled, false);
     });
 
