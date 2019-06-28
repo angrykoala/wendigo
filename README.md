@@ -150,6 +150,7 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
   * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
   * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
+  * `cache: true`: If true, requests cache will be enabled.
   * Any settings that can be passed to Puppeteer can be passed to createBrowser, for example:
     * `headless: true`: If true, the browser will run on headless mode.
     * `slowMo: 0`: Slows the execution of commands by given number of milliseconds
@@ -200,6 +201,9 @@ True if the page has already opened and loaded.
 
 **incognito**  
 True if the browser is configured as incognito page.
+
+**cache**  
+If the requests cache is active.
 
 #### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
@@ -712,6 +716,9 @@ await browser.evaluate(() => {
 
 **clearDateMock()**  
 Clears the date mock, if any, returning to the native Date object.
+
+**setCache(enabled)**  
+Enables or disables the requests cache. Keep in mind that this method returns a promise that resolves to when the change is effective.
 
 ### Assert
 `browser.assert` provide some out-of-the-box assertions to easily write tests that are readable without having to specifically perform evaluations. All the assertions have a last optional parameter to define a custom assertion message. All assertions will return a Promise that will fail if the assertion fails. Unless specified, any selector will support css, xPath and DOMElements.

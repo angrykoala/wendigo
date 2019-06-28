@@ -14,6 +14,7 @@ export interface BrowserSettings {
     noSandbox?: boolean;
     proxyServer?: string | null;
     timezone?: string;
+    cache?: boolean;
 }
 
 export interface FinalBrowserSettings extends BrowserSettings {

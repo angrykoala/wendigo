@@ -2,7 +2,9 @@
 ==================
 
 * Browser.pdf
+* Browser.setCache and cache settings
 * Internal error handling improvements
+* Puppeteer updated to 1.18.1, size and performance improved
 
 2.2.0 / 2019-06-25
 ==================

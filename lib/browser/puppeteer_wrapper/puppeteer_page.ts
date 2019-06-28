@@ -140,4 +140,8 @@ export default class PuppeteerPage {
     public pdf(options?: PDFOptions): Promise<Buffer> {
         return this.page.pdf(options);
     }
+
+    public setCache(value: boolean): Promise<void> {
+        return this.page.setCacheEnabled(value);
+    }
 }

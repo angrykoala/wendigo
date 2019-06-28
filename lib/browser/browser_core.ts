@@ -43,6 +43,7 @@ export default abstract class BrowserCore {
     private _loaded: boolean;
     private disabled: boolean;
     private components: Array<string>;
+    private cache: boolean = true;
 
     constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
@@ -50,6 +51,7 @@ export default abstract class BrowserCore {
         this._loaded = false;
         this.initialResponse = null;
         this.disabled = false;
+        this.setCache(settings.cache !== undefined ? settings.cache : true);
         this.components = components;
         if (this.settings.log) {
             this._page.on("console", pageLog);
@@ -75,6 +77,10 @@ export default abstract class BrowserCore {
 
     public get incognito(): boolean {
         return Boolean(this.settings.incognito);
+    }
+
+    public get cacheEnabled(): boolean {
+        return this.cache;
     }
 
     public async open(url: string, options?: OpenSettings): Promise<void> {
@@ -161,6 +167,11 @@ export default abstract class BrowserCore {
         } catch (err) {
             return Promise.reject(new InjectScriptError("open", err));
         }
+    }
+
+    public async setCache(value: boolean): Promise<void> {
+        await this._page.setCache(value);
+        this.cache = value;
     }
 
     protected async _beforeClose(): Promise<void> {
