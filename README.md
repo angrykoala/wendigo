@@ -712,7 +712,7 @@ await browser.evaluate(() => {
 })
 ```
 
-> Keep in mind that using Date as a functions (`Date()`) is not supported by mocked dates. It is recommended to use timestamps to avoid problems with different timezones between the browser and Node.
+> Keep in mind that there may be different timezones between the browser and Node. Using timestamps is recommended.
 
 **clearDateMock()**  
 Clears the date mock, if any, returning to the native Date object.
@@ -1933,6 +1933,11 @@ const browser = await Wendigo.createBrowser({
 * [Puppeteer](https://github.com/GoogleChrome/puppeteer) and Chrome Headless as base headless browser.
 * [ZombieJs](https://github.com/assaf/zombie) as inspiration of the assertion library.
 * [NightmareJs](http://www.nightmarejs.org) as inspiration for part of the browser interface.
+
+Some code is based on the following:
+
+* https://github.com/ChromeDevTools/devtools-frontend/blob/master/front_end/elements/DOMPath.js
+* https://github.com/capaj/proxy-date
 
 ## License
 
