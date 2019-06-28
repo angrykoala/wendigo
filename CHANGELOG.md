@@ -1,3 +1,12 @@
+2.3.0 / 2019-06-29
+==================
+
+* Browser.pdf
+* Browser.setCache and cache settings
+* DateMock now uses a proxy and supports using it as a function
+* Internal error handling improvements
+* Puppeteer updated to 1.18.1, size and performance improved
+
 2.2.0 / 2019-06-25
 ==================
 

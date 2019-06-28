@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -42,7 +42,7 @@
   "dependencies": {
     "compositer": "^1.3.4",
     "is-class": "0.0.7",
-    "puppeteer": "~1.18.0"
+    "puppeteer": "~1.18.1"
   },
   "devDependencies": {
     "@types/puppeteer": "^1.12.4",

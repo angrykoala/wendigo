@@ -45,19 +45,24 @@ if (!window.WendigoUtils) {
                 } else return timestamp;
             }
 
-            class DateMock extends _origDate {
-                constructor(...params) {
-                    if (params.length > 0) {
-                        super(...params);
-                    } else super(getCurrentTimestamp());
+            // Based on https://github.com/capaj/proxy-date
+            window.Date = new Proxy(_origDate, {
+                construct(Target, args) {
+                    if (args.length === 0) {
+                        return new Target(getCurrentTimestamp());
+                    }
+                    return new Target(...args);
+                },
+                get(Target, prop) {
+                    if (prop === 'now') {
+                        return () => getCurrentTimestamp();
+                    }
+                    return Reflect.get(...arguments);
+                },
+                apply(Target) {
+                    return new Target(getCurrentTimestamp()).toString();
                 }
-
-                static now() {
-                    return getCurrentTimestamp();
-                }
-            }
-
-            window.Date = DateMock;
+            });
         },
         clearDateMock() {
             window.Date = _origDate;

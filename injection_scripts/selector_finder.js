@@ -22,7 +22,6 @@ if (!window.WendigoPathFinder) {
         }
     }
 
-
     const _cssPathFinderHelpers = {
         _stepPreprocess(node) {
             if (node.nodeType !== Node.ELEMENT_NODE)

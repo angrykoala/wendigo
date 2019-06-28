@@ -9,6 +9,7 @@ import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
 import { ViewportOptions } from './puppeteer_wrapper/puppeteer_types';
+import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
@@ -42,6 +43,7 @@ export default abstract class BrowserCore {
     private _loaded: boolean;
     private disabled: boolean;
     private components: Array<string>;
+    private cache: boolean;
 
     constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
@@ -49,6 +51,7 @@ export default abstract class BrowserCore {
         this._loaded = false;
         this.initialResponse = null;
         this.disabled = false;
+        this.cache = settings.cache !== undefined ? settings.cache : true;
         this.components = components;
         if (this.settings.log) {
             this._page.on("console", pageLog);
@@ -76,10 +79,15 @@ export default abstract class BrowserCore {
         return Boolean(this.settings.incognito);
     }
 
+    public get cacheEnabled(): boolean {
+        return this.cache;
+    }
+
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
         url = this._processUrl(url);
+        await this.setCache(this.cache);
         if (options.queryString) {
             const qs = this._generateQueryString(options.queryString);
             url = `${url}${qs}`;
@@ -119,8 +127,8 @@ export default abstract class BrowserCore {
         }
     }
 
+    @FailIfNotLoaded
     public async evaluate(cb: (...args: Array<any>) => any, ...args: Array<any>): Promise<any> {
-        this._failIfNotLoaded("evaluate");
         args = this._setupEvaluateArguments(args);
         const rawResult = await this._page.evaluateHandle(cb, ...args);
         const resultAsElement = rawResult.asElement();
@@ -137,20 +145,22 @@ export default abstract class BrowserCore {
         return this._page.frames();
     }
 
+    @FailIfNotLoaded
     public async mockDate(date: Date, options = { freeze: true }): Promise<void> {
         await this.evaluate((d: number, f: boolean) => {
             WendigoUtils.mockDate(d, f);
         }, date.getTime(), options.freeze);
     }
 
+    @FailIfNotLoaded
     public clearDateMock(): Promise<void> {
         return this.evaluate(() => {
             WendigoUtils.clearDateMock();
         });
     }
 
+    @FailIfNotLoaded
     public async addScript(scriptPath: string): Promise<void> {
-        this._failIfNotLoaded("addScript");
         try {
             await this._page.addScriptTag({
                 path: scriptPath
@@ -160,10 +170,9 @@ export default abstract class BrowserCore {
         }
     }
 
-    protected _failIfNotLoaded(fnName: string): void {
-        if (!this.loaded) {
-            throw new FatalError(fnName, `Cannot perform action before opening a page.`);
-        }
+    public async setCache(value: boolean): Promise<void> {
+        await this._page.setCache(value);
+        this.cache = value;
     }
 
     protected async _beforeClose(): Promise<void> {

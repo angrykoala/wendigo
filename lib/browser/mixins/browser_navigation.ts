@@ -1,23 +1,24 @@
 import BrowserEvents from './browser_events';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 
 export default abstract class BrowserNavigation extends BrowserEvents {
+
+    @FailIfNotLoaded
     public async back(): Promise<void> {
-        this._failIfNotLoaded("back");
         await this._page.goBack();
         await this._afterPageLoad();
     }
 
+    @FailIfNotLoaded
     public async forward(): Promise<void> {
-        this._failIfNotLoaded("forward");
         await this._page.goForward();
         await this._afterPageLoad();
     }
 
+    @FailIfNotLoaded
     public async refresh(): Promise<void> {
-        this._failIfNotLoaded("refresh");
         await this._page.reload();
         await this._afterPageLoad();
-
     }
 
     public async waitForPageLoad(): Promise<void> {

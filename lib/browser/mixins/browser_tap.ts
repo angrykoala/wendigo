@@ -3,10 +3,11 @@ import BrowserWait from './browser_wait';
 import { WendigoError, QueryError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import DomElement from '../../models/dom_element';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 
 export default abstract class BrowserTap extends BrowserWait {
+    @FailIfNotLoaded
     public async tap(selector: WendigoSelector | number, index?: number): Promise<number> {
-        this._failIfNotLoaded("tap");
         if (typeof selector === 'number') {
             if (typeof index !== 'number') throw new WendigoError("tap", "Invalid coordinates");
             return this.tapCoordinates(selector, index);

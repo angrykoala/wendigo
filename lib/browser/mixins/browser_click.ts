@@ -3,10 +3,13 @@ import BrowserActions from './browser_actions';
 import { WendigoError, QueryError } from '../../errors';
 import DomElement from '../../models/dom_element';
 import { WendigoSelector } from '../../types';
+import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import OverrideError from '../../decorators/override_error';
 
 export default abstract class BrowserClick extends BrowserActions {
+
+    @FailIfNotLoaded
     public async click(selector: WendigoSelector | number | Array<DomElement>, index?: number): Promise<number> {
-        this._failIfNotLoaded("click");
         if (typeof selector === 'number') {
             if (!index || typeof index !== 'number') throw new WendigoError("click", `Invalid coordinates [${selector}, ${index}]`);
             await this._clickCoordinates(selector, index);
@@ -21,42 +24,36 @@ export default abstract class BrowserClick extends BrowserActions {
         }
     }
 
+    @FailIfNotLoaded
+    @OverrideError()
     public async clickText(text: string | DomElement, optionalText?: string | number, index?: number): Promise<number> {
-        this._failIfNotLoaded("clickText");
         if (typeof optionalText === 'number') {
             index = optionalText;
             optionalText = undefined;
         }
         let elements: Array<DomElement>;
-        try {
-            elements = await this.findByText(text, optionalText);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "clickText");
-        }
+        elements = await this.findByText(text, optionalText);
         const indexErrorMsg = `Invalid index "${index}" for text "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text "${optionalText || text}" found.`;
         return this.clickElements(elements, index, new WendigoError("clickText", indexErrorMsg), new QueryError("clickText", notFoundMsg));
     }
 
+    @FailIfNotLoaded
+    @OverrideError()
     public async clickTextContaining(text: string | DomElement, optionalText?: string | number, index?: number): Promise<number> {
-        this._failIfNotLoaded("clickTextContaining");
         if (typeof optionalText === 'number') {
             index = optionalText;
             optionalText = undefined;
         }
         let elements: Array<DomElement>;
-        try {
-            elements = await this.findByTextContaining(text, optionalText);
-        } catch (err) {
-            throw WendigoError.overrideFnName(err, "clickTextContaining");
-        }
-
+        elements = await this.findByTextContaining(text, optionalText);
         const indexErrorMsg = `Invalid index "${index}" for text containing "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text containing "${optionalText || text}" found.`;
         return this.clickElements(elements, index, new WendigoError("clickTextContaining", indexErrorMsg), new QueryError("clickTextContaining", notFoundMsg));
 
     }
 
+    @FailIfNotLoaded
     private clickElements(elements: Array<DomElement>, index: number | undefined, indexError: Error, notFoundError: Error): Promise<number> {
         if (index !== undefined) {
             return this._validateAndClickElementByIndex(elements, index, indexError);
