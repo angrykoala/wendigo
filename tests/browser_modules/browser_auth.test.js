@@ -1,11 +1,9 @@
 "use strict";
 
-// const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
-// const utils = require('../test_utils');
 
-describe.only("Auth", function() {
+describe("Auth", function() {
     this.timeout(5000);
     let browser;
 
@@ -116,12 +114,5 @@ describe.only("Auth", function() {
                 authHeader: null
             }));
         });
-    });
-
-    describe("JWT Token", () => {
-        it("Set JWT Token");
-    });
-    describe("Cookie Auth", () => {
-        it("Set Cookie Auth");
     });
 });

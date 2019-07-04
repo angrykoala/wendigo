@@ -43,6 +43,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
 * Easy and flexible query system with support for CSS selectors and XPath.
 * Docker and CI friendly.
 * Easy to setup, just node required.
+* Authorization helpers.
 
 ## Contents
 
@@ -58,6 +59,7 @@ await browser.assert.text("#my-modal", "Button Clicked");
   * [Console](#console)
   * [LocalStorage](#localstorage)
   * [Requests](#requests)
+  * [Auth](#auth)
   * [Webworkers](#webworkers)
   * [Dialog](#dialog)
   * [Errors](#errors)
@@ -1514,6 +1516,25 @@ await browser.assert.requests.method("POST").url("localhost:8000/api");
 ```
 
 > Negative assertions are not supported for requests
+
+### Auth
+The auth module provides some utilities to simplify the process of some standard authorization methods in webpages by setting up an extra Http header `Authorization` on every request. The following methods will setup said header accordingly to the auth method.
+
+**auth.http(credentials?)**  
+It will setup a [basic http authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication) with the credentials given (`user` and `password`). If no credentials given, it will remove the current auth value.
+
+```js
+await browser.auth.http({
+    user: "arthur-dent",
+    password: "dontpanic42"
+})
+```
+
+**auth.bearer(token?)**  
+Sets the `Bearer` token used in [JWT](https://jwt.io/) and OAuth2 among others.
+
+**auth.clear()**  
+Will clear any authorization token currently active, including those not set up by the auth module.
 
 ### Webworkers
 The webworkers module allows to retrieve all the webworkers in the current page:
