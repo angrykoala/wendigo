@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Click Test</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button class="auth-btn" onclick="checkAuth()">click me</button>
+    <p class="auth-res">
+    </p>
+
+    <script>
+        function checkAuth() {
+            fetch("/auth").then((res) => {
+                res.json().then((data) => {
+                    const e = document.querySelector(".auth-res");
+                    e.innerText = JSON.stringify(data)
+                })
+
+            })
+        }
+    </script>
+</body>
+
+</html>

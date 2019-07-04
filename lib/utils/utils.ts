@@ -107,6 +107,10 @@ export function createFindTextXPath(text: string, contains: boolean = false): st
     else return `//*[text()=${cleanedString}]`;
 }
 
+export function base64(orig: string): string {
+    return Buffer.from(orig).toString('base64');
+}
+
 function cleanStringForXpath(str: string): string {
     const parts = str.split('\'');
     if (parts.length === 1) return `'${parts[0]}'`;

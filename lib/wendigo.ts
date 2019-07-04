@@ -70,17 +70,6 @@ export default class Wendigo {
         BrowserFactory.clearCache();
     }
 
-    // public get Errors(): { [s: string]: typeof Errors.WendigoError | typeof Errors.AssertionError | typeof Errors.TimeoutError } {
-    //     return {
-    //         AssertionError: Errors.AssertionError,
-    //         WendigoError: Errors.WendigoError,
-    //         QueryError: Errors.QueryError,
-    //         FatalError: Errors.FatalError,
-    //         TimeoutError: Errors.TimeoutError,
-    //         InjectScriptError: Errors.InjectScriptError
-    //     };
-    // }
-
     private _validatePlugin(name: string, plugin?: WendigoPluginInterface, assertions?: WendigoPluginAssertionInterface): void {
         this._validatePluginName(name);
         if (plugin && typeof plugin !== 'function') throw new Errors.FatalError("registerPlugin", `Invalid plugin module "${name}".`);

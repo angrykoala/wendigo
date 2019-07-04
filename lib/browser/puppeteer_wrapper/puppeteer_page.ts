@@ -144,4 +144,12 @@ export default class PuppeteerPage {
     public setCache(value: boolean): Promise<void> {
         return this.page.setCacheEnabled(value);
     }
+
+    // public authenticate(options?: AuthOptions): Promise<void> {
+    //     return this.page.authenticate(options || null);
+    // }
+
+    public setExtraHTTPHeaders(headers: Record<string, string>): Promise<void> {
+        return this.page.setExtraHTTPHeaders(headers);
+    }
 }
