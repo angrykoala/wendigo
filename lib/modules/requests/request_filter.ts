@@ -1,4 +1,4 @@
-import { Request, ResourceType } from 'puppeteer';
+import { Request, ResourceType } from '../../browser/puppeteer_wrapper/puppeteer_types';
 import { matchText } from '../../utils/utils';
 import { ExpectedHeaders } from './types';
 

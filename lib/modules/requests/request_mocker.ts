@@ -1,7 +1,7 @@
 import { URL } from 'url';
 import * as utils from '../../utils/utils';
 import RequestMock from './request_mock';
-import { Request } from 'puppeteer';
+import { Request } from '../../browser/puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 
 export default class RequestMocker {

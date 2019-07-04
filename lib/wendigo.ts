@@ -1,5 +1,6 @@
 import process from 'process';
 import puppeteer from 'puppeteer';
+import { BrowserContext, Browser } from './browser/puppeteer_wrapper/puppeteer_types';
 import BrowserFactory from './browser_factory';
 import * as Errors from './errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
@@ -93,7 +94,7 @@ export default class Wendigo {
         }
     }
 
-    private async _createInstance(settings: FinalBrowserSettings): Promise<puppeteer.BrowserContext | puppeteer.Browser> {
+    private async _createInstance(settings: FinalBrowserSettings): Promise<BrowserContext | Browser> {
         const instance = await puppeteer.launch(settings);
         if (settings.incognito) {
             return instance.createIncognitoBrowserContext();

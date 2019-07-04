@@ -1,4 +1,4 @@
-import { JSHandle, ElementHandle } from 'puppeteer';
+import { JSHandle, ElementHandle } from '../browser/puppeteer_wrapper/puppeteer_types';
 import { isXPathQuery } from '../utils/utils';
 
 export default class DomElement {

@@ -1,4 +1,4 @@
-import { ConsoleMessage, JSHandle } from 'puppeteer';
+import { ConsoleMessage, JSHandle } from '../browser/puppeteer_wrapper/puppeteer_types';
 
 export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
     const text = log.text();

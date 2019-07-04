@@ -2,7 +2,7 @@ import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
     Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, Request, Timeoutable, PDFOptions
-} from 'puppeteer';
+} from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
 export default class PuppeteerPage {
@@ -144,10 +144,6 @@ export default class PuppeteerPage {
     public setCache(value: boolean): Promise<void> {
         return this.page.setCacheEnabled(value);
     }
-
-    // public authenticate(options?: AuthOptions): Promise<void> {
-    //     return this.page.authenticate(options || null);
-    // }
 
     public setExtraHTTPHeaders(headers: Record<string, string>): Promise<void> {
         return this.page.setExtraHTTPHeaders(headers);

@@ -1,4 +1,4 @@
-import { Cookie as CookieData, SetCookie, DeleteCookie } from 'puppeteer';
+import { Cookie as CookieData, SetCookie, DeleteCookie } from '../../browser/puppeteer_wrapper/puppeteer_types';
 import WendigoModule from '../wendigo_module';
 import { WendigoError } from '../../errors';
 import { arrayfy } from '../../utils/utils';

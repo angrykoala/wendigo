@@ -1,4 +1,4 @@
-import { Dialog as PuppeteerDialog, DialogType } from 'puppeteer';
+import { Dialog as PuppeteerDialog, DialogType } from '../../browser/puppeteer_wrapper/puppeteer_types';
 
 export default class Dialog {
     private dialog: PuppeteerDialog;

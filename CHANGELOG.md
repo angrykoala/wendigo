@@ -2,6 +2,7 @@
 ==================
 
 * Auth module with basic and bearer support
+* Improved types wrapper of puppeteer
 
 2.3.0 / 2019-06-29
 ==================

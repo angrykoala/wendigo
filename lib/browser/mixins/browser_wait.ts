@@ -1,13 +1,11 @@
-import { EvaluateFn } from 'puppeteer';
-
 import BrowserNavigation from './browser_navigation';
-
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import { createFindTextXPath, delay } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
+import { EvaluateFn } from '../puppeteer_wrapper/puppeteer_types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
 
