@@ -6,7 +6,7 @@ import * as Errors from './errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
 import BrowserInterface from './browser/browser_interface';
 
-const defaultSettings = {
+const defaultSettings: BrowserSettings = {
     log: false,
     headless: true,
     args: [],

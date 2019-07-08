@@ -1,6 +1,6 @@
 import Log from './log';
 import { matchText } from '../../utils/utils';
-import { stringifyLogText } from '../../utils/puppeteer_utils';
+import { stringifyLogText } from '../../browser/puppeteer_wrapper/puppeteer_utils';
 
 import WendigoModule from '../wendigo_module';
 import { LogType, ConsoleFilter } from './types';

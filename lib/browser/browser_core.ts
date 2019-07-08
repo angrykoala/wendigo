@@ -1,7 +1,7 @@
 import path from 'path';
 import querystring from 'querystring';
 
-import { stringifyLogText } from '../utils/puppeteer_utils';
+import { stringifyLogText } from './puppeteer_wrapper/puppeteer_utils';
 import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
