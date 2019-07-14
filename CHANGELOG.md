@@ -1,4 +1,4 @@
-2.4.0 / ####-##-##
+2.4.0 / 2019-07-15
 ==================
 
 * Auth module with basic and bearer support
