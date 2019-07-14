@@ -10,7 +10,7 @@ before_script:
 
 test:
   stage: test
-  retry: 2
+  retry: 1
   script:
     - npm run eslint
     - npm run tslint
