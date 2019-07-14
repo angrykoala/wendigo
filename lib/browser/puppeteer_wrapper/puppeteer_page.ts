@@ -1,7 +1,7 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, Request, Timeoutable, PDFOptions
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions
 } from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
@@ -43,6 +43,10 @@ export default class PuppeteerPage {
 
     public on<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
         this.page.on(eventName, cb);
+    }
+
+    public off<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
+        this.page.off(eventName, cb);
     }
 
     public evaluateHandle(cb: EvaluateFn, ...args: Array<SerializableOrJSHandle>): Promise<JSHandle> {
@@ -95,14 +99,6 @@ export default class PuppeteerPage {
 
     public async waitFor(selector: string | EvaluateFn, options?: WaitForSelectorOptions, ...args: Array<SerializableOrJSHandle>): Promise<void> {
         await this.page.waitFor(selector, options, ...args);
-    }
-
-    public waitForRequest(url: string, options?: Timeoutable): Promise<Request> {
-        return this.page.waitForRequest(url, options);
-    }
-
-    public waitForResponse(url: string, options?: Timeoutable): Promise<Response> {
-        return this.page.waitForResponse(url, options);
     }
 
     public $(selector: string): Promise<ElementHandle<Element> | null> {

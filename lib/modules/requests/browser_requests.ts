@@ -5,15 +5,16 @@ import RequestFilter from './request_filter';
 import RequestMocker from './request_mocker';
 import Browser from '../../browser/browser';
 import RequestMock from './request_mock';
-import { Request } from '../../browser/puppeteer_wrapper/puppeteer_types';
+import { Request, Response } from '../../browser/puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 import { TimeoutError } from '../../errors';
-import { promiseOr } from '../../utils/utils';
+import { promiseOr, matchText } from '../../utils/utils';
 
 export default class BrowserRequests extends WendigoModule {
     private _requestMocker: RequestMocker;
     private _requests: Array<Request>;
     private _interceptorReady: boolean;
+    private _interceptorCallback?: (req: Request) => Promise<void>;
 
     constructor(browser: Browser) {
         super(browser);
@@ -51,21 +52,17 @@ export default class BrowserRequests extends WendigoModule {
         this._requestMocker.clear();
     }
 
-    public async waitForNextRequest(url: string, timeout: number = 500): Promise<void> {
+    public async waitForNextRequest(url: string | RegExp, timeout: number = 500): Promise<void> {
         try {
-            await this._page.waitForRequest(url, {
-                timeout: timeout
-            });
+            await this._waitForRequestEvent("request", url, timeout);
         } catch (err) {
             throw new TimeoutError("waitForNextRequest", `Waiting for request "${url}"`, timeout);
         }
     }
 
-    public async waitForNextResponse(url: string, timeout: number = 500): Promise<void> {
+    public async waitForNextResponse(url: string | RegExp, timeout: number = 500): Promise<void> {
         try {
-            await this._page.waitForResponse(url, {
-                timeout: timeout
-            });
+            await this._waitForRequestEvent("response", url, timeout);
         } catch (err) {
             throw new TimeoutError("waitForNextResponse", `Waiting for response "${url}"`, timeout);
         }
@@ -113,13 +110,15 @@ export default class BrowserRequests extends WendigoModule {
     protected _beforeClose(): Promise<void> {
         this.clearMocks();
         this.clearRequests();
+        this._closeRequestInterceptor();
         return Promise.resolve();
     }
 
-    protected async _startRequestInterceptor(): Promise<void> {
+    private async _startRequestInterceptor(): Promise<void> {
         this._interceptorReady = true;
         await this._page.setRequestInterception(true);
-        this._page.on('request', request => {
+
+        this._interceptorCallback = (request: Request) => { // TODO: remove callback on beforeClose
             this._requests.push(request);
             const mock = this._requestMocker.getMockedResponse(request);
             if (mock) {
@@ -127,6 +126,35 @@ export default class BrowserRequests extends WendigoModule {
             } else {
                 return request.continue();
             }
+        };
+
+        this._page.on('request', this._interceptorCallback);
+    }
+
+    private _closeRequestInterceptor(): void {
+        if (this._interceptorCallback) {
+            this._page.off('request', this._interceptorCallback);
+            this._interceptorCallback = undefined;
+        }
+    }
+
+    private _waitForRequestEvent(event: "response" | "request", url: string | RegExp, timeout: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const waitForEventCallback = async (response: Response | Request) => {
+                const currentUrl = new URL(response.url());
+                const match = matchText(`${currentUrl.origin}${currentUrl.pathname}`, url);
+                if (match) {
+                    this._page.off(event, waitForEventCallback);
+                    resolve();
+                }
+            };
+
+            setTimeout(() => {
+                this._page.off(event, waitForEventCallback);
+                reject();
+            }, timeout);
+
+            this._page.on(event, waitForEventCallback);
         });
     }
 }

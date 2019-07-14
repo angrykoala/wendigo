@@ -47,6 +47,15 @@ describe("Wait For Request", function() {
         await browser.assert.requests.url(/api/);
     });
 
+    it("Wait For Request With Regex", async() => {
+        setTimeout(() => {
+            browser.clickText("click me");
+        }, 100);
+        await browser.assert.requests.url(/api/).exactly(0);
+        await browser.requests.waitForRequest(/\/api/);
+        await browser.assert.requests.url(/api/);
+    });
+
     it("Wait For Response With Mock", async() => {
         await browser.requests.mock("http://localhost:3456/api", {
             delay: 500,
@@ -70,6 +79,19 @@ describe("Wait For Request", function() {
         await browser.assert.requests.url(/api/).responseBody("test").exactly(1);
         await browser.requests.waitForResponse("http://localhost:3456/api");
         await browser.assert.requests.url(/api/).responseBody("test").exactly(1);
+    });
+
+    it("Wait For Response With Regex", async() => {
+        await browser.requests.mock("http://localhost:3456/api", {
+            delay: 500,
+            body: "test"
+        });
+        await browser.clickText("click me");
+        await browser.wait(10);
+        await browser.assert.requests.url(/api/).exactly(1);
+        await browser.assert.requests.url(/api/).responseBody("test").exactly(0);
+        await browser.requests.waitForResponse(/api/, 1000);
+        await browser.assert.requests.url(/api/).responseBody("test");
     });
 
     it("Wait For Request Timeout", async() => {
@@ -102,6 +124,16 @@ describe("Wait For Request", function() {
         }, `TimeoutError: [waitForNextRequest] Waiting for request "http://localhost:3456/api", timeout of 10ms exceeded.`);
     });
 
+    it("Wait For Next Request With Regex", async() => {
+        setTimeout(() => {
+            browser.clickText("click me");
+        }, 100);
+        await browser.assert.requests.url(/api/).exactly(0);
+        await browser.requests.waitForNextRequest(/api/);
+        await browser.assert.requests.url(/api/);
+    });
+
+
     it("Wait For Next Response With Mock", async() => {
         await browser.requests.mock("http://localhost:3456/api", {
             delay: 500,
@@ -127,5 +159,18 @@ describe("Wait For Request", function() {
             await browser.requests.waitForNextResponse("http://localhost:3456/api", 10);
         }, `TimeoutError: [waitForNextResponse] Waiting for response "http://localhost:3456/api", timeout of 10ms exceeded.`);
         await browser.assert.requests.url(/api/).responseBody("test").exactly(1);
+    });
+
+    it("Wait For Next Response With Regex", async() => {
+        await browser.requests.mock("http://localhost:3456/api", {
+            delay: 500,
+            body: "test"
+        });
+        await browser.clickText("click me");
+        await browser.wait(100);
+        await browser.assert.requests.url(/api/).exactly(1);
+        await browser.assert.requests.url(/api/).responseBody("test").exactly(0);
+        await browser.requests.waitForNextResponse(/api/, 1000);
+        await browser.assert.requests.url(/api/).responseBody("test");
     });
 });
