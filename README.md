@@ -1355,20 +1355,20 @@ Remove all the request mocks.
 Returns an array with all the current request mocks set in the browser.
 
 **requests.waitForRequest(url, timeout=500)**  
-Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`.
+Waits until a request with given url is done. This will resolve immediately if the requests was already made, to wait without taking in account past requests use `waitForNextRequest`. Url can be a string or regexp.
 
 ```js
 await browser.requests.waitForRequest("my-url");
 ```
 
 **requests.waitForResponse(url, timeout=500)**  
-Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`.
+Waits until a response to the given url is done. This will resolve immediately if the response was already received, to wait without taking in account past requests use `waitForNextResponse`. Url can be a string or regexp.
 
 **requests.waitForNextRequest(url ,timeout=500)**  
-Waits until next request with given url is done. If the request was already made, this method will wait until next one.
+Waits until next request with given url is done. If the request was already made, this method will wait until next one. Url can be a string or regexp.
 
 **requests.waitForNextResponse(url ,timeout=500)**  
-Waits until next response with given url is received. If the response was already received, this method will wait until next one.
+Waits until next response with given url is received. If the response was already received, this method will wait until next one. Url can be a string or regexp.
 
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.requests.filter`.
