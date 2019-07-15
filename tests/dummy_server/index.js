@@ -2,6 +2,7 @@
 
 const path = require('path');
 const express = require('express');
+const auth = require('basic-auth');
 const app = express();
 
 app.use((req, res, next) => { // To avoid 304
@@ -17,6 +18,17 @@ app.get("/api", (req, res) => {
     if (req.query.query === "hi2") res.json({result: "QUERY"});
     else res.json({result: "DUMMY"});
 });
+
+app.get("/auth", (req, res) => {
+    const httpAuth = auth(req);
+    const header = req.headers.authorization;
+
+    res.json({
+        httpAuth: httpAuth || null,
+        authHeader: header || null
+    });
+});
+
 
 app.get("/redirect", (req, res) => {
     res.redirect("/index.html");

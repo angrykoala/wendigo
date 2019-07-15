@@ -2,7 +2,7 @@ import { AssertionError } from '../../errors';
 import { stringify } from '../../utils/utils';
 import RequestFilter from './request_filter';
 import { ExpectedHeaders } from './types';
-import { ResourceType } from 'puppeteer';
+import { ResourceType } from '../../browser/puppeteer_wrapper/puppeteer_types';
 
 type PromiseExecutor<T> = (resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void;
 

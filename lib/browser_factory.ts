@@ -1,6 +1,5 @@
 import compose from 'compositer';
 import isClass from 'is-class';
-import { Page } from 'puppeteer';
 
 import Browser from './browser/browser';
 import BrowserAssertion from './browser/browser_assertions';
@@ -8,6 +7,7 @@ import { FinalBrowserSettings, PluginModule } from './types';
 import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
 import PuppeteerPage from './browser/puppeteer_wrapper/puppeteer_page';
+import { Page } from './browser/puppeteer_wrapper/puppeteer_types';
 
 export default class BrowserFactory {
     private static browserClass?: typeof Browser;

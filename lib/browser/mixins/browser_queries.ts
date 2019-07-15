@@ -1,5 +1,4 @@
 import BrowserCore from '../browser_core';
-import { ElementHandle } from 'puppeteer';
 
 import DomElement from '../../models/dom_element';
 import { FatalError, WendigoError } from '../../errors';
@@ -7,6 +6,7 @@ import { WendigoSelector } from '../../types';
 import { isXPathQuery, createFindTextXPath } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
+import { ElementHandle } from '../puppeteer_wrapper/puppeteer_types';
 
 export default abstract class BrowserQueries extends BrowserCore {
 

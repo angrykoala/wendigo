@@ -1,4 +1,4 @@
-import { ConsoleMessage, ConsoleMessageType } from 'puppeteer';
+import { ConsoleMessage, ConsoleMessageType } from '../../browser/puppeteer_wrapper/puppeteer_types';
 
 export default class Log {
     public message: ConsoleMessage;

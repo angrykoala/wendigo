@@ -1,8 +1,8 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, Request, Timeoutable, PDFOptions
-} from 'puppeteer';
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions
+} from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
 export default class PuppeteerPage {
@@ -43,6 +43,10 @@ export default class PuppeteerPage {
 
     public on<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
         this.page.on(eventName, cb);
+    }
+
+    public off<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
+        this.page.off(eventName, cb);
     }
 
     public evaluateHandle(cb: EvaluateFn, ...args: Array<SerializableOrJSHandle>): Promise<JSHandle> {
@@ -97,14 +101,6 @@ export default class PuppeteerPage {
         await this.page.waitFor(selector, options, ...args);
     }
 
-    public waitForRequest(url: string, options?: Timeoutable): Promise<Request> {
-        return this.page.waitForRequest(url, options);
-    }
-
-    public waitForResponse(url: string, options?: Timeoutable): Promise<Response> {
-        return this.page.waitForResponse(url, options);
-    }
-
     public $(selector: string): Promise<ElementHandle<Element> | null> {
         return this.page.$(selector);
     }
@@ -143,5 +139,9 @@ export default class PuppeteerPage {
 
     public setCache(value: boolean): Promise<void> {
         return this.page.setCacheEnabled(value);
+    }
+
+    public setExtraHTTPHeaders(headers: Record<string, string>): Promise<void> {
+        return this.page.setExtraHTTPHeaders(headers);
     }
 }

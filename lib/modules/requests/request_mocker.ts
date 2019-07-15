@@ -1,7 +1,7 @@
 import { URL } from 'url';
-import * as utils from '../../utils/utils';
+import { parseQueryString, compareObjects, matchText } from '../../utils/utils';
 import RequestMock from './request_mock';
-import { Request } from 'puppeteer';
+import { Request } from '../../browser/puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 
 export default class RequestMocker {
@@ -20,7 +20,7 @@ export default class RequestMocker {
         const method = request.method();
         return this._getMock(`${url.origin}${url.pathname}`, {
             method: method,
-            queryString: url.search ? utils.parseQueryString(url) : undefined
+            queryString: url.search ? parseQueryString(url) : undefined
         });
     }
 
@@ -54,10 +54,10 @@ export default class RequestMocker {
     private _sameQs(q1: string | { [s: string]: string } | undefined, q2: string | { [s: string]: string } | undefined): boolean {
         if (q1 === q2) return true;
         if (!q1 || !q2) return false;
-        const parsedQ1 = utils.parseQueryString(q1);
-        const parsedQ2 = utils.parseQueryString(q2);
+        const parsedQ1 = parseQueryString(q1);
+        const parsedQ2 = parseQueryString(q2);
 
-        return utils.compareObjects(parsedQ1, parsedQ2);
+        return compareObjects(parsedQ1, parsedQ2);
     }
 
     private _getMock(url: string, options: RequestMockOptions): RequestMock | null {
@@ -81,7 +81,7 @@ export default class RequestMocker {
     }
 
     private _matchUrl(url: string, expected: string | RegExp): boolean {
-        return utils.matchText(url, expected);
+        return matchText(url, expected);
     }
 
     // Priority is: Method > URL > QueryString

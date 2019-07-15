@@ -1,3 +1,10 @@
+2.4.0 / 2019-07-15
+==================
+
+* Auth module with basic and bearer support
+* RegExp support for waitForRequest, response and related methods
+* Improved types wrapper of puppeteer
+
 2.3.0 / 2019-06-29
 ==================
 

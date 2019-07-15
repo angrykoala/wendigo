@@ -265,6 +265,7 @@ describe("Assert Requests", function() {
             body: {result: "DUMMY"}
         });
         const mock = browser.requests.mock(configUrls.api, response);
+        await browser.wait(10); // waits for dangling requests
         await browser.assert.requests.pending().exactly(0);
 
         await browser.clickText("click me");

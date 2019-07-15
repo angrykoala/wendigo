@@ -1,4 +1,4 @@
-import { ConsoleMessageType } from 'puppeteer';
+import { ConsoleMessageType } from '../../browser/puppeteer_wrapper/puppeteer_types';
 
 export interface ConsoleFilter {
     type?: ConsoleMessageType;
