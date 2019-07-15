@@ -40,18 +40,18 @@ export default abstract class BrowserCore {
     protected settings: FinalBrowserSettings;
 
     private _loaded: boolean;
-    private disabled: boolean;
-    private components: Array<string>;
-    private cache: boolean;
+    private _disabled: boolean;
+    private _components: Array<string>;
+    private _cache: boolean;
 
     constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
         this.settings = settings;
         this._loaded = false;
         this.initialResponse = null;
-        this.disabled = false;
-        this.cache = settings.cache !== undefined ? settings.cache : true;
-        this.components = components;
+        this._disabled = false;
+        this._cache = settings.cache !== undefined ? settings.cache : true;
+        this._components = components;
         if (this.settings.log) {
             this._page.on("console", pageLog);
         }
@@ -71,7 +71,7 @@ export default abstract class BrowserCore {
         return this._page.page;
     }
     public get loaded(): boolean {
-        return this._loaded && !this.disabled;
+        return this._loaded && !this._disabled;
     }
 
     public get incognito(): boolean {
@@ -79,14 +79,14 @@ export default abstract class BrowserCore {
     }
 
     public get cacheEnabled(): boolean {
-        return this.cache;
+        return this._cache;
     }
 
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
         options = Object.assign({}, defaultOpenOptions, options);
         url = this._processUrl(url);
-        await this.setCache(this.cache);
+        await this.setCache(this._cache);
         if (options.queryString) {
             const qs = this._generateQueryString(options.queryString);
             url = `${url}${qs}`;
@@ -112,9 +112,9 @@ export default abstract class BrowserCore {
     }
 
     public async close(): Promise<void> {
-        if (this.disabled) return Promise.resolve();
+        if (this._disabled) return Promise.resolve();
         const p = this._beforeClose();
-        this.disabled = true;
+        this._disabled = true;
         this._loaded = false;
         this.initialResponse = null;
         this.originalHtml = undefined;
@@ -171,7 +171,7 @@ export default abstract class BrowserCore {
 
     public async setCache(value: boolean): Promise<void> {
         await this._page.setCache(value);
-        this.cache = value;
+        this._cache = value;
     }
 
     protected async _beforeClose(): Promise<void> {
@@ -221,7 +221,7 @@ export default abstract class BrowserCore {
     }
 
     private async _callComponentsMethod(method: string, options?: any): Promise<void> {
-        await Promise.all(this.components.map((c) => {
+        await Promise.all(this._components.map((c) => {
             const anyThis = this as any;
             if (typeof anyThis[c][method] === 'function')
                 return anyThis[c][method](options);

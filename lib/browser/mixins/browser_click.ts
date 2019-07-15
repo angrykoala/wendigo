@@ -20,7 +20,7 @@ export default abstract class BrowserClick extends BrowserActions {
             else elements = await this.queryAll(selector);
             const indexErrorMsg = `Invalid index "${index}" for selector "${selector}", ${elements.length} elements found.`;
             const notFoundMsg = `No element "${selector}" found.`;
-            return this.clickElements(elements, index, new WendigoError("click", indexErrorMsg), new QueryError("click", notFoundMsg));
+            return this._clickElements(elements, index, new WendigoError("click", indexErrorMsg), new QueryError("click", notFoundMsg));
         }
     }
 
@@ -35,7 +35,7 @@ export default abstract class BrowserClick extends BrowserActions {
         elements = await this.findByText(text, optionalText);
         const indexErrorMsg = `Invalid index "${index}" for text "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text "${optionalText || text}" found.`;
-        return this.clickElements(elements, index, new WendigoError("clickText", indexErrorMsg), new QueryError("clickText", notFoundMsg));
+        return this._clickElements(elements, index, new WendigoError("clickText", indexErrorMsg), new QueryError("clickText", notFoundMsg));
     }
 
     @FailIfNotLoaded
@@ -49,16 +49,16 @@ export default abstract class BrowserClick extends BrowserActions {
         elements = await this.findByTextContaining(text, optionalText);
         const indexErrorMsg = `Invalid index "${index}" for text containing "${optionalText || text}", ${elements.length} elements found.`;
         const notFoundMsg = `No element with text containing "${optionalText || text}" found.`;
-        return this.clickElements(elements, index, new WendigoError("clickTextContaining", indexErrorMsg), new QueryError("clickTextContaining", notFoundMsg));
+        return this._clickElements(elements, index, new WendigoError("clickTextContaining", indexErrorMsg), new QueryError("clickTextContaining", notFoundMsg));
 
     }
 
     @FailIfNotLoaded
-    private clickElements(elements: Array<DomElement>, index: number | undefined, indexError: Error, notFoundError: Error): Promise<number> {
+    private _clickElements(elements: Array<DomElement>, index: number | undefined, indexError: Error, notFoundError: Error): Promise<number> {
         if (index !== undefined) {
             return this._validateAndClickElementByIndex(elements, index, indexError);
         } else {
-            return this._validateAndClickElements(elements, notFoundError);
+            return this._validateAnd_clickElements(elements, notFoundError);
         }
     }
 
@@ -70,7 +70,7 @@ export default abstract class BrowserClick extends BrowserActions {
         return 1;
     }
 
-    private async _validateAndClickElements(elements: Array<DomElement>, error: Error): Promise<number> {
+    private async _validateAnd_clickElements(elements: Array<DomElement>, error: Error): Promise<number> {
         if (elements.length <= 0 || !elements[0]) {
             throw error;
         }

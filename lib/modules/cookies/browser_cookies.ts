@@ -38,7 +38,7 @@ export default class BrowserCookies extends WendigoModule {
     public delete(name: string | Array<string> | DeleteCookie): Promise<void> {
         if (name === undefined || name === null) throw new WendigoError("cookies.delete", "Delete cookie name missing");
 
-        if (this.isDeleteCookieInterface(name)) {
+        if (this._isDeleteCookieInterface(name)) {
             return this._page.deleteCookie(name);
         }
 
@@ -56,7 +56,7 @@ export default class BrowserCookies extends WendigoModule {
         return this.delete(cookiesList);
     }
 
-    private isDeleteCookieInterface(data: any): data is DeleteCookie {
+    private _isDeleteCookieInterface(data: any): data is DeleteCookie {
         if (data.name) return true;
         else return false;
     }

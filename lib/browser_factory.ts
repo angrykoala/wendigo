@@ -10,23 +10,23 @@ import PuppeteerPage from './browser/puppeteer_wrapper/puppeteer_page';
 import { Page } from './browser/puppeteer_wrapper/puppeteer_types';
 
 export default class BrowserFactory {
-    private static browserClass?: typeof Browser;
+    private static _browserClass?: typeof Browser;
 
     public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<PluginModule>): BrowserInterface {
-        if (!this.browserClass) {
-            this.setupBrowserClass(plugins);
+        if (!this._browserClass) {
+            this._setupBrowserClass(plugins);
         }
-        if (!this.browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
+        if (!this._browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
 
         const puppeteerPage = new PuppeteerPage(page);
-        return new this.browserClass(puppeteerPage, settings) as BrowserInterface;
+        return new this._browserClass(puppeteerPage, settings) as BrowserInterface;
     }
 
     public static clearCache(): void {
-        this.browserClass = undefined;
+        this._browserClass = undefined;
     }
 
-    private static setupBrowserClass(plugins: Array<PluginModule>): void {
+    private static _setupBrowserClass(plugins: Array<PluginModule>): void {
         const components: { [s: string]: any } = {};
         const assertComponents: { [s: string]: any } = {};
 
@@ -41,7 +41,7 @@ export default class BrowserFactory {
 
         const assertionClass = compose(BrowserAssertion, assertComponents);
         const finalComponents = Object.assign({}, components, { assert: assertionClass });
-        this.browserClass = compose(Browser, finalComponents) as typeof Browser;
+        this._browserClass = compose(Browser, finalComponents) as typeof Browser;
     }
 
     private static _setupAssertionModule(assertionPlugin: any, name: string): any {

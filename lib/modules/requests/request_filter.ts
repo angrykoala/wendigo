@@ -14,14 +14,14 @@ async function filterPromise<T>(p: Promise<Array<T>>, cb: (t: T) => boolean): Pr
 }
 
 export default class RequestFilter {
-    private requestList: Promise<Array<Request>>;
+    private _requestList: Promise<Array<Request>>;
 
     constructor(requests: Promise<Array<Request>> = Promise.resolve([])) {
-        this.requestList = requests;
+        this._requestList = requests;
     }
 
     get requests(): Promise<Array<Request>> {
-        return this.requestList;
+        return this._requestList;
     }
 
     public url(url: string | RegExp): RequestFilter {
@@ -49,7 +49,7 @@ export default class RequestFilter {
     public responseBody(body: string | RegExp | object): RequestFilter { // This one returns a promise
         const parsedBody = processBody(body);
         const requests = this.requests.then(async (req) => {
-            const reqBodyPairs = await this.getResponsesBody(req);
+            const reqBodyPairs = await this._getResponsesBody(req);
             const filteredRequests = reqBodyPairs.map(el => {
                 if (matchText(el[1], parsedBody)) return el[0];
                 else return false;
@@ -82,7 +82,7 @@ export default class RequestFilter {
 
     public responseHeaders(headers: ExpectedHeaders): RequestFilter {
         const requests = filterPromise(this.requests, el => {
-            return this.responseHasHeader(el, headers);
+            return this._responseHasHeader(el, headers);
         });
         return new RequestFilter(requests);
     }
@@ -112,7 +112,7 @@ export default class RequestFilter {
         return new RequestFilter(requests);
     }
 
-    private responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
+    private _responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
         const response = request.response();
         if (!response) return false;
         const keys = Object.keys(headers);
@@ -127,7 +127,7 @@ export default class RequestFilter {
         return true;
     }
 
-    private async getResponsesBody(requests: Array<Request>): Promise<Array<[Request, string]>> {
+    private async _getResponsesBody(requests: Array<Request>): Promise<Array<[Request, string]>> {
         type requestResponsePair = [Request, string];
 
         const responses = await Promise.all(requests.map(async (req) => {

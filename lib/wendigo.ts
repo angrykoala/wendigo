@@ -18,30 +18,30 @@ const defaultSettings: BrowserSettings = {
 };
 
 export default class Wendigo {
-    private customPlugins: Array<PluginModule>;
-    private browsers: Array<BrowserInterface>;
+    private _customPlugins: Array<PluginModule>;
+    private _browsers: Array<BrowserInterface>;
 
     constructor() {
-        this.customPlugins = [];
-        this.browsers = [];
+        this._customPlugins = [];
+        this._browsers = [];
     }
 
     public async createBrowser(settings: BrowserSettings = {}): Promise<BrowserInterface> {
         const finalSettings = this._processSettings(settings);
         const instance = await this._createInstance(finalSettings);
-        const plugins = this.customPlugins;
+        const plugins = this._customPlugins;
         const page = await instance.newPage();
         const b = BrowserFactory.createBrowser(page, finalSettings, plugins);
-        this.browsers.push(b);
+        this._browsers.push(b);
         return b;
     }
 
     public async stop(): Promise<void> {
         this.clearPlugins();
-        const p = Promise.all(this.browsers.map((b) => {
+        const p = Promise.all(this._browsers.map((b) => {
             return b.close();
         }));
-        this.browsers = [];
+        this._browsers = [];
         await p;
     }
 
@@ -59,7 +59,7 @@ export default class Wendigo {
         this._validatePlugin(finalName, plugin, assertions);
 
         BrowserFactory.clearCache();
-        this.customPlugins.push({
+        this._customPlugins.push({
             name: finalName,
             plugin: plugin,
             assertions: assertions
@@ -67,7 +67,7 @@ export default class Wendigo {
     }
 
     public clearPlugins(): void {
-        this.customPlugins = [];
+        this._customPlugins = [];
         BrowserFactory.clearCache();
     }
 
@@ -82,7 +82,7 @@ export default class Wendigo {
         if (!name || typeof name !== 'string') throw new Errors.FatalError("registerPlugin", `Plugin requires a name.`);
         let invalidNames = ["assert", "page", "not"];
         const defaultModules = ["cookies", "localStorage", "requests", "console", "webworkers", "dialog"];
-        const plugins = this.customPlugins;
+        const plugins = this._customPlugins;
         invalidNames = invalidNames.concat(plugins.map(p => p.name)).concat(defaultModules);
         const valid = !invalidNames.includes(name);
         if (!valid) throw new Errors.FatalError("registerPlugin", `Invalid plugin name "${name}".`);
@@ -102,11 +102,11 @@ export default class Wendigo {
     }
 
     private _removeBrowser(browser: BrowserInterface): void {
-        const idx = this.browsers.indexOf(browser);
+        const idx = this._browsers.indexOf(browser);
         if (idx === -1) {
             throw new Errors.FatalError("onClose", "browser not found on closing.");
         }
-        this.browsers.splice(idx, 1);
+        this._browsers.splice(idx, 1);
     }
 
     private _processSettings(settings: BrowserSettings): FinalBrowserSettings {

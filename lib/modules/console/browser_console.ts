@@ -8,14 +8,14 @@ import Browser from '../../browser/browser';
 import { OpenSettings } from '../../types';
 
 export default class BrowserConsole extends WendigoModule {
-    private logs: Array<Log>;
+    private _logs: Array<Log>;
     constructor(browser: Browser) {
         super(browser);
-        this.logs = [];
+        this._logs = [];
         this._page.on("console", async (log) => {
             if (log) {
                 const text = await stringifyLogText(log);
-                this.logs.push(new Log(log, text));
+                this._logs.push(new Log(log, text));
             }
         });
     }
@@ -25,11 +25,11 @@ export default class BrowserConsole extends WendigoModule {
     }
 
     public all(): Array<Log> {
-        return this.logs;
+        return this._logs;
     }
 
     public filter(filters: ConsoleFilter = {}): Array<Log> {
-        return this.logs.filter((l) => {
+        return this._logs.filter((l) => {
             if (filters.type && l.type !== filters.type) return false;
             if (filters.text && !matchText(l.text, filters.text)) return false;
             return true;
@@ -37,7 +37,7 @@ export default class BrowserConsole extends WendigoModule {
     }
 
     public clear(): void {
-        this.logs = [];
+        this._logs = [];
     }
 
     protected async _beforeOpen(options: OpenSettings): Promise<void> {
