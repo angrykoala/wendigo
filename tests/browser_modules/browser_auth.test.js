@@ -24,6 +24,7 @@ describe("Auth", function() {
     it("No Auth", async() => {
         await browser.click(".auth-btn");
         await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+        await browser.wait(10);
         await browser.assert.text(".auth-res", JSON.stringify({
             httpAuth: null,
             authHeader: null
@@ -39,6 +40,7 @@ describe("Auth", function() {
             });
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: {
                     name: "arthur",
@@ -55,6 +57,7 @@ describe("Auth", function() {
             await browser.auth.http();
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: null,
                 authHeader: null
@@ -69,6 +72,7 @@ describe("Auth", function() {
             await browser.open(configUrls.auth);
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: {
                     name: "arthur",
@@ -86,6 +90,7 @@ describe("Auth", function() {
             await browser.auth.clear();
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: null,
                 authHeader: null
@@ -98,6 +103,7 @@ describe("Auth", function() {
             await browser.auth.bearer("my-token");
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: null,
                 authHeader: "Bearer my-token"
@@ -109,6 +115,7 @@ describe("Auth", function() {
             await browser.auth.bearer();
             await browser.click(".auth-btn");
             await browser.requests.waitForNextResponse("http://localhost:3456/auth");
+            await browser.wait(10);
             await browser.assert.text(".auth-res", JSON.stringify({
                 httpAuth: null,
                 authHeader: null
