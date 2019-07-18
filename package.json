@@ -52,7 +52,7 @@
     "eslint": "^6.0.1",
     "express": "^4.17.1",
     "markdownlint-cli": "^0.17.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   }
