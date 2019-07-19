@@ -1,6 +1,6 @@
 "use strict";
 
-// const assert = require('assert');
+const assert = require('assert');
 const Wendigo = require('../..');
 // const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
@@ -24,10 +24,17 @@ describe.only("Tabs", function() {
     // TODO: check tabs interface with tabs and popups
     // Check tabs have wendigoUtils
     it("Open Tab", async() => {
-        console.log((await browser.page.browser().pages()).length);
-        await browser.click(".btn-popup");
-        await browser.wait(100);
-        console.log((await browser.page.browser().pages()).length);
-        await browser.wait(100000);
+        const pagesBefore = await browser.pages();
+        assert.strictEqual(pagesBefore.length, 1);
+        await browser.click(".btn-tab");
+        await browser.wait(10);
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 2);
     });
+
+    it("Get Browser Pages And Puppeteer Native Browser");
+    it("Open Popup");
+    it("Switch To Tab"); // Also check wendigo utils is ready
+    it("Close Browser Should Close All Tabs");
+    it("Close Tab");
 });
