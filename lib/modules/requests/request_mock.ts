@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { URL } from 'url';
-import { Request } from '../../browser/puppeteer_wrapper/puppeteer_types';
+import { Request } from '../../puppeteer_wrapper/puppeteer_types';
 
 import RequestFilter from './request_filter';
 import { FatalError, AssertionError, TimeoutError } from '../../errors';

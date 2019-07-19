@@ -5,7 +5,7 @@ import RequestFilter from './request_filter';
 import RequestMocker from './request_mocker';
 import Browser from '../../browser/browser';
 import RequestMock from './request_mock';
-import { Request, Response } from '../../browser/puppeteer_wrapper/puppeteer_types';
+import { Request, Response } from '../../puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 import { TimeoutError } from '../../errors';
 import { promiseOr, matchText } from '../../utils/utils';

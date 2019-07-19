@@ -1,6 +1,6 @@
 import process from 'process';
 import puppeteer from 'puppeteer';
-import { BrowserContext } from './browser/puppeteer_wrapper/puppeteer_types';
+import { BrowserContext } from './puppeteer_wrapper/puppeteer_types';
 import BrowserFactory from './browser_factory';
 import * as Errors from './errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
@@ -31,9 +31,8 @@ export default class Wendigo {
         const instance = await this._createInstance(finalSettings);
         const plugins = this._customPlugins;
         const pages = await instance.pages();
-        let page = pages[0];
-        if (!page) page = await instance.newPage();
-        const b = BrowserFactory.createBrowser(page, finalSettings, plugins);
+        if (pages.length === 0) await instance.newPage();
+        const b = await BrowserFactory.createBrowser(instance, finalSettings, plugins);
         this._browsers.push(b);
         return b;
     }

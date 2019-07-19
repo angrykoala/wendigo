@@ -5,7 +5,7 @@ const Wendigo = require('../..');
 // const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-describe.only("Tabs", function() {
+describe.skip("Tabs", function() {
     this.timeout(5000000);
     let browser;
 
@@ -17,7 +17,7 @@ describe.only("Tabs", function() {
         await browser.open(configUrls.tabsAndPopups);
     });
 
-    after(async() => {
+    afterEach(async() => {
         await browser.close();
     });
 
@@ -32,8 +32,22 @@ describe.only("Tabs", function() {
         assert.strictEqual(pagesAfter.length, 2);
     });
 
-    it("Get Browser Pages And Puppeteer Native Browser");
-    it("Open Popup");
+    it("Get Browser Pages And Puppeteer Native Browser", async() => {
+        const pages = await browser.pages();
+        assert.strictEqual(pages.length, 1);
+        assert.strictEqual(pages[0], browser.page);
+        assert.isOk(browser.context);
+        assert.strictEqual(browser.context, browser.page.browser());
+    });
+
+    it("Open Popup", async() => {
+        const pagesBefore = await browser.pages();
+        assert.strictEqual(pagesBefore.length, 1);
+        await browser.click(".btn-popup");
+        await browser.wait(10);
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 2);
+    });
     it("Switch To Tab"); // Also check wendigo utils is ready
     it("Close Browser Should Close All Tabs");
     it("Close Tab");

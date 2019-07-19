@@ -6,19 +6,20 @@ import BrowserAssertion from './browser/browser_assertions';
 import { FinalBrowserSettings, PluginModule } from './types';
 import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
-import PuppeteerPage from './browser/puppeteer_wrapper/puppeteer_page';
-import { Page } from './browser/puppeteer_wrapper/puppeteer_types';
+import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
+import { BrowserContext } from './puppeteer_wrapper/puppeteer_types';
 
 export default class BrowserFactory {
     private static _browserClass?: typeof Browser;
 
-    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<PluginModule>): BrowserInterface {
+    public static async createBrowser(context: BrowserContext, settings: FinalBrowserSettings, plugins: Array<PluginModule>): Promise<BrowserInterface> {
         if (!this._browserClass) {
             this._setupBrowserClass(plugins);
         }
         if (!this._browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
 
-        const puppeteerPage = new PuppeteerPage(page);
+        const pages = await context.pages();
+        const puppeteerPage = new PuppeteerPage(pages[0]);
         return new this._browserClass(puppeteerPage, settings) as BrowserInterface;
     }
 

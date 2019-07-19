@@ -3,7 +3,7 @@ import BrowserClick from './browser_click';
 import { QueryError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
-import { PDFOptions } from '../puppeteer_wrapper/puppeteer_types';
+import { PDFOptions } from '../../puppeteer_wrapper/puppeteer_types';
 
 export default abstract class BrowserInfo extends BrowserClick {
 

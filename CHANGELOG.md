@@ -3,6 +3,7 @@
 
 * Improved typings for module compositer
 * A browser won't have 2 tabs opened by default
+* Minor improvements in internal typings
 
 2.4.0 / 2019-07-15
 ==================

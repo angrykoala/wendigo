@@ -1,5 +1,5 @@
 import BrowserTap from './mixins/browser_tap';
-import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
+import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
 import { FinalBrowserSettings } from '../types';
 
 // Modules

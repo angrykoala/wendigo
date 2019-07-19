@@ -1,5 +1,5 @@
 import DomElement from './models/dom_element';
-import { ViewportOptions } from './browser/puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions } from './puppeteer_wrapper/puppeteer_types';
 
 export type WendigoSelector = string | DomElement;
 

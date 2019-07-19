@@ -6,7 +6,7 @@ import { QueryError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import DOMELement from '../../models/dom_element';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
-import { Base64ScreenShotOptions } from '../puppeteer_wrapper/puppeteer_types';
+import { Base64ScreenShotOptions } from '../../puppeteer_wrapper/puppeteer_types';
 
 // Mixin with user actions
 export default abstract class BrowserActions extends BrowserQueries {

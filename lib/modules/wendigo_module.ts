@@ -1,6 +1,6 @@
 import Browser from '../browser/browser';
 import { OpenSettings } from '../types';
-import PuppeteerPage from '../browser/puppeteer_wrapper/puppeteer_page';
+import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
 
 export default abstract class WendigoModule {
     protected _browser: Browser;

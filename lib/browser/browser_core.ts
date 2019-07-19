@@ -1,13 +1,13 @@
 import path from 'path';
 import querystring from 'querystring';
 
-import { stringifyLogText } from './puppeteer_wrapper/puppeteer_utils';
+import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
 import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
-import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame } from './puppeteer_wrapper/puppeteer_types';
+import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
