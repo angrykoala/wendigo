@@ -1,4 +1,4 @@
-2.5.0 / ####-##-##
+2.5.0 / 2019-07-24
 ==================
 
 * Pages, selectPage and closePage methods to handle tabs and popups
