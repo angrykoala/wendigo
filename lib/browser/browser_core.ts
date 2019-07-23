@@ -7,7 +7,7 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -60,6 +60,16 @@ export default abstract class BrowserCore {
         if (this.settings.log) {
             this._page.on("console", pageLog);
         }
+
+        this._context.on('targetcreated', async (target: Target): Promise<void> => {
+            const createdPage = await target.page();
+            if (createdPage) {
+                const puppeteerPage = new PuppeteerPage(createdPage);
+                await puppeteerPage.setBypassCSP(true);
+                if (this.settings.userAgent)
+                    await puppeteerPage.setUserAgent(this.settings.userAgent);
+            }
+        });
 
         this._page.on('load', async (): Promise<void> => {
             if (this._loaded) {
@@ -224,7 +234,7 @@ export default abstract class BrowserCore {
         } catch (err) {
             if (err.message === "Evaluation failed: Event") {
                 const cspWarning = "This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.";
-                throw new InjectScriptError("_afterPageLoad", `${err.message}. ${cspWarning}`); // CSP error
+                throw new InjectScriptError("_afterPageLoad", `Error injecting scripts. ${cspWarning}`); // CSP error
             }
         }
         this._loaded = true;

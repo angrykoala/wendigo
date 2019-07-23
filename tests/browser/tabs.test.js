@@ -49,7 +49,6 @@ describe("Tabs", function() {
         await browser.click(".btn-tab");
         await browser.assert.not.text("p", "html_test");
         await browser.wait(10);
-        console.log("Select page");
         await browser.selectPage(1);
         const pagesAfter = await browser.pages();
         assert.strictEqual(pagesAfter.length, 2);
@@ -89,5 +88,14 @@ describe("Tabs", function() {
         await utils.assertThrowsAsync(async() => {
             await browser.selectPage(10);
         }, `FatalError: [selectPage] Invalid page index "10".`);
+    });
+
+    it("Opening Normal Link Wont Create New Tabs", async() => {
+        await browser.click(".btn-link");
+        await browser.waitForNavigation();
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 1);
+        await browser.assert.text("p", "html_test");
+        await browser.assert.global("WendigoUtils");
     });
 });
