@@ -1,4 +1,4 @@
-import { Cookie as CookieData, SetCookie, DeleteCookie } from '../../browser/puppeteer_wrapper/puppeteer_types';
+import { Cookie as CookieData, SetCookie, DeleteCookie } from '../../puppeteer_wrapper/puppeteer_types';
 import WendigoModule from '../wendigo_module';
 import { WendigoError } from '../../errors';
 import { arrayfy } from '../../utils/utils';
@@ -6,7 +6,7 @@ import { arrayfy } from '../../utils/utils';
 export default class BrowserCookies extends WendigoModule {
     public async all(): Promise<{ [s: string]: string }> {
         const cookies = await this._page.cookies();
-        return cookies.reduce((acc, cookie): { [s: string]: string } => {
+        return cookies.reduce((acc, cookie: CookieData): { [s: string]: string } => {
             acc[cookie.name] = cookie.value;
             return acc;
         }, {} as { [s: string]: string });

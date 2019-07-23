@@ -31,6 +31,7 @@
         "triggerEvent": "http://localhost:3456/trigger_event.html",
         "auth": "http://localhost:3456/auth.html",
         "weirdText": "http://localhost:3456/weird_text.html",
-        "nestedElements": "http://localhost:3456/nested_elements.html"
+        "nestedElements": "http://localhost:3456/nested_elements.html",
+        "tabsAndPopups": "http://localhost:3456/tabs_and_popups.html"
     }
 }

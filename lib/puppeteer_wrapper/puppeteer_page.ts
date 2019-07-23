@@ -36,6 +36,14 @@ export default class PuppeteerPage {
         return this.page.frames();
     }
 
+    public close(): Promise<void> {
+        return this.page.close();
+    }
+
+    public isClosed(): boolean {
+        return this.page.isClosed();
+    }
+
     public setViewport(config: ViewportOptions = {}): Promise<void> {
         const finalConfig = Object.assign({}, this.page.viewport(), config) as Viewport;
         return this.page.setViewport(finalConfig);

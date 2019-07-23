@@ -1,4 +1,4 @@
-import * as utils from '../../utils/utils';
+import { arrayfy, matchTextList, matchTextContainingList } from '../../utils/utils';
 import { invertify } from '../../utils/assert_utils';
 import { WendigoError, QueryError, AssertionError } from '../../errors';
 import BrowserAssertions from '../browser_assertions';
@@ -40,11 +40,11 @@ export default class BrowserNotAssertions {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             throw new WendigoError("assert.not.text", `Missing expected text for assertion.`);
         }
-        const processedExpected = utils.arrayfy(expected);
+        const processedExpected = arrayfy(expected);
 
         const texts = await this._browser.text(selector);
         for (const expectedText of processedExpected) {
-            if (utils.matchTextList(texts, expectedText)) {
+            if (matchTextList(texts, expectedText)) {
                 if (!msg) msg = `Expected element "${selector}" not to have text "${expectedText}".`;
                 throw new AssertionError("assert.not.text", msg);
             }
@@ -56,11 +56,11 @@ export default class BrowserNotAssertions {
             throw new WendigoError("assert.not.textContains", `Missing expected text for assertion.`);
         }
 
-        const processedExpected = utils.arrayfy(expected);
+        const processedExpected = arrayfy(expected);
         const texts = await this._browser.text(selector);
 
         for (const expectedText of processedExpected) {
-            if (utils.matchTextContainingList(texts, expectedText)) {
+            if (matchTextContainingList(texts, expectedText)) {
                 if (!msg) {
                     msg = `Expected element "${selector}" to not contain text "${expectedText}".`;
                 }
@@ -144,7 +144,7 @@ export default class BrowserNotAssertions {
 
     public selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         if (!msg) {
-            const parsedExpected = utils.arrayfy(expected);
+            const parsedExpected = arrayfy(expected);
             const expectedText = parsedExpected.join(", ");
             msg = `Expected element "${selector}" not to have options "${expectedText}" selected.`;
         }

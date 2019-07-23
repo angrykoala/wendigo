@@ -59,7 +59,7 @@ describe("Open", function() {
         });
         await utils.assertThrowsAsync(async() => {
             await browser2.open(configUrls.index);
-        }, `InjectScriptError: [open] Evaluation failed: Event. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
+        }, `InjectScriptError: [open] Error injecting scripts. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
         await browser2.close();
     });
 

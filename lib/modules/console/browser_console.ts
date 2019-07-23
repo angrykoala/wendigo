@@ -1,18 +1,19 @@
 import Log from './log';
 import { matchText } from '../../utils/utils';
-import { stringifyLogText } from '../../browser/puppeteer_wrapper/puppeteer_utils';
+import { stringifyLogText } from '../../puppeteer_wrapper/puppeteer_utils';
 
 import WendigoModule from '../wendigo_module';
 import { LogType, ConsoleFilter } from './types';
 import Browser from '../../browser/browser';
 import { OpenSettings } from '../../types';
+import { ConsoleMessage } from '../../puppeteer_wrapper/puppeteer_types';
 
 export default class BrowserConsole extends WendigoModule {
     private _logs: Array<Log>;
     constructor(browser: Browser) {
         super(browser);
         this._logs = [];
-        this._page.on("console", async (log) => {
+        this._page.on("console", async (log: ConsoleMessage) => {
             if (log) {
                 const text = await stringifyLogText(log);
                 this._logs.push(new Log(log, text));

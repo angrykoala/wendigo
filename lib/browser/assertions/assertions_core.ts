@@ -1,6 +1,6 @@
-import * as utils from '../../utils/utils';
+import { arrayfy, matchTextList, matchText, stringify, matchTextContainingList } from '../../utils/utils';
+import { sameMembers } from '../../utils/assert_utils';
 import * as elementsAssertionUtils from './assert_elements';
-import * as assertUtils from '../../utils/assert_utils';
 
 import { QueryError, FatalError, WendigoError, AssertionError } from '../../errors';
 import { WendigoSelector } from '../../types';
@@ -67,10 +67,10 @@ export default class AssertionsCore {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             throw new WendigoError("assert.text", `Missing expected text for assertion.`);
         }
-        const processedExpected = utils.arrayfy(expected);
+        const processedExpected = arrayfy(expected);
         const texts = await this._browser.text(selector);
         for (const expectedText of processedExpected) {
-            if (!utils.matchTextList(texts, expectedText)) {
+            if (!matchTextList(texts, expectedText)) {
                 if (!msg) {
                     const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
                     msg = `Expected element "${selector}" to have text "${expectedText}", ${foundText} found.`;
@@ -85,11 +85,11 @@ export default class AssertionsCore {
             throw new WendigoError("assert.textContains", `Missing expected text for assertion.`);
         }
 
-        const processedExpected = utils.arrayfy(expected);
+        const processedExpected = arrayfy(expected);
         const texts = await this._browser.text(selector);
 
         for (const expectedText of processedExpected) {
-            if (!utils.matchTextContainingList(texts, expectedText)) {
+            if (!matchTextContainingList(texts, expectedText)) {
                 if (!msg) {
                     const foundText = texts.length === 0 ? "no text" : `"${texts.join(" ")}"`;
                     msg = `Expected element "${selector}" to contain text "${expectedText}", ${foundText} found.`;
@@ -102,7 +102,7 @@ export default class AssertionsCore {
     public async title(expected: string | RegExp, msg?: string): Promise<void> {
         const title = await this._browser.title();
         const foundTitle = title ? `"${title}"` : "no title";
-        if (!utils.matchText(title, expected)) {
+        if (!matchText(title, expected)) {
             if (!msg) msg = `Expected page title to be "${expected}", ${foundTitle} found.`;
             throw new AssertionError("assert.title", msg);
         }
@@ -131,8 +131,8 @@ export default class AssertionsCore {
         } catch (err) {
             throw new FatalError("assert.url", `Can't obtain page url.${err.extraMessage || err.message}`);
         }
-        if (!utils.matchText(url, expected)) {
-            if (!msg) msg = `Expected url to be "${utils.stringify(expected)}", "${url}" found`;
+        if (!matchText(url, expected)) {
+            if (!msg) msg = `Expected url to be "${stringify(expected)}", "${url}" found`;
             throw new AssertionError("assert.url", msg, url, expected);
         }
     }
@@ -190,7 +190,7 @@ export default class AssertionsCore {
             if (filteredAttributes.length === 0) return Promise.resolve();
         } else {
             for (const attr of filteredAttributes) {
-                if (expectedValue === undefined || utils.matchText(attr, expectedValue)) {
+                if (expectedValue === undefined || matchText(attr, expectedValue)) {
                     return Promise.resolve();
                 }
             }
@@ -245,7 +245,7 @@ export default class AssertionsCore {
             return Promise.reject(error);
         }
         for (const html of found) {
-            if (utils.matchText(html, expected)) return Promise.resolve();
+            if (matchText(html, expected)) return Promise.resolve();
         }
 
         if (!msg) {
@@ -264,7 +264,7 @@ export default class AssertionsCore {
             return Promise.reject(error);
         }
         for (const html of found) {
-            if (utils.matchText(html, expected)) return Promise.resolve();
+            if (matchText(html, expected)) return Promise.resolve();
         }
 
         if (!msg) {
@@ -275,10 +275,10 @@ export default class AssertionsCore {
     }
 
     public async options(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
-        const parsedExpected = utils.arrayfy(expected);
+        const parsedExpected = arrayfy(expected);
         const options = await this._browser.options(selector);
-        const sameMembers = assertUtils.sameMembers(parsedExpected, options);
-        if (!sameMembers) {
+        const same = sameMembers(parsedExpected, options);
+        if (!same) {
             if (!msg) {
                 const expectedText = parsedExpected.join(", ");
                 const optionsText = options.join(", ");
@@ -289,10 +289,10 @@ export default class AssertionsCore {
     }
 
     public async selectedOptions(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
-        const parsedExpected = utils.arrayfy(expected);
+        const parsedExpected = arrayfy(expected);
         const selectedOptions = await this._browser.selectedOptions(selector);
-        const sameMembers = assertUtils.sameMembers(parsedExpected, selectedOptions);
-        if (!sameMembers) {
+        const same = sameMembers(parsedExpected, selectedOptions);
+        if (!same) {
             if (!msg) {
                 const expectedText = parsedExpected.join(", ");
                 const optionsText = selectedOptions.join(", ");
