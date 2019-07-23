@@ -1,4 +1,4 @@
-import { BrowserContext } from "./puppeteer_types";
+import { BrowserContext, Page } from "./puppeteer_types";
 import PuppeteerPage from "./puppeteer_page";
 
 export default class PuppeteerContext {
@@ -10,13 +10,19 @@ export default class PuppeteerContext {
 
     public async getDefaultPage(): Promise<PuppeteerPage> {
         const pages = await this.pages();
-        if (pages.length > 0) return pages[0];
+        if (pages.length > 0) return new PuppeteerPage(pages[0]);
         else return this.newPage();
     }
 
-    public async pages(): Promise<Array<PuppeteerPage>> {
-        const rawPages = await this.context.pages();
-        return rawPages.map(p => new PuppeteerPage(p));
+    public async pages(): Promise<Array<Page>> {
+        return await this.context.pages();
+    }
+
+    public async getPage(index: number): Promise<PuppeteerPage | void> {
+        const pages = await this.pages();
+        const rawPage = pages[index];
+        if (!rawPage) return undefined;
+        return new PuppeteerPage(rawPage);
     }
 
     public async newPage(): Promise<PuppeteerPage> {

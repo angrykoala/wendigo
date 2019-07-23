@@ -17,8 +17,8 @@ export default class BrowserFactory {
         }
         if (!this._browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
 
-        const puppeteerPage = await context.getDefaultPage();
-        return new this._browserClass(context, settings) as BrowserInterface;
+        const page = await context.getDefaultPage();
+        return new this._browserClass(context, page, settings) as BrowserInterface;
     }
 
     public static clearCache(): void {

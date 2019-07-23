@@ -7,8 +7,10 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
+import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
+import OverrideError from '../decorators/override_error';
 
 const injectionScriptsPath = WendigoConfig.injectionScripts.path;
 const injectionScripts = WendigoConfig.injectionScripts.files;
@@ -36,6 +38,7 @@ export default abstract class BrowserCore {
     public initialResponse: Response | null;
 
     protected _page: PuppeteerPage;
+    protected _context: PuppeteerContext;
     protected originalHtml?: string;
     protected settings: FinalBrowserSettings;
 
@@ -43,9 +46,11 @@ export default abstract class BrowserCore {
     private _disabled: boolean;
     private _components: Array<string>;
     private _cache: boolean;
+    private _openSettings: OpenSettings = defaultOpenOptions;
 
-    constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
+    constructor(context: PuppeteerContext, page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
+        this._context = context;
         this.settings = settings;
         this._loaded = false;
         this.initialResponse = null;
@@ -70,6 +75,11 @@ export default abstract class BrowserCore {
     public get page(): Page {
         return this._page.page;
     }
+
+    public get context(): BrowserContext {
+        return this._context.context;
+    }
+
     public get loaded(): boolean {
         return this._loaded && !this._disabled;
     }
@@ -82,17 +92,18 @@ export default abstract class BrowserCore {
         return this._cache;
     }
 
+    @OverrideError()
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
-        options = Object.assign({}, defaultOpenOptions, options);
+        this._openSettings = Object.assign({}, defaultOpenOptions, options);
         url = this._processUrl(url);
         await this.setCache(this._cache);
-        if (options.queryString) {
-            const qs = this._generateQueryString(options.queryString);
+        if (this._openSettings.queryString) {
+            const qs = this._generateQueryString(this._openSettings.queryString);
             url = `${url}${qs}`;
         }
         try {
-            await this._beforeOpen(options);
+            await this._beforeOpen(this._openSettings);
             const response = await this._page.goto(url);
             this.initialResponse = response;
             return this._afterPageLoad();
@@ -102,6 +113,7 @@ export default abstract class BrowserCore {
         }
     }
 
+    @OverrideError()
     public async openFile(filepath: string, options: OpenSettings): Promise<void> {
         const absolutePath = path.resolve(filepath);
         try {
@@ -136,6 +148,19 @@ export default abstract class BrowserCore {
         } else return rawResult.jsonValue();
     }
 
+    public async pages(): Promise<Array<Page>> {
+        return this._context.pages();
+    }
+
+    @OverrideError()
+    public async selectPage(index: number): Promise<void> {
+        const page = await this._context.getPage(index);
+        if (!page) throw new FatalError("selectPage", `Invalid page index "${index}".`);
+        this._page = page;
+        await this._beforeOpen(this._openSettings);
+        await this._afterPageLoad();
+    }
+
     public setViewport(config: ViewportOptions = {}): Promise<void> {
         return this._page.setViewport(config);
     }
@@ -165,7 +190,7 @@ export default abstract class BrowserCore {
                 path: scriptPath
             });
         } catch (err) {
-            return Promise.reject(new InjectScriptError("open", err));
+            return Promise.reject(new InjectScriptError("addScript", err));
         }
     }
 
@@ -184,7 +209,6 @@ export default abstract class BrowserCore {
         if (this.settings.userAgent) {
             await this._page.setUserAgent(this.settings.userAgent);
         }
-
         if (this.settings.bypassCSP) {
             await this._page.setBypassCSP(true);
         }
@@ -198,7 +222,10 @@ export default abstract class BrowserCore {
             this.originalHtml = content;
             await this._addJsScripts();
         } catch (err) {
-            if (err.message === "Evaluation failed: Event") throw new InjectScriptError("open", err.message); // CSP error
+            if (err.message === "Evaluation failed: Event") {
+                const cspWarning = "This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.";
+                throw new InjectScriptError("_afterPageLoad", `${err.message}. ${cspWarning}`); // CSP error
+            }
         }
         this._loaded = true;
         await this._callComponentsMethod("_afterOpen");

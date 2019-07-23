@@ -70,7 +70,6 @@ export class TimeoutError extends WendigoError {
 
 export class InjectScriptError extends FatalError {
     constructor(fn: string, message: string) {
-        message = `${message}. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`;
         super(fn, message);
         this.name = this.constructor.name;
     }

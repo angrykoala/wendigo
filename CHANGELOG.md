@@ -1,9 +1,11 @@
-2.4.1 / ####-##-##
+2.5.0 / ####-##-##
 ==================
 
 * Improved typings for module compositer
 * A browser won't have 2 tabs opened by default
+* Puppeteer updated to 1.19.0
 * Minor improvements in internal typings
+* Minor fix in InjectionScript error message
 
 2.4.0 / 2019-07-15
 ==================

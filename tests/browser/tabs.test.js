@@ -2,18 +2,15 @@
 
 const assert = require('assert');
 const Wendigo = require('../..');
-// const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
+const utils = require('../test_utils');
 
-describe.only("Tabs", function() {
+describe("Tabs", function() {
     this.timeout(5000000);
     let browser;
 
-    before(async() => {
-        browser = await Wendigo.createBrowser({headless: false});
-    });
-
     beforeEach(async() => {
+        browser = await Wendigo.createBrowser();
         await browser.open(configUrls.tabsAndPopups);
     });
 
@@ -22,12 +19,11 @@ describe.only("Tabs", function() {
     });
 
     // TODO: check tabs interface with tabs and popups
-    // Check tabs have wendigoUtils
     it("Open Tab", async() => {
         const pagesBefore = await browser.pages();
         assert.strictEqual(pagesBefore.length, 1);
         await browser.click(".btn-tab");
-        await browser.wait(10);
+        await browser.wait(50);
         const pagesAfter = await browser.pages();
         assert.strictEqual(pagesAfter.length, 2);
     });
@@ -36,8 +32,8 @@ describe.only("Tabs", function() {
         const pages = await browser.pages();
         assert.strictEqual(pages.length, 1);
         assert.strictEqual(pages[0], browser.page);
-        assert.isOk(browser.context);
-        assert.strictEqual(browser.context, browser.page.browser());
+        assert.ok(browser.context);
+        assert.strictEqual(browser.context, browser.page.browser().defaultBrowserContext());
     });
 
     it("Open Popup", async() => {
@@ -48,7 +44,50 @@ describe.only("Tabs", function() {
         const pagesAfter = await browser.pages();
         assert.strictEqual(pagesAfter.length, 2);
     });
-    it("Switch To Tab"); // Also check wendigo utils is ready
-    it("Close Browser Should Close All Tabs");
-    it("Close Tab");
+
+    it.skip("Switch To Tab", async() => {
+        await browser.click(".btn-tab");
+        await browser.assert.not.text("p", "html_test");
+        await browser.wait(10);
+        console.log("Select page");
+        await browser.selectPage(1);
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 2);
+        await browser.assert.text("p", "html_test");
+        await browser.assert.global("WendigoUtils");
+    });
+
+    it.skip("Close Browser Should Close All Tabs", async() => {
+        const pagesBefore = await browser.pages();
+        assert.strictEqual(pagesBefore.length, 1);
+        await browser.click(".btn-tab");
+        await browser.click(".btn-tab");
+        await browser.click(".btn-tab");
+        await browser.wait(10);
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 4);
+        await browser.close();
+        const pagesAfterClose = await browser.pages();
+        assert.strictEqual(pagesAfterClose.length, 0);
+    });
+
+    it.skip("Close Tab", async() => {
+        await browser.click(".btn-tab");
+        await browser.assert.not.text("p", "html_test");
+        await browser.wait(10);
+        await browser.selectPage(1);
+        const pagesAfter = await browser.pages();
+        assert.strictEqual(pagesAfter.length, 2);
+        await browser.closePage(0);
+        const pagesAfterClose = await browser.pages();
+        assert.strictEqual(pagesAfterClose.length, 1);
+    });
+
+    it("Close Current Tab");
+
+    it("Switch To Invalid Tab", async() => {
+        await utils.assertThrowsAsync(async() => {
+            await browser.selectPage(10);
+        }, `FatalError: [selectPage] Invalid page index "10".`);
+    });
 });
