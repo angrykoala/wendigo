@@ -5,7 +5,7 @@ const Wendigo = require('../..');
 // const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-describe.skip("Tabs", function() {
+describe.only("Tabs", function() {
     this.timeout(5000000);
     let browser;
 

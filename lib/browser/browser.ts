@@ -1,5 +1,5 @@
-import BrowserTap from './mixins/browser_tap';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
+import BrowserTabs from './mixins/browser_tabs';
 import { FinalBrowserSettings } from '../types';
 
 // Modules
@@ -11,7 +11,7 @@ import BrowserWebworker from '../modules/webworkers/browser_webworker';
 import BrowserDialog from '../modules/dialog/browser_dialog';
 import BrowserAuth from '../modules/auth/browser_auth';
 
-export default class Browser extends BrowserTap {
+export default class Browser extends BrowserTabs {
     public readonly cookies: BrowserCookies;
     public readonly localStorage: BrowserLocalStorage;
     public readonly requests: BrowserRequests;

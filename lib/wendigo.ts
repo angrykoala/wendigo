@@ -5,6 +5,7 @@ import BrowserFactory from './browser_factory';
 import * as Errors from './errors';
 import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
 import BrowserInterface from './browser/browser_interface';
+import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 
 const defaultSettings: BrowserSettings = {
     log: false,
@@ -30,8 +31,6 @@ export default class Wendigo {
         const finalSettings = this._processSettings(settings);
         const instance = await this._createInstance(finalSettings);
         const plugins = this._customPlugins;
-        const pages = await instance.pages();
-        if (pages.length === 0) await instance.newPage();
         const b = await BrowserFactory.createBrowser(instance, finalSettings, plugins);
         this._browsers.push(b);
         return b;
@@ -95,11 +94,14 @@ export default class Wendigo {
         }
     }
 
-    private async _createInstance(settings: FinalBrowserSettings): Promise<BrowserContext> {
+    private async _createInstance(settings: FinalBrowserSettings): Promise<PuppeteerContext> {
         const instance = await puppeteer.launch(settings);
+        let context: BrowserContext;
         if (settings.incognito) {
-            return instance.createIncognitoBrowserContext();
-        } else return instance.defaultBrowserContext();
+            context = await instance.createIncognitoBrowserContext();
+        } else context = await instance.defaultBrowserContext();
+
+        return new PuppeteerContext(context);
     }
 
     private _removeBrowser(browser: BrowserInterface): void {
