@@ -65,9 +65,13 @@ export default abstract class BrowserCore {
             const createdPage = await target.page();
             if (createdPage) {
                 const puppeteerPage = new PuppeteerPage(createdPage);
-                await puppeteerPage.setBypassCSP(true);
-                if (this.settings.userAgent)
-                    await puppeteerPage.setUserAgent(this.settings.userAgent);
+                try {
+                    await puppeteerPage.setBypassCSP(true);
+                    if (this.settings.userAgent)
+                        await puppeteerPage.setUserAgent(this.settings.userAgent);
+                } catch (err) {
+                    // Will fail if browser is closed before finishing
+                }
             }
         });
 
@@ -135,7 +139,7 @@ export default abstract class BrowserCore {
 
     public async close(): Promise<void> {
         if (this._disabled) return Promise.resolve();
-        const p = this._beforeClose();
+        const p = this._beforeClose(); // Minor race condition with this._loaded if moved
         this._disabled = true;
         this._loaded = false;
         this.initialResponse = null;
@@ -167,8 +171,21 @@ export default abstract class BrowserCore {
         const page = await this._context.getPage(index);
         if (!page) throw new FatalError("selectPage", `Invalid page index "${index}".`);
         this._page = page;
+        // TODO: Avoid reload
+        await this.page.reload(); // Required to enable bypassCSP
         await this._beforeOpen(this._openSettings);
         await this._afterPageLoad();
+    }
+
+    public async closePage(index: number): Promise<void> {
+        const page = await this._context.getPage(index);
+        if (!page) throw new FatalError("closePage", `Invalid page index "${index}".`);
+        await page.close();
+        try {
+            await this.selectPage(0);
+        } catch (err) {
+            this.close();
+        }
     }
 
     public setViewport(config: ViewportOptions = {}): Promise<void> {

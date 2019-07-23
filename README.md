@@ -207,6 +207,9 @@ True if the browser is configured as incognito page.
 **cache**  
 If the requests cache is active.
 
+**context**  
+Returns Puppeteer's [BrowserContext](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-browsercontext).
+
 #### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
 
@@ -285,6 +288,26 @@ Given the coordinates (in pixels) as two numbers, returns the topmost DomElement
 const element = await browser.elementFromPoint(500, 150);
 await browser.text(element); // ["My Title"]
 ```
+
+**selectPage(index: number)**  
+Selects the given page (a.k.a. tab) to be used by Wendigo. Keep in mind that tabs are **never** changed automatically unless explicitly selected or closed with `closePage`.
+
+```js
+await browser.click(".btn.new-tab")
+await browser.wait(100); // waits for new tab to be loaded
+await browser.pages(); // length is 2
+await browser.selectPage(1); // goes to newly opened tab
+```
+
+> Due to some limitation, in order for Wendigo to work properly, changing page with `selectPage` will cause the given page to reload.
+
+**closePage(index: number)**  
+Closes the page with given index, if the closed page is the current active page, it will change to the new page with index 0 (reloading it in the process). If no more pages exists, the browser will close with `browser.close()` automatically.
+
+**pages()**  
+Returns all Puppeteer's [pages](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), one per tab or popup.
+
+> **Warning:** All pages related methods are still under revision, and its behavour may heavily change in future releases
 
 **addScript(scriptPath)**  
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
