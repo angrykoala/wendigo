@@ -1,3 +1,15 @@
+2.5.0 / 2019-07-24
+==================
+
+* Pages, selectPage and closePage methods to handle tabs and popups
+* Browser.context returns Puppeteer's context object
+* Improved typings for module compositer
+* A browser won't have 2 tabs opened by default
+* Puppeteer updated to 1.19.0
+* Minor improvements in internal typings
+* Minor fix in InjectionScript error message
+* Refactor on browser instances creation and setup
+
 2.4.0 / 2019-07-15
 ==================
 

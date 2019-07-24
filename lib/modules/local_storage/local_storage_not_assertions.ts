@@ -3,10 +3,10 @@ import BrowserLocalStorageAssertions from './local_storage_assertions';
 import { arrayfy } from '../../utils/utils';
 
 export default class BrowserLocalStorageNotAssertions {
-    private localStorageAssertions: BrowserLocalStorageAssertions;
+    private _localStorageAssertions: BrowserLocalStorageAssertions;
 
     constructor(localStorageAssertions: BrowserLocalStorageAssertions) {
-        this.localStorageAssertions = localStorageAssertions;
+        this._localStorageAssertions = localStorageAssertions;
     }
 
     public exist(key: string | Array<string>, msg?: string): Promise<void> {
@@ -16,7 +16,7 @@ export default class BrowserLocalStorageNotAssertions {
             msg = `Expected ${itemText} "${keyList.join(" ")}" not to exist in localStorage.`;
         }
         return invertify(() => {
-            return this.localStorageAssertions.exist(keyList, "");
+            return this._localStorageAssertions.exist(keyList, "");
         }, "assert.localStorage.not.exist", msg);
     }
 
@@ -38,7 +38,7 @@ export default class BrowserLocalStorageNotAssertions {
         }
 
         return invertify(() => {
-            return this.localStorageAssertions.value(keyVals, "");
+            return this._localStorageAssertions.value(keyVals, "");
         }, "assert.localStorage.not.value", msg);
     }
 
@@ -48,14 +48,14 @@ export default class BrowserLocalStorageNotAssertions {
             msg = `Expected localStorage not to have ${expected} ${itemText}.`;
         }
         return invertify(() => {
-            return this.localStorageAssertions.length(expected, "");
+            return this._localStorageAssertions.length(expected, "");
         }, "assert.localStorage.not.length", msg);
     }
 
     public empty(msg?: string): Promise<void> {
         if (!msg) msg = `Expected localStorage not to be empty.`;
         return invertify(() => {
-            return this.localStorageAssertions.empty("");
+            return this._localStorageAssertions.empty("");
         }, "assert.localStorage.not.empty", msg);
     }
 }

@@ -139,13 +139,13 @@ describe("Dialog Alerts", function() {
         assert.strictEqual(alerts.length, 1);
     });
 
-    it("dismissAllDialogs Setting Updated Properly", async() => {
+    it("DismissAllDialogs Setting Updated Properly", async() => {
         await browser.open(configUrls.dialogAlert, {
             dismissAllDialogs: true
         });
-        assert.strictEqual(browser.dialog.options.dismissAllDialogs, true);
+        assert.strictEqual(browser.dialog._options.dismissAllDialogs, true);
         await browser.open(configUrls.dialogAlert);
-        assert.strictEqual(browser.dialog.options.dismissAllDialogs, false);
+        assert.strictEqual(browser.dialog._options.dismissAllDialogs, false);
     });
 
     it("Dialog Handled", async() => {

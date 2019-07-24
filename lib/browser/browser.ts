@@ -1,5 +1,5 @@
+import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import BrowserTap from './mixins/browser_tap';
-import PuppeteerPage from './puppeteer_wrapper/puppeteer_page';
 import { FinalBrowserSettings } from '../types';
 
 // Modules
@@ -10,6 +10,7 @@ import BrowserConsole from '../modules/console/browser_console';
 import BrowserWebworker from '../modules/webworkers/browser_webworker';
 import BrowserDialog from '../modules/dialog/browser_dialog';
 import BrowserAuth from '../modules/auth/browser_auth';
+import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
 
 export default class Browser extends BrowserTap {
     public readonly cookies: BrowserCookies;
@@ -20,9 +21,9 @@ export default class Browser extends BrowserTap {
     public readonly dialog: BrowserDialog;
     public readonly auth: BrowserAuth;
 
-    constructor(page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
+    constructor(context: PuppeteerContext, page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         components = components.concat(["cookies", "localStorage", "requests", "console", "webworkers", "dialog"]);
-        super(page, settings, components);
+        super(context, page, settings, components);
         this.cookies = new BrowserCookies(this);
         this.localStorage = new BrowserLocalStorage(this);
         this.requests = new BrowserRequests(this);

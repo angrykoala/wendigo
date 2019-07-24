@@ -6,27 +6,26 @@ import BrowserAssertion from './browser/browser_assertions';
 import { FinalBrowserSettings, PluginModule } from './types';
 import { FatalError } from './errors';
 import BrowserInterface from './browser/browser_interface';
-import PuppeteerPage from './browser/puppeteer_wrapper/puppeteer_page';
-import { Page } from './browser/puppeteer_wrapper/puppeteer_types';
+import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 
 export default class BrowserFactory {
-    private static browserClass?: typeof Browser;
+    private static _browserClass?: typeof Browser;
 
-    public static createBrowser(page: Page, settings: FinalBrowserSettings, plugins: Array<PluginModule>): BrowserInterface {
-        if (!this.browserClass) {
-            this.setupBrowserClass(plugins);
+    public static async createBrowser(context: PuppeteerContext, settings: FinalBrowserSettings, plugins: Array<PluginModule>): Promise<BrowserInterface> {
+        if (!this._browserClass) {
+            this._setupBrowserClass(plugins);
         }
-        if (!this.browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
+        if (!this._browserClass) throw new FatalError("BrowserFactory", "Error on setupBrowserClass");
 
-        const puppeteerPage = new PuppeteerPage(page);
-        return new this.browserClass(puppeteerPage, settings) as BrowserInterface;
+        const page = await context.getDefaultPage();
+        return new this._browserClass(context, page, settings) as BrowserInterface;
     }
 
     public static clearCache(): void {
-        this.browserClass = undefined;
+        this._browserClass = undefined;
     }
 
-    private static setupBrowserClass(plugins: Array<PluginModule>): void {
+    private static _setupBrowserClass(plugins: Array<PluginModule>): void {
         const components: { [s: string]: any } = {};
         const assertComponents: { [s: string]: any } = {};
 
@@ -41,7 +40,7 @@ export default class BrowserFactory {
 
         const assertionClass = compose(BrowserAssertion, assertComponents);
         const finalComponents = Object.assign({}, components, { assert: assertionClass });
-        this.browserClass = compose(Browser, finalComponents) as typeof Browser;
+        this._browserClass = compose(Browser, finalComponents) as typeof Browser;
     }
 
     private static _setupAssertionModule(assertionPlugin: any, name: string): any {

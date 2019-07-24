@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 import { URL } from 'url';
-import { Request } from '../../browser/puppeteer_wrapper/puppeteer_types';
+import { Request } from '../../puppeteer_wrapper/puppeteer_types';
 
 import RequestFilter from './request_filter';
 import { FatalError, AssertionError, TimeoutError } from '../../errors';
@@ -30,27 +30,27 @@ interface RequestMockInterface {
 }
 
 class RequestMockAssertions {
-    private mock: RequestMock;
+    private _mock: RequestMock;
     constructor(mock: RequestMock) {
-        this.mock = mock;
+        this._mock = mock;
     }
 
     public called(times?: number, msg?: string): Promise<void> {
         if (typeof times === 'number') {
-            const timesCalled = this.mock.timesCalled;
+            const timesCalled = this._mock.timesCalled;
             if (times !== timesCalled) {
-                if (!msg) msg = `Mock of ${this.mock.url} not called ${times} times.`;
+                if (!msg) msg = `Mock of ${this._mock.url} not called ${times} times.`;
                 return Promise.reject(new AssertionError("assert.called", msg, timesCalled, times));
             }
-        } else if (!this.mock.called) {
-            if (!msg) msg = `Mock of ${this.mock.url} not called.`;
+        } else if (!this._mock.called) {
+            if (!msg) msg = `Mock of ${this._mock.url} not called.`;
             return Promise.reject(new AssertionError("assert.called", msg));
         }
         return Promise.resolve();
     }
 
     public async postBody(expected: RequestBody | RegExp, msg?: string): Promise<void> {
-        const filter = new RequestFilter(Promise.resolve(this.mock.requestsReceived)).postBody(expected);
+        const filter = new RequestFilter(Promise.resolve(this._mock.requestsReceived)).postBody(expected);
         const filteredRequests = await filter.requests;
         if (filteredRequests.length === 0) {
             if (!msg) {
@@ -70,20 +70,20 @@ export default class RequestMock implements RequestMockInterface {
     public readonly queryString?: { [s: string]: string; };
     public requestsReceived: Array<Request> = [];
 
-    private events: EventEmitter;
-    private redirectTo?: URL;
-    private delay: number;
+    private _events: EventEmitter;
+    private _redirectTo?: URL;
+    private _delay: number;
 
     constructor(url: string | RegExp, options: RequestMockOptions) {
-        this.url = this.parseUrl(url);
-        this.response = this.processResponse(options);
-        this.delay = options.delay || 0;
+        this.url = this._parseUrl(url);
+        this.response = this._processResponse(options);
+        this._delay = options.delay || 0;
         this.method = options.method;
         if (options.queryString !== undefined) this.queryString = utils.parseQueryString(options.queryString);
-        else this.queryString = this.parseUrlQueryString(url);
+        else this.queryString = this._parseUrlQueryString(url);
         this.auto = options.auto !== false;
-        this.events = new EventEmitter();
-        this.redirectTo = options.redirectTo ? new URL(options.redirectTo) : undefined;
+        this._events = new EventEmitter();
+        this._redirectTo = options.redirectTo ? new URL(options.redirectTo) : undefined;
         this.assert = new RequestMockAssertions(this);
     }
 
@@ -96,12 +96,12 @@ export default class RequestMock implements RequestMockInterface {
     }
 
     get immediate(): boolean {
-        return this.delay === 0;
+        return this._delay === 0;
     }
 
     public trigger(response: RequestMockResponseOptions): void {
         if (this.auto) throw new FatalError("trigger", `Cannot trigger auto request mock.`);
-        this.events.emit("respond", response);
+        this._events.emit("respond", response);
     }
 
     public async waitUntilCalled(timeout: number = 500): Promise<void> {
@@ -111,7 +111,7 @@ export default class RequestMock implements RequestMockInterface {
                 rejected = true;
                 reject(new TimeoutError("waitUntilCalled", `Wait until mock of "${this.url}" is called`, timeout));
             }, timeout);
-            this.events.once("on-request", () => {
+            this._events.once("on-request", () => {
                 if (!rejected) {
                     clearTimeout(tid);
                     resolve();
@@ -125,38 +125,38 @@ export default class RequestMock implements RequestMockInterface {
         this.requestsReceived.push(request);
 
         if (this.auto && this.immediate) {
-            return this.respondRequest(request);
+            return this._respondRequest(request);
         } else if (this.auto) {
-            await utils.delay(this.delay);
-            return this.respondRequest(request);
+            await utils.delay(this._delay);
+            return this._respondRequest(request);
         } else {
-            this.onTrigger((response) => {
-                return this.respondRequest(request, response);
+            this._onTrigger((response) => {
+                return this._respondRequest(request, response);
             });
         }
     }
 
-    private async respondRequest(request: Request, optionalResponse?: RequestMockResponseOptions): Promise<void> {
+    private async _respondRequest(request: Request, optionalResponse?: RequestMockResponseOptions): Promise<void> {
         let response = this.response;
         if (optionalResponse) {
-            response = this.processResponse(optionalResponse);
+            response = this._processResponse(optionalResponse);
         }
-        if (this.redirectTo) {
+        if (this._redirectTo) {
             const url = new URL(request.url());
             let qs = url.searchParams.toString();
             if (qs) qs = `?${qs}`;
             await request.continue({
-                url: `${this.redirectTo.origin}${this.redirectTo.pathname}${qs || ""}`
+                url: `${this._redirectTo.origin}${this._redirectTo.pathname}${qs || ""}`
             });
         } else await request.respond(response);
-        this.events.emit("on-request");
+        this._events.emit("on-request");
     }
 
-    private onTrigger(cb: (r: RequestMockResponseOptions) => Promise<void>): void {
-        this.events.once("respond", cb);
+    private _onTrigger(cb: (r: RequestMockResponseOptions) => Promise<void>): void {
+        this._events.once("respond", cb);
     }
 
-    private processResponse(options: RequestMockOptions): MockResponse {
+    private _processResponse(options: RequestMockOptions): MockResponse {
         const body = utils.stringify(options.body) || undefined;
         return {
             status: options.status,
@@ -166,7 +166,7 @@ export default class RequestMock implements RequestMockInterface {
         };
     }
 
-    private parseUrlQueryString(url: string | RegExp): { [s: string]: string; } | undefined {
+    private _parseUrlQueryString(url: string | RegExp): { [s: string]: string; } | undefined {
         if (url instanceof RegExp) return undefined;
         else {
             const parsedUrl = new URL(url);
@@ -176,7 +176,7 @@ export default class RequestMock implements RequestMockInterface {
         }
     }
 
-    private parseUrl(url: string | RegExp): string | RegExp {
+    private _parseUrl(url: string | RegExp): string | RegExp {
         if (url instanceof RegExp) {
             return url;
         } else {
