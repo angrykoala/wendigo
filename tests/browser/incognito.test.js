@@ -12,7 +12,7 @@ describe("Incognito", function() {
         const browser = await Wendigo.createBrowser({incognito: true});
         await browser.open(configUrls.simple);
         await browser.assert.text("p", "html_test");
-        assert.strictEqual(browser.settings.incognito, true);
+        assert.strictEqual(browser._settings.incognito, true);
         assert.strictEqual(browser.incognito, true);
         await browser.close();
     });
@@ -21,7 +21,7 @@ describe("Incognito", function() {
         const browser = await Wendigo.createBrowser();
         await browser.open(configUrls.simple);
         await browser.assert.text("p", "html_test");
-        assert.strictEqual(browser.settings.incognito, false);
+        assert.strictEqual(browser._settings.incognito, false);
         assert.strictEqual(browser.incognito, false);
         await browser.close();
     });

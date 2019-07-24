@@ -47,10 +47,10 @@ describe("Open", function() {
         assert.strictEqual(browser2.loaded, false);
         await browser2.open(configUrls.index);
         assert.strictEqual(browser2.loaded, true);
-        assert(browser2.originalHtml);
+        assert(browser2._originalHtml);
         await browser2.close();
         assert.strictEqual(browser2.loaded, false);
-        assert.strictEqual(browser2.originalHtml, undefined);
+        assert.strictEqual(browser2._originalHtml, undefined);
     });
 
     it("Open Fails CSP", async() => {
