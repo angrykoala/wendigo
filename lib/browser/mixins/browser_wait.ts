@@ -14,7 +14,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
-    public async waitFor(selector: string | EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
+    public async waitFor(selector: EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
         args = args.map((e) => {
             if (e instanceof DomElement) return e.element;
             else return e;

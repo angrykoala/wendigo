@@ -3,6 +3,7 @@ import { ConsoleMessage, ConsoleMessageType } from '../../puppeteer_wrapper/pupp
 export default class Log {
     public message: ConsoleMessage;
     public readonly text: string;
+
     constructor(consoleMessage: ConsoleMessage, text?: string) {
         this.message = consoleMessage;
         this.text = text || consoleMessage.text();

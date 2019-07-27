@@ -39,8 +39,8 @@ export default abstract class BrowserCore {
 
     protected _page: PuppeteerPage;
     protected _context: PuppeteerContext;
-    protected originalHtml?: string;
-    protected settings: FinalBrowserSettings;
+    protected _originalHtml?: string;
+    protected _settings: FinalBrowserSettings;
 
     private _loaded: boolean;
     private _disabled: boolean;
@@ -51,13 +51,13 @@ export default abstract class BrowserCore {
     constructor(context: PuppeteerContext, page: PuppeteerPage, settings: FinalBrowserSettings, components: Array<string> = []) {
         this._page = page;
         this._context = context;
-        this.settings = settings;
+        this._settings = settings;
         this._loaded = false;
         this.initialResponse = null;
         this._disabled = false;
         this._cache = settings.cache !== undefined ? settings.cache : true;
         this._components = components;
-        if (this.settings.log) {
+        if (this._settings.log) {
             this._page.on("console", pageLog);
         }
 
@@ -67,8 +67,8 @@ export default abstract class BrowserCore {
                 const puppeteerPage = new PuppeteerPage(createdPage);
                 try {
                     await puppeteerPage.setBypassCSP(true);
-                    if (this.settings.userAgent)
-                        await puppeteerPage.setUserAgent(this.settings.userAgent);
+                    if (this._settings.userAgent)
+                        await puppeteerPage.setUserAgent(this._settings.userAgent);
                 } catch (err) {
                     // Will fail if browser is closed before finishing
                 }
@@ -99,7 +99,7 @@ export default abstract class BrowserCore {
     }
 
     public get incognito(): boolean {
-        return Boolean(this.settings.incognito);
+        return Boolean(this._settings.incognito);
     }
 
     public get cacheEnabled(): boolean {
@@ -143,7 +143,7 @@ export default abstract class BrowserCore {
         this._disabled = true;
         this._loaded = false;
         this.initialResponse = null;
-        this.originalHtml = undefined;
+        this._originalHtml = undefined;
         try {
             await p;
             await this._page.browser().close();
@@ -227,16 +227,16 @@ export default abstract class BrowserCore {
     }
 
     protected async _beforeClose(): Promise<void> {
-        this.settings.__onClose(this);
+        this._settings.__onClose(this);
         if (!this._loaded) return Promise.resolve();
         await this._callComponentsMethod("_beforeClose");
     }
 
     protected async _beforeOpen(options: OpenSettings): Promise<void> {
-        if (this.settings.userAgent) {
-            await this._page.setUserAgent(this.settings.userAgent);
+        if (this._settings.userAgent) {
+            await this._page.setUserAgent(this._settings.userAgent);
         }
-        if (this.settings.bypassCSP) {
+        if (this._settings.bypassCSP) {
             await this._page.setBypassCSP(true);
         }
         await this.setViewport(options.viewport);
@@ -246,7 +246,7 @@ export default abstract class BrowserCore {
     protected async _afterPageLoad(): Promise<void> {
         try {
             const content = await this._page.content();
-            this.originalHtml = content;
+            this._originalHtml = content;
             await this._addJsScripts();
         } catch (err) {
             if (err.message === "Evaluation failed: Event") {

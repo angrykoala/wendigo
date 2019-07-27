@@ -26,7 +26,7 @@ export default abstract class BrowserInfo extends BrowserClick {
 
     @FailIfNotLoaded
     public html(): string {
-        return this.originalHtml || "";
+        return this._originalHtml || "";
     }
 
     @FailIfNotLoaded

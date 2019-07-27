@@ -57,7 +57,7 @@ export default class PuppeteerPage {
         this.page.off(eventName, cb);
     }
 
-    public evaluateHandle(cb: EvaluateFn, ...args: Array<SerializableOrJSHandle>): Promise<JSHandle> {
+    public evaluateHandle(cb: ((...args: any[]) => any), ...args: Array<SerializableOrJSHandle>): Promise<JSHandle> {
         return this.page.evaluateHandle(cb, ...args);
     }
 

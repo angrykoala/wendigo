@@ -8,6 +8,7 @@ type PromiseExecutor<T> = (resolve: (value?: T | PromiseLike<T>) => void, reject
 
 export default class RequestAssertionsFilter extends Promise<RequestAssertionsFilter> {
     private _requestFilter: RequestFilter;
+
     constructor(executor: PromiseExecutor<RequestAssertionsFilter>, requestFilter: RequestFilter) {
         super((resolve, reject) => {
             return executor(resolve, reject);

@@ -16,12 +16,12 @@ export class AssertionError extends NativeAssertionError {
 }
 
 export class WendigoError extends Error {
-    protected fnName: string;
+    // protected _fnName: string;
     public extraMessage: string;
 
     constructor(fn: string, message: string) {
         super(`[${fn}] ${message}`);
-        this.fnName = fn;
+        // this._fnName = fn;
         this.extraMessage = message;
     }
 
