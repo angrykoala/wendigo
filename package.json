@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.8",
-    "@types/puppeteer": "^1.12.4",
+    "@types/puppeteer": "~1.19.0",
     "basic-auth": "^2.0.1",
     "eslint": "^6.1.0",
     "express": "^4.17.1",
