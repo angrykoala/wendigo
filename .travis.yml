@@ -13,7 +13,3 @@ script:
   - npm run tslint
   - npm run markdown-lint
   - travis_retry npm test
-
-cache:
-  directories:
-    - node_modules

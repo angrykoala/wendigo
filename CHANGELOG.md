@@ -1,7 +1,8 @@
-2.5.1 / ####-##-##
+2.5.1 / 2019-07-27
 ==================
 
 * Puppeteer types updated
+* TravisCI modules cache removed
 
 2.5.0 / 2019-07-24
 ==================
