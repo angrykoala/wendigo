@@ -179,4 +179,14 @@ describe("Assert Text", function() {
             await browser.assert.not.text(".empty-p", "");
         }, `[assert.not.text] Expected element ".empty-p" not to have text "".`);
     });
+
+    it("Button Text", async() => {
+        await browser.open(configUrls.click);
+        await browser.assert.text(".btn", "click me");
+    });
+
+    it("Text With <br>", async() => {
+        await browser.open(configUrls.weirdText);
+        await browser.assert.text(".text-br", "This is\na text");
+    });
 });

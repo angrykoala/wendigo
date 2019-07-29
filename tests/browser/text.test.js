@@ -45,6 +45,13 @@ describe("Text", function() {
 
     it("Button Text", async() => {
         await browser.open(configUrls.click);
-        await browser.assert.text(".btn", "click me");
+        const text = await browser.text(".btn");
+        assert.strictEqual(text[0], "click me");
+    });
+
+    it("Text With <br>", async() => {
+        await browser.open(configUrls.weirdText);
+        const text = await browser.text(".text-br");
+        assert.strictEqual(text[0], "This is\na text");
     });
 });
