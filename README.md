@@ -152,6 +152,7 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
   * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
   * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
+  * `defaultTimeout: 500`: Sets the default timeout for "wait" methods, except `browser.wait()`.
   * `cache: true`: If true, requests cache will be enabled.
   * Any settings that can be passed to Puppeteer can be passed to createBrowser, for example:
     * `headless: true`: If true, the browser will run on headless mode.

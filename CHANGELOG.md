@@ -1,7 +1,8 @@
-2.5.2 / ####-##-##
+2.6.0 / ####-##-##
 ==================
 
 * Browser.text will return newlines on </br>
+* DefaultTimeout option on create browser
 
 2.5.1 / 2019-07-27
 ==================

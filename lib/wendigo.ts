@@ -3,11 +3,11 @@ import puppeteer from 'puppeteer';
 import { BrowserContext } from './puppeteer_wrapper/puppeteer_types';
 import BrowserFactory from './browser_factory';
 import * as Errors from './errors';
-import { WendigoPluginInterface, BrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
+import { WendigoPluginInterface, BrowserSettings, DefaultBrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
 import BrowserInterface from './browser/browser_interface';
 import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 
-const defaultSettings: BrowserSettings = {
+const defaultSettings: DefaultBrowserSettings = {
     log: false,
     headless: true,
     args: [],
@@ -15,7 +15,8 @@ const defaultSettings: BrowserSettings = {
     incognito: false,
     noSandbox: false,
     bypassCSP: true,
-    proxyServer: null
+    proxyServer: null,
+    defaultTimeout: 500
 };
 
 export default class Wendigo {

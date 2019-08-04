@@ -26,7 +26,7 @@ export default class Browser extends BrowserTap {
         super(context, page, settings, components);
         this.cookies = new BrowserCookies(this);
         this.localStorage = new BrowserLocalStorage(this);
-        this.requests = new BrowserRequests(this);
+        this.requests = new BrowserRequests(this, settings);
         this.console = new BrowserConsole(this);
         this.webworkers = new BrowserWebworker(this);
         this.dialog = new BrowserDialog(this);
