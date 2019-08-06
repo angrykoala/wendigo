@@ -1,4 +1,4 @@
-2.6.0 / ####-##-##
+2.6.0 / 2019-08-06
 ==================
 
 * Browser.text will return newlines on </br>
