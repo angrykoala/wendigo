@@ -1,5 +1,5 @@
 import WendigoModule from '../wendigo_module';
-import { OpenSettings } from '../../types';
+import { OpenSettings, FinalBrowserSettings } from '../../types';
 
 import RequestFilter from './request_filter';
 import RequestMocker from './request_mocker';
@@ -8,19 +8,21 @@ import RequestMock from './request_mock';
 import { Request, Response } from '../../puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 import { TimeoutError } from '../../errors';
-import { promiseOr, matchText } from '../../utils/utils';
+import { promiseOr, matchText, isNumber } from '../../utils/utils';
 
 export default class BrowserRequests extends WendigoModule {
     private _requestMocker: RequestMocker;
     private _requests: Array<Request>;
     private _interceptorReady: boolean;
     private _interceptorCallback?: (req: Request) => Promise<void>;
+    private _settings: FinalBrowserSettings;
 
-    constructor(browser: Browser) {
+    constructor(browser: Browser, settings: FinalBrowserSettings) {
         super(browser);
         this._requestMocker = new RequestMocker();
         this._requests = [];
         this._interceptorReady = false;
+        this._settings = settings;
         this.clearRequests();
     }
 
@@ -52,7 +54,8 @@ export default class BrowserRequests extends WendigoModule {
         this._requestMocker.clear();
     }
 
-    public async waitForNextRequest(url: string | RegExp, timeout: number = 500): Promise<void> {
+    public async waitForNextRequest(url: string | RegExp, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         try {
             await this._waitForRequestEvent("request", url, timeout);
         } catch (err) {
@@ -60,7 +63,8 @@ export default class BrowserRequests extends WendigoModule {
         }
     }
 
-    public async waitForNextResponse(url: string | RegExp, timeout: number = 500): Promise<void> {
+    public async waitForNextResponse(url: string | RegExp, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         try {
             await this._waitForRequestEvent("response", url, timeout);
         } catch (err) {
@@ -156,5 +160,10 @@ export default class BrowserRequests extends WendigoModule {
 
             this._page.on(event, waitForEventCallback);
         });
+    }
+
+    private _getTimeout(timeout?: number): number {
+        if (isNumber(timeout)) return timeout;
+        else return this._settings.defaultTimeout;
     }
 }

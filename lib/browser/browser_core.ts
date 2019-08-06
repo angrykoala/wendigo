@@ -2,7 +2,6 @@ import path from 'path';
 import querystring from 'querystring';
 
 import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
-import WendigoConfig from '../../config';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
@@ -12,8 +11,9 @@ import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
 
-const injectionScriptsPath = WendigoConfig.injectionScripts.path;
-const injectionScripts = WendigoConfig.injectionScripts.files;
+import WendigoUtilsLoader from '../../injection_scripts/selector_query';
+import SelectorQueryLoader from '../../injection_scripts/wendigo_utils';
+import SelectorFinderLoader from '../../injection_scripts/selector_finder';
 
 async function pageLog(log?: ConsoleMessage): Promise<void> {
     if (log) {
@@ -172,7 +172,7 @@ export default abstract class BrowserCore {
         if (!page) throw new FatalError("selectPage", `Invalid page index "${index}".`);
         this._page = page;
         // TODO: Avoid reload
-        await this.page.reload(); // Required to enable bypassCSP
+        // await this.page.reload(); // Required to enable bypassCSP
         await this._beforeOpen(this._openSettings);
         await this._afterPageLoad();
     }
@@ -217,7 +217,10 @@ export default abstract class BrowserCore {
                 path: scriptPath
             });
         } catch (err) {
-            return Promise.reject(new InjectScriptError("addScript", err));
+            if (err.message === "Evaluation failed: Event") {
+                const cspWarning = "This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.";
+                throw new InjectScriptError("addScript", `Error injecting scripts. ${cspWarning}`); // CSP error
+            } else throw new InjectScriptError("addScript", err);
         }
     }
 
@@ -244,27 +247,19 @@ export default abstract class BrowserCore {
     }
 
     protected async _afterPageLoad(): Promise<void> {
-        try {
-            const content = await this._page.content();
-            this._originalHtml = content;
-            await this._addJsScripts();
-        } catch (err) {
-            if (err.message === "Evaluation failed: Event") {
-                const cspWarning = "This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.";
-                throw new InjectScriptError("_afterPageLoad", `Error injecting scripts. ${cspWarning}`); // CSP error
-            }
-        }
+        const content = await this._page.content();
+        this._originalHtml = content;
+        await this._addJsScripts();
         this._loaded = true;
         await this._callComponentsMethod("_afterOpen");
     }
 
     private async _addJsScripts(): Promise<void> {
-        const promises = injectionScripts.map((s) => {
-            return this._page.addScriptTag({ // Not using wrapper as this is before loaded is true
-                path: path.join(injectionScriptsPath, s)
-            });
-        });
-        await Promise.all(promises);
+        await Promise.all([
+            this._page.evaluateHandle(WendigoUtilsLoader),
+            this._page.evaluateHandle(SelectorQueryLoader),
+            this._page.evaluateHandle(SelectorFinderLoader)
+        ]);
     }
 
     private _setupEvaluateArguments(args: Array<any>): Array<any> {

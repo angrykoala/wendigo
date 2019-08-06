@@ -8,12 +8,12 @@ import { PDFOptions } from '../../puppeteer_wrapper/puppeteer_types';
 export default abstract class BrowserInfo extends BrowserClick {
 
     @FailIfNotLoaded
-    public text(selector: WendigoSelector): Promise<Array<string>> {
-        return this.evaluate((q) => {
+    public async text(selector: WendigoSelector): Promise<Array<string>> {
+        return await this.evaluate((q) => {
             const elements = WendigoUtils.queryAll(q);
             const result = [];
             for (const e of elements) {
-                result.push(e.textContent);
+                result.push(e.innerText);
             }
             return result;
         }, selector);

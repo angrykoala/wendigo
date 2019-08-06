@@ -15,9 +15,20 @@ export interface BrowserSettings {
     proxyServer?: string | null;
     timezone?: string;
     cache?: boolean;
+    defaultTimeout?: number;
 }
 
-export interface FinalBrowserSettings extends BrowserSettings {
+export interface DefaultBrowserSettings extends BrowserSettings {
+    log: boolean;
+    headless: boolean;
+    args: Array<string>;
+    incognito: boolean;
+    noSandbox: boolean;
+    proxyServer: string | null;
+    defaultTimeout: number;
+}
+
+export interface FinalBrowserSettings extends DefaultBrowserSettings {
     __onClose: (a: any) => any;
     env?: {
         TZ: string

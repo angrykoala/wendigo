@@ -1,6 +1,7 @@
 "use strict";
 
 const assert = require('assert');
+const path = require('path');
 const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
@@ -53,13 +54,32 @@ describe("Open", function() {
         assert.strictEqual(browser2._originalHtml, undefined);
     });
 
-    it("Open Fails CSP", async() => {
+    it("Open Does Not Fail CSP", async() => {
         const browser2 = await Wendigo.createBrowser({
             bypassCSP: false
         });
+        await browser2.open(configUrls.index);
+        await browser2.close();
+    });
+
+    it("Add JS Script Bypass CSP", async() => {
+        const browser2 = await Wendigo.createBrowser({
+            bypassCSP: true
+        });
+        await browser2.open(configUrls.index);
+        await browser2.addScript(path.join(__dirname, "..", "dummy_server/static/worker.js"));
+        await browser2.close();
+    });
+
+    it("Add JS Script Fail CSP", async() => {
+        const browser2 = await Wendigo.createBrowser({
+            bypassCSP: false
+        });
+        await browser2.open(configUrls.index);
         await utils.assertThrowsAsync(async() => {
-            await browser2.open(configUrls.index);
-        }, `InjectScriptError: [open] Error injecting scripts. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`);
+            await browser2.addScript(path.join(__dirname, "..", "dummy_server/static/worker.js"));
+        }, `InjectScriptError: [addScript] Error injecting scripts. This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.`); // eslint-disable-line max-len
+
         await browser2.close();
     });
 

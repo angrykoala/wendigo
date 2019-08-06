@@ -2,7 +2,7 @@ import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import { createFindTextXPath, delay } from '../../utils/utils';
+import { createFindTextXPath, delay, isNumber } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
 import { EvaluateFn } from '../../puppeteer_wrapper/puppeteer_types';
@@ -14,7 +14,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
-    public async waitFor(selector: EvaluateFn, timeout = 500, ...args: Array<any>): Promise<void> {
+    public async waitFor(selector: EvaluateFn, timeout?: number, ...args: Array<any>): Promise<void> {
+        timeout = this._getTimeout(timeout);
         args = args.map((e) => {
             if (e instanceof DomElement) return e.element;
             else return e;
@@ -33,7 +34,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
-    public async waitUntilNotVisible(selector: WendigoSelector, timeout = 500): Promise<void> {
+    public async waitUntilNotVisible(selector: WendigoSelector, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         try {
             await this.waitFor((q: string | HTMLElement) => {
                 const element = WendigoUtils.queryElement(q);
@@ -45,7 +47,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
-    public async waitForUrl(url: string | RegExp, timeout: number = 500): Promise<void> {
+    public async waitForUrl(url: string | RegExp, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         if (!url) return Promise.reject(new WendigoError("waitForUrl", `Invalid parameter url.`));
         let parsedUrl: string | RegExp | { source: string, flags: string } = url;
         if (url instanceof RegExp) {
@@ -71,7 +74,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
     }
 
     @FailIfNotLoaded
-    public async waitForNavigation(timeout: number = 500): Promise<void> {
+    public async waitForNavigation(timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         const t1 = new Date().getTime();
         try {
             await this._page.waitForNavigation({
@@ -92,7 +96,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
     @FailIfNotLoaded
     @OverrideError()
-    public async clickAndWaitForNavigation(selector: WendigoSelector, timeout: number = 500): Promise<number> {
+    public async clickAndWaitForNavigation(selector: WendigoSelector, timeout?: number): Promise<number> {
+        timeout = this._getTimeout(timeout);
         const result = await Promise.all([
             this.waitForNavigation(timeout),
             this.click(selector)
@@ -100,7 +105,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         return result[1];
     }
 
-    public async waitForText(text: string, timeout: number = 500): Promise<void> {
+    public async waitForText(text: string, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         try {
             const xPath = createFindTextXPath(text);
             await this.waitFor((xp: string) => {
@@ -111,7 +117,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
-    public async waitAndClick(selector: string, timeout: number = 500): Promise<number> {
+    public async waitAndClick(selector: string, timeout?: number): Promise<number> {
+        timeout = this._getTimeout(timeout);
         try {
             await this.waitFor(selector, timeout);
             return await this.click(selector);
@@ -120,7 +127,8 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
-    public async waitUntilEnabled(selector: WendigoSelector, timeout: number = 500): Promise<void> {
+    public async waitUntilEnabled(selector: WendigoSelector, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
         try {
             await this.waitFor((q: string | HTMLElement) => {
                 const element = WendigoUtils.queryElement(q);
@@ -131,5 +139,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
         } catch (err) {
             throw new TimeoutError("waitUntilEnabled", `Waiting for element "${selector}" to be enabled`, timeout);
         }
+    }
+
+    private _getTimeout(timeout?: number): number {
+        if (isNumber(timeout)) return timeout;
+        else return this._settings.defaultTimeout;
     }
 }
