@@ -172,7 +172,7 @@ export default abstract class BrowserCore {
         if (!page) throw new FatalError("selectPage", `Invalid page index "${index}".`);
         this._page = page;
         // TODO: Avoid reload
-        await this.page.reload(); // Required to enable bypassCSP
+        // await this.page.reload(); // Required to enable bypassCSP
         await this._beforeOpen(this._openSettings);
         await this._afterPageLoad();
     }

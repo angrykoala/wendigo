@@ -5,6 +5,7 @@
 * DefaultTimeout option on create browser
 * Injection scripts are now added through evaluate, so are not checked by CSP
 * Static config file removed
+* Opening new tabs will no longer reload the page
 
 2.5.1 / 2019-07-27
 ==================

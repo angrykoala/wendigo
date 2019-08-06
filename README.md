@@ -300,7 +300,7 @@ await browser.pages(); // length is 2
 await browser.selectPage(1); // goes to newly opened tab
 ```
 
-> Due to some limitation, in order for Wendigo to work properly, changing page with `selectPage` will cause the given page to reload.
+> CSP bypass will not be enabled in the newly opened tabs. If you rely on it, it may be necessary to reload the tab after it has been opened with `browser.refresh`
 
 **closePage(index: number)**  
 Closes the page with given index, if the closed page is the current active page, it will change to the new page with index 0 (reloading it in the process). If no more pages exists, the browser will close with `browser.close()` automatically.
