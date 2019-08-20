@@ -290,7 +290,7 @@ const element = await browser.elementFromPoint(500, 150);
 await browser.text(element); // ["My Title"]
 ```
 
-**selectPage(index: number)**  
+**selectPage(index)**  
 Selects the given page (a.k.a. tab) to be used by Wendigo. Keep in mind that tabs are **never** changed automatically unless explicitly selected or closed with `closePage`.
 
 ```js
@@ -302,7 +302,7 @@ await browser.selectPage(1); // goes to newly opened tab
 
 > CSP bypass will not be enabled in the newly opened tabs. If you rely on it, it may be necessary to reload the tab after it has been opened with `browser.refresh`
 
-**closePage(index: number)**  
+**closePage(index)**  
 Closes the page with given index, if the closed page is the current active page, it will change to the new page with index 0 (reloading it in the process). If no more pages exists, the browser will close with `browser.close()` automatically.
 
 **pages()**  
