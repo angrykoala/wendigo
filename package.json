@@ -46,14 +46,14 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.4",
     "@types/puppeteer": "~1.19.1",
     "basic-auth": "^2.0.1",
-    "eslint": "^6.2.0",
+    "eslint": "^6.3.0",
     "express": "^4.17.1",
     "markdownlint-cli": "^0.18.0",
     "mocha": "^6.2.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
   }
 }

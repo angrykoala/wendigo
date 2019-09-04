@@ -2,6 +2,7 @@
 ==================
 
 * Dependencies updated
+* Puppeteer launch error handled with a single retry
 
 2.6.0 / 2019-08-06
 ==================

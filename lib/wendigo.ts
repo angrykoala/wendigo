@@ -96,7 +96,13 @@ export default class Wendigo {
     }
 
     private async _createInstance(settings: FinalBrowserSettings): Promise<PuppeteerContext> {
-        const instance = await puppeteer.launch(settings);
+        let instance;
+        try {
+            instance = await puppeteer.launch(settings);
+        } catch (err) {
+            // retry to avoid one-off _dl_allocate_tls_init error
+            instance = await puppeteer.launch(settings);
+        }
         let context: BrowserContext;
         if (settings.incognito) {
             context = await instance.createIncognitoBrowserContext();
