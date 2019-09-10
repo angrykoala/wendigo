@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -17,7 +17,7 @@
     "eslint": "eslint . --ext .js",
     "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
     "tsc": "rm -rf dist && tsc",
-    "prepublishOnly": "npm run eslint && npm run markdown-lint && npm test",
+    "prepublishOnly": "npm run tslint && npm run markdown-lint && npm test",
     "tslint": "tslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts"
   },
   "repository": {
@@ -53,7 +53,7 @@
     "express": "^4.17.1",
     "markdownlint-cli": "^0.18.0",
     "mocha": "^6.2.0",
-    "tslint": "^5.19.0",
+    "tslint": "^5.20.0",
     "typescript": "^3.6.2"
   }
 }
