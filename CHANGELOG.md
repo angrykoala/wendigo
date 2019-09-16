@@ -1,6 +1,10 @@
 2.6.2 / ####-##-##
 ==================
 
+* Dependencies updated
+* Puppeteer updated to 1.20.0
+* AddScript will no longer fail with bypassCSP disabled
+
 2.6.1 / 2019-09-05
 ==================
 
