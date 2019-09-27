@@ -1,3 +1,9 @@
+2.6.3 / ####-##-##
+==================
+
+* Dependencies updated
+* Removed unnecessary custom types
+
 2.6.2 / 2019-09-17
 ==================
 
