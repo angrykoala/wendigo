@@ -153,7 +153,7 @@ export default abstract class BrowserCore {
     }
 
     @FailIfNotLoaded
-    public async evaluate(cb: (...args: Array<any>) => any, ...args: Array<any>): Promise<any> {
+    public async evaluate(cb: string | ((...args: Array<any>) => any), ...args: Array<any>): Promise<any> {
         args = this._setupEvaluateArguments(args);
         const rawResult = await this._page.evaluateHandle(cb, ...args);
         const resultAsElement = rawResult.asElement();
