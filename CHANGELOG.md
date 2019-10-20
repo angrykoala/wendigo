@@ -1,7 +1,9 @@
-2.6.4 / ####-##-##
+2.7.0 / ####-##-##
 ==================
 
+* Browser.setContent
 * Updated types of dependency
+* Removed light versions of logo
 
 2.6.3 / 2019-10-10
 ==================
