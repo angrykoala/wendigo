@@ -9,6 +9,7 @@ import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 
 const defaultSettings: DefaultBrowserSettings = {
     log: false,
+    logRequests: false,
     headless: true,
     args: [],
     slowMo: 0,

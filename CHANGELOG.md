@@ -2,6 +2,7 @@
 ==================
 
 * Browser.setContent
+* LogRequests option
 * Updated types of dependency
 * Removed light versions of logo
 

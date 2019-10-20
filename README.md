@@ -145,6 +145,7 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
 
 * _settings_: an optional object with the configuration for the browser
   * `log: false`: If true, it will log all the console events of the browser.
+  * `logRequests: false`: If true, all requests made by the browser will be logged in the console.
   * `incognito: false`: If true, the browser will open as an incognito browser.
   * `userAgent`: If defined, the default user agent will be overridden.
   * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
