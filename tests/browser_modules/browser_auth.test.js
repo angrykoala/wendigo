@@ -8,7 +8,7 @@ describe("Auth", function() {
     let browser;
 
     before(async() => {
-        browser = await Wendigo.createBrowser({log: true});
+        browser = await Wendigo.createBrowser();
     });
 
     beforeEach(async() => {

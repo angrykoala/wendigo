@@ -145,6 +145,7 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
 
 * _settings_: an optional object with the configuration for the browser
   * `log: false`: If true, it will log all the console events of the browser.
+  * `logRequests: false`: If true, all requests made by the browser will be logged in the console.
   * `incognito: false`: If true, the browser will open as an incognito browser.
   * `userAgent`: If defined, the default user agent will be overridden.
   * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
@@ -308,7 +309,14 @@ Closes the page with given index, if the closed page is the current active page,
 **pages()**  
 Returns all Puppeteer's [pages](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), one per tab or popup.
 
-> **Warning:** All pages related methods are still under revision, and its behavour may heavily change in future releases
+> **Warning:** All pages related methods are still under revision, and its behavior may heavily change in future releases.
+
+**setContent(html)**  
+Sets the page content from a string. Can be used instead of `browser.open`.
+
+```js
+await browser.setContent("<h1>Title</h1>");
+```
 
 **addScript(scriptPath)**  
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
