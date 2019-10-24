@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tap Test</title>
+</head>
+
+<body>
+    <div class="main-div">
+        <button class="btn" onclick="showButton()">click me</button>
+
+        <p class="text"></p>
+    </div>
+    <script>
+        function showButton() {
+            setTimeout(() => {
+                const mainDiv = document.querySelector(".main-div");
+                const btn = document.createElement("button","text");
+                btn.setAttribute("onclick", "showText()");
+                btn.setAttribute("class", "btn2");
+                mainDiv.appendChild(btn);
+            }, 500);
+        }
+
+        function showText() {
+            const elem = document.querySelector(".text");
+            elem.textContent = "text";
+
+        }
+    </script>
+</body>
+
+</html>

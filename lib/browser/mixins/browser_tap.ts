@@ -50,4 +50,13 @@ export default abstract class BrowserTap extends BrowserWait {
         await this._page.touchscreen.tap(x, y);
         return 1;
     }
+
+    public async waitAndTap(selector: string, timeout?: number): Promise<number> {
+        try {
+            await this.waitFor(selector, timeout);
+            return await this.tap(selector);
+        } catch (err) {
+            throw new WendigoError("waitAndTap", err);
+     }
+}
 }

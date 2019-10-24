@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TypeTest</title>
+</head>
+
+<body>
+    <div class="main-div">
+        <button class="btn" onclick="showInput()">click me</button>
+
+        <p class="text"></p>
+    </div>
+    <script>
+        function showInput() {
+            setTimeout(() => {
+                const mainDiv = document.querySelector(".main-div");
+                const input = document.createElement("input");
+                input.type = "text";
+                input.setAttribute("class", "input");
+                mainDiv.appendChild(input);
+            }, 500);
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Check Test</title>
+</head>
+
+<body>
+    <div class="main-div">
+        <button class="btn" onclick="showButton()">click me</button>
+
+        <p class="text"></p>
+    </div>
+    <script>
+        function showButton() {
+            setTimeout(() => {
+                const mainDiv = document.querySelector(".main-div");
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox"
+                checkbox.setAttribute("onclick", "checkTheBox()");
+                checkbox.setAttribute("class", "checkbox");
+                mainDiv.appendChild(checkbox);
+            }, 500);
+        }
+
+        function checkTheBox() {
+            const elem = document.querySelector(".checkbox");
+            elem.checkbox = true;;
+
+        }
+    </script>
+</body>
+
+</html>

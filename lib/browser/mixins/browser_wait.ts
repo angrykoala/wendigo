@@ -127,6 +127,26 @@ export default abstract class BrowserWait extends BrowserNavigation {
         }
     }
 
+    public async waitAndType(selector: string, text: string, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
+        try {
+            await this.waitFor(selector, timeout);
+            return await this.type(selector, text);
+        } catch (err) {
+            throw new TimeoutError("waitAndType", "", timeout);
+        }
+    }
+
+     public async waitAndCheck(selector: string, timeout?: number): Promise<void> {
+        timeout = this._getTimeout(timeout);
+        try {
+            await this.waitFor(selector, timeout);
+            return await this.check(selector);
+        } catch (err) {
+            throw new TimeoutError("waitAndCheck", "", timeout);
+        }
+     }
+
     public async waitUntilEnabled(selector: WendigoSelector, timeout?: number): Promise<void> {
         timeout = this._getTimeout(timeout);
         try {
