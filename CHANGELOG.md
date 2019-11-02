@@ -1,3 +1,10 @@
+2.8.0 / ####-##-##
+==================
+
+* SetTimezone method
+* Puppeteer updated to 2.0
+* Exported Pdfs file size reduced
+
 2.7.0 / 2019-10-20
 ==================
 

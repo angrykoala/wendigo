@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -42,16 +42,16 @@
   "dependencies": {
     "compositer": "^1.3.6",
     "is-class": "0.0.9",
-    "puppeteer": "~1.20.0"
+    "puppeteer": "~2.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.12.5",
     "@types/puppeteer": "~1.20.2",
     "basic-auth": "^2.0.1",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "express": "^4.17.1",
-    "markdownlint-cli": "^0.18.0",
+    "markdownlint-cli": "^0.19.0",
     "mocha": "^6.2.2",
     "tslint": "^5.20.0",
     "typescript": "^3.6.4"
