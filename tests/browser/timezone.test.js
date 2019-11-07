@@ -45,4 +45,32 @@ describe("Timezone", function() {
         const tz = await getTimezone();
         assert.strictEqual(tz, "Asia/Tokyo");
     });
+
+    describe("SetTimezone", () => {
+        it("Set Timezone To UTC", async() => {
+            browser = await Wendigo.createBrowser();
+            await browser.open(configUrls.simple);
+            await browser.setTimezone("UTC");
+            const tz = await getTimezone();
+            assert.strictEqual(tz, "UTC");
+        });
+
+        it("Set Timezone To Tokyo", async() => {
+            browser = await Wendigo.createBrowser();
+            await browser.open(configUrls.simple);
+            await browser.setTimezone("Asia/Tokyo");
+            const tz = await getTimezone();
+            assert.strictEqual(tz, "Asia/Tokyo");
+        });
+
+        it("Set Timezone To Japan", async() => {
+            browser = await Wendigo.createBrowser({
+                timezone: "UTC"
+            });
+            await browser.open(configUrls.simple);
+            await browser.setTimezone("Japan");
+            const tz = await getTimezone();
+            assert.strictEqual(tz, "Asia/Tokyo");
+        });
+    });
 });

@@ -156,4 +156,8 @@ export default class PuppeteerPage {
     public setContent(html: string): Promise<void> {
         return this.page.setContent(html);
     }
+
+    public emulateTimezone(tz?: string): Promise<void> {
+        return (this.page as any).emulateTimezone(tz); // TODO: remove any when types update
+    }
 }

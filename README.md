@@ -708,6 +708,9 @@ await browser.setViewport({width: 300});
 
 > Unlike Puppeteer setViewport, the current values will be used for the new viewport for any option not set.
 
+**setTimezone(timezone)**  
+Sets browser timezone, valid timezones can be found [here](https://cs.chromium.org/chromium/src/third_party/icu/source/data/misc/metaZones.txt?rcl=faee8bc70570192d82d2978a71e2a615788597d1)
+
 **triggerEvent(selector, eventName, options?)**  
 Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
 

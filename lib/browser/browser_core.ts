@@ -206,6 +206,10 @@ export default abstract class BrowserCore {
         return this._page.setViewport(config);
     }
 
+    public setTimezone(tz?: string): Promise<void> {
+        return this._page.emulateTimezone(tz);
+    }
+
     public frames(): Array<Frame> {
         return this._page.frames();
     }
