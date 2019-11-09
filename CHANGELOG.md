@@ -1,3 +1,18 @@
+2.8.0 / 2019-11-07
+==================
+
+* SetTimezone method
+* Puppeteer updated to 2.0
+* Exported Pdfs file size reduced
+
+2.7.0 / 2019-10-20
+==================
+
+* Browser.setContent
+* LogRequests option
+* Updated types of dependency
+* Removed light versions of logo
+
 2.6.3 / 2019-10-10
 ==================
 

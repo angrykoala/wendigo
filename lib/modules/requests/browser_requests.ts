@@ -15,6 +15,7 @@ export default class BrowserRequests extends WendigoModule {
     private _requests: Array<Request>;
     private _interceptorReady: boolean;
     private _interceptorCallback?: (req: Request) => Promise<void>;
+    private _responseInterceptorCallback?: (res: Response) => Promise<void>;
     private _settings: FinalBrowserSettings;
 
     constructor(browser: Browser, settings: FinalBrowserSettings) {
@@ -105,10 +106,11 @@ export default class BrowserRequests extends WendigoModule {
         }
     }
 
-    protected _beforeOpen(_options: OpenSettings): Promise<void> {
+    protected async _beforeOpen(_options: OpenSettings): Promise<void> {
         this.clearRequests();
         if (this._interceptorReady) return Promise.resolve();
-        return this._startRequestInterceptor();
+        await this._startRequestInterceptor();
+        if (this._settings.logRequests) await this._startResponseLogInterceptor();
     }
 
     protected _beforeClose(): Promise<void> {
@@ -122,7 +124,7 @@ export default class BrowserRequests extends WendigoModule {
         this._interceptorReady = true;
         await this._page.setRequestInterception(true);
 
-        this._interceptorCallback = (request: Request) => { // TODO: remove callback on beforeClose
+        this._interceptorCallback = (request: Request) => {
             this._requests.push(request);
             const mock = this._requestMocker.getMockedResponse(request);
             if (mock) {
@@ -135,10 +137,25 @@ export default class BrowserRequests extends WendigoModule {
         this._page.on('request', this._interceptorCallback);
     }
 
+    private async _startResponseLogInterceptor(): Promise<void> {
+        this._responseInterceptorCallback = async (response: Response) => {
+            const request = response.request();
+            if (this._settings.logRequests) {
+                console.log(`[${new Date().toISOString()}] ${request.method()} ${request.url()} ${response.status()}`);
+            }
+        };
+        this._page.on('response', this._responseInterceptorCallback);
+
+    }
+
     private _closeRequestInterceptor(): void {
         if (this._interceptorCallback) {
             this._page.off('request', this._interceptorCallback);
             this._interceptorCallback = undefined;
+        }
+        if (this._responseInterceptorCallback) {
+            this._page.off('response', this._responseInterceptorCallback);
+            this._responseInterceptorCallback = undefined;
         }
     }
 

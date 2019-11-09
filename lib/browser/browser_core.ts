@@ -137,6 +137,20 @@ export default abstract class BrowserCore {
         }
     }
 
+    @OverrideError()
+    public async setContent(html: string): Promise<void> {
+        this._loaded = false;
+        await this.setCache(this._cache);
+        try {
+            await this._beforeOpen({});
+            await this.page.setContent(html);
+            return this._afterPageLoad();
+        } catch (err) {
+            if (err instanceof FatalError) return Promise.reject(err);
+            return Promise.reject(new FatalError("setContent", `Failed to set content. ${err.message}`));
+        }
+    }
+
     public async close(): Promise<void> {
         if (this._disabled) return Promise.resolve();
         const p = this._beforeClose(); // Minor race condition with this._loaded if moved
@@ -190,6 +204,10 @@ export default abstract class BrowserCore {
 
     public setViewport(config: ViewportOptions = {}): Promise<void> {
         return this._page.setViewport(config);
+    }
+
+    public setTimezone(tz?: string): Promise<void> {
+        return this._page.emulateTimezone(tz);
     }
 
     public frames(): Array<Frame> {
