@@ -9,6 +9,7 @@ const utils = require('../test_utils');
 
 describe("Pdf", function() {
     this.timeout(5000);
+    const minFileSize = 10000;
     const filePath = path.join(__dirname, "test.pdf");
 
     function assertFile(expectedPath, minSize) {
@@ -43,17 +44,17 @@ describe("Pdf", function() {
 
     it("Generate Pdf Buffer", async() => {
         const buffer = await browser.pdf();
-        assert.ok(buffer.length > 20000);
+        assert.ok(buffer.length > minFileSize);
     });
 
     it("Generate Pdf File", async() => {
         await browser.pdf({path: filePath});
-        await assertFile(filePath, 20000);
+        await assertFile(filePath, minFileSize);
     });
 
     it("Generate Pdf With Path Parameter", async() => {
         await browser.pdf(filePath);
-        await assertFile(filePath, 20000);
+        await assertFile(filePath, minFileSize);
     });
 
     it("Generate Pdf Buffer Before Open", async() => {

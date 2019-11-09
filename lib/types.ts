@@ -20,6 +20,7 @@ export interface BrowserSettings {
 
 export interface DefaultBrowserSettings extends BrowserSettings {
     log: boolean;
+    logRequests: boolean;
     headless: boolean;
     args: Array<string>;
     incognito: boolean;

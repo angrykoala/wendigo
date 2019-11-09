@@ -145,6 +145,7 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
 
 * _settings_: an optional object with the configuration for the browser
   * `log: false`: If true, it will log all the console events of the browser.
+  * `logRequests: false`: If true, all requests made by the browser will be logged in the console.
   * `incognito: false`: If true, the browser will open as an incognito browser.
   * `userAgent`: If defined, the default user agent will be overridden.
   * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
@@ -308,7 +309,14 @@ Closes the page with given index, if the closed page is the current active page,
 **pages()**  
 Returns all Puppeteer's [pages](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-page), one per tab or popup.
 
-> **Warning:** All pages related methods are still under revision, and its behavour may heavily change in future releases
+> **Warning:** All pages related methods are still under revision, and its behavior may heavily change in future releases.
+
+**setContent(html)**  
+Sets the page content from a string. Can be used instead of `browser.open`.
+
+```js
+await browser.setContent("<h1>Title</h1>");
+```
 
 **addScript(scriptPath)**  
 Executes the given script in the browser context. Useful to set helper methods and functions. This method must be called after the page is already loaded, if another page is loaded, the scripts won't be re-executed. If these scripts are required for a plugin to work, remember to execute this method on the `_afterOpen` hook.
@@ -699,6 +707,9 @@ await browser.setViewport({width: 300});
 ```
 
 > Unlike Puppeteer setViewport, the current values will be used for the new viewport for any option not set.
+
+**setTimezone(timezone)**  
+Sets browser timezone, valid timezones can be found [here](https://cs.chromium.org/chromium/src/third_party/icu/source/data/misc/metaZones.txt?rcl=faee8bc70570192d82d2978a71e2a615788597d1)
 
 **triggerEvent(selector, eventName, options?)**  
 Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`

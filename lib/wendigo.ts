@@ -9,6 +9,7 @@ import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 
 const defaultSettings: DefaultBrowserSettings = {
     log: false,
+    logRequests: false,
     headless: true,
     args: [],
     slowMo: 0,
@@ -34,6 +35,7 @@ export default class Wendigo {
         const plugins = this._customPlugins;
         const b = await BrowserFactory.createBrowser(instance, finalSettings, plugins);
         this._browsers.push(b);
+        if (settings.timezone) b.setTimezone(settings.timezone);
         return b;
     }
 
@@ -129,12 +131,6 @@ export default class Wendigo {
 
         if (finalSettings.proxyServer) {
             finalSettings.args.push(`--proxy-server=${settings.proxyServer}`);
-        }
-
-        if (finalSettings.timezone) {
-            if (!finalSettings.env) finalSettings.env = {
-                TZ: finalSettings.timezone
-            };
         }
         return finalSettings;
     }
