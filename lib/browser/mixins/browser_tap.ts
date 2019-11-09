@@ -57,7 +57,5 @@ export default abstract class BrowserTap extends BrowserWait {
 
             await this.waitFor(selector, timeout);
             return await this.tap(selector);
-    
      }
 }
-

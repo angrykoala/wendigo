@@ -25,7 +25,7 @@ describe("Wait And Tap", function() {
         await browser.assert.not.text(".text", "text");
         await browser.assert.not.element(".btn2");
         await browser.click(".btn");
-        
+
         const clickedElements = await browser.waitAndTap(".btn2", 800);
 
         assert.strictEqual(clickedElements, 1);

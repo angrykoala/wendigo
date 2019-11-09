@@ -1,13 +1,12 @@
 "use strict";
 
-const assert = require('assert');
 const Wendigo = require('../../dist/main');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
 describe("Wait and Check", function() {
     this.timeout(5000);
-    let browser
+    let browser;
 
     before(async() => {
         browser = await Wendigo.createBrowser();
@@ -22,10 +21,9 @@ describe("Wait and Check", function() {
     });
 
     it("Wait For CheckBox and Check", async() => {
-        await browser.assert.not.element(".checkbox")
+        await browser.assert.not.element(".checkbox");
         await browser.click(".btn");
         await browser.waitAndCheck(".checkbox", 800);
-        
         await browser.assert.value(".checkbox", "on");
     });
 
@@ -33,9 +31,7 @@ describe("Wait and Check", function() {
         await browser.assert.not.element(".checkbox");
         await browser.click(".btn");
         await browser.waitAndCheck("//*[contains(@class,'checkbox')]", 800);
-        
         await browser.assert.value(".checkbox", "on");
-        
     });
 
     it("Wait For CheckBox Check Timeout", async() => {
