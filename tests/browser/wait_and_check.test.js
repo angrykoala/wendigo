@@ -41,6 +41,6 @@ describe("Wait and Check", function() {
     it("Wait For CheckBox Check Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitAndCheck(".checkbox", 1);
-        }, "TimeoutError: [waitAndCheck] Timeout of 1ms exceeded.");
+        }, 'TimeoutError: [waitAndCheck] Waiting for element ".checkbox", timeout of 1ms exceeded.');
     });
 });

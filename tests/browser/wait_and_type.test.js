@@ -43,6 +43,6 @@ describe("Wait and Type", function() {
     it("Wait For text input Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitAndType(".input","test", 1);
-        }, "TimeoutError: [waitAndType] Timeout of 1ms exceeded.");
+        }, 'TimeoutError: [waitAndType] Waiting for element ".input", timeout of 1ms exceeded.');
     });
 });

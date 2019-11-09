@@ -46,6 +46,6 @@ describe("Wait And Tap", function() {
     it("Wait For Button Timeout", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.waitAndTap(".btn2", 1);
-        }, 'Error: [waitAndTap] TimeoutError: [waitFor] Waiting for element ".btn2", timeout of 1ms exceeded.');
+        }, 'TimeoutError: [waitAndTap] Waiting for element ".btn2", timeout of 1ms exceeded.');
     });
 });
