@@ -466,6 +466,21 @@ Waits for an element to exists and be visible before clicking it. Useful for cli
 
 > DomElements selectors not supported.
 
+**waitAndTap(selector, timeout=500)**  
+Waits for an element to exists and be visible before tapping it.
+
+> DomElements selectors not supported.
+
+**waitAndType(selector, text, timeout=500)**  
+Waits for an element to exists and be visible before typing text in it.
+
+> DomElements selectors not supported.
+
+**waitAndCheck(selector, timeout=500)**  
+Waits for an element (checkbox) to exists and be visible before checking it.
+
+> DomElements selectors not supported.
+
 **tap(selector, index?)**  
 Performs a touchscreen tap action on all the elements matching the given selector, if the index parameter is set, only the nth element will be tapped. Returns the number of elements tapped. The interface is compatible with browser.click.
 
