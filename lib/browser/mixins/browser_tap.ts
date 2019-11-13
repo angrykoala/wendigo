@@ -54,8 +54,7 @@ export default abstract class BrowserTap extends BrowserWait {
 
     @OverrideError()
     public async waitAndTap(selector: string, timeout?: number): Promise<number> {
-
-            await this.waitFor(selector, timeout);
-            return await this.tap(selector);
-     }
+        await this.waitFor(selector, timeout);
+        return await this.tap(selector);
+    }
 }

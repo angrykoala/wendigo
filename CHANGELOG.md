@@ -1,3 +1,8 @@
+2.9.0 / ####-##-##
+==================
+
+* WaitAndTap, waitAndCheck and waitAndType methods
+
 2.8.0 / 2019-11-07
 ==================
 
