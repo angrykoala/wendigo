@@ -6,7 +6,7 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -208,6 +208,10 @@ export default abstract class BrowserCore {
 
     public setTimezone(tz?: string): Promise<void> {
         return this._page.emulateTimezone(tz);
+    }
+
+    public setGeolocation(geolocation: GeoOptions): Promise<void>{
+        return this._page.setGeolocation(geolocation);
     }
 
     public frames(): Array<Frame> {
