@@ -4,7 +4,7 @@ const assert = require('assert');
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 
-describe.only("Geolocation", function() {
+describe("Geolocation", function() {
     this.timeout(5000);
     let browser;
 
@@ -16,41 +16,37 @@ describe.only("Geolocation", function() {
         await browser.close();
     });
 
-    it.only("Set Geolocation Method", async() => {
+    it("Set Geolocation Method", async() => {
         await browser.open(configUrls.index);
         await browser.setGeolocation({
             latitude: 80,
             longitude: -30
         });
+        await browser.overridePermissions(configUrls.index, "geolocation");
 
         const correctLocation = await browser.evaluate(() => {
-            return new Promise((resolve, reject) => {
-                console.log("In evaluate");
+            return new Promise((resolve) => {
                 navigator.geolocation.getCurrentPosition((res) => {
-                    console.log("after fet current");
-                    resolve(!(res.latitude !== 80 || res.longitude !== -30));
-                }, (err) => {
-                    console.log("MY ERR", err);
-                    reject(err);
+                    resolve(res.coords.latitude === 80 && res.coords.longitude === -30);
                 });
             });
         });
-        console.log(correctLocation);
         assert.strictEqual(correctLocation, true);
     });
 
     it("Geolocation setting", async() => {
         await browser.open(configUrls.index, {
             geolocation: {
-                latitude: 180,
+                latitude: 89,
                 longitude: -60
             }
         });
 
+        await browser.overridePermissions(configUrls.index, "geolocation");
         const correctLocation = await browser.evaluate(() => {
             return new Promise((resolve) => {
                 navigator.geolocation.getCurrentPosition((res) => {
-                    resolve(!(res.latitude !== 180 || res.longitude !== -60));
+                    resolve(res.coords.latitude === 89 && res.coords.longitude === -60);
                 });
             });
         });
@@ -65,7 +61,8 @@ describe.only("Geolocation", function() {
             }
         });
 
-        const location = await browser.getGeolocation();
+        await browser.overridePermissions(configUrls.index, "geolocation");
+        const location = await browser.geolocation();
         assert.strictEqual(location.latitude, 2);
         assert.strictEqual(location.longitude, -6);
     });

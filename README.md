@@ -226,6 +226,7 @@ The following options can be passed:
 
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`.
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
+* `geolocation`: Options to override geoLocation, same as in `setGeolocation`
 
 If no protocol is defined (e.g. `https://`), `http://` will be used.
 
@@ -771,6 +772,35 @@ Clears the date mock, if any, returning to the native Date object.
 
 **setCache(enabled)**  
 Enables or disables the requests cache. Keep in mind that this method returns a promise that resolves to when the change is effective.
+
+**setGeolocation(option)**  
+Overrides browser's location, options can contain `latitude`, `longitude` and `accuracy` as numbers.
+
+**geolocation()**  
+Returns the [current location position](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition) as an object. The object contains the following attributes (if available):
+
+* accuracy
+* altitude
+* altitudeAccuracy
+* heading
+* latitude
+* longitude
+* speed
+
+```js
+const location = await browser.geolocation();
+location.latitude; // 60
+location.longitude; //-20
+```
+
+> To access geolocation, you may need to first override the `geolocation` permission.
+
+**overridePermissions(url, permissions)**  
+Grants given permissions to given web. Permissions can be a string or array of strings with the options listed [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#browsercontextoverridepermissionsorigin-permissions).
+
+```js
+await browser.overridePermissions("http://myweb.comm", ["geolocation", "accelerometer"]);
+```
 
 ### Assert
 `browser.assert` provide some out-of-the-box assertions to easily write tests that are readable without having to specifically perform evaluations. All the assertions have a last optional parameter to define a custom assertion message. All assertions will return a Promise that will fail if the assertion fails. Unless specified, any selector will support css, xPath and DOMElements.
