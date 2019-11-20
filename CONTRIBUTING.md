@@ -27,7 +27,7 @@ Want to fix a bug, implement a feature or help with the tests / docs? Read this 
 * Make sure there's an open issue for what you're sending in your Pull Request. If not, [open it][issues].
 * Send in your PRs agains the `dev` branch.
 * Write unit tests / docs for any new feature you implement.
-* Make sure your PRs pass all tests and CI.
+* Make sure your PRs pass all tests, linting and CI.
 * Be active in your relevant issue and PR threads.
 * Make sure no one else is assigned or working on the issue. It's a good idea to leave a comment stating
    that you're going to implement it before sending in your PR. This way no two devs are working on the same

@@ -1,7 +1,7 @@
 import BrowserClick from './browser_click';
 
 import { QueryError } from '../../errors';
-import { WendigoSelector } from '../../types';
+import { WendigoSelector, GeoLocationCoords } from '../../types';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import { PDFOptions } from '../../puppeteer_wrapper/puppeteer_types';
 
@@ -27,13 +27,6 @@ export default abstract class BrowserInfo extends BrowserClick {
     @FailIfNotLoaded
     public html(): string {
         return this._originalHtml || "";
-    }
-
-    @FailIfNotLoaded
-    public async url(): Promise<string | null> {
-        let url = await this.evaluate(() => window.location.href);
-        if (url === "about:blank") url = null;
-        return url;
     }
 
     @FailIfNotLoaded
@@ -173,6 +166,26 @@ export default abstract class BrowserInfo extends BrowserClick {
         } catch (err) {
             throw new QueryError("checked", `Element "${selector}" not found.`);
         }
+    }
+
+    @FailIfNotLoaded
+    public async geolocation(): Promise<GeoLocationCoords> {
+        const location = await this.evaluate(() => {
+            return new Promise((resolve) => {
+                navigator.geolocation.getCurrentPosition((res) => {
+                    resolve({ // NOTE: due to how getCurrentPosition works, all items must be taken one by one
+                        accuracy: res.coords.accuracy,
+                        altitude: res.coords.altitude,
+                        altitudeAccuracy: res.coords.altitudeAccuracy,
+                        heading: res.coords.heading,
+                        latitude: res.coords.latitude,
+                        longitude: res.coords.longitude,
+                        speed: res.coords.speed,
+                    });
+                });
+            });
+        });
+        return location;
     }
 
     @FailIfNotLoaded

@@ -6,7 +6,7 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
 import { FinalBrowserSettings, OpenSettings } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -14,6 +14,7 @@ import OverrideError from '../decorators/override_error';
 import WendigoUtilsLoader from '../../injection_scripts/selector_query';
 import SelectorQueryLoader from '../../injection_scripts/wendigo_utils';
 import SelectorFinderLoader from '../../injection_scripts/selector_finder';
+import { arrayfy } from '../utils/utils';
 
 async function pageLog(log?: ConsoleMessage): Promise<void> {
     if (log) {
@@ -210,6 +211,22 @@ export default abstract class BrowserCore {
         return this._page.emulateTimezone(tz);
     }
 
+    public setGeolocation(geolocation: GeoOptions): Promise<void> {
+        return this._page.setGeolocation(geolocation);
+    }
+
+    @OverrideError()
+    public async overridePermissions(url: string, permissions: Array<Permission> | Permission): Promise<void> {
+        return this._context.overridePermissions(url, arrayfy(permissions));
+    }
+
+    @FailIfNotLoaded
+    public async url(): Promise<string | null> {
+        let url = await this.evaluate(() => window.location.href);
+        if (url === "about:blank") url = null;
+        return url;
+    }
+
     public frames(): Array<Frame> {
         return this._page.frames();
     }
@@ -259,6 +276,9 @@ export default abstract class BrowserCore {
         }
         if (this._settings.bypassCSP) {
             await this._page.setBypassCSP(true);
+        }
+        if (options.geolocation) {
+            await this.setGeolocation(options.geolocation);
         }
         await this.setViewport(options.viewport);
         await this._callComponentsMethod("_beforeOpen", options);

@@ -4,6 +4,7 @@ import { WendigoError, QueryError } from '../../errors';
 import { WendigoSelector } from '../../types';
 import DomElement from '../../models/dom_element';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
+import OverrideError from '../../decorators/override_error';
 
 export default abstract class BrowserTap extends BrowserWait {
     @FailIfNotLoaded
@@ -49,5 +50,11 @@ export default abstract class BrowserTap extends BrowserWait {
     private async _tapCoordinates(x: number, y: number): Promise<number> {
         await this._page.touchscreen.tap(x, y);
         return 1;
+    }
+
+    @OverrideError()
+    public async waitAndTap(selector: string, timeout?: number): Promise<number> {
+        await this.waitFor(selector, timeout);
+        return await this.tap(selector);
     }
 }

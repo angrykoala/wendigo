@@ -1,4 +1,4 @@
-import { BrowserContext, Page, BrowserContextEventObj } from "./puppeteer_types";
+import { BrowserContext, Page, BrowserContextEventObj, Permission } from "./puppeteer_types";
 import PuppeteerPage from "./puppeteer_page";
 
 export default class PuppeteerContext {
@@ -36,5 +36,9 @@ export default class PuppeteerContext {
 
     public off<K extends keyof BrowserContextEventObj>(eventName: K, cb: (msg: BrowserContextEventObj[K]) => Promise<void>): void {
         this.context.off(eventName, cb);
+    }
+
+    public overridePermissions(url: string, permissions: Array<Permission>): Promise<void> {
+        return this.context.overridePermissions(url, permissions);
     }
 }

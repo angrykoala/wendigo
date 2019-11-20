@@ -1,7 +1,7 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions
 } from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
@@ -159,5 +159,9 @@ export default class PuppeteerPage {
 
     public emulateTimezone(tz?: string): Promise<void> {
         return (this.page as any).emulateTimezone(tz); // TODO: remove any when types update
+    }
+
+    public setGeolocation(geolocation: GeoOptions): Promise<void> {
+        return this.page.setGeolocation(geolocation);
     }
 }

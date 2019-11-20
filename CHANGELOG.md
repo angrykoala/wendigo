@@ -1,3 +1,12 @@
+2.9.0 / 2019-11-20
+==================
+
+* WaitAndTap, waitAndCheck and waitAndType methods
+* OverridePermissions method
+* SetGeolocation and geolocation methods
+* Puppeteer typings updated
+* Minor improvement and fix in linting process
+
 2.8.0 / 2019-11-07
 ==================
 
