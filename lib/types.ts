@@ -52,11 +52,11 @@ export interface OpenSettings {
 }
 
 export interface GeoLocationCoords {
-    accuracy?: number,
-    altitude?: number,
-    altitudeAccuracy?: number,
-    heading?: number,
-    latitude?: number,
-    longitude?: number,
-    speed?: number,
+    accuracy?: number;
+    altitude?: number;
+    altitudeAccuracy?: number;
+    heading?: number;
+    latitude?: number;
+    longitude?: number;
+    speed?: number;
 }

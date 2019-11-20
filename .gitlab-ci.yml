@@ -12,7 +12,5 @@ test:
   stage: test
   retry: 1
   script:
-    - npm run eslint
-    - npm run tslint
-    - npm run markdown-lint
+    - npm run lint
     - npm test

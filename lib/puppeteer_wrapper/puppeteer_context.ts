@@ -38,7 +38,7 @@ export default class PuppeteerContext {
         this.context.off(eventName, cb);
     }
 
-    public overridePermissions(url: string, permissions: Array<Permission>): Promise<void>{
+    public overridePermissions(url: string, permissions: Array<Permission>): Promise<void> {
         return this.context.overridePermissions(url, permissions);
     }
 }

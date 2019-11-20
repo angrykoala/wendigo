@@ -9,7 +9,5 @@ env:
   - NO_SANDBOX=true
 
 script:
-  - npm run eslint
-  - npm run tslint
-  - npm run markdown-lint
+  - npm run lint
   - travis_retry npm test

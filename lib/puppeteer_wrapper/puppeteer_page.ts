@@ -161,7 +161,7 @@ export default class PuppeteerPage {
         return (this.page as any).emulateTimezone(tz); // TODO: remove any when types update
     }
 
-    public setGeolocation(geolocation: GeoOptions): Promise<void>{
+    public setGeolocation(geolocation: GeoOptions): Promise<void> {
         return this.page.setGeolocation(geolocation);
     }
 }
