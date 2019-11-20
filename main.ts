@@ -25,7 +25,7 @@ export function clearPlugins(): void {
 
 export {
     WendigoPluginInterface, WendigoPluginAssertionInterface,
-    PluginModule, BrowserSettings, WendigoSelector
+    PluginModule, BrowserSettings, WendigoSelector, GeoLocationCoords
 } from './lib/types';
 
 import { default as DomElementClass } from './lib/models/dom_element';

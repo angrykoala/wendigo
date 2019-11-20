@@ -2,6 +2,8 @@
 ==================
 
 * WaitAndTap, waitAndCheck and waitAndType methods
+* OverridePermissions method
+* SetGeolocation and geolocation methods
 
 2.8.0 / 2019-11-07
 ==================

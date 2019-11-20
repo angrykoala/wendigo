@@ -1,5 +1,5 @@
 import DomElement from './models/dom_element';
-import { ViewportOptions } from './puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, GeoOptions } from './puppeteer_wrapper/puppeteer_types';
 
 export type WendigoSelector = string | DomElement;
 
@@ -48,4 +48,15 @@ export interface PluginModule {
 export interface OpenSettings {
     viewport?: ViewportOptions;
     queryString?: string | { [s: string]: string; };
+    geolocation?: GeoOptions;
+}
+
+export interface GeoLocationCoords {
+    accuracy?: number,
+    altitude?: number,
+    altitudeAccuracy?: number,
+    heading?: number,
+    latitude?: number,
+    longitude?: number,
+    speed?: number,
 }
