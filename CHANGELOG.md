@@ -1,7 +1,8 @@
-2.9.1 / ####-##-##
+2.10.0 / ####-##-##
 ==================
 
-* element getAttribute method
+* FindByLabelText
+* Element getAttribute method
 
 2.9.0 / 2019-11-20
 ==================

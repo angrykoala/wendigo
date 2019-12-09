@@ -107,6 +107,10 @@ export function createFindTextXPath(text: string, contains: boolean = false, ele
     else return `//${element}[text()=${cleanedString}]`;
 }
 
+export function filterTruthy<T>(arr: Array<T | null | undefined>): Array<T> {
+  return arr.filter(Boolean) as Array<T>;
+}
+
 export function base64(orig: string): string {
     return Buffer.from(orig).toString('base64');
 }

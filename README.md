@@ -668,6 +668,18 @@ const hiddenElements = await browser.findByAttribute("hidden"); // Returns all t
 const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
 ```
 
+**findByLabelText(labelText)**  
+Given a label text, returns all the inputs associated to the label through the `for` attribute:
+
+```html
+<label class="label1" for="input1">My Label</label>
+<input id="input1">
+```
+
+```js
+const input = await browser.findByLabelText("My Label"); // Returns an array containing iput #input1
+```
+
 **findCssPath(element)**  
 Will return the CSS path string (e.g. `body > div > button`) of a DomElement.
 
@@ -1746,7 +1758,7 @@ A DOMElement also provides the following methods:
 * **query(selector)**: Performs a css query within the children of the element. Returns the first element matching the selector.
 * **queryXPath(selector)**: Performs an XPath query within the children of the element.
 * **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
-* **getAttribute(string)**: Returns the value of the attribute with given name or null if not defined.
+* **getAttribute(attributeKey)**: Returns the value of the attribute with given name or null if not defined.
 * **click()**: Clicks the given element.
 * **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
