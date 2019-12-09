@@ -70,6 +70,26 @@ export default abstract class BrowserQueries extends BrowserCore {
         }
     }
 
+    // @FailIfNotLoaded
+    // @OverrideError()
+    // public async findByLabel(text: string): Promise<Array<DomElement>> {
+    //     const xPath = createFindTextXPath(text, false, "label");
+    //     const elements = await this.queryAll(xPath);
+    //     // elements[0].
+    //     // Get attributes of dom element
+    //     //search by id
+    //     return elements
+    //
+    //     // const xPathText = optionalText || text as string;
+    //     // const xPath = createFindTextXPath(xPathText);
+    //     //
+    //     // if (optionalText) {
+    //     //     return await this.queryAll(text, xPath);
+    //     // } else {
+    //     //     return this.queryAll(xPath);
+    //     // }
+    // }
+
     @FailIfNotLoaded
     @OverrideError()
     public async findByTextContaining(text: string | DomElement, optionalText?: string): Promise<Array<DomElement>> {

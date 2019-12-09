@@ -1746,6 +1746,7 @@ A DOMElement also provides the following methods:
 * **query(selector)**: Performs a css query within the children of the element. Returns the first element matching the selector.
 * **queryXPath(selector)**: Performs an XPath query within the children of the element.
 * **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
+* **getAttribute(string)**: Returns the value of the attribute with given name or null if not defined.
 * **click()**: Clicks the given element.
 * **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.

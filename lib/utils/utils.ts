@@ -101,10 +101,10 @@ export function arrayfy<T>(raw: T | Array<T>): Array<T> {
     else return [raw];
 }
 
-export function createFindTextXPath(text: string, contains: boolean = false): string {
+export function createFindTextXPath(text: string, contains: boolean = false, element: string = "*"): string {
     const cleanedString = cleanStringForXpath(text);
-    if (contains) return `//*[contains(text(),${cleanedString})]`;
-    else return `//*[text()=${cleanedString}]`;
+    if (contains) return `//${element}[contains(text(),${cleanedString})]`;
+    else return `//${element}[text()=${cleanedString}]`;
 }
 
 export function base64(orig: string): string {

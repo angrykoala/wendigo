@@ -52,6 +52,12 @@ export default class DomElement {
         return this.element.type(text, options);
     }
 
+    public getAttribute(attr: string): Promise<string | null> {
+        return this.element.evaluate((e, attributeKey) => {
+            return e.getAttribute(attributeKey);
+        }, attr);
+    }
+
     public toString(): string {
         if (this.name) return this.name;
         else return `DomElement`;
