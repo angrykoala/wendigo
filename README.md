@@ -1304,6 +1304,9 @@ Returns the number of items in the store.
 const itemsLength = await browser.localStorage.length(); // 3
 ```
 
+**localStorage.all()**  
+Returns all the items in localStorage as an object.
+
 #### LocalStorage Assertions
 Assertions related local storage can be accessed through `browser.assert.localStorage`.
 

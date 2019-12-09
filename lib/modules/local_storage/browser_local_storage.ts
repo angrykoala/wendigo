@@ -39,4 +39,15 @@ export default class BrowserLocalStorage extends WendigoModule {
         });
         return result;
     }
+
+    @OverrideError("localStorage")
+    public async all(): Promise<{ [k: string]: string }> {
+        const result = await this._browser.evaluate(() => {
+            return Object.keys(localStorage).reduce((acc, k) => {
+                acc[k] = localStorage.getItem(k);
+                return acc;
+            }, {} as any);
+        });
+        return result;
+    }
 }

@@ -15,6 +15,7 @@ describe("Local Storage", function() {
     beforeEach(async() => {
         await browser.open(configUrls.storage);
     });
+
     afterEach(async() => {
         await browser.localStorage.clear();
     });
@@ -81,5 +82,13 @@ describe("Local Storage", function() {
         assert.strictEqual(length2, 2); // Added by the web
         const value = await browser.localStorage.getItem("marvin");
         assert.strictEqual(value, "paranoid");
+    });
+
+    it("Get All Items", async() => {
+        await browser.localStorage.setItem("marvin", "paranoid");
+        const items = await browser.localStorage.all();
+        assert.strictEqual(items.arthur, "dontpanic");
+        assert.strictEqual(items.marvin, "paranoid");
+        assert.strictEqual(Object.keys(items).length, 2);
     });
 });
