@@ -3,7 +3,7 @@ import BrowserCore from '../browser_core';
 import DomElement from '../../models/dom_element';
 import { FatalError, WendigoError } from '../../errors';
 import { WendigoSelector } from '../../types';
-import { isXPathQuery, createFindTextXPath } from '../../utils/utils';
+import { isXPathQuery, createFindTextXPath, filterTruthy } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
 import { ElementHandle } from '../../puppeteer_wrapper/puppeteer_types';
@@ -68,6 +68,16 @@ export default abstract class BrowserQueries extends BrowserCore {
         } else {
             return this.queryAll(xPath);
         }
+    }
+
+    @FailIfNotLoaded
+    @OverrideError()
+    public async findByLabelText(text: string): Promise<Array<DomElement>> {
+        const xPath = createFindTextXPath(text, false, "label");
+        const labels = await this.queryAll(xPath);
+        const forAttributes = await Promise.all(labels.map(e => e.getAttribute("for")));
+        const elements = await Promise.all(filterTruthy(forAttributes).map((id) => this.query(`#${id}`)));
+        return filterTruthy(elements);
     }
 
     @FailIfNotLoaded

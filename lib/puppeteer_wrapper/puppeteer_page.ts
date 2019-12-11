@@ -1,7 +1,7 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions, MediaType, MediaFeature
 } from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
@@ -163,5 +163,13 @@ export default class PuppeteerPage {
 
     public setGeolocation(geolocation: GeoOptions): Promise<void> {
         return this.page.setGeolocation(geolocation);
+    }
+
+    public emulateMediaType(mediaType: MediaType): Promise<void> {
+        return this.page.emulateMediaType(mediaType);
+    }
+
+    public emulateMediaFeatures(mediaFeatures: Array<MediaFeature>): Promise<void> {
+        return this.page.emulateMediaFeatures(mediaFeatures);
     }
 }

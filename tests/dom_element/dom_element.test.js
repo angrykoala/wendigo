@@ -2,9 +2,7 @@
 
 const Wendigo = require('../..');
 const assert = require('assert');
-// const DomElement = require('../../dist/lib/models/dom_element').default;
 const configUrls = require('../config.json').urls;
-// const utils = require('../test_utils');
 
 describe("Dom Element", function() {
     this.timeout(5000);
@@ -35,5 +33,17 @@ describe("Dom Element", function() {
         assert.ok(element);
         const ancestor = await element.query("ancestor::p");
         assert(!ancestor);
+    });
+
+    it("Get Attribute", async() => {
+        const element = await browser.query("i");
+        const value = await element.getAttribute("class");
+        assert.strictEqual(value, "hidden-text");
+    });
+
+    it("Get Null Attribute", async() => {
+        const element = await browser.query("i");
+        const value = await element.getAttribute("another-attribute");
+        assert.strictEqual(value, null);
     });
 });

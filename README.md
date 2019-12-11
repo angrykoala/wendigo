@@ -6,6 +6,7 @@ _by @angrykoala_
 [![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
 [![Travis (.org)](https://img.shields.io/travis/angrykoala/wendigo/master.svg?label=travis)](https://travis-ci.org/angrykoala/wendigo)
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo/master.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/angrykoala/wendigo/test?label=github-actions)](https://github.com/angrykoala/wendigo/actions)
 
 > A proper monster for front-end automated testing.
 
@@ -668,6 +669,18 @@ const hiddenElements = await browser.findByAttribute("hidden"); // Returns all t
 const paswordElements = await browser.findByAttribute("name", "password"); // Find all elements with a name attribute and value password
 ```
 
+**findByLabelText(labelText)**  
+Given a label text, returns all the inputs associated to the label through the `for` attribute:
+
+```html
+<label class="label1" for="input1">My Label</label>
+<input id="input1">
+```
+
+```js
+const input = await browser.findByLabelText("My Label"); // Returns an array containing iput #input1
+```
+
 **findCssPath(element)**  
 Will return the CSS path string (e.g. `body > div > button`) of a DomElement.
 
@@ -726,6 +739,14 @@ await browser.setViewport({width: 300});
 
 **setTimezone(timezone)**  
 Sets browser timezone, valid timezones can be found [here](https://cs.chromium.org/chromium/src/third_party/icu/source/data/misc/metaZones.txt?rcl=faee8bc70570192d82d2978a71e2a615788597d1)
+
+**setMedia(mediaOptions)**  
+Sets css media options, options can be a string to define a type or an object with the following properties:
+
+* `type`: Defines media type emulation (can be `print` or `string`), passing `null` disables media emulation.
+* `features`: Receives an array of objects containing `name` and `value` of the css media feature to override. Supported names are `prefers-colors-scheme` and `prefers-reduced-motion`.
+
+> This method is a wrapper over Puppeteer's [emulateMediaFeatures](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageemulatemediafeaturesfeatures) and [emulateMediaType](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageemulatemediatypetype)
 
 **triggerEvent(selector, eventName, options?)**  
 Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
@@ -1292,6 +1313,9 @@ Returns the number of items in the store.
 const itemsLength = await browser.localStorage.length(); // 3
 ```
 
+**localStorage.all()**  
+Returns all the items in localStorage as an object.
+
 #### LocalStorage Assertions
 Assertions related local storage can be accessed through `browser.assert.localStorage`.
 
@@ -1746,6 +1770,7 @@ A DOMElement also provides the following methods:
 * **query(selector)**: Performs a css query within the children of the element. Returns the first element matching the selector.
 * **queryXPath(selector)**: Performs an XPath query within the children of the element.
 * **queryAll(selector)**: Similar to query, returns all the elements matching the given css selector.
+* **getAttribute(attributeKey)**: Returns the value of the attribute with given name or null if not defined.
 * **click()**: Clicks the given element.
 * **tap()**: Taps the given element.
 * **toString()**: Returns a readable string of the DOMElement, used for displaying errors.
