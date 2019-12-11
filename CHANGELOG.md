@@ -3,6 +3,7 @@
 
 * FindByLabelText
 * LocalStorage.all
+* Browser.setMedia
 * Element getAttribute method
 
 2.9.0 / 2019-11-20

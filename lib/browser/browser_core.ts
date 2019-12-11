@@ -4,9 +4,9 @@ import querystring from 'querystring';
 import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
 import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../errors';
-import { FinalBrowserSettings, OpenSettings } from '../types';
+import { FinalBrowserSettings, OpenSettings, MediaOptions } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission, MediaType } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -150,6 +150,23 @@ export default abstract class BrowserCore {
             if (err instanceof FatalError) return Promise.reject(err);
             return Promise.reject(new FatalError("setContent", `Failed to set content. ${err.message}`));
         }
+    }
+
+    public async setMedia(mediaOptions: MediaOptions | MediaType): Promise<void> {
+        if (mediaOptions === undefined) return undefined;
+        if (typeof mediaOptions === 'string' || mediaOptions === null) {
+            mediaOptions = {
+                type: mediaOptions
+            };
+        }
+
+        if (mediaOptions.type !== undefined) {
+            this._page.emulateMediaType(mediaOptions.type);
+        }
+        if (mediaOptions.features) {
+            this._page.emulateMediaFeatures(mediaOptions.features);
+        }
+
     }
 
     public async close(): Promise<void> {

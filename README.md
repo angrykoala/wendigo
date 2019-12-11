@@ -740,6 +740,14 @@ await browser.setViewport({width: 300});
 **setTimezone(timezone)**  
 Sets browser timezone, valid timezones can be found [here](https://cs.chromium.org/chromium/src/third_party/icu/source/data/misc/metaZones.txt?rcl=faee8bc70570192d82d2978a71e2a615788597d1)
 
+**setMedia(mediaOptions)**  
+Sets css media options, options can be a string to define a type or an object with the following properties:
+
+* `type`: Defines media type emulation (can be `print` or `string`), passing `null` disables media emulation.
+* `features`: Receives an array of objects containing `name` and `value` of the css media feature to override. Supported names are `prefers-colors-scheme` and `prefers-reduced-motion`.
+
+> This method is a wrapper over Puppeteer's [emulateMediaFeatures](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageemulatemediafeaturesfeatures) and [emulateMediaType](https://github.com/puppeteer/puppeteer/blob/master/docs/api.md#pageemulatemediatypetype)
+
 **triggerEvent(selector, eventName, options?)**  
 Creates and dispatch a DOM event in the elements matching the given selector. The event dispatched will have the name given, and all the options will be passed down to the native `Event` constructor, with the options `bubbles`, `cancelable` and composed `supported`
 
