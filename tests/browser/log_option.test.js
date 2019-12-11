@@ -34,7 +34,7 @@ describe("Log Option", function() {
             log: true
         });
         await generateTestLogs(browser);
-
+        await browser.wait(10);
         assert.ok(stubs.log.calledOnce);
         assert.ok(stubs.info.calledTwice);
         assert.ok(stubs.info.alwaysCalledWith("Info Log"));
@@ -44,7 +44,7 @@ describe("Log Option", function() {
     it("No Log To Stdout", async() => {
         browser = await Wendigo.createBrowser();
         await generateTestLogs(browser);
-
+        await browser.wait(1);
         assert.ok(stubs.log.notCalled);
         assert.ok(stubs.info.notCalled);
         assert.ok(stubs.error.notCalled);
