@@ -3,21 +3,16 @@ name: test
 on: [push]
 
 jobs:
-
-  build:
+  test:
+    needs: build
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: 12
       - run: npm install
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
       - name: test
         run: |
           npm run lint
