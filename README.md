@@ -2010,6 +2010,33 @@ test:
 
 _Example of .gitlab-ci.yml_
 
+### Running Tests With GitHub Actions
+
+```yml
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - name: test
+        run: |
+          npm run lint
+          npm test
+        env:
+          CI: true
+```
+
+_Example of .github/workflows/test.yml_
+
 ### Using Wendigo with Docker
 Wendigo con be running on docker just as any other application using Puppeteer, but an official image is provided to ease the setup, the following is an example of a dockerfile using Node 10 and Wendigo:
 
