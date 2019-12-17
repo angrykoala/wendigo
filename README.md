@@ -2011,6 +2011,7 @@ test:
 _Example of .gitlab-ci.yml_
 
 ### Running Tests With GitHub Actions
+To run tests with Wendigo on GH actions the default node workflow can be used. Using `npm test || npm test` to add a single retry in case tests fail once.
 
 ```yml
 name: test
@@ -2028,9 +2029,7 @@ jobs:
           node-version: 12
       - run: npm install
       - name: test
-        run: |
-          npm run lint
-          npm test
+        run: npm test || npm test
         env:
           CI: true
 ```
