@@ -1375,6 +1375,7 @@ The following options are supported:
 * `body` Optional response body. It can be a string or a json-serializable object.
 * `delay` Optional delay to wait for the response to be fullfilled, in ms.
 * `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true.
+* `continue` if set to true, the request will be continue to the server and the real response will be returned.
 * `method` defines the method (`GET`, `POST`, ...) to mock. Empty to mock any method.
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object.
   * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.

@@ -21,6 +21,7 @@ interface RequestMockInterface {
     url: string | RegExp;
     immediate: boolean;
     auto: boolean;
+    continue: boolean;
     method?: string;
     waitUntilCalled(timeout: number): Promise<void>;
     assert: {
@@ -65,6 +66,7 @@ export default class RequestMock implements RequestMockInterface {
     public readonly method?: string;
     public readonly response: MockResponse;
     public readonly auto: boolean;
+    public readonly continue: boolean;
     public readonly url: string | RegExp;
     public readonly assert: RequestMockAssertions;
     public readonly queryString?: { [s: string]: string; };
@@ -82,6 +84,7 @@ export default class RequestMock implements RequestMockInterface {
         if (options.queryString !== undefined) this.queryString = utils.parseQueryString(options.queryString);
         else this.queryString = this._parseUrlQueryString(url);
         this.auto = options.auto !== false;
+        this.continue = options.continue === true;
         this._events = new EventEmitter();
         this._redirectTo = options.redirectTo ? new URL(options.redirectTo) : undefined;
         this.assert = new RequestMockAssertions(this);
@@ -141,12 +144,14 @@ export default class RequestMock implements RequestMockInterface {
         if (optionalResponse) {
             response = this._processResponse(optionalResponse);
         }
-        if (this._redirectTo) {
-            const url = new URL(request.url());
-            let qs = url.searchParams.toString();
-            if (qs) qs = `?${qs}`;
+
+        if (this.continue) {
+            await request.continue();
+        }
+        else if (this._redirectTo) {
+            const qs = this._getUrlQuerystring(request.url())
             await request.continue({
-                url: `${this._redirectTo.origin}${this._redirectTo.pathname}${qs || ""}`
+                url: `${this._redirectTo.origin}${this._redirectTo.pathname}${qs}`
             });
         } else await request.respond(response);
         this._events.emit("on-request");
@@ -154,6 +159,13 @@ export default class RequestMock implements RequestMockInterface {
 
     private _onTrigger(cb: (r: RequestMockResponseOptions) => Promise<void>): void {
         this._events.once("respond", cb);
+    }
+
+    private _getUrlQuerystring(rawUrl: string): string {
+        const url = new URL(rawUrl);
+        let qs = url.searchParams.toString();
+        if (qs) return `?${qs}`;
+        else return ""
     }
 
     private _processResponse(options: RequestMockOptions): MockResponse {

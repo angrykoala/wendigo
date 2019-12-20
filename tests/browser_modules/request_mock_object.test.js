@@ -194,8 +194,23 @@ describe("Requests Mock Object", function() {
         mock.trigger({
             body: {result: "MOCK2"}
         });
-        await browser.wait(20);
+        await mock.waitUntilCalled();
         await browser.assert.text("#result", "MOCK2");
         assert.strictEqual(mock.response.body, JSON.stringify({result: "MOCK"}));
+    });
+
+    it("Mock With Trigger And Continue", async() => {
+        const mockOptions = {
+            auto: false,
+            continue: true
+        };
+        const mock = browser.requests.mock(configUrls.api, mockOptions);
+        assert.strictEqual(mock.continue, true);
+        await browser.clickText("click me");
+        await browser.assert.not.text("#result", "MOCK");
+        await browser.assert.not.text("#result", "DUMMY");
+        mock.trigger();
+        await mock.waitUntilCalled();
+        await browser.assert.text("#result", "DUMMY");
     });
 });

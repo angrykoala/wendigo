@@ -13,6 +13,7 @@ export interface RequestMockOptions extends RequestMockResponseOptions {
     queryString?: string | { [s: string]: string };
     redirectTo?: string;
     auto?: boolean;
+    continue?: boolean;
 }
 
 export interface ExpectedHeaders {
