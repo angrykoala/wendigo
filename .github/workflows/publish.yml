@@ -1,4 +1,4 @@
-name: Pulish
+name: Publish
 
 on:
   release:
