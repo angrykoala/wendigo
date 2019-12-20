@@ -1375,6 +1375,7 @@ The following options are supported:
 * `body` Optional response body. It can be a string or a json-serializable object.
 * `delay` Optional delay to wait for the response to be fullfilled, in ms.
 * `auto` if set to false, the request won't be fullfilled automatically and a manual trigger must be defined,default to true.
+* `continue` if set to true, the request will be continue to the server and the real response will be returned.
 * `method` defines the method (`GET`, `POST`, ...) to mock. Empty to mock any method.
 * `queryString`: If set, only requests with the exact query string will be mocked, accepts string or object.
   * By default, all requests with the given url, regardless of the query string will be mocked, unless a querystring is set in the url or in the options.
@@ -2009,6 +2010,32 @@ test:
 ```
 
 _Example of .gitlab-ci.yml_
+
+### Running Tests With GitHub Actions
+To run tests with Wendigo on GH actions the default node workflow can be used. Using `npm test || npm test` to add a single retry in case tests fail once.
+
+```yml
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - name: test
+        run: npm test || npm test
+        env:
+          CI: true
+```
+
+_Example of .github/workflows/test.yml_
 
 ### Using Wendigo with Docker
 Wendigo con be running on docker just as any other application using Puppeteer, but an official image is provided to ease the setup, the following is an example of a dockerfile using Node 10 and Wendigo:
