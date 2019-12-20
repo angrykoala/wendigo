@@ -147,9 +147,8 @@ export default class RequestMock implements RequestMockInterface {
 
         if (this.continue) {
             await request.continue();
-        }
-        else if (this._redirectTo) {
-            const qs = this._getUrlQuerystring(request.url())
+        } else if (this._redirectTo) {
+            const qs = this._getUrlQuerystring(request.url());
             await request.continue({
                 url: `${this._redirectTo.origin}${this._redirectTo.pathname}${qs}`
             });
@@ -163,9 +162,9 @@ export default class RequestMock implements RequestMockInterface {
 
     private _getUrlQuerystring(rawUrl: string): string {
         const url = new URL(rawUrl);
-        let qs = url.searchParams.toString();
+        const qs = url.searchParams.toString();
         if (qs) return `?${qs}`;
-        else return ""
+        else return "";
     }
 
     private _processResponse(options: RequestMockOptions): MockResponse {
