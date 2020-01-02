@@ -308,4 +308,21 @@ describe("Assert Requests", function() {
             await browser.assert.requests.resourceType("fetch", "resource fails");
         }, `[assert.requests.resourceType] resource fails`);
     });
+
+    it("Assert Requests By Content Type", async() => {
+        await browser.assert.requests.contentType(/html/);
+        await browser.assert.requests.contentType("text/css; charset=UTF-8");
+    });
+
+    it("Assert Requests By Content Type Throws", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.contentType(/json/);
+        }, `[assert.requests.contentType] Expected request with contentType "/json/" to exist.`);
+    });
+
+    it("Assert Requests By Content Type Throws Custom Message", async() => {
+        await utils.assertThrowsAssertionAsync(async() => {
+            await browser.assert.requests.contentType(/json/, "contentype error");
+        }, `[assert.requests.contentType] contentype error`);
+    });
 });

@@ -85,6 +85,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         return this._assertFilter("assert.requests.resourceType", responseBodyFilter, msg);
     }
 
+    public contentType(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
+        const responseBodyFilter = this._requestFilter.contentType(expected);
+        if (!msg) msg = `Expected request with contentType "${expected}" to exist.`;
+
+        return this._assertFilter("assert.requests.contentType", responseBodyFilter, msg);
+    }
+
     public exactly(expected: number, msg?: string): RequestAssertionsFilter {
         return new RequestAssertionsFilter((resolve, reject) => {
             this.then(() => {

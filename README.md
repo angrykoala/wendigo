@@ -1532,6 +1532,9 @@ await browser.filter.url(/api/).method("DELETE").postBody({id: 5}).requests;
 **requests.filter.resourceType(resource)**  
 Filter requests by given resource type (`xhr`, `fetch`, ...). Possible resource types are defined [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestresourcetype).
 
+**requests.filter.resourceType(contentType)**  
+Filter responses by content type header (`text/css; charset=UTF-8`, ...). Accepts both string or RegExp.
+
 **requests.filter.pending()**  
 Filter requests by pending (response not retrieved).
 
@@ -1601,8 +1604,11 @@ await browser.assert.requests.responseBody({response: "OK"});
 **assert.requests.pending(msg?)**  
 Asserts that at least one request is still pending (no response received).
 
-**assert.requests.resourceType(resourceType: string, msg?)**  
+**assert.requests.resourceType(resourceType, msg?)**  
 Asserts that at least one request has the given resource type (`fetch`, `xhr`, ...).
+
+**assert.requests.contentType(expected, msg?)**  
+Asserts that at least one response has given content type header (`text/css; charset=UTF-8`, ...). Accepts both string or RegExp.
 
 **assert.requests.exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.

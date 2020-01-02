@@ -1,6 +1,7 @@
 2.11.0 / ####-##-##
 ===================
 
+* browser.requests.filter.contentType and browser.assert.requests.contentType
 * Dependencies updated
 
 2.10.1 / 2019-12-20

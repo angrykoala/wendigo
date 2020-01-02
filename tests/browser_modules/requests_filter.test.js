@@ -191,8 +191,8 @@ describe("Requests Filter", function() {
     });
 
     it("Filter By Resource Type", async() => {
-        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
-        assert.strictEqual(pending2.length, 0);
+        const fetchReqs = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(fetchReqs.length, 0);
         const docReqs = await browser.requests.filter.resourceType("document").requests;
         assert.strictEqual(docReqs.length, 1);
         const styleReqs = await browser.requests.filter.resourceType("stylesheet").requests;
@@ -200,13 +200,24 @@ describe("Requests Filter", function() {
     });
 
     it("Filter By Resource Type Multiple Fetch Requests", async() => {
-        const pending1 = await browser.requests.filter.resourceType("fetch").requests;
-        assert.strictEqual(pending1.length, 0);
+        const resourceReqs1 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(resourceReqs1.length, 0);
 
         await browser.clickText("click me");
         await browser.clickText("click me");
         await browser.wait(10);
-        const pending2 = await browser.requests.filter.resourceType("fetch").requests;
-        assert.strictEqual(pending2.length, 2);
+        const resourceReqs2 = await browser.requests.filter.resourceType("fetch").requests;
+        assert.strictEqual(resourceReqs2.length, 2);
+    });
+
+    it("Filter By Content Type", async() => {
+        await browser.wait();
+
+        const requests1 = await browser.requests.filter.contentType("text/css; charset=UTF-8").requests;
+        assert.strictEqual(requests1.length, 1);
+        const requests2 = await browser.requests.filter.contentType(/html/).requests;
+        assert.strictEqual(requests2.length, 1);
+        const requests3 = await browser.requests.filter.contentType(/json/).requests;
+        assert.strictEqual(requests3.length, 0);
     });
 });
