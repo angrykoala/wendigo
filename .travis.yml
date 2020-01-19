@@ -4,7 +4,6 @@ os:
     - windows
     - osx
 node_js:
-    - "stable"
     - "lts/*"
 sudo: false
 env:

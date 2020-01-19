@@ -3,6 +3,7 @@
 
 * browser.requests.filter.contentType and browser.assert.requests.contentType
 * Dependencies updated
+* Windows and OSX tests in CI added
 
 2.10.1 / 2019-12-20
 ===================
