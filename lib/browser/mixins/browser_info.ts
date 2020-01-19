@@ -13,7 +13,7 @@ export default abstract class BrowserInfo extends BrowserClick {
             const elements = WendigoUtils.queryAll(q);
             const result = [];
             for (const e of elements) {
-                result.push(e.innerText);
+                result.push(e.textContent);
             }
             return result;
         }, selector);

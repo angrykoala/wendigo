@@ -5,7 +5,7 @@ const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
 
-describe.only("Assert Text", function() {
+describe("Assert Text", function() {
     this.timeout(5000);
     let browser;
 
@@ -188,7 +188,7 @@ describe.only("Assert Text", function() {
 
     it("Text With <br>", async() => {
         await browser.open(configUrls.weirdText);
-        await browser.assert.text(".text-br", "This is\na text");
+        await browser.assert.text(".text-br", "This isa text");
     });
 
     it('Plain Text Matches Assertion', async() => {
@@ -212,4 +212,6 @@ describe.only("Assert Text", function() {
         assert.strictEqual(text, lorem[0]);
         await browser.assert.text('body > div.p3', lorem[0]);
     });
+
+    it("Text With Newlines Options")
 });
