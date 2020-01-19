@@ -1,7 +1,8 @@
 2.11.0 / ####-##-##
 ===================
 
-* browser.requests.filter.contentType and browser.assert.requests.contentType
+* Browser.requests.filter.contentType and browser.assert.requests.contentType
+* Browser.text and assert.text now use textContent instead of innerText, ignoring newlines gneerated by <br> and other elements
 * Dependencies updated
 * Windows and OSX tests in CI added
 
