@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    stategy:
+    runs-on: ${{matrix.os}}
+    strategy:
         matrix:
             os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
