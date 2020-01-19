@@ -375,7 +375,7 @@ const style = await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
 Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined. Throws if no element is found.
 
 **text(selector)**  
-Returns an array with the texts of the elements matching the given selector.
+Returns an array with the texts of the elements matching the given selector. Returns the same value as element innerText property.
 
 ```js
 const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
@@ -852,7 +852,7 @@ await browser.assert.tag("my-header", "h1");
 
 **assert.text(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected string or regex.
-If expected is an array, all texts in it should match.
+If expected is an array, all texts in it should match. It matches against the value of element innerText property.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
