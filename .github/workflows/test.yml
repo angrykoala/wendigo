@@ -5,7 +5,9 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    stategy:
+        matrix:
+            os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
