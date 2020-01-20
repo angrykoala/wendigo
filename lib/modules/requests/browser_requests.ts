@@ -7,7 +7,7 @@ import Browser from '../../browser/browser';
 import RequestMock from './request_mock';
 import { Request, Response } from '../../puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
-import { TimeoutError } from '../../errors';
+import { TimeoutError } from '../../models/errors';
 import { promiseOr, matchText, isNumber } from '../../utils/utils';
 
 export default class BrowserRequests extends WendigoModule {

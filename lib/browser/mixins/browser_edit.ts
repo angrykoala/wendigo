@@ -1,7 +1,7 @@
 import BrowserInfo from './browser_info';
 
 import { WendigoSelector } from '../../types';
-import { QueryError } from '../../errors';
+import { QueryError } from '../../models/errors';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
 

@@ -1,6 +1,6 @@
 import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
-import { TimeoutError, WendigoError } from '../../errors';
+import { TimeoutError, WendigoError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import { createFindTextXPath, delay, isNumber } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';

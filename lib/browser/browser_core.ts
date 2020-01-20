@@ -3,7 +3,7 @@ import querystring from 'querystring';
 
 import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
 import DomElement from '../models/dom_element';
-import { FatalError, InjectScriptError } from '../errors';
+import { FatalError, InjectScriptError } from '../models/errors';
 import { FinalBrowserSettings, OpenSettings, MediaOptions } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
 import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission, MediaType } from '../puppeteer_wrapper/puppeteer_types';
@@ -62,34 +62,7 @@ export default abstract class BrowserCore {
         this._components = components;
         this._headerHelper = new HeaderHelper(this._page);
 
-        if (this._settings.log) {
-            this._page.on("console", pageLog);
-        }
-
-        // TODO: move to private method
-        this._context.on('targetcreated', async (target: Target): Promise<void> => {
-            const createdPage = await target.page();
-            if (createdPage) {
-                const puppeteerPage = new PuppeteerPage(createdPage);
-                try {
-                    await puppeteerPage.setBypassCSP(true);
-                    if (this._settings.userAgent)
-                        await puppeteerPage.setUserAgent(this._settings.userAgent);
-                } catch (err) {
-                    // Will fail if browser is closed before finishing
-                }
-            }
-        });
-
-        this._page.on('load', async (): Promise<void> => {
-            if (this._loaded) {
-                try {
-                    await this._afterPageLoad();
-                } catch (err) {
-                    // Will fail if browser is closed
-                }
-            }
-        });
+        this._setEventListeners();
     }
 
     public get page(): Page {
@@ -350,5 +323,36 @@ export default abstract class BrowserCore {
         if (url.split("://").length === 1) {
             return `http://${url}`;
         } else return url;
+    }
+
+    private _setEventListeners(): void {
+        if (this._settings.log) {
+            this._page.on("console", pageLog);
+        }
+
+        // TODO: move to private method
+        this._context.on('targetcreated', async (target: Target): Promise<void> => {
+            const createdPage = await target.page();
+            if (createdPage) {
+                const puppeteerPage = new PuppeteerPage(createdPage);
+                try {
+                    await puppeteerPage.setBypassCSP(true);
+                    if (this._settings.userAgent)
+                        await puppeteerPage.setUserAgent(this._settings.userAgent);
+                } catch (err) {
+                    // Will fail if browser is closed before finishing
+                }
+            }
+        });
+
+        this._page.on('load', async (): Promise<void> => {
+            if (this._loaded) {
+                try {
+                    await this._afterPageLoad();
+                } catch (err) {
+                    // Will fail if browser is closed
+                }
+            }
+        });
     }
 }

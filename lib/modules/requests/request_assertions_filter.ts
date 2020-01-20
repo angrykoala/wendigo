@@ -1,4 +1,4 @@
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 import { stringify } from '../../utils/utils';
 import RequestFilter from './request_filter';
 import { ExpectedHeaders } from './types';

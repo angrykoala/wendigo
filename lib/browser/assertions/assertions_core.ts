@@ -2,7 +2,7 @@ import { arrayfy, matchTextList, matchText, stringify, matchTextContainingList }
 import { sameMembers } from '../../utils/assert_utils';
 import * as elementsAssertionUtils from './assert_elements';
 
-import { QueryError, FatalError, WendigoError, AssertionError } from '../../errors';
+import { QueryError, FatalError, WendigoError, AssertionError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import BrowserInterface from '../browser_interface';
 import OverrideError from '../../decorators/override_error';

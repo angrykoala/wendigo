@@ -2,7 +2,7 @@ import process from 'process';
 import puppeteer from 'puppeteer';
 import { BrowserContext } from './puppeteer_wrapper/puppeteer_types';
 import BrowserFactory from './browser_factory';
-import * as Errors from './errors';
+import * as Errors from './models/errors';
 import { WendigoPluginInterface, BrowserSettings, DefaultBrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
 import BrowserInterface from './browser/browser_interface';
 import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';

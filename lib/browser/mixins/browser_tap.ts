@@ -1,6 +1,6 @@
 import BrowserWait from './browser_wait';
 
-import { WendigoError, QueryError } from '../../errors';
+import { WendigoError, QueryError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import DomElement from '../../models/dom_element';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';

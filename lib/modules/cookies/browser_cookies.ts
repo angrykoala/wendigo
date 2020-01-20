@@ -1,6 +1,6 @@
 import { Cookie as CookieData, SetCookie, DeleteCookie } from '../../puppeteer_wrapper/puppeteer_types';
 import WendigoModule from '../wendigo_module';
-import { WendigoError } from '../../errors';
+import { WendigoError } from '../../models/errors';
 import { arrayfy } from '../../utils/utils';
 
 export default class BrowserCookies extends WendigoModule {

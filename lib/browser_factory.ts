@@ -4,7 +4,7 @@ import isClass from 'is-class';
 import Browser from './browser/browser';
 import BrowserAssertion from './browser/browser_assertions';
 import { FinalBrowserSettings, PluginModule } from './types';
-import { FatalError } from './errors';
+import { FatalError } from './models/errors';
 import BrowserInterface from './browser/browser_interface';
 import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
 

@@ -1,6 +1,6 @@
 import { arrayfy, matchTextList, matchTextContainingList } from '../../utils/utils';
 import { invertify } from '../../utils/assert_utils';
-import { WendigoError, QueryError, AssertionError } from '../../errors';
+import { WendigoError, QueryError, AssertionError } from '../../models/errors';
 import BrowserAssertions from '../browser_assertions';
 import BrowserInterface from '../../browser/browser_interface';
 import { WendigoSelector } from '../../types';
