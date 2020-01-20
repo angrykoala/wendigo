@@ -227,7 +227,8 @@ The following options can be passed:
 
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`.
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
-* `geolocation`: Options to override geoLocation, same as in `setGeolocation`
+* `geolocation`: Options to override geoLocation. Same as using `setGeolocation`.
+* `headers`: Sets extra HTTP headers _before_ opening the page.Same as using `requests.setHeaders`.
 
 If no protocol is defined (e.g. `https://`), `http://` will be used.
 
@@ -1474,6 +1475,18 @@ Waits until next request with given url is done. If the request was already made
 
 **requests.waitForNextResponse(url ,timeout=500)**  
 Waits until next response with given url is received. If the response was already received, this method will wait until next one. Url can be a string or regexp.
+
+**requests.setHeaders(headers)**  
+Sends the given headers on every HTTP requests (on top of default headers).
+
+```js
+await browser.requests.setHeaders({
+    custom: "dontpanic"
+});
+await browser.open("my-url");
+```
+
+> Note that `authorization` header should be set with `auth` module where possible.
 
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.requests.filter`.

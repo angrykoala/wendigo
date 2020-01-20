@@ -12,7 +12,7 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "scripts": {
-    "test": "npm run tsc && mocha ./tests/**/*.test.js ./tests/hooks.js --exit",
+    "test": "npm run tsc && mocha ./tests/**/*.test.js ./tests/hooks.js --exit --bail",
     "dummy-server": "node tests/dummy_server/index.js",
     "tsc": "rm -rf dist && tsc",
     "prepublishOnly": "npm run lint && npm test",

@@ -213,5 +213,5 @@ describe("Assert Text", function() {
         await browser.assert.text('body > div.p3', lorem[0]);
     });
 
-    it("Text With Newlines Options")
+    it("Text With Newlines Options");
 });

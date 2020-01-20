@@ -29,8 +29,19 @@ app.get("/auth", (req, res) => {
     });
 });
 
+app.get("/headers", (req, res) => {
+    const rawHeaders = JSON.stringify(req.headers);
+    res.send(`
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <p>${rawHeaders}</p>
+        </body>
+        </html>`);
+});
 
-app.get("/redirect", (req, res) => {
+
+app.get("/redirect", (_req, res) => {
     res.redirect("/index.html");
 });
 

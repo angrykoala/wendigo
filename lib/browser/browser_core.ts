@@ -15,6 +15,7 @@ import WendigoUtilsLoader from '../../injection_scripts/selector_query';
 import SelectorQueryLoader from '../../injection_scripts/wendigo_utils';
 import SelectorFinderLoader from '../../injection_scripts/selector_finder';
 import { arrayfy } from '../utils/utils';
+import HeaderHelper from './helpers/header_helper';
 
 async function pageLog(log?: ConsoleMessage): Promise<void> {
     if (log) {
@@ -37,6 +38,7 @@ const defaultOpenOptions: OpenSettings = {
 
 export default abstract class BrowserCore {
     public initialResponse: Response | null;
+    public _headerHelper: HeaderHelper;
 
     protected _page: PuppeteerPage;
     protected _context: PuppeteerContext;
@@ -58,10 +60,13 @@ export default abstract class BrowserCore {
         this._disabled = false;
         this._cache = settings.cache !== undefined ? settings.cache : true;
         this._components = components;
+        this._headerHelper = new HeaderHelper(this._page);
+
         if (this._settings.log) {
             this._page.on("console", pageLog);
         }
 
+        // TODO: move to private method
         this._context.on('targetcreated', async (target: Target): Promise<void> => {
             const createdPage = await target.page();
             if (createdPage) {

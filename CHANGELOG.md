@@ -3,6 +3,7 @@
 
 * Browser.requests.filter.contentType and browser.assert.requests.contentType
 * Browser.text and assert.text now use textContent instead of innerText, ignoring newlines gneerated by <br> and other elements
+* Requests.setHeaders and headers option on open
 * Dependencies updated
 * Windows and OSX tests in CI added
 

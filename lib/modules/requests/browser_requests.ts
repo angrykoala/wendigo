@@ -55,6 +55,10 @@ export default class BrowserRequests extends WendigoModule {
         this._requestMocker.clear();
     }
 
+    public setHeaders(headers: Record<string, string>): Promise<void> {
+        return this._browser._headerHelper.setExtraHeaders(headers);
+    }
+
     public async waitForNextRequest(url: string | RegExp, timeout?: number): Promise<void> {
         timeout = this._getTimeout(timeout);
         try {
@@ -106,11 +110,12 @@ export default class BrowserRequests extends WendigoModule {
         }
     }
 
-    protected async _beforeOpen(_options: OpenSettings): Promise<void> {
+    protected async _beforeOpen(options: OpenSettings): Promise<void> {
         this.clearRequests();
         if (this._interceptorReady) return Promise.resolve();
         await this._startRequestInterceptor();
         if (this._settings.logRequests) await this._startResponseLogInterceptor();
+        if (options.headers) await this.setHeaders(options.headers);
     }
 
     protected _beforeClose(): Promise<void> {
