@@ -1,4 +1,4 @@
-2.11.0 / ####-##-##
+2.11.0 / 2020-01-23
 ===================
 
 * Browser.requests.filter.contentType and browser.assert.requests.contentType
