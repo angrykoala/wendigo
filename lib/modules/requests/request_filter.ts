@@ -112,6 +112,12 @@ export default class RequestFilter {
         return new RequestFilter(requests);
     }
 
+    public contentType(type: string | RegExp): RequestFilter {
+        return this.responseHeaders({
+            'content-type': type
+        });
+    }
+
     private _responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
         const response = request.response();
         if (!response) return false;

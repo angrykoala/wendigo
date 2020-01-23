@@ -1,7 +1,7 @@
 import BrowserConsole from './browser_console';
 import { ConsoleFilter } from './types';
 import { isNumber } from '../../utils/utils';
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 
 function processMessage(filterOptions: ConsoleFilter, count: number, actualCount: number): string {
     const filterMessage = processFilterMessage(filterOptions);

@@ -2,7 +2,7 @@
 import BrowserQueries from './browser_queries';
 
 import { arrayfy, isXPathQuery } from '../../utils/utils';
-import { QueryError, WendigoError } from '../../errors';
+import { QueryError, WendigoError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import DOMELement from '../../models/dom_element';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';

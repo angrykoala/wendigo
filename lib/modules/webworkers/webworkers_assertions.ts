@@ -1,6 +1,6 @@
 import BrowserWebWorker from './browser_webworker';
 import WebWorker from './webworker';
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 
 interface WebWorkersOptions {
     url?: string;

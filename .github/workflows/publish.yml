@@ -1,12 +1,11 @@
-name: Pulish
+name: Publish
 
 on:
   release:
-    types: [created]
+    types: [published]
 
 jobs:
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -20,7 +19,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPMTOKEN}}
 
   publish-gpr:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -32,4 +30,4 @@ jobs:
       - run: npm install
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GHTOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

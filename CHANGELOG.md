@@ -1,3 +1,12 @@
+2.11.0 / 2020-01-23
+===================
+
+* Browser.requests.filter.contentType and browser.assert.requests.contentType
+* Browser.text and assert.text now use textContent instead of innerText, ignoring newlines gneerated by <br> and other elements
+* Requests.setHeaders and headers option on open
+* Dependencies updated
+* Windows tests in CI added
+
 2.10.1 / 2019-12-20
 ===================
 

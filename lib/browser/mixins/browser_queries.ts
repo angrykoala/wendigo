@@ -1,7 +1,7 @@
 import BrowserCore from '../browser_core';
 
 import DomElement from '../../models/dom_element';
-import { FatalError, WendigoError } from '../../errors';
+import { FatalError, WendigoError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import { isXPathQuery, createFindTextXPath, filterTruthy } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';

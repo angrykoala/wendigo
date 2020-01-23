@@ -23,9 +23,6 @@ export default class BrowserAuth extends WendigoModule {
     }
 
     private async _setAuthorizationHeader(txt?: string): Promise<void> {
-        if (!txt) txt = "";
-        return this._page.setExtraHTTPHeaders({
-            Authorization: txt
-        });
+        return this._browser._headerHelper.setAuthHeader(txt);
     }
 }

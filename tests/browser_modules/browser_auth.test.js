@@ -49,6 +49,7 @@ describe("Auth", function() {
                 authHeader: "Basic YXJ0aHVyOmRlbnQ="
             }));
         });
+
         it("Set Http Auth To Empty", async() => {
             await browser.auth.http({
                 user: "arthur",

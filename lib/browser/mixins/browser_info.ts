@@ -1,6 +1,6 @@
 import BrowserClick from './browser_click';
 
-import { QueryError } from '../../errors';
+import { QueryError } from '../../models/errors';
 import { WendigoSelector, GeoLocationCoords } from '../../types';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import { PDFOptions } from '../../puppeteer_wrapper/puppeteer_types';
@@ -13,7 +13,7 @@ export default abstract class BrowserInfo extends BrowserClick {
             const elements = WendigoUtils.queryAll(q);
             const result = [];
             for (const e of elements) {
-                result.push(e.innerText);
+                result.push(e.textContent);
             }
             return result;
         }, selector);

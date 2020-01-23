@@ -3,7 +3,7 @@ import { URL } from 'url';
 import { Request } from '../../puppeteer_wrapper/puppeteer_types';
 
 import RequestFilter from './request_filter';
-import { FatalError, AssertionError, TimeoutError } from '../../errors';
+import { FatalError, AssertionError, TimeoutError } from '../../models/errors';
 import * as utils from '../../utils/utils';
 import { RequestBody, RequestMockResponseOptions, RequestMockOptions } from './types';
 

@@ -2,7 +2,7 @@ import Wendigo from './lib/wendigo';
 import BrowserInterface from './lib/browser/browser_interface';
 import { WendigoPluginInterface, WendigoPluginAssertionInterface, PluginModule, BrowserSettings } from './lib/types';
 
-import * as WendigoErrors from './lib/errors';
+import * as WendigoErrors from './lib/models/errors';
 
 export const Errors = WendigoErrors; // tslint:disable-line variable-name
 

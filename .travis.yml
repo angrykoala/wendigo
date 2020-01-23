@@ -1,8 +1,8 @@
 language: node_js
 os:
     - linux
+    - windows
 node_js:
-    - "stable"
     - "lts/*"
 sudo: false
 env:

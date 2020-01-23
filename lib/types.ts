@@ -49,6 +49,7 @@ export interface OpenSettings {
     viewport?: ViewportOptions;
     queryString?: string | { [s: string]: string; };
     geolocation?: GeoOptions;
+    headers?: Record<string, string>;
 }
 
 export interface GeoLocationCoords {

@@ -1,5 +1,5 @@
 import Dialog from './dialog';
-import { TimeoutError } from '../../errors';
+import { TimeoutError } from '../../models/errors';
 
 import WendigoModule from '../wendigo_module';
 import { OpenSettings } from '../../types';

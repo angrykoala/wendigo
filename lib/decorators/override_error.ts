@@ -1,4 +1,4 @@
-import { WendigoError } from '../errors';
+import { WendigoError } from '../models/errors';
 import { DecoratorFunction } from './types';
 
 export default function OverrideError(errorPrefix?: string): DecoratorFunction {

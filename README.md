@@ -227,7 +227,8 @@ The following options can be passed:
 
 * `viewport`: Viewport config to set when opening the browser, uses the same syntax as `setViewport`.
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
-* `geolocation`: Options to override geoLocation, same as in `setGeolocation`
+* `geolocation`: Options to override geoLocation. Same as using `setGeolocation`.
+* `headers`: Sets extra HTTP headers _before_ opening the page.Same as using `requests.setHeaders`.
 
 If no protocol is defined (e.g. `https://`), `http://` will be used.
 
@@ -375,7 +376,7 @@ const style = await browser.style("h1.my-title", color); // 'rgb(255, 0, 0)'
 Returns true if the first element matching the given selector (checkbox) is checked. If the value is not a checkbox and doesn't have checked property set, it will return undefined. Throws if no element is found.
 
 **text(selector)**  
-Returns an array with the texts of the elements matching the given selector.
+Returns an array with the texts of the elements matching the given selector. Returns the same value as element `textContent` property.
 
 ```js
 const texts = await browser.text("p"); // ["My First Paragraph", "My Second Paragraph"]
@@ -852,7 +853,7 @@ await browser.assert.tag("my-header", "h1");
 
 **assert.text(selector, expected, msg?)**  
 Asserts that at least one element matching the given selector has the expected string or regex.
-If expected is an array, all texts in it should match.
+If expected is an array, all texts in it should match. It matches against the value of element `textContent` property.
 
 ```js
 await browser.assert.text("p", "My First Paragraph");
@@ -1475,6 +1476,18 @@ Waits until next request with given url is done. If the request was already made
 **requests.waitForNextResponse(url ,timeout=500)**  
 Waits until next response with given url is received. If the response was already received, this method will wait until next one. Url can be a string or regexp.
 
+**requests.setHeaders(headers)**  
+Sends the given headers on every HTTP requests (on top of default headers).
+
+```js
+await browser.requests.setHeaders({
+    custom: "dontpanic"
+});
+await browser.open("my-url");
+```
+
+> Note that `authorization` header should be set with `auth` module where possible.
+
 #### Filtering Requests
 To filter the requests made by the browser, you can use `browser.requests.filter`.
 
@@ -1531,6 +1544,9 @@ await browser.filter.url(/api/).method("DELETE").postBody({id: 5}).requests;
 
 **requests.filter.resourceType(resource)**  
 Filter requests by given resource type (`xhr`, `fetch`, ...). Possible resource types are defined [here](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#requestresourcetype).
+
+**requests.filter.resourceType(contentType)**  
+Filter responses by content type header (`text/css; charset=UTF-8`, ...). Accepts both string or RegExp.
 
 **requests.filter.pending()**  
 Filter requests by pending (response not retrieved).
@@ -1601,8 +1617,11 @@ await browser.assert.requests.responseBody({response: "OK"});
 **assert.requests.pending(msg?)**  
 Asserts that at least one request is still pending (no response received).
 
-**assert.requests.resourceType(resourceType: string, msg?)**  
+**assert.requests.resourceType(resourceType, msg?)**  
 Asserts that at least one request has the given resource type (`fetch`, `xhr`, ...).
+
+**assert.requests.contentType(expected, msg?)**  
+Asserts that at least one response has given content type header (`text/css; charset=UTF-8`, ...). Accepts both string or RegExp.
 
 **assert.requests.exactly(expected, msg?)**  
 Asserts that the exact given number of requests match the assertions. Expected can be any positive number or 0.

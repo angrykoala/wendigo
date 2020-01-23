@@ -1,4 +1,4 @@
-import { AssertionError, WendigoError } from '../errors';
+import { AssertionError, WendigoError } from '../models/errors';
 
 // Inverts the result of an asyncronous assertion. Throws if error is not an assertion
 export async function invertify(cb: () => Promise<void>, fnName: string, msg: string): Promise<void> {

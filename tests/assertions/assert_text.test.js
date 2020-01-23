@@ -1,5 +1,6 @@
 "use strict";
 
+const assert = require('assert');
 const Wendigo = require('../..');
 const utils = require('../test_utils');
 const configUrls = require('../config.json').urls;
@@ -187,6 +188,30 @@ describe("Assert Text", function() {
 
     it("Text With <br>", async() => {
         await browser.open(configUrls.weirdText);
-        await browser.assert.text(".text-br", "This is\na text");
+        await browser.assert.text(".text-br", "This isa text");
     });
+
+    it('Plain Text Matches Assertion', async() => {
+        await browser.open(configUrls.lorem);
+        const lorem = await browser.text('.p1');
+        await browser.assert.text('.p1', lorem[0]);
+    });
+
+    it('Text With br Matches Assertion', async() => {
+        await browser.open(configUrls.lorem);
+        const lorem = await browser.text('.p1');
+        await browser.assert.text('.p2', lorem[0]);
+    });
+
+    it('Text With Html Elements Matches Assertion', async() => {
+        await browser.open(configUrls.lorem);
+        const lorem = await browser.text('.p1');
+        const text = await browser.evaluate(s => {
+            return document.querySelector(s).textContent;
+        }, 'body > div.p3');
+        assert.strictEqual(text, lorem[0]);
+        await browser.assert.text('body > div.p3', lorem[0]);
+    });
+
+    it("Text With Newlines Options");
 });

@@ -1,4 +1,4 @@
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 import { isNumber } from '../../utils/utils';
 import { WendigoSelector } from '../../types';
 

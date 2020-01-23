@@ -3,7 +3,7 @@ import querystring from 'querystring';
 
 import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
 import DomElement from '../models/dom_element';
-import { FatalError, InjectScriptError } from '../errors';
+import { FatalError, InjectScriptError } from '../models/errors';
 import { FinalBrowserSettings, OpenSettings, MediaOptions } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
 import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission, MediaType } from '../puppeteer_wrapper/puppeteer_types';
@@ -15,6 +15,7 @@ import WendigoUtilsLoader from '../../injection_scripts/selector_query';
 import SelectorQueryLoader from '../../injection_scripts/wendigo_utils';
 import SelectorFinderLoader from '../../injection_scripts/selector_finder';
 import { arrayfy } from '../utils/utils';
+import HeaderHelper from './helpers/header_helper';
 
 async function pageLog(log?: ConsoleMessage): Promise<void> {
     if (log) {
@@ -37,6 +38,7 @@ const defaultOpenOptions: OpenSettings = {
 
 export default abstract class BrowserCore {
     public initialResponse: Response | null;
+    public _headerHelper: HeaderHelper;
 
     protected _page: PuppeteerPage;
     protected _context: PuppeteerContext;
@@ -58,33 +60,9 @@ export default abstract class BrowserCore {
         this._disabled = false;
         this._cache = settings.cache !== undefined ? settings.cache : true;
         this._components = components;
-        if (this._settings.log) {
-            this._page.on("console", pageLog);
-        }
+        this._headerHelper = new HeaderHelper(this._page);
 
-        this._context.on('targetcreated', async (target: Target): Promise<void> => {
-            const createdPage = await target.page();
-            if (createdPage) {
-                const puppeteerPage = new PuppeteerPage(createdPage);
-                try {
-                    await puppeteerPage.setBypassCSP(true);
-                    if (this._settings.userAgent)
-                        await puppeteerPage.setUserAgent(this._settings.userAgent);
-                } catch (err) {
-                    // Will fail if browser is closed before finishing
-                }
-            }
-        });
-
-        this._page.on('load', async (): Promise<void> => {
-            if (this._loaded) {
-                try {
-                    await this._afterPageLoad();
-                } catch (err) {
-                    // Will fail if browser is closed
-                }
-            }
-        });
+        this._setEventListeners();
     }
 
     public get page(): Page {
@@ -345,5 +323,36 @@ export default abstract class BrowserCore {
         if (url.split("://").length === 1) {
             return `http://${url}`;
         } else return url;
+    }
+
+    private _setEventListeners(): void {
+        if (this._settings.log) {
+            this._page.on("console", pageLog);
+        }
+
+        // TODO: move to private method
+        this._context.on('targetcreated', async (target: Target): Promise<void> => {
+            const createdPage = await target.page();
+            if (createdPage) {
+                const puppeteerPage = new PuppeteerPage(createdPage);
+                try {
+                    await puppeteerPage.setBypassCSP(true);
+                    if (this._settings.userAgent)
+                        await puppeteerPage.setUserAgent(this._settings.userAgent);
+                } catch (err) {
+                    // Will fail if browser is closed before finishing
+                }
+            }
+        });
+
+        this._page.on('load', async (): Promise<void> => {
+            if (this._loaded) {
+                try {
+                    await this._afterPageLoad();
+                } catch (err) {
+                    // Will fail if browser is closed
+                }
+            }
+        });
     }
 }

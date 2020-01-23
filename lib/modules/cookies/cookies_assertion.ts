@@ -1,7 +1,7 @@
 import { invertify } from '../../utils/assert_utils';
 import BrowserCookies from './browser_cookies';
 import BrowserInterface from '../../browser/browser_interface';
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 
 export default {
     async assert(_browser: BrowserInterface, cookiesModule: BrowserCookies, name: string, expected?: string, msg?: string): Promise<void> {

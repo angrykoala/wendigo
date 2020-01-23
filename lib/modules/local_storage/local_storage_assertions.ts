@@ -1,7 +1,7 @@
 import BrowserLocalStorageNotAssertions from './local_storage_not_assertions';
 import { arrayfy } from '../../utils/utils';
 import BrowserLocalStorage from './browser_local_storage';
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 
 export default class BrowserLocalStorageAssertions {
     private _localStorage: BrowserLocalStorage;

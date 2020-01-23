@@ -4,8 +4,10 @@ on: [push]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
+    runs-on: ${{matrix.os}}
+    strategy:
+        matrix:
+            os: [ubuntu-latest] # windows not added due to || operator not being valid
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1

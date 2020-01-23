@@ -52,6 +52,8 @@ describe("Text", function() {
     it("Text With <br>", async() => {
         await browser.open(configUrls.weirdText);
         const text = await browser.text(".text-br");
-        assert.strictEqual(text[0], "This is\na text");
+        assert.strictEqual(text[0], "This isa text");
     });
+
+    it("Text With Newlines Option");
 });

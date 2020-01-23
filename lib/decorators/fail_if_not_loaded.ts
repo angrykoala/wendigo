@@ -1,4 +1,4 @@
-import { FatalError } from '../errors';
+import { FatalError } from '../models/errors';
 
 export default function FailIfNotLoaded(_target: any, propertyKey: string, propertyDescriptor: PropertyDescriptor): void {
     const originalMethod = propertyDescriptor.value;

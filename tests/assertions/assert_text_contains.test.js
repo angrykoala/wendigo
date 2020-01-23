@@ -128,4 +128,10 @@ describe("Assert Text Contains", function() {
             await browser.assert.textContains("p", "My paragraph");
         }, `[assert.textContains] Expected element "p" to contain text "My paragraph", "My first paragraph My second paragraph" found.`);
     });
+
+    // Possible test for #425
+    it.skip("Text Contains With <br>", async() => {
+        await browser.open(configUrls.weirdText);
+        await browser.assert.textContains(".text-br", "This is a text");
+    });
 });

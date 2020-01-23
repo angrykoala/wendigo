@@ -1,4 +1,4 @@
-import { AssertionError } from '../../errors';
+import { AssertionError } from '../../models/errors';
 import { stringify } from '../../utils/utils';
 import RequestFilter from './request_filter';
 import { ExpectedHeaders } from './types';
@@ -83,6 +83,13 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         if (!msg) msg = `Expected request with resourceType "${expected}" to exist.`;
 
         return this._assertFilter("assert.requests.resourceType", responseBodyFilter, msg);
+    }
+
+    public contentType(expected: string | RegExp, msg?: string): RequestAssertionsFilter {
+        const responseBodyFilter = this._requestFilter.contentType(expected);
+        if (!msg) msg = `Expected request with contentType "${expected}" to exist.`;
+
+        return this._assertFilter("assert.requests.contentType", responseBodyFilter, msg);
     }
 
     public exactly(expected: number, msg?: string): RequestAssertionsFilter {
