@@ -1,3 +1,9 @@
+2.11.1 / 2020-01-24
+===================
+
+* Fixed EventEmitter compilation bug after node typings update
+* Removed GPR publish action
+
 2.11.0 / 2020-01-23
 ===================
 
