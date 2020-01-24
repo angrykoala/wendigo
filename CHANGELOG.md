@@ -1,3 +1,8 @@
+2.11.1 / ####-##-##
+===================
+
+* Fixed EventEmitter compilation bug after node typings update
+
 2.11.0 / 2020-01-23
 ===================
 

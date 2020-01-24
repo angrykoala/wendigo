@@ -1,6 +1,6 @@
 {
   "name": "wendigo",
-  "version": "2.11.0",
+  "version": "2.11.1",
   "description": "A proper monster for front-end automated testing",
   "engines": {
     "node": ">=8.0.0"
@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.8",
+    "@types/node": "^13.5.0",
     "@types/puppeteer": "~2.0.0",
     "basic-auth": "^2.0.1",
     "eslint": "^6.8.0",

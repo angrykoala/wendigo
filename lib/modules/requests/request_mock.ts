@@ -1,4 +1,4 @@
-import EventEmitter from 'events';
+import { EventEmitter } from 'events';
 import { URL } from 'url';
 import { Request } from '../../puppeteer_wrapper/puppeteer_types';
 
