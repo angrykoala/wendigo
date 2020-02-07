@@ -1,6 +1,6 @@
 import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
-import { TimeoutError, WendigoError } from '../../models/errors';
+import { TimeoutError, WendigoError, QueryError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import { createFindTextXPath, delay, isNumber } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
@@ -26,10 +26,14 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 visible: true
             }, ...args);
         } catch (err) {
-            let errMsg;
-            if (typeof selector === 'function') errMsg = `Waiting for function to return true`;
-            else errMsg = `Waiting for element "${selector}"`;
-            throw new TimeoutError("waitFor", errMsg, timeout);
+            if (err instanceof Error && err.message.match(/DOMException\:/)) { // TODO: move to a helper/wrapper
+                throw new QueryError("waitFor", `Invalid selector "${selector}".`);
+            } else {
+                let errMsg;
+                if (typeof selector === 'function') errMsg = `Waiting for function to return true`;
+                else errMsg = `Waiting for element "${selector}"`;
+                throw new TimeoutError("waitFor", errMsg, timeout);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 2.11.2 / ####-##-##
 ===================
 
+* Improvement in error handling for waitFor
 * Dependencies updated
 
 2.11.1 / 2020-01-24

@@ -164,4 +164,18 @@ describe("Wait For", function() {
             await browser.waitForUrl("", 10);
         }, `Error: [waitForUrl] Invalid parameter url.`);
     });
+
+    it("Wait For Query Error", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitFor("p[header=");
+        }, `QueryError: [waitFor] Invalid selector "p[header=".`);
+    });
+
+    it("Wait For XPath Query Error", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitFor(".//header/");
+        }, `QueryError: [waitFor] Invalid selector ".//header/".`);
+    });
 });
