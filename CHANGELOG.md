@@ -1,4 +1,4 @@
-2.11.2 / ####-##-##
+2.11.2 / 2020-02-08
 ===================
 
 * Improvement in error handling for waitFor
