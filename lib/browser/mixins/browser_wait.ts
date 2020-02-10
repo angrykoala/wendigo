@@ -1,3 +1,4 @@
+import { errors as puppeteerErrors } from 'puppeteer';
 import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError, QueryError } from '../../models/errors';
@@ -26,13 +27,15 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 visible: true
             }, ...args);
         } catch (err) {
-            if (err instanceof Error && err.message.match(/DOMException\:/)) { // TODO: move to a helper/wrapper
-                throw new QueryError("waitFor", `Invalid selector "${selector}".`);
-            } else {
+            if (err instanceof puppeteerErrors.TimeoutError) {
                 let errMsg;
                 if (typeof selector === 'function') errMsg = `Waiting for function to return true`;
                 else errMsg = `Waiting for element "${selector}"`;
                 throw new TimeoutError("waitFor", errMsg, timeout);
+            } else if (err instanceof Error && err.message.match(/DOMException\:/)) { // TODO: move to a helper/wrapper
+                throw new QueryError("waitFor", `Invalid selector "${selector}".`);
+            } else {
+                throw new QueryError("waitFor", "An unknown error occurred: " + err.message)
             }
         }
     }
@@ -46,7 +49,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 return !WendigoUtils.isVisible(element);
             }, timeout, selector);
         } catch (err) {
-            throw new TimeoutError("waitUntilNotVisible", `Waiting for element "${selector}" to not be visible`, timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitUntilNotVisible", `Waiting for element "${selector}" to not be visible`, timeout);
+            }
+            throw new QueryError("waitUntilNotVisible", err.extraMessage);
         }
     }
 
@@ -73,7 +79,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 }
             }, timeout, parsedUrl);
         } catch (err) {
-            throw new TimeoutError("waitForUrl", `Waiting for url "${url}"`, timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitForUrl", `Waiting for url "${url}"`, timeout);
+            }
+            throw new QueryError("waitForUrl", err.extraMessage);
         }
     }
 
@@ -94,7 +103,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 return Boolean(w.WendigoUtils);
             }, timeout2);
         } catch (err) {
-            throw new TimeoutError("waitForNavigation", "", timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitForNavigation", "", timeout);
+            }
+            throw new QueryError("waitForNavigation", err.extraMessage);
         }
     }
 
@@ -117,7 +129,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 return Boolean(WendigoUtils.xPathQuery(xp).length > 0);
             }, timeout, xPath);
         } catch (err) {
-            throw new TimeoutError("waitForText", `Waiting for text "${text}"`, timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitForText", `Waiting for text "${text}"`, timeout);
+            }
+            throw new QueryError("waitForText", err.extraMessage || err.message);
         }
     }
 
@@ -127,7 +142,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
             await this.waitFor(selector, timeout);
             return await this.click(selector);
         } catch (err) {
-            throw new TimeoutError("waitAndClick", "", timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitAndClick", "", timeout);
+            }
+            throw new QueryError("waitAndClick", err.extraMessage || err.message);
         }
     }
 
@@ -154,7 +172,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 return value === null;
             }, timeout, selector);
         } catch (err) {
-            throw new TimeoutError("waitUntilEnabled", `Waiting for element "${selector}" to be enabled`, timeout);
+            if (err instanceof TimeoutError) {
+                throw new TimeoutError("waitUntilEnabled", `Waiting for element "${selector}" to be enabled`, timeout);
+            }
+            throw new QueryError("waitUntilEnabled", err.extraMessage);
         }
     }
 
