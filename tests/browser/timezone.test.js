@@ -14,7 +14,7 @@ describe("Timezone", function() {
         });
     }
 
-    after(async() => {
+    afterEach(async() => {
         await browser.close();
     });
 
