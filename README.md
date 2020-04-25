@@ -2049,7 +2049,10 @@ jobs:
           node-version: 12
       - run: npm install
       - name: test
-        run: npm test || npm test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev
+          npm test || npm test
         env:
           CI: true
 ```
