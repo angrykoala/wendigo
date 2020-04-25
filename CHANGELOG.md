@@ -1,3 +1,9 @@
+2.12.0 / ####-##-##
+===================
+
+* Puppeteer updated to v3
+* Other dependencies updated
+
 2.11.3 / 2020-03-07
 ===================
 
