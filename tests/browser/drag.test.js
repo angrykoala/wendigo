@@ -2,14 +2,14 @@
 
 const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
+const utils = require('../test_utils');
 
-// Tests #227
-describe.skip("Drag And Drop", function() {
+describe("Drag And Drop", function() {
     this.timeout(5000);
     let browser;
 
     before(async() => {
-        browser = await Wendigo.createBrowser();
+        browser = await Wendigo.createBrowser({log: true});
     });
 
     beforeEach(async() => {
@@ -23,7 +23,14 @@ describe.skip("Drag And Drop", function() {
     it("Drag And Drop Element", async() => {
         await browser.assert.text("#result", "NOT");
         await browser.dragAndDrop("#draggable-text", "#target");
-        await browser.wait(100);
         await browser.assert.text("#result", "DROPPED");
+    });
+
+    it("Drag And Drop Fails If Element Does Not Exists", async() => {
+        await browser.assert.text("#result", "NOT");
+        await utils.assertThrowsAsync(async() => {
+            await browser.dragAndDrop("#not-element", "#target");
+        }, `QueryError: [dragAndDrop] Element not found.`);
+        await browser.assert.text("#result", "NOT");
     });
 });

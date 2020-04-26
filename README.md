@@ -504,6 +504,15 @@ Unfocus the first element matching the given selector.
 **hover(selector)**  
 Hovers over the first element matching the given selector.
 
+**dragAndDrop(source, target)**  
+Drags the `source` selector and drops it on `target`.
+
+```js
+await browser.dragAndDrop("#my-draggable", "#target");
+```
+
+> Note that this method emulates expected events of this behavior instead of emulating mouse interaction
+
 **scroll(value, xValue?)**  
 Vertically scrolls the page to the given value on pixels, an optional xValue can be passed for horizontal scrolling. If value is a selector or DomElement, the page will scroll until that element is at view.
 

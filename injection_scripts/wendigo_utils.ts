@@ -77,7 +77,7 @@ export default function WendigoUtilsLoader(): void {
             },
             findXPath(node: Element | Document): string {
                 return WendigoPathFinder.xPath(node);
-            }
+            },
         };
     }
 }

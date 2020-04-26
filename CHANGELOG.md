@@ -2,6 +2,7 @@
 ===================
 
 * Puppeteer updated to v3
+* DragAndDrop method
 * Other dependencies updated
 
 2.11.3 / 2020-03-07
