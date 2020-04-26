@@ -6,7 +6,7 @@ export default function WendigoUtilsLoader(): void {
         const _origDate = Date;
 
         (window as any).WendigoUtils = {
-            isVisible(element: Element | Document): boolean {
+            isVisible(element: Element | Document | null): boolean {
                 if (!element) return false;
                 if (element === document) return true; // Top element, always visible
                 else {
@@ -77,7 +77,7 @@ export default function WendigoUtilsLoader(): void {
             },
             findXPath(node: Element | Document): string {
                 return WendigoPathFinder.xPath(node);
-            }
+            },
         };
     }
 }

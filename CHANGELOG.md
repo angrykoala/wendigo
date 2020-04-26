@@ -1,3 +1,11 @@
+2.12.0 / 2020-04-26
+===================
+
+* Puppeteer updated to v3
+* DragAndDrop method
+* Minor fix in types
+* Dependencies updated
+
 2.11.3 / 2020-03-07
 ===================
 

@@ -108,7 +108,7 @@ export default class Wendigo {
         let context: BrowserContext;
         if (settings.incognito) {
             context = await instance.createIncognitoBrowserContext();
-        } else context = await instance.defaultBrowserContext();
+        } else context = instance.defaultBrowserContext();
 
         return new PuppeteerContext(context);
     }

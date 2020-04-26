@@ -142,6 +142,7 @@ export default abstract class BrowserActions extends BrowserQueries {
                     window.scroll(xval, val);
                 } else {
                     const element = WendigoUtils.queryElement(val);
+                    if(!element) throw new Error()
                     element.scrollIntoView();
                 }
             }, value, xvalue);
@@ -167,6 +168,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         try {
             const result = await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
+                if(!element) throw new Error()
                 element.blur();
             }, selector);
             return result;
@@ -175,18 +177,55 @@ export default abstract class BrowserActions extends BrowserQueries {
         }
     }
 
-    // public async dragAndDrop(from: WendigoSelector, to: WendigoSelector): Promise<void> {
-    //     const fromElement = await this.query(from);
-    //     const toElement = await this.query(to);
-    //     if (!fromElement || !toElement) throw new QueryError("dragAndDrop", `Elements "${from} and ${to} not found."`);
-    //     const boxFrom = await fromElement.element.boundingBox();
-    //     const boxTo = await toElement.element.boundingBox();
-    //     if (!boxFrom || !boxTo) throw new FatalError("dragAndDrop", "Bounding box not found");
-    //     const mouse = this._page.mouse;
-    //     await mouse.up();
-    //     await mouse.move(boxFrom.x + (boxFrom.width / 2), boxFrom.y + (boxFrom.height / 2));
-    //     await mouse.down();
-    //     await mouse.move(boxTo.x + (boxTo.width / 2), boxTo.y + (boxTo.height / 2));
-    //     await mouse.up();
-    // }
+    @FailIfNotLoaded
+    public async dragAndDrop(from: WendigoSelector, to: WendigoSelector): Promise<void> {
+        try {
+            await this.evaluate((q1, q2) => {
+                // Based on https://stackoverflow.com/questions/49772472/how-to-simulate-a-drag-and-drop-action-in-puppeteer
+                const source = WendigoUtils.queryElement(q1);
+                const target = WendigoUtils.queryElement(q2);
+                if (!source || !target) throw new Error()
+
+                let event = document.createEvent("CustomEvent") as any;
+
+                event.initCustomEvent("mousedown", true, true, null);
+                event.clientX = source.getBoundingClientRect().top;
+                event.clientY = source.getBoundingClientRect().left;
+                source.dispatchEvent(event);
+
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent("dragstart", true, true, null);
+                event.clientX = source.getBoundingClientRect().top;
+                event.clientY = source.getBoundingClientRect().left;
+                source.dispatchEvent(event);
+
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent("drag", true, true, null);
+                event.clientX = source.getBoundingClientRect().top;
+                event.clientY = source.getBoundingClientRect().left;
+                source.dispatchEvent(event);
+
+
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent("dragover", true, true, null);
+                event.clientX = target.getBoundingClientRect().top;
+                event.clientY = target.getBoundingClientRect().left;
+                target.dispatchEvent(event);
+
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent("drop", true, true, null);
+                event.clientX = target.getBoundingClientRect().top;
+                event.clientY = target.getBoundingClientRect().left;
+                target.dispatchEvent(event);
+
+                event = document.createEvent("CustomEvent");
+                event.initCustomEvent("dragend", true, true, null);
+                event.clientX = target.getBoundingClientRect().top;
+                event.clientY = target.getBoundingClientRect().left;
+                target.dispatchEvent(event);
+            }, from, to);
+        } catch (err) {
+            throw new QueryError("dragAndDrop", `Element not found.`);
+        }
+    }
 }
