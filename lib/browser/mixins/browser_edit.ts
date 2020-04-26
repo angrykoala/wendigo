@@ -30,6 +30,7 @@ export default abstract class BrowserEdit extends BrowserInfo {
         try {
             await this.evaluate((q, attr, val) => {
                 const element = WendigoUtils.queryElement(q);
+                if(!element) throw new Error()
                 if (val === null) element.removeAttribute(attr);
                 else element.setAttribute(attr, val);
             }, selector, attribute, value);

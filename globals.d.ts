@@ -1,6 +1,6 @@
 declare namespace WendigoUtils {
-    function isVisible(element: HTMLElement): boolean;
-    function queryElement(selector: string | HTMLElement): HTMLElement; // TODO: may return null
+    function isVisible(element: HTMLElement | null): boolean;
+    function queryElement(selector: string | HTMLElement): HTMLElement | null;
     function queryAll(selector: string | HTMLElement): Array<HTMLElement>;
     function xPathQuery(xPath: string): Array<HTMLElement>;
     function getStyles(element: string | HTMLElement): { [s: string]: string };

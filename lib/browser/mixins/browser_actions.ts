@@ -142,6 +142,7 @@ export default abstract class BrowserActions extends BrowserQueries {
                     window.scroll(xval, val);
                 } else {
                     const element = WendigoUtils.queryElement(val);
+                    if(!element) throw new Error()
                     element.scrollIntoView();
                 }
             }, value, xvalue);
@@ -167,6 +168,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         try {
             const result = await this.evaluate((q) => {
                 const element = WendigoUtils.queryElement(q);
+                if(!element) throw new Error()
                 element.blur();
             }, selector);
             return result;
@@ -179,6 +181,7 @@ export default abstract class BrowserActions extends BrowserQueries {
     public async dragAndDrop(source: any, target: any) {
         try {
             await this.page.evaluate((q1, q2) => {
+                // Based on https://stackoverflow.com/questions/49772472/how-to-simulate-a-drag-and-drop-action-in-puppeteer
                 const source = WendigoUtils.queryElement(q1);
                 const target = WendigoUtils.queryElement(q2);
                 if (!source || !target) throw new Error()
