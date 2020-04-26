@@ -178,9 +178,9 @@ export default abstract class BrowserActions extends BrowserQueries {
     }
 
     @FailIfNotLoaded
-    public async dragAndDrop(source: any, target: any) {
+    public async dragAndDrop(from: WendigoSelector, to: WendigoSelector): Promise<void> {
         try {
-            await this.page.evaluate((q1, q2) => {
+            await this.evaluate((q1, q2) => {
                 // Based on https://stackoverflow.com/questions/49772472/how-to-simulate-a-drag-and-drop-action-in-puppeteer
                 const source = WendigoUtils.queryElement(q1);
                 const target = WendigoUtils.queryElement(q2);
@@ -223,7 +223,7 @@ export default abstract class BrowserActions extends BrowserQueries {
                 event.clientX = target.getBoundingClientRect().top;
                 event.clientY = target.getBoundingClientRect().left;
                 target.dispatchEvent(event);
-            }, source, target);
+            }, from, to);
         } catch (err) {
             throw new QueryError("dragAndDrop", `Element not found.`);
         }
