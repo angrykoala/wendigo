@@ -28,11 +28,10 @@ describe("Upload", function() {
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
 
-    it("File Input Set Relative Path", async() => {
+    it.skip("File Input Set Relative Path", async() => {
         await browser.uploadFile(".input3", "../../dummy_file");
         await browser.assert.value(".input3", "C:\\fakepath\\dummy_file");
     });
-
 
     it("File Input Missing Element", async() => {
         await utils.assertThrowsAsync(async() => {
