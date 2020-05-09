@@ -2,6 +2,7 @@
 ===================
 
 * Dependencies updated
+* Minor wrapper to puppeteer launch
 
 2.12.0 / 2020-04-26
 ===================
