@@ -1,11 +1,10 @@
 import process from 'process';
-import puppeteer from 'puppeteer';
-import { BrowserContext } from './puppeteer_wrapper/puppeteer_types';
 import BrowserFactory from './browser_factory';
 import * as Errors from './models/errors';
 import { WendigoPluginInterface, BrowserSettings, DefaultBrowserSettings, FinalBrowserSettings, WendigoPluginAssertionInterface, PluginModule } from './types';
 import BrowserInterface from './browser/browser_interface';
 import PuppeteerContext from './puppeteer_wrapper/puppeteer_context';
+import { PuppeteerLauncher } from './puppeteer_wrapper/puppeteer_launcher';
 
 const defaultSettings: DefaultBrowserSettings = {
     log: false,
@@ -97,20 +96,9 @@ export default class Wendigo {
         }
     }
 
-    private async _createInstance(settings: FinalBrowserSettings): Promise<PuppeteerContext> {
-        let instance;
-        try {
-            instance = await puppeteer.launch(settings);
-        } catch (err) {
-            // retry to avoid one-off _dl_allocate_tls_init error
-            instance = await puppeteer.launch(settings);
-        }
-        let context: BrowserContext;
-        if (settings.incognito) {
-            context = await instance.createIncognitoBrowserContext();
-        } else context = instance.defaultBrowserContext();
-
-        return new PuppeteerContext(context);
+    private _createInstance(settings: FinalBrowserSettings): Promise<PuppeteerContext> {
+        const launcher = new PuppeteerLauncher()
+        return launcher.launch(settings);
     }
 
     private _removeBrowser(browser: BrowserInterface): void {

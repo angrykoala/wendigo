@@ -1,3 +1,9 @@
+2.12.1 / 2020-07-06
+===================
+
+* Dependencies updated
+* Minor wrapper to puppeteer launch
+
 2.12.0 / 2020-04-26
 ===================
 
