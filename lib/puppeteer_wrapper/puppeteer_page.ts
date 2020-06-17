@@ -49,11 +49,11 @@ export default class PuppeteerPage {
         return this.page.setViewport(finalConfig);
     }
 
-    public on<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
+    public on<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => void): void {
         this.page.on(eventName, cb);
     }
 
-    public off<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => Promise<void>): void {
+    public off<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => void): void {
         this.page.off(eventName, cb);
     }
 
