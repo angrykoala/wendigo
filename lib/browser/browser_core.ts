@@ -108,11 +108,11 @@ export default abstract class BrowserCore {
 
     @OverrideError()
     public async openFile(filepath: string, options: OpenSettings): Promise<void> {
-        const absolutePath = path.resolve(filepath);
         try {
+            const absolutePath = path.resolve(filepath);
             await this.open(`file://${absolutePath}`, options);
         } catch (err) {
-            return Promise.reject(new FatalError("openFile", `Failed to open "${filepath}". File not found.`));
+            throw new FatalError("openFile", `Failed to open "${filepath}". File not found.`);
         }
     }
 
