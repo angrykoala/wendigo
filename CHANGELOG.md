@@ -1,7 +1,8 @@
 2.13.0 / ####-##-##
 ===================
 
-* Puppeteer updated to 4.0
+* Puppeteer updated to 5.0
+* Dependencies updated
 
 2.12.1 / 2020-07-06
 ===================
