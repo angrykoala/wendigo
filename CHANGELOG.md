@@ -4,7 +4,7 @@
 * Puppeteer updated to 5.0
 * Dependencies updated
 * Fixed parameters signature for textContains and not.textContains assertions
-* Removed publish release action
+* Fixed publish release action
 
 2.12.1 / 2020-07-06
 ===================
