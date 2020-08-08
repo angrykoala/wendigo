@@ -57,8 +57,8 @@ export class FatalError extends WendigoError {
 }
 
 export class TimeoutError extends WendigoError {
-    public readonly timeout: number;
-    constructor(fn: string, message: string, timeout: number) {
+    public readonly timeout?: number;
+    constructor(fn: string, message: string, timeout?: number) {
         let msg = message ? `${message}, timeout` : "Timeout";
         if (timeout !== undefined) msg = `${msg} of ${timeout}ms exceeded.`;
         super(fn, msg);
@@ -74,3 +74,16 @@ export class InjectScriptError extends FatalError {
         this.name = this.constructor.name;
     }
 }
+
+// export function handleError(error: Error, method: string, options: { timeout?: number, selector?: string } = {}): WendigoError {
+//     if (error instanceof WendigoError) return error;
+//     if (error instanceof PuppeteerErrors.TimeoutError) {
+//         return new TimeoutError(method, error.message, options.timeout);
+//     }
+//     if (error instanceof Error && error.message.match(/DOMException\:/)) {
+//         const selectorMessage = options.selector ? ` "${options.selector}"` : "";
+//         return new QueryError(method, `Invalid selector${selectorMessage}.`);
+//     } else {
+//         return new WendigoError(method, error.message);
+//     }
+// }
