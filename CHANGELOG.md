@@ -2,6 +2,7 @@
 ===================
 
 * Fixes Dockerfile
+* Error messages improved for timeout errors
 * Updates dependencies
 
 2.13.0 / 2020-07-24
