@@ -8,16 +8,6 @@ on:
     types: [published]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm ci
-      - run: npm test
-
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
@@ -27,8 +17,13 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+      - run: npm install
+      - name: publish
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev
+          npm run lint
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
@@ -41,7 +36,12 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
+      - run: npm install
+      - name: publish
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev
+          npm run lint
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
