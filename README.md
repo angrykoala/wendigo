@@ -2078,8 +2078,6 @@ FROM angrykoala/wendigo
 WORKDIR /app
 
 COPY package*.json ./
-# Copies Puppeteer and Wendigo from the base image
-RUN mv /node_modules .
 # Installs your up (it must have Wendigo as a dependency)
 RUN npm install
 # Copies the rest of your app

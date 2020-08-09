@@ -44,4 +44,5 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends\
     && rm -rf /var/lib/apt/lists/*
 
 ENV NO_SANDBOX=true
+ENV PUPPETEER_SKIP_DOWNLOAD='true'
 RUN npm install wendigo && npm cache clean --force

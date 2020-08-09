@@ -80,7 +80,7 @@ export default class AssertionsCore {
         }
     }
 
-    public async textContains(selector: WendigoSelector, expected: string, msg?: string): Promise<void> {
+    public async textContains(selector: WendigoSelector, expected: string | Array<string>, msg?: string): Promise<void> {
         if ((!expected && expected !== "") || (Array.isArray(expected) && expected.length === 0)) {
             throw new WendigoError("assert.textContains", `Missing expected text for assertion.`);
         }

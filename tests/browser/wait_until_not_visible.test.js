@@ -39,4 +39,11 @@ describe("Wait Until Not Visible", function() {
         await browser.assert.not.exists("#switch.off");
         await browser.assert.exists("#switch.on");
     });
+
+    it("Wait Until Not Visible With Invalid Selector Error", async() => {
+        await browser.open(configUrls.index);
+        await utils.assertThrowsAsync(async() => {
+            await browser.waitUntilNotVisible("p[header=");
+        }, `QueryError: [waitUntilNotVisible] Invalid selector "p[header=".`);
+    });
 });

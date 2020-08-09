@@ -1,7 +1,17 @@
-2.13.0 / ####-##-##
+2.13.1 / 2020-08-08
 ===================
 
-* Puppeteer updated to 4.0
+* Fixes Dockerfile
+* Error messages improved for timeout errors
+* Updates dependencies
+
+2.13.0 / 2020-07-24
+===================
+
+* Puppeteer updated to 5.0
+* Dependencies updated
+* Fixed parameters signature for textContains and not.textContains assertions
+* Fixed publish release action
 
 2.12.1 / 2020-07-06
 ===================
