@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <p>websocket</p>
+
+  <button onclick="openSocket()">Open</button>
+  <button onclick="closeSocket()">Close</button>
+  <button onclick="pingSocket()">Ping</button>
+
+  <script>
+    let socket;
+
+    function openSocket() {
+      if (!socket) {
+        socket = new WebSocket("ws://localhost:8003");
+
+        socket.onopen = function() {
+          console.log("Socket open");
+        };
+
+        socket.onmessage = function() {
+          console.log(event.data);
+        };
+
+        socket.onclose = function() {
+          console.log("Socket closed");
+        };
+
+        socket.onerror = function(error) {
+          console.log("Socket error", error);
+        };
+      }
+    }
+
+    function closeSocket() {
+      if (socket) {
+        socket.close();
+        socket = null;
+      }
+    }
+
+    function pingSocket() {
+      if (socket) {
+        socket.send("ping");
+      }
+    }
+  </script>
+</body>
+
+</html>

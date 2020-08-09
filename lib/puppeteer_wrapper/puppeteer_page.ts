@@ -1,7 +1,7 @@
 import {
     Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
     ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions, MediaType, MediaFeature
+    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions, MediaType, MediaFeature, CDPSession
 } from './puppeteer_types';
 import { ViewportOptions } from './puppeteer_types';
 
@@ -71,6 +71,10 @@ export default class PuppeteerPage {
 
     public async setBypassCSP(value: boolean): Promise<void> {
         await this.page.setBypassCSP(value);
+    }
+
+    public createCDPSession(): Promise<CDPSession> {
+        return this.page.target().createCDPSession();
     }
 
     public content(): Promise<string> {

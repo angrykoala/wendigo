@@ -8,6 +8,7 @@ import BrowserLocalStorage from '../modules/local_storage/browser_local_storage'
 import BrowserRequests from '../modules/requests/browser_requests';
 import BrowserConsole from '../modules/console/browser_console';
 import BrowserWebworker from '../modules/webworkers/browser_webworker';
+import BrowserWebsockets from '../modules/websockets/browser_websockets';
 import BrowserDialog from '../modules/dialog/browser_dialog';
 import BrowserAuth from '../modules/auth/browser_auth';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
@@ -18,6 +19,7 @@ export default class Browser extends BrowserTap {
     public readonly requests: BrowserRequests;
     public readonly console: BrowserConsole;
     public readonly webworkers: BrowserWebworker;
+    public readonly websockets: BrowserWebsockets;
     public readonly dialog: BrowserDialog;
     public readonly auth: BrowserAuth;
 
@@ -29,6 +31,7 @@ export default class Browser extends BrowserTap {
         this.requests = new BrowserRequests(this, settings);
         this.console = new BrowserConsole(this);
         this.webworkers = new BrowserWebworker(this);
+        this.websockets = new BrowserWebsockets(this);
         this.dialog = new BrowserDialog(this);
         this.auth = new BrowserAuth(this);
     }

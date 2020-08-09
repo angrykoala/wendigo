@@ -97,7 +97,7 @@ export default class Wendigo {
     }
 
     private _createInstance(settings: FinalBrowserSettings): Promise<PuppeteerContext> {
-        const launcher = new PuppeteerLauncher()
+        const launcher = new PuppeteerLauncher();
         return launcher.launch(settings);
     }
 

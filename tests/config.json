@@ -37,6 +37,7 @@
         "nestedElements": "http://localhost:3456/nested_elements.html",
         "tabsAndPopups": "http://localhost:3456/tabs_and_popups.html",
         "lorem": "http://localhost:3456/lorem.html",
+        "websocket": "http://localhost:3456/websocket.html",
         "headers": "http://localhost:3456/headers"
     }
 }

@@ -4,6 +4,17 @@ const path = require('path');
 const express = require('express');
 const auth = require('basic-auth');
 const app = express();
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({port: 8003});
+
+wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+        if (message === 'ping')
+            ws.send('pong');
+    });
+});
+
 
 app.use((req, res, next) => { // To avoid 304
     if (require.main !== module) { // No CSP when running it manually
