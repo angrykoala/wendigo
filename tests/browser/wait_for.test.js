@@ -4,7 +4,7 @@ const Wendigo = require('../..');
 const configUrls = require('../config.json').urls;
 const utils = require('../test_utils');
 
-describe("Wait For", function() {
+describe.only("Wait For", function() {
     this.timeout(5000);
     let browser;
 

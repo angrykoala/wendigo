@@ -1,3 +1,10 @@
+2.13.2 / ####-##-##
+===================
+
+* Minor fix in Dockerfile
+* Puppeteer updated to 5.3.1
+* Dependencies updated
+
 2.13.1 / 2020-08-08
 ===================
 
