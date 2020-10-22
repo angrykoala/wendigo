@@ -1,3 +1,4 @@
+import isRegExp from 'lodash.isregexp';
 import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError, QueryError } from '../../models/errors';
@@ -62,7 +63,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
         timeout = this._getTimeout(timeout);
         if (!url) return Promise.reject(new WendigoError("waitForUrl", `Invalid parameter url.`));
         let parsedUrl: string | RegExp | { source: string, flags: string } = url;
-        if (url instanceof RegExp) {
+        if (isRegExp(url)) {
             parsedUrl = {
                 source: url.source,
                 flags: url.flags
