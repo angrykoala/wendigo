@@ -1,9 +1,10 @@
+import isRegExp from 'lodash.isregexp';
 import { Request, ResourceType } from '../../puppeteer_wrapper/puppeteer_types';
 import { matchText } from '../../utils/utils';
 import { ExpectedHeaders } from './types';
 
 function processBody(body: string | RegExp | object): string | RegExp {
-    if (typeof body === 'object' && !(body instanceof RegExp)) {
+    if (typeof body === 'object' && !isRegExp(body)) {
         return JSON.stringify(body);
     } else return body;
 }

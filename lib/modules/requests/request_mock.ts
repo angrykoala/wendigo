@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import isRegExp from 'lodash.isregexp';
 import { URL } from 'url';
 import { Request } from '../../puppeteer_wrapper/puppeteer_types';
 
@@ -178,7 +179,7 @@ export default class RequestMock implements RequestMockInterface {
     }
 
     private _parseUrlQueryString(url: string | RegExp): { [s: string]: string; } | undefined {
-        if (url instanceof RegExp) return undefined;
+        if (isRegExp(url)) return undefined;
         else {
             const parsedUrl = new URL(url);
             if (parsedUrl.search) {
@@ -188,7 +189,7 @@ export default class RequestMock implements RequestMockInterface {
     }
 
     private _parseUrl(url: string | RegExp): string | RegExp {
-        if (url instanceof RegExp) {
+        if (isRegExp(url)) {
             return url;
         } else {
             const parsedUrl = new URL(url);
