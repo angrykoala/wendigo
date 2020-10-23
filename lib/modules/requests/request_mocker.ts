@@ -1,3 +1,4 @@
+import isRegExp from 'lodash.isregexp';
 import { URL } from 'url';
 import { parseQueryString, compareObjects, matchText } from '../../utils/utils';
 import RequestMock from './request_mock';
@@ -91,7 +92,7 @@ export default class RequestMocker {
         if (existsPriority !== null) return existsPriority;
         const methodPriority = this._checkElementPriority(m1.method, m2.method);
         if (methodPriority !== null) return methodPriority;
-        const urlPriority = this._checkElementPriority(!(m1.url instanceof RegExp), !(m2.url instanceof RegExp));
+        const urlPriority = this._checkElementPriority(!isRegExp(m1.url), !isRegExp(m2.url));
         if (urlPriority !== null) return urlPriority;
         return Boolean(this._checkElementPriority(m1.queryString, m2.queryString));
     }
