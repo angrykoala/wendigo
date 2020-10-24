@@ -1,1 +1,3 @@
 dist/
+.eslint.js
+node_modules

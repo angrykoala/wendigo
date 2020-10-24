@@ -21,9 +21,6 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
-    "ignorePatterns": [
-        "dist/"
-    ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json",
@@ -86,6 +83,7 @@ module.exports = {
         "@typescript-eslint/prefer-regexp-exec": "off",
         "@typescript-eslint/quotes": "off",
         "@typescript-eslint/require-await": "off",
+        "@typescript-eslint/restrict-plus-operands": "off",
         "@typescript-eslint/restrict-template-expressions": "off",
         "@typescript-eslint/triple-slash-reference": [
             "error",
@@ -159,6 +157,7 @@ module.exports = {
         ],
         "prefer-arrow/prefer-arrow-functions": "off",
         "prefer-const": "off",
+        "prefer-rest-params": "off",
         "radix": "error",
         "spaced-comment": [
             "error",

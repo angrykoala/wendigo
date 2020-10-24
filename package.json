@@ -16,11 +16,10 @@
     "dummy-server": "node tests/dummy_server/index.js",
     "tsc": "rm -rf dist && tsc",
     "prepublishOnly": "npm run lint && npm test",
-    "lint": "npm run tslint && npm run eslint && npm run markdown-lint",
-    "eslint": "eslint . --ext .js",
-    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md",
-    "typescript-eslint": "eslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts",
-    "tslint": "tslint *.ts lib/*.ts lib/*/*.ts lib/*/*/*.ts"
+    "lint": "npm run lint-ts && npm run lint-js && npm run markdown-lint",
+    "lint-js": "eslint -c .eslintrc-js.js . --ext .js",
+    "lint-ts": "eslint -c .eslintrc-ts.js . --ext .ts",
+    "markdown-lint": "markdownlint -c .markdownlint.json ./*.md"
   },
   "repository": {
     "type": "git",
@@ -51,10 +50,9 @@
     "@types/node": "^14.11.5",
     "@types/puppeteer": "~3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
-    "@typescript-eslint/eslint-plugin-tslint": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "basic-auth": "^2.0.1",
-    "eslint": "^7.10.0",
+    "eslint": "^7.12.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsdoc": "^30.7.3",
     "eslint-plugin-prefer-arrow": "^1.2.2",
