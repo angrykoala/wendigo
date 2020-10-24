@@ -1,3 +1,4 @@
+import isRegExp from 'lodash.isregexp';
 import querystring from 'querystring';
 import { URL } from 'url';
 
@@ -19,7 +20,7 @@ export function isXPathQuery(s: string): boolean {
 }
 
 export function stringify(element: any): string {
-    if (typeof element === 'object' && !(element instanceof RegExp)) {
+    if (typeof element === 'object' && !isRegExp(element)) {
         element = JSON.stringify(element);
     }
     return String(element);
@@ -46,7 +47,7 @@ export function promiseOr(promises: Array<Promise<any>>): Promise<any> {
 
 export function matchText(text: string | null | undefined, expected: string | RegExp): boolean {
     if (text === undefined || text === null) return false;
-    if (expected instanceof RegExp) {
+    if (isRegExp(expected)) {
         return expected.test(text);
     } else {
         return text === expected;

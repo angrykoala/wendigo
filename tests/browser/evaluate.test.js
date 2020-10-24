@@ -1,5 +1,6 @@
 "use strict";
 
+const isRegExp = require('lodash.isregexp');
 const Wendigo = require('../..');
 const DomElement = require('../../dist/lib/models/dom_element').default;
 const assert = require('assert');
@@ -54,7 +55,7 @@ describe("Evaluate", function() {
         const result = await browser.evaluate(() => {
             return /aba/g;
         });
-        assert.ok(result instanceof RegExp);
+        assert.ok(isRegExp(result));
         assert.strictEqual(result.source, "aba");
         assert.strictEqual(result.flags, "g");
     });

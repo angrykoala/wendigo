@@ -11,7 +11,7 @@ export async function stringifyLogText(log: ConsoleMessage): Promise<string> {
 
 function stringifyLogArg(arg: JSHandle): Promise<string> {
     return arg.executionContext().evaluate(element => {
-        if (typeof element === 'object' && !(element instanceof RegExp)) {
+        if (typeof element === 'object' && !(element instanceof RegExp)) { // Executed inside context, lodash not available
             try {
                 element = JSON.stringify(element);
             } catch (err) {
