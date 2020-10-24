@@ -1,9 +1,9 @@
-2.13.2 / ####-##-##
+2.13.2 / 2020-10-24
 ===================
 
 * Minor fix in Dockerfile
 * Puppeteer updated to 5.3.1
-* RegExp parameters checks fixed when using vm 
+* RegExp parameters checks fixed when using vm
 * Dependencies updated
 
 2.13.1 / 2020-08-08
