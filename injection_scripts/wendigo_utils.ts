@@ -50,19 +50,17 @@ export default function WendigoUtilsLoader(): void {
 
                 // Based on https://github.com/capaj/proxy-date
                 (window as any).Date = new Proxy(_origDate, {
-                    construct(target: typeof Date, args: Array<any>): Date {
+                    construct(target: typeof Date, args: Parameters<typeof target>): Date {
                         if (args.length === 0) {
                             return new target(getCurrentTimestamp());
                         }
-                        // @ts-ignore
                         return new target(...args);
                     },
-                    get(_target: typeof Date, prop): () => number {
+                    get(target: typeof Date, prop): () => number {
                         if (prop === 'now') {
                             return () => getCurrentTimestamp();
                         }
-                        // @ts-ignore
-                        return Reflect.get(...arguments);
+                        return Reflect.get(target, prop);
                     },
                     apply(target: typeof Date): string {
                         return new target(getCurrentTimestamp()).toString();
