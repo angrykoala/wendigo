@@ -50,6 +50,7 @@ export interface OpenSettings {
     queryString?: string | { [s: string]: string; };
     geolocation?: GeoOptions;
     headers?: Record<string, string>;
+    dismissAllDialogs?: boolean;
 }
 
 export interface GeoLocationCoords {

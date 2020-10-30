@@ -151,7 +151,6 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
   * `userAgent`: If defined, the default user agent will be overridden.
   * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
   * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
-  * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
   * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
   * `defaultTimeout: 500`: Sets the default timeout for "wait" methods, except `browser.wait()`.
@@ -229,6 +228,7 @@ The following options can be passed:
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
 * `geolocation`: Options to override geoLocation. Same as using `setGeolocation`.
 * `headers`: Sets extra HTTP headers _before_ opening the page.Same as using `requests.setHeaders`.
+* `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
 
 If no protocol is defined (e.g. `https://`), `http://` will be used.
 
