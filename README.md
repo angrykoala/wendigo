@@ -2017,17 +2017,12 @@ _Example of travis.yml file_
 
 ### Running Tests With Gitlab CI
 
-Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`. It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers:
+It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers due to hardware resources needs:
 
 ```yml
-image: node:8.9.4
-
-variables:
-  NO_SANDBOX: "true"
+image: angrykoala/wendigo
 
 before_script:
-    - apt-get update
-    - apt-get install -y -q gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
     - npm install
 
 test:
@@ -2074,17 +2069,14 @@ Wendigo con be running on docker just as any other application using Puppeteer, 
 ```dockerfile
 FROM angrykoala/wendigo
 
-# Example directory to run you app
-WORKDIR /app
-
 COPY package*.json ./
 # Installs your up (it must have Wendigo as a dependency)
-RUN npm install
+RUN npm ci
 # Copies the rest of your app
 COPY . /app
 
 # Runs your tests
-CMD ["npm", "run", "test"]
+CMD ["npm", "test"]
 
 ```
 
