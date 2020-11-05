@@ -45,7 +45,7 @@ export default class PuppeteerPage {
     }
 
     public setViewport(config: ViewportOptions = {}): Promise<void> {
-        const finalConfig = Object.assign({}, this.page.viewport(), config) as Viewport;
+        const finalConfig = !config ? config : Object.assign({}, this.page.viewport(), config) as Viewport;
         return this.page.setViewport(finalConfig);
     }
 
