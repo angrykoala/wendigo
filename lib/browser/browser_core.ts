@@ -88,7 +88,14 @@ export default abstract class BrowserCore {
     @OverrideError()
     public async open(url: string, options?: OpenSettings): Promise<void> {
         this._loaded = false;
-        this._openSettings = Object.assign({}, defaultOpenOptions, options);
+        this._openSettings = Object.assign(
+            {},
+            defaultOpenOptions,
+            'defaultViewport' in this._settings ?
+                { viewport: this._settings.defaultViewport } :
+                {},
+            options
+        );
         url = this._processUrl(url);
         await this.setCache(this._cache);
         if (this._openSettings.queryString) {
