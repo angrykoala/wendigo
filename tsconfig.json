@@ -18,6 +18,7 @@
         "resolveJsonModule": true
     },
     "compileOnSave": true,
+    "exclude": ["node_modules", "dist"],
     "includes": [
         "main.ts",
         "globals.d.ts"

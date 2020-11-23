@@ -197,7 +197,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
     // TODO: this need to be completely reworked to make a sensible approach to error handling
     private _overrideWaitError(error: Error, options: { timeoutMessage: string, timeout: number, selector?: string }): Error {
-        if (error instanceof PuppeteerErrors.TimeoutError || error instanceof TimeoutError) {
+        if (error instanceof (PuppeteerErrors.TimeoutError as any) || error instanceof TimeoutError) {
             return new TimeoutError("", options.timeoutMessage, options.timeout);
         }
         if (error instanceof Error && error.message.match(/DOMException\:/) || error instanceof QueryError) {

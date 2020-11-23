@@ -1,4 +1,4 @@
-export type RequestBody = string | object;
+export type RequestBody = string | Record<string, unknown>;
 
 export interface RequestMockResponseOptions {
     status?: number;

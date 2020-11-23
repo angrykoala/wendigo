@@ -53,7 +53,7 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         return this._assertFilter("assert.requests.ok", okFilter, msg);
     }
 
-    public postBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
+    public postBody(expected: string | Record<string, unknown> | RegExp, msg?: string): RequestAssertionsFilter {
         const bodyFilter = this._requestFilter.postBody(expected);
         if (!msg) {
             const expectedString = stringify(expected);
@@ -62,7 +62,7 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
         return this._assertFilter("assert.requests.postBody", bodyFilter, msg);
     }
 
-    public responseBody(expected: string | object | RegExp, msg?: string): RequestAssertionsFilter {
+    public responseBody(expected: string | Record<string, unknown> | RegExp, msg?: string): RequestAssertionsFilter {
         const responseBodyFilter = this._requestFilter.responseBody(expected);
         if (!msg) {
             const expectedString = stringify(expected);

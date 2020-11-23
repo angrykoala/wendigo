@@ -3,7 +3,8 @@ import { Request, ResourceType } from '../../puppeteer_wrapper/puppeteer_types';
 import { matchText } from '../../utils/utils';
 import { ExpectedHeaders } from './types';
 
-function processBody(body: string | RegExp | object): string | RegExp {
+
+function processBody(body: string | RegExp | Record<string, unknown>): string | RegExp {
     if (typeof body === 'object' && !isRegExp(body)) {
         return JSON.stringify(body);
     } else return body;
@@ -39,7 +40,7 @@ export default class RequestFilter {
         return new RequestFilter(requests);
     }
 
-    public postBody(body: string | RegExp | object): RequestFilter {
+    public postBody(body: string | RegExp | Record<string, unknown>): RequestFilter {
         const parsedBody = processBody(body);
         const requests = filterPromise(this.requests, el => {
             return matchText(el.postData(), parsedBody);
@@ -47,7 +48,7 @@ export default class RequestFilter {
         return new RequestFilter(requests);
     }
 
-    public responseBody(body: string | RegExp | object): RequestFilter { // This one returns a promise
+    public responseBody(body: string | RegExp | Record<string, unknown>): RequestFilter { // This one returns a promise
         const parsedBody = processBody(body);
         const requests = this.requests.then(async (req) => {
             const reqBodyPairs = await this._getResponsesBody(req);

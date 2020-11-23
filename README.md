@@ -151,7 +151,6 @@ Will create and return a promise to a [Browser](#Browser) instance. It will auto
   * `userAgent`: If defined, the default user agent will be overridden.
   * `noSandbox`: Sets the option `--no-sandbox` when opening Puppeteer. This option will also be set if the env variable `NO_SANDBOX` is set (check [troubleshooting](#troubleshooting)).
   * `timezone`: Sets the browser's timezone (e.g. `UTC`, `Asia/Tokyo`).
-  * `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
   * `bypassCSP: true`: If set to false, puppeteer may fail if Content Security Policy is set in the page.
   * `proxyServer: null`: If defined, Chromium will run with the option `--proxy-server` set to the given address.
   * `defaultTimeout: 500`: Sets the default timeout for "wait" methods, except `browser.wait()`.
@@ -229,6 +228,7 @@ The following options can be passed:
 * `queryString`: Querystring to be appended to the url, can be a string or object. Avoid using this parameter if a query string is already present in the url.
 * `geolocation`: Options to override geoLocation. Same as using `setGeolocation`.
 * `headers`: Sets extra HTTP headers _before_ opening the page.Same as using `requests.setHeaders`.
+* `dismissAllDialogs`: This will automatically dismiss any native dialog (`alert`, `prompt`) when appearing.
 
 If no protocol is defined (e.g. `https://`), `http://` will be used.
 
@@ -2017,17 +2017,12 @@ _Example of travis.yml file_
 
 ### Running Tests With Gitlab CI
 
-Using gitlab with the default node image requires installing a few dependencies with `apt-get` before installing wendigo. Same as in travis, sandbox mode should be disabled with the env variable `NO_SANDBOX`. It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers:
+It is recommended to add `retry: 2` to allow the CI to execute the tests multiple times, as browser-based setup may fail frequently on CI workers due to hardware resources needs:
 
 ```yml
-image: node:8.9.4
-
-variables:
-  NO_SANDBOX: "true"
+image: angrykoala/wendigo
 
 before_script:
-    - apt-get update
-    - apt-get install -y -q gconf-service libasound2 libatk1.0-0 libc6 libcairo2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
     - npm install
 
 test:
@@ -2074,17 +2069,14 @@ Wendigo con be running on docker just as any other application using Puppeteer, 
 ```dockerfile
 FROM angrykoala/wendigo
 
-# Example directory to run you app
-WORKDIR /app
-
 COPY package*.json ./
 # Installs your up (it must have Wendigo as a dependency)
-RUN npm install
+RUN npm ci
 # Copies the rest of your app
 COPY . /app
 
 # Runs your tests
-CMD ["npm", "run", "test"]
+CMD ["npm", "test"]
 
 ```
 
