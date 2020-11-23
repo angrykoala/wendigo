@@ -1,3 +1,14 @@
+2.14.0 / 2020-10-25
+===================
+
+* Update Dockerfile to recommended Puppeteer setup
+* Docs updated
+* Tslint deprecated in favor of eslint
+* Minor typings improvements and fixes
+* Typescript version locked until Promise types are fixed
+* Dependencies updated
+* Fix in publish git workflow
+
 2.13.2 / 2020-10-24
 ===================
 
