@@ -11,7 +11,7 @@ export default class RequestAssertionsFilter extends Promise<RequestAssertionsFi
 
     constructor(executor: PromiseExecutor<RequestAssertionsFilter>, requestFilter: RequestFilter) {
         super((resolve, reject) => {
-            return executor(resolve, reject);
+            return executor(resolve as any, reject);
         });
 
         this._requestFilter = requestFilter;

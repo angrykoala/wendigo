@@ -1,3 +1,10 @@
+2.15.0 / 2021-01-13
+===================
+
+* License moved to a more permissive MIT
+* Dependencies updated
+* Minor typings fixes
+
 2.14.0 / 2020-10-25
 ===================
 
