@@ -118,7 +118,7 @@ export default class RequestMock implements RequestMockInterface {
             this._events.once("on-request", () => {
                 if (!rejected) {
                     clearTimeout(tid);
-                    resolve();
+                    resolve(undefined);
                 }
             });
         });
