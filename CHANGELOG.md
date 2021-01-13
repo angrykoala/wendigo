@@ -1,4 +1,4 @@
-2.15.0 / ####-##-##
+2.15.0 / 2021-01-13
 ===================
 
 * License moved to a more permissive MIT
