@@ -5,17 +5,17 @@ import RequestFilter from './request_filter';
 import RequestMocker from './request_mocker';
 import Browser from '../../browser/browser';
 import RequestMock from './request_mock';
-import { Request, Response } from '../../puppeteer_wrapper/puppeteer_types';
+import { HTTPRequest, HTTPResponse } from '../../puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 import { TimeoutError } from '../../models/errors';
 import { promiseOr, matchText, isNumber } from '../../utils/utils';
 
 export default class BrowserRequests extends WendigoModule {
     private _requestMocker: RequestMocker;
-    private _requests: Array<Request>;
+    private _requests: Array<HTTPRequest>;
     private _interceptorReady: boolean;
-    private _interceptorCallback?: (req: Request) => Promise<void>;
-    private _responseInterceptorCallback?: (res: Response) => Promise<void>;
+    private _interceptorCallback?: (req: HTTPRequest) => Promise<void>;
+    private _responseInterceptorCallback?: (res: HTTPResponse) => Promise<void>;
     private _settings: FinalBrowserSettings;
 
     constructor(browser: Browser, settings: FinalBrowserSettings) {
@@ -31,7 +31,7 @@ export default class BrowserRequests extends WendigoModule {
         return new RequestFilter(Promise.resolve(this._requests));
     }
 
-    public all(): Array<Request> {
+    public all(): Array<HTTPRequest> {
         return this._requests;
     }
 
@@ -129,7 +129,7 @@ export default class BrowserRequests extends WendigoModule {
         this._interceptorReady = true;
         await this._page.setRequestInterception(true);
 
-        this._interceptorCallback = (request: Request) => {
+        this._interceptorCallback = (request: HTTPRequest) => {
             this._requests.push(request);
             const mock = this._requestMocker.getMockedResponse(request);
             if (mock) {
@@ -143,7 +143,7 @@ export default class BrowserRequests extends WendigoModule {
     }
 
     private async _startResponseLogInterceptor(): Promise<void> {
-        this._responseInterceptorCallback = async (response: Response) => {
+        this._responseInterceptorCallback = async (response: HTTPResponse) => {
             const request = response.request();
             if (this._settings.logRequests) {
                 console.log(`[${new Date().toISOString()}] ${request.method()} ${request.url()} ${response.status()}`);
@@ -166,7 +166,7 @@ export default class BrowserRequests extends WendigoModule {
 
     private _waitForRequestEvent(event: "response" | "request", url: string | RegExp, timeout: number): Promise<void> {
         return new Promise((resolve, reject) => {
-            const waitForEventCallback = async (response: Response | Request) => {
+            const waitForEventCallback = async (response: HTTPRequest) => {
                 const currentUrl = new URL(response.url());
                 const match = matchText(`${currentUrl.origin}${currentUrl.pathname}`, url);
                 if (match) {

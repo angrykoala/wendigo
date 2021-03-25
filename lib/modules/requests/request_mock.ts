@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import isRegExp from 'lodash.isregexp';
 import { URL } from 'url';
-import { Request } from '../../puppeteer_wrapper/puppeteer_types';
+import { HTTPRequest } from '../../puppeteer_wrapper/puppeteer_types';
 
 import RequestFilter from './request_filter';
 import { FatalError, AssertionError, TimeoutError } from '../../models/errors';
@@ -9,10 +9,10 @@ import * as utils from '../../utils/utils';
 import { RequestBody, RequestMockResponseOptions, RequestMockOptions } from './types';
 
 interface MockResponse {
-    status?: number;
-    headers?: { [s: string]: string };
-    contentType?: string;
-    body?: string;
+    status: number;
+    headers: Record<string, string>;
+    contentType: string;
+    body: string | Buffer;
 }
 
 interface RequestMockInterface {
@@ -71,7 +71,7 @@ export default class RequestMock implements RequestMockInterface {
     public readonly url: string | RegExp;
     public readonly assert: RequestMockAssertions;
     public readonly queryString?: { [s: string]: string; };
-    public requestsReceived: Array<Request> = [];
+    public requestsReceived: Array<HTTPRequest> = [];
 
     private _events: EventEmitter;
     private _redirectTo?: URL;
@@ -125,7 +125,7 @@ export default class RequestMock implements RequestMockInterface {
         await utils.delay(20); // Give time to the browser to handle the response
     }
 
-    public async onRequest(request: Request): Promise<void> {
+    public async onRequest(request: HTTPRequest): Promise<void> {
         this.requestsReceived.push(request);
 
         if (this.auto && this.immediate) {
@@ -140,7 +140,7 @@ export default class RequestMock implements RequestMockInterface {
         }
     }
 
-    private async _respondRequest(request: Request, optionalResponse?: RequestMockResponseOptions): Promise<void> {
+    private async _respondRequest(request: HTTPRequest, optionalResponse?: RequestMockResponseOptions): Promise<void> {
         let response = this.response;
         if (optionalResponse) {
             response = this._processResponse(optionalResponse);
@@ -169,11 +169,11 @@ export default class RequestMock implements RequestMockInterface {
     }
 
     private _processResponse(options: RequestMockOptions): MockResponse {
-        const body = utils.stringify(options.body) || undefined;
+        const body = utils.stringify(options.body) || "";
         return {
-            status: options.status,
-            headers: options.headers,
-            contentType: options.contentType,
+            status: options.status || 200,
+            headers: options.headers || {},
+            contentType: options.contentType || "application/json",
             body: body
         };
     }

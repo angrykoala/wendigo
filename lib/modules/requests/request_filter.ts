@@ -1,5 +1,5 @@
 import isRegExp from 'lodash.isregexp';
-import { Request, ResourceType } from '../../puppeteer_wrapper/puppeteer_types';
+import { HTTPRequest, ResourceType } from '../../puppeteer_wrapper/puppeteer_types';
 import { matchText } from '../../utils/utils';
 import { ExpectedHeaders } from './types';
 
@@ -16,13 +16,13 @@ async function filterPromise<T>(p: Promise<Array<T>>, cb: (t: T) => boolean): Pr
 }
 
 export default class RequestFilter {
-    private _requestList: Promise<Array<Request>>;
+    private _requestList: Promise<Array<HTTPRequest>>;
 
-    constructor(requests: Promise<Array<Request>> = Promise.resolve([])) {
+    constructor(requests: Promise<Array<HTTPRequest>> = Promise.resolve([])) {
         this._requestList = requests;
     }
 
-    get requests(): Promise<Array<Request>> {
+    get requests(): Promise<Array<HTTPRequest>> {
         return this._requestList;
     }
 
@@ -58,7 +58,7 @@ export default class RequestFilter {
             }).filter((r) => {
                 return Boolean(r);
             });
-            return filteredRequests as Array<Request>;
+            return filteredRequests as Array<HTTPRequest>;
         });
 
         return new RequestFilter(requests);
@@ -120,7 +120,7 @@ export default class RequestFilter {
         });
     }
 
-    private _responseHasHeader(request: Request, headers: ExpectedHeaders): boolean {
+    private _responseHasHeader(request: HTTPRequest, headers: ExpectedHeaders): boolean {
         const response = request.response();
         if (!response) return false;
         const keys = Object.keys(headers);
@@ -135,21 +135,19 @@ export default class RequestFilter {
         return true;
     }
 
-    private async _getResponsesBody(requests: Array<Request>): Promise<Array<[Request, string]>> {
-        type requestResponsePair = [Request, string];
-
+    private async _getResponsesBody(requests: Array<HTTPRequest>): Promise<Array<[HTTPRequest, string]>> {
         const responses = await Promise.all(requests.map(async (req) => {
             const response = req.response();
             if (!response) return null;
             else {
                 const text = await response.text();
-                return [req, text] as requestResponsePair;
+                return [req, text]
             }
         }));
 
         const filteredResponse = responses.filter((pair) => {
             return pair !== null;
-        }) as Array<[Request, string]>;
+        }) as Array<[HTTPRequest, string]>;
         return filteredResponse;
     }
 }

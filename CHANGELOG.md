@@ -1,3 +1,9 @@
+3.0.0 / ####-##-##
+==================
+
+* Puppeteer update to v8
+* Overhaul of types to comply with Puppeteer changes
+
 2.15.0 / 2021-01-13
 ===================
 

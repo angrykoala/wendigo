@@ -6,7 +6,7 @@ import { QueryError, WendigoError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
 import DOMELement from '../../models/dom_element';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
-import { Base64ScreenShotOptions } from '../../puppeteer_wrapper/puppeteer_types';
+import { ScreenshotOptions } from '../../puppeteer_wrapper/puppeteer_types';
 
 // Mixin with user actions
 export default abstract class BrowserActions extends BrowserQueries {
@@ -26,7 +26,7 @@ export default abstract class BrowserActions extends BrowserQueries {
         try {
             for (let i = 0; i < count; i++) {
                 for (const k of keys) {
-                    await this._page.keyboard.press(k);
+                    await this._page.keyboard.press(k as any);
                 }
             }
         } catch (err) {
@@ -152,12 +152,12 @@ export default abstract class BrowserActions extends BrowserQueries {
     }
 
     @FailIfNotLoaded
-    public screenshot(args?: Base64ScreenShotOptions): Promise<string | Buffer> {
+    public screenshot(args?: ScreenshotOptions): Promise<string | void | Buffer> {
         return this._page.screenshot(args);
     }
 
     @FailIfNotLoaded
-    public async screenshotOfElement(selector: WendigoSelector, options?: Base64ScreenShotOptions): Promise<string | Buffer> {
+    public async screenshotOfElement(selector: WendigoSelector, options?: ScreenshotOptions): Promise<string |void | Buffer> {
         const element = await this.query(selector);
         if (!element) throw new QueryError("screenshotOfElement", `Selector "${selector}" not found.`);
         return element.element.screenshot(options);

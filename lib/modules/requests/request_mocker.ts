@@ -2,7 +2,7 @@ import isRegExp from 'lodash.isregexp';
 import { URL } from 'url';
 import { parseQueryString, compareObjects, matchText } from '../../utils/utils';
 import RequestMock from './request_mock';
-import { Request } from '../../puppeteer_wrapper/puppeteer_types';
+import { HTTPRequest } from '../../puppeteer_wrapper/puppeteer_types';
 import { RequestMockOptions } from './types';
 
 export default class RequestMocker {
@@ -16,7 +16,7 @@ export default class RequestMocker {
         return Array.from(this._mockedRequests);
     }
 
-    public getMockedResponse(request: Request): RequestMock | null {
+    public getMockedResponse(request: HTTPRequest): RequestMock | null {
         const url = new URL(request.url());
         const method = request.method();
         return this._getMock(`${url.origin}${url.pathname}`, {

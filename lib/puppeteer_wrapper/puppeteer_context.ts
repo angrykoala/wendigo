@@ -1,4 +1,4 @@
-import { BrowserContext, Page, BrowserContextEventObj, Permission } from "./puppeteer_types";
+import { BrowserContext, Page, Permission } from "./puppeteer_types";
 import PuppeteerPage from "./puppeteer_page";
 
 export default class PuppeteerContext {
@@ -30,11 +30,11 @@ export default class PuppeteerContext {
         return new PuppeteerPage(page);
     }
 
-    public on<K extends keyof BrowserContextEventObj>(eventName: K, cb: (msg: BrowserContextEventObj[K]) => Promise<void>): void {
+    public on(eventName: string, cb: (msg:any) => Promise<void>): void {
         this.context.on(eventName, cb);
     }
 
-    public off<K extends keyof BrowserContextEventObj>(eventName: K, cb: (msg: BrowserContextEventObj[K]) => Promise<void>): void {
+    public off(eventName: string, cb: (msg:any) => Promise<void>): void {
         this.context.off(eventName, cb);
     }
 

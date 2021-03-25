@@ -6,7 +6,7 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../models/errors';
 import { FinalBrowserSettings, OpenSettings, MediaOptions } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Response, Frame, BrowserContext, Target, GeoOptions, Permission, MediaType } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Frame, BrowserContext, Target, GeolocationOptions, Permission, HTTPResponse } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -37,7 +37,7 @@ const defaultOpenOptions: OpenSettings = {
 };
 
 export default abstract class BrowserCore {
-    public initialResponse: Response | null;
+    public initialResponse: HTTPResponse | null;
     public _headerHelper: HeaderHelper;
 
     protected _page: PuppeteerPage;
@@ -130,7 +130,7 @@ export default abstract class BrowserCore {
         }
     }
 
-    public async setMedia(mediaOptions: MediaOptions | MediaType): Promise<void> {
+    public async setMedia(mediaOptions: MediaOptions | string): Promise<void> {
         if (mediaOptions === undefined) return undefined;
         if (typeof mediaOptions === 'string' || mediaOptions === null) {
             mediaOptions = {
@@ -206,7 +206,7 @@ export default abstract class BrowserCore {
         return this._page.emulateTimezone(tz);
     }
 
-    public setGeolocation(geolocation: GeoOptions): Promise<void> {
+    public setGeolocation(geolocation: GeolocationOptions): Promise<void> {
         return this._page.setGeolocation(geolocation);
     }
 
