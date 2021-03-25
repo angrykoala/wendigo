@@ -1,4 +1,6 @@
-import { ElementHandle,  EvaluateFn,  GeolocationOptions,  PDFOptions,  WaitForOptions, WaitForSelectorOptions, WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions, ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie } from './puppeteer_types';
+import { ElementHandle,  EvaluateFn,  GeolocationOptions,  PDFOptions,  WaitForOptions, WaitForSelectorOptions,
+    WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions,
+     ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie } from './puppeteer_types';
 
 export default class PuppeteerPage {
     public page: Page;
