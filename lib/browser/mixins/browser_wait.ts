@@ -3,30 +3,45 @@ import BrowserNavigation from './browser_navigation';
 import DomElement from '../../models/dom_element';
 import { TimeoutError, WendigoError, QueryError } from '../../models/errors';
 import { WendigoSelector } from '../../types';
-import { createFindTextXPath, delay, isNumber } from '../../utils/utils';
+import { createFindTextXPath, delay, isNumber, isXPathQuery } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
-import { EvaluateFn, PuppeteerErrors } from '../../puppeteer_wrapper/puppeteer_types';
+import { PuppeteerErrors, SerializableOrJSHandle } from '../../puppeteer_wrapper/puppeteer_types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
 
     public wait(ms: number = 250): Promise<void> {
         return delay(ms);
     }
-
+    public async waitFor(selector: string, timeout?: number): Promise<void>;
+    public async waitFor(selector: Function, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void>;
     @FailIfNotLoaded
     @OverrideError()
-    public async waitFor(selector: EvaluateFn, timeout?: number, ...args: Array<any>): Promise<void> {
+    public async waitFor(selector: Function | string, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void> {
         timeout = this._getTimeout(timeout);
-        args = args.map((e) => {
-            if (e instanceof DomElement) return e.element;
-            else return e;
-        });
+
         try {
-            await this._page.waitFor(selector, {
-                timeout: timeout,
-                visible: true
-            }, ...args);
+            if (typeof selector === 'string') {
+                if(isXPathQuery(selector)){
+                    await this._page.waitForXPath(selector, {
+                        timeout:timeout,
+                        visible: true
+                    })
+                } else {
+                    await this._page.waitForSelector(selector, {
+                        timeout:timeout,
+                        visible: true
+                    })
+                }
+            } else {
+                const serializedArgs = args.map((e) => {
+                    if (e instanceof DomElement) return e.element;
+                    else return e;
+                });
+                await this._page.waitForFunction(selector, {
+                    timeout: timeout,
+                }, ...serializedArgs);
+            }
         } catch (error) {
             let errMsg;
             if (typeof selector === 'function') errMsg = `Waiting for function to return true`;
@@ -62,7 +77,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
     public async waitForUrl(url: string | RegExp, timeout?: number): Promise<void> {
         timeout = this._getTimeout(timeout);
         if (!url) return Promise.reject(new WendigoError("waitForUrl", `Invalid parameter url.`));
-        let parsedUrl: string | RegExp | { source: string, flags: string } = url;
+        let parsedUrl: string | { source: string, flags: string } = url;
         if (isRegExp(url)) {
             parsedUrl = {
                 source: url.source,
@@ -183,10 +198,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 return value === null;
             }, timeout, selector);
         } catch (err) {
-          throw this._overrideWaitError(err, {
-              timeoutMessage: `Waiting for element "${selector}" to be enabled`,
-              timeout
-          });
+            throw this._overrideWaitError(err, {
+                timeoutMessage: `Waiting for element "${selector}" to be enabled`,
+                timeout
+            });
         }
     }
 

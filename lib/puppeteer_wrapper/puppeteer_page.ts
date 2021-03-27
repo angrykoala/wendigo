@@ -1,6 +1,8 @@
-import { ElementHandle,  EvaluateFn,  GeolocationOptions,  PDFOptions,  WaitForOptions, WaitForSelectorOptions,
+import {
+    ElementHandle, GeolocationOptions, PDFOptions, WaitForOptions,
     WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions,
-     ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie } from './puppeteer_types';
+    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, waitForOptions
+} from './puppeteer_types';
 
 export default class PuppeteerPage {
     public page: Page;
@@ -102,9 +104,19 @@ export default class PuppeteerPage {
         await this.page.waitForNavigation(options);
     }
 
-    public async waitFor(selector: string | EvaluateFn, options?: WaitForSelectorOptions, ...args: Array<SerializableOrJSHandle>): Promise<void> {
-        // TODO: this is deprecated in Puppeteer
-        await this.page.waitFor(selector, options, ...args);
+    public async waitForXPath(xpath: string, options?: waitForOptions): Promise<void> {
+        await this.page.waitForXPath(xpath, options)
+    }
+
+    public async waitForSelector(selector: string, options?: waitForOptions): Promise<void> {
+        await this.page.waitForSelector(selector, options)
+    }
+
+    public async waitForFunction(func: Function | string, options?: {
+        timeout?: number;
+        polling?: string | number;
+    }, ...args: Array<SerializableOrJSHandle>): Promise<void> {
+        await this.page.waitForFunction(func, options, ...args)
     }
 
     public $(selector: string): Promise<ElementHandle<Element> | null> {
