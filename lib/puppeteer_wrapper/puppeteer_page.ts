@@ -1,7 +1,8 @@
 import {
-    ElementHandle, GeolocationOptions, PDFOptions, WaitForOptions,
+    ElementHandle, GeolocationOptions, PDFOptions, WaitForNavigationOptions,
     WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions,
-    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, waitForOptions, CallbackFunction
+    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, WaitForOptions,
+    WaitForCallbackFunction
 } from './puppeteer_types';
 
 export default class PuppeteerPage {
@@ -100,19 +101,19 @@ export default class PuppeteerPage {
         await this.page.reload();
     }
 
-    public async waitForNavigation(options?: WaitForOptions): Promise<void> {
+    public async waitForNavigation(options?: WaitForNavigationOptions): Promise<void> {
         await this.page.waitForNavigation(options);
     }
 
-    public async waitForXPath(xpath: string, options?: waitForOptions): Promise<void> {
+    public async waitForXPath(xpath: string, options?: WaitForOptions): Promise<void> {
         await this.page.waitForXPath(xpath, options)
     }
 
-    public async waitForSelector(selector: string, options?: waitForOptions): Promise<void> {
+    public async waitForSelector(selector: string, options?: WaitForOptions): Promise<void> {
         await this.page.waitForSelector(selector, options)
     }
 
-    public async waitForFunction(func: CallbackFunction | string, options?: {
+    public async waitForFunction(func: WaitForCallbackFunction | string, options?: {
         timeout?: number;
         polling?: string | number;
     }, ...args: Array<SerializableOrJSHandle>): Promise<void> {
