@@ -6,7 +6,7 @@ import DomElement from '../models/dom_element';
 import { FatalError, InjectScriptError } from '../models/errors';
 import { FinalBrowserSettings, OpenSettings, MediaOptions } from '../types';
 import PuppeteerPage from '../puppeteer_wrapper/puppeteer_page';
-import { ViewportOptions, ConsoleMessage, Page, Frame, BrowserContext, Target, GeolocationOptions, Permission, HTTPResponse } from '../puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, ConsoleMessage, Page, Frame, BrowserContext, Target, GeolocationOptions, Permission, HTTPResponse, Browser } from '../puppeteer_wrapper/puppeteer_types';
 import FailIfNotLoaded from '../decorators/fail_if_not_loaded';
 import PuppeteerContext from '../puppeteer_wrapper/puppeteer_context';
 import OverrideError from '../decorators/override_error';
@@ -71,6 +71,10 @@ export default abstract class BrowserCore {
 
     public get context(): BrowserContext {
         return this._context.context;
+    }
+
+    public get coreBrowser(): Browser {
+        return this._page.browser()
     }
 
     public get loaded(): boolean {
@@ -156,7 +160,7 @@ export default abstract class BrowserCore {
         this._originalHtml = undefined;
         try {
             await p;
-            await this._page.browser().close();
+            await this.coreBrowser.close();
         } catch (err) {
             return Promise.reject(new FatalError("close", `Failed to close browser. ${err.message}`));
         }

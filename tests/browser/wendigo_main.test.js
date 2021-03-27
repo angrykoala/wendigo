@@ -13,13 +13,18 @@ describe("Wendigo Main", function() {
         assert(Wendigo.stop);
     });
 
-    it("Create Browser", async() => {
+    it("Create and Close Browser", async() => {
         assert(Wendigo.createBrowser);
         const browser = await Wendigo.createBrowser();
         assert(browser);
         assert(browser.page);
         assert(browser.assert);
         assert(browser.localStorage);
+        assert(browser.context);
+        assert.strictEqual(browser.context, browser.page.browser().defaultBrowserContext());
+        assert(browser.coreBrowser);
+        assert.strictEqual(browser.coreBrowser, browser.page.browser());
+
         assert.strictEqual(browser._loaded, false);
         await browser.close();
         assert.strictEqual(browser._loaded, false);
