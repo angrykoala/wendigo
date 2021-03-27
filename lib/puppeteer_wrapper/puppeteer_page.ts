@@ -1,7 +1,7 @@
 import {
     ElementHandle, GeolocationOptions, PDFOptions, WaitForOptions,
     WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions,
-    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, waitForOptions
+    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, waitForOptions, CallbackFunction
 } from './puppeteer_types';
 
 export default class PuppeteerPage {
@@ -112,7 +112,7 @@ export default class PuppeteerPage {
         await this.page.waitForSelector(selector, options)
     }
 
-    public async waitForFunction(func: Function | string, options?: {
+    public async waitForFunction(func: CallbackFunction | string, options?: {
         timeout?: number;
         polling?: string | number;
     }, ...args: Array<SerializableOrJSHandle>): Promise<void> {

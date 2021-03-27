@@ -2,7 +2,7 @@
 ==================
 
 * Puppeteer update to v8
-* WaitFor uses specific methods under the hood 
+* WaitFor uses specific methods under the hood
 * Overhaul of types to comply with Puppeteer changes
 
 2.15.0 / 2021-01-13

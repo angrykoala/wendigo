@@ -6,7 +6,7 @@ import { WendigoSelector } from '../../types';
 import { createFindTextXPath, delay, isNumber, isXPathQuery } from '../../utils/utils';
 import FailIfNotLoaded from '../../decorators/fail_if_not_loaded';
 import OverrideError from '../../decorators/override_error';
-import { PuppeteerErrors, SerializableOrJSHandle } from '../../puppeteer_wrapper/puppeteer_types';
+import { CallbackFunction, PuppeteerErrors, SerializableOrJSHandle } from '../../puppeteer_wrapper/puppeteer_types';
 
 export default abstract class BrowserWait extends BrowserNavigation {
 
@@ -14,10 +14,10 @@ export default abstract class BrowserWait extends BrowserNavigation {
         return delay(ms);
     }
     public async waitFor(selector: string, timeout?: number): Promise<void>;
-    public async waitFor(selector: Function, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void>;
+    public async waitFor(selector: CallbackFunction, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void>;
     @FailIfNotLoaded
     @OverrideError()
-    public async waitFor(selector: Function | string, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void> {
+    public async waitFor(selector: CallbackFunction | string, timeout?: number, ...args: Array<SerializableOrJSHandle | DomElement>): Promise<void> {
         timeout = this._getTimeout(timeout);
 
         try {

@@ -1,11 +1,11 @@
-import { Viewport } from "puppeteer";
+import { SerializableOrJSHandle, Viewport } from "puppeteer";
 
 export type ViewportOptions = Partial<Viewport>;
 
 import { Protocol } from 'puppeteer'
 
 export {
-    HTTPResponse, HTTPRequest, ElementHandle, GeolocationOptions, WaitForOptions, WebWorker,
+    HTTPResponse, HTTPRequest, ElementHandle, GeolocationOptions, WebWorker,
     Page, Frame, Viewport, SerializableOrJSHandle, JSHandle,
     Browser, Keyboard, Mouse,
     Touchscreen, PDFOptions, ConsoleMessage, ConsoleMessageType, ScreenshotOptions,
@@ -29,8 +29,10 @@ export type MediaFeature = {
     value: string;
 }
 
-export type waitForOptions = {
+export type WaitForOptions = {
     visible?: boolean;
     hidden?: boolean;
     timeout?: number;
 }
+
+export type CallbackFunction = (...args: SerializableOrJSHandle[]) => void
