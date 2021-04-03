@@ -1,3 +1,11 @@
+3.0.0 / 2021-03-04
+==================
+
+* Puppeteer update to v8
+* WaitFor uses specific methods under the hood
+* Overhaul of types to comply with Puppeteer changes
+* Browser.coreBrowser added to access Puppeteer's browser class
+
 2.15.0 / 2021-01-13
 ===================
 

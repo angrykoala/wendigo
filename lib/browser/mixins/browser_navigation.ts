@@ -25,7 +25,7 @@ export default abstract class BrowserNavigation extends BrowserEvents {
         await this._page.waitForNavigation({
             waitUntil: "domcontentloaded"
         });
-        await this._page.waitFor(() => {
+        await this._page.waitForFunction(() => {
             const w = window as any;
             return Boolean(w.WendigoUtils && w.WendigoQuery && w.WendigoPathFinder); // Waits until Wendigo is ready
         });

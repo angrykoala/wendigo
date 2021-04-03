@@ -38,16 +38,19 @@ describe("Assert Style", function() {
             await browser.assert.style("h1", "color", "rgb(0, 0, 0)");
         }, `[assert.style] Expected element "h1" to have style "color" with value "rgb(0, 0, 0)", "rgb(255, 0, 0)" found.`);
     });
+
     it("Style Not Found Throws", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.style("h1", "not-style", "0");
         }, `[assert.style] Expected element "h1" to have style "not-style" with value "0", style not found.`);
     });
+
     it("Style Element Not Found", async() => {
         await utils.assertThrowsAsync(async() => {
             await browser.assert.style(".not-element", "color", "rgb(0, 0, 0)");
         }, `QueryError: [assert.style] Element ".not-element" not found.`);
     });
+
     it("Style Throws Custom Message", async() => {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.style("h1", "color", "rgb(0, 0, 0)", "style fails");
@@ -67,6 +70,7 @@ describe("Assert Style", function() {
         const node = await browser.query("h1");
         await browser.assert.not.style(node, "color", "rgb(0, 0, 0)");
     });
+
     it("Not Style Throws", async() => {
         assert(browser.assert.not.style);
         await utils.assertThrowsAssertionAsync(async() => {
@@ -85,5 +89,11 @@ describe("Assert Style", function() {
         await utils.assertThrowsAssertionAsync(async() => {
             await browser.assert.not.style("h1", "color", "rgb(255, 0, 0)", "not style fails");
         }, `[assert.not.style] not style fails`);
+    });
+
+    // Test for #432
+    it.skip("Style if at least one element matches", async() => {
+        await browser.open(configUrls.multipleStyles);
+        await browser.assert.style("p", "color", "rgb(255, 0, 0)");
     });
 });

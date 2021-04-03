@@ -1,9 +1,9 @@
 import {
-    Page, Frame, Viewport, EvaluateFn, SerializableOrJSHandle, JSHandle, Response, Worker,
-    ScriptTagOptions, Browser, Base64ScreenShotOptions, Keyboard, Mouse, NavigationOptions, WaitForSelectorOptions, ElementHandle,
-    Touchscreen, Cookie, SetCookie, DeleteCookie, PageEventObj, PDFOptions, GeoOptions, MediaType, MediaFeature
+    ElementHandle, GeolocationOptions, PDFOptions, WaitForNavigationOptions,
+    WebWorker, Browser, Cookie, Frame, HTTPResponse, JSHandle, Keyboard, MediaFeature, Mouse, Page, ScreenshotOptions,
+    ScriptTagOptions, SerializableOrJSHandle, Touchscreen, Viewport, ViewportOptions, SetCookie, DeleteCookie, WaitForOptions,
+    WaitForCallbackFunction
 } from './puppeteer_types';
-import { ViewportOptions } from './puppeteer_types';
 
 export default class PuppeteerPage {
     public page: Page;
@@ -24,7 +24,7 @@ export default class PuppeteerPage {
         return this.page.touchscreen;
     }
 
-    public goto(url: string): Promise<Response | null> {
+    public goto(url: string): Promise<HTTPResponse | null> {
         return this.page.goto(url);
     }
 
@@ -49,11 +49,11 @@ export default class PuppeteerPage {
         return this.page.setViewport(finalConfig);
     }
 
-    public on<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => void): void {
+    public on(eventName: string, cb: (msg: any) => void): void {
         this.page.on(eventName, cb);
     }
 
-    public off<K extends keyof PageEventObj>(eventName: K, cb: (msg: PageEventObj[K]) => void): void {
+    public off(eventName: string, cb: (msg: any) => void): void {
         this.page.off(eventName, cb);
     }
 
@@ -77,7 +77,7 @@ export default class PuppeteerPage {
         return this.page.content();
     }
 
-    public screenshot(args?: Base64ScreenShotOptions): Promise<string | Buffer> {
+    public screenshot(args?: ScreenshotOptions): Promise<string | Buffer | void> {
         return this.page.screenshot(args);
     }
 
@@ -101,12 +101,23 @@ export default class PuppeteerPage {
         await this.page.reload();
     }
 
-    public async waitForNavigation(options?: NavigationOptions): Promise<void> {
+    public async waitForNavigation(options?: WaitForNavigationOptions): Promise<void> {
         await this.page.waitForNavigation(options);
     }
 
-    public async waitFor(selector: string | EvaluateFn, options?: WaitForSelectorOptions, ...args: Array<SerializableOrJSHandle>): Promise<void> {
-        await this.page.waitFor(selector, options, ...args);
+    public async waitForXPath(xpath: string, options?: WaitForOptions): Promise<void> {
+        await this.page.waitForXPath(xpath, options)
+    }
+
+    public async waitForSelector(selector: string, options?: WaitForOptions): Promise<void> {
+        await this.page.waitForSelector(selector, options)
+    }
+
+    public async waitForFunction(func: WaitForCallbackFunction | string, options?: {
+        timeout?: number;
+        polling?: string | number;
+    }, ...args: Array<SerializableOrJSHandle>): Promise<void> {
+        await this.page.waitForFunction(func, options, ...args)
     }
 
     public $(selector: string): Promise<ElementHandle<Element> | null> {
@@ -133,7 +144,7 @@ export default class PuppeteerPage {
         return this.page.deleteCookie(...cookies);
     }
 
-    public workers(): Array<Worker> {
+    public workers(): Array<WebWorker> {
         return this.page.workers();
     }
 
@@ -161,11 +172,11 @@ export default class PuppeteerPage {
         return (this.page as any).emulateTimezone(tz); // TODO: remove any when types update
     }
 
-    public setGeolocation(geolocation: GeoOptions): Promise<void> {
+    public setGeolocation(geolocation: GeolocationOptions): Promise<void> {
         return this.page.setGeolocation(geolocation);
     }
 
-    public emulateMediaType(mediaType: MediaType): Promise<void> {
+    public emulateMediaType(mediaType: string): Promise<void> {
         return this.page.emulateMediaType(mediaType);
     }
 

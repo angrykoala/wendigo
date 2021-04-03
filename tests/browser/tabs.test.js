@@ -40,7 +40,7 @@ describe("Multiple Pages", function() {
             const pagesBefore = await browser.pages();
             assert.strictEqual(pagesBefore.length, 1);
             await browser.click(".btn-tab");
-            await browser.wait(50);
+            await browser.wait(100);
             const pagesAfter = await browser.pages();
             assert.strictEqual(pagesAfter.length, 2);
         });
@@ -48,7 +48,7 @@ describe("Multiple Pages", function() {
         it("Switch To Tab", async() => {
             await browser.click(".btn-tab");
             await browser.assert.not.text("p", "html_test");
-            await browser.wait(50);
+            await browser.wait(100);
             await browser.selectPage(1);
             const pagesAfter = await browser.pages();
             assert.strictEqual(pagesAfter.length, 2);
@@ -59,7 +59,7 @@ describe("Multiple Pages", function() {
         it("Close Tab", async() => {
             await browser.click(".btn-tab");
             await browser.assert.not.text("p", "html_test");
-            await browser.wait(50);
+            await browser.wait(100);
             await browser.selectPage(1);
             const pagesAfter = await browser.pages();
             assert.strictEqual(pagesAfter.length, 2);

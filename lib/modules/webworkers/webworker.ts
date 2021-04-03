@@ -1,4 +1,4 @@
-import { Worker } from '../../puppeteer_wrapper/puppeteer_types';
+import { WebWorker as Worker } from '../../puppeteer_wrapper/puppeteer_types';
 
 export default class WebWoker {
     public readonly worker: Worker;

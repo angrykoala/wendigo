@@ -1,5 +1,5 @@
 import DomElement from './models/dom_element';
-import { ViewportOptions, GeoOptions, MediaType, MediaFeature } from './puppeteer_wrapper/puppeteer_types';
+import { ViewportOptions, GeolocationOptions, MediaFeature } from './puppeteer_wrapper/puppeteer_types';
 
 export type WendigoSelector = string | DomElement;
 
@@ -48,7 +48,7 @@ export interface PluginModule {
 export interface OpenSettings {
     viewport?: ViewportOptions;
     queryString?: string | { [s: string]: string; };
-    geolocation?: GeoOptions;
+    geolocation?: GeolocationOptions;
     headers?: Record<string, string>;
     dismissAllDialogs?: boolean;
 }
@@ -64,6 +64,6 @@ export interface GeoLocationCoords {
 }
 
 export interface MediaOptions {
-    type?: MediaType;
+    type?: string;
     features?: Array<MediaFeature>;
 }

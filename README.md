@@ -136,6 +136,16 @@ import * as Wendigo from 'wendigo';
 
 > If you find any problem, please check our [Troubleshooting](#troubleshooting) for solutions, or fill an [issue](https://github.com/angrykoala/wendigo/issues/new) if it appears to be a bug or lacking feature with Wendigo. More information and guides on how to use Wendigo available at the [wiki](https://github.com/angrykoala/wendigo/wiki)
 
+#### Using Puppeteer directly
+
+Wendigo is intended to be used as a full wrapper of Puppeteer, so usually accessing Puppeteer directly is not needed, however, the browser class provide direct access to Puppeteer classes:
+
+* browser.page
+* browser.context
+* browser.coreBrowser
+
+Check the API for those properties for more info.
+
 ## Api
 
 ### Wendigo Class
@@ -211,6 +221,9 @@ If the requests cache is active.
 
 **context**  
 Returns Puppeteer's [BrowserContext](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-browsercontext).
+
+**coreBrowser**
+Returns Puppeteers's [Browser](https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#class-browsercontext) class for direct requests.
 
 #### Methods
 All the methods in Browser return a Promise than can easily be handled by using `async/await`.
