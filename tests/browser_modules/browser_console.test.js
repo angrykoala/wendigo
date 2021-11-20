@@ -132,4 +132,12 @@ describe("Console", function() {
         assert.strictEqual(logList.length, 2);
         assert.strictEqual(logList[1].text, "JSHandle@node");
     });
+
+    it("Log Thrown Error", async() => {
+        await browser.click(".thrownError");
+        await browser.wait(10);
+        const logList = browser.console.all();
+        assert.strictEqual(logList.length, 2);
+        assert.strictEqual(logList[1].text, "Error: Thrown error");
+    });
 });
