@@ -13,8 +13,8 @@ function stringifyLogArg(arg: JSHandle): Promise<string> {
     return arg.executionContext().evaluate((element: any) => {
         if ((typeof element === 'object') && !(element instanceof RegExp)) { // Executed inside context, lodash not available
             try {
-                element = element instanceof Error ? 
-                    JSON.stringify(element, Object.getOwnPropertyNames(element)) : 
+                element = element instanceof Error ?
+                    JSON.stringify(element, Object.getOwnPropertyNames(element)) :
                     JSON.stringify(element);
             } catch (err) {
                 if (err instanceof TypeError) { // Converting circular structure
