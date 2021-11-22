@@ -2,6 +2,9 @@
 ==================
 
 * Error serializing improved
+* Puppeteer updated to 11.0
+* Dependencies updated
+* Querystring deprecated in favor URLSearchParams
 
 3.0.0 / 2021-03-04
 ==================

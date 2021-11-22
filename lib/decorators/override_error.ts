@@ -8,7 +8,7 @@ export default function OverrideError(errorPrefix?: string): DecoratorFunction {
             const originalThis = this as any;
             try {
                 return await originalMethod.bind(originalThis)(...args);
-            } catch (err) {
+            } catch (err: any) {
                 const fullMethodName = `${errorPrefix ? errorPrefix + "." : ""}${propertyKey}`;
                 throw WendigoError.overrideFnName(err, fullMethodName);
             }

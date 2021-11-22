@@ -50,11 +50,11 @@ export default class PuppeteerPage {
     }
 
     public on(eventName: string, cb: (msg: any) => void): void {
-        this.page.on(eventName, cb);
+        this.page.on(eventName as any, cb);
     }
 
     public off(eventName: string, cb: (msg: any) => void): void {
-        this.page.off(eventName, cb);
+        this.page.off(eventName as any, cb);
     }
 
     public evaluateHandle(cb: string | ((...args: any[]) => any), ...args: Array<SerializableOrJSHandle>): Promise<JSHandle> {

@@ -1,5 +1,4 @@
 import path from 'path';
-import querystring from 'querystring';
 
 import { stringifyLogText } from '../puppeteer_wrapper/puppeteer_utils';
 import DomElement from '../models/dom_element';
@@ -104,7 +103,7 @@ export default abstract class BrowserCore {
             const response = await this._page.goto(url);
             this.initialResponse = response;
             return this._afterPageLoad();
-        } catch (err) {
+        } catch (err: any) {
             if (err instanceof FatalError) return Promise.reject(err);
             return Promise.reject(new FatalError("open", `Failed to open "${url}". ${err.message}`));
         }
@@ -128,7 +127,7 @@ export default abstract class BrowserCore {
             await this._beforeOpen({});
             await this.page.setContent(html);
             return this._afterPageLoad();
-        } catch (err) {
+        } catch (err: any) {
             if (err instanceof FatalError) return Promise.reject(err);
             return Promise.reject(new FatalError("setContent", `Failed to set content. ${err.message}`));
         }
@@ -161,7 +160,7 @@ export default abstract class BrowserCore {
         try {
             await p;
             await this.coreBrowser.close();
-        } catch (err) {
+        } catch (err: any) {
             return Promise.reject(new FatalError("close", `Failed to close browser. ${err.message}`));
         }
     }
@@ -250,7 +249,7 @@ export default abstract class BrowserCore {
             await this._page.addScriptTag({
                 path: scriptPath
             });
-        } catch (err) {
+        } catch (err: any) {
             if (err.message === "Evaluation failed: Event") {
                 const cspWarning = "This may be caused by the page Content Security Policy. Make sure the option bypassCSP is set to true in Wendigo.";
                 throw new InjectScriptError("addScript", `Error injecting scripts. ${cspWarning}`); // CSP error
@@ -319,7 +318,8 @@ export default abstract class BrowserCore {
             if (qs[0] !== "?") qs = `?${qs}`;
             return qs;
         } else {
-            return `?${querystring.stringify(qs)}`;
+            const searchParams = new URLSearchParams(qs);
+            return `?${searchParams.toString()}`;
         }
     }
 
