@@ -10,6 +10,7 @@
     <button class="btn log" onclick="info()">click me</button>
     <button class="btn error" onclick="error()">error</button>
     <button class="btn circular" onclick="circularLog()">circular</button>
+    <button class="btn thrownError" onclick="thrownError()">thrownError</button>
 
     <script>
         console.log("Normal Log", { msg: "Object Log" })
@@ -26,6 +27,14 @@
             const obj={};
             obj.test=obj;
             console.log(obj);
+        }
+
+        function thrownError() {
+            try {
+                throw new Error("Thrown Error");
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
     </script>
 </body>

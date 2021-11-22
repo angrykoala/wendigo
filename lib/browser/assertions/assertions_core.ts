@@ -128,8 +128,8 @@ export default class AssertionsCore {
         let url;
         try {
             url = await this._browser.url();
-        } catch (err) {
-            throw new FatalError("assert.url", `Can't obtain page url.${err.extraMessage || err.message}`);
+        } catch (err: any) {
+            throw new FatalError("assert.url", `Can't obtain page url.${err ?.extraMessage || err ?.message}`);
         }
         if (!matchText(url, expected)) {
             if (!msg) msg = `Expected url to be "${stringify(expected)}", "${url}" found`;

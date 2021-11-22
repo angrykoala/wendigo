@@ -22,14 +22,14 @@ export default abstract class BrowserWait extends BrowserNavigation {
 
         try {
             if (typeof selector === 'string') {
-                if(isXPathQuery(selector)){
+                if (isXPathQuery(selector)) {
                     await this._page.waitForXPath(selector, {
-                        timeout:timeout,
+                        timeout: timeout,
                         visible: true
                     })
                 } else {
                     await this._page.waitForSelector(selector, {
-                        timeout:timeout,
+                        timeout: timeout,
                         visible: true
                     })
                 }
@@ -42,7 +42,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
                     timeout: timeout,
                 }, ...serializedArgs);
             }
-        } catch (error) {
+        } catch (error: any) {
             let errMsg;
             if (typeof selector === 'function') errMsg = `Waiting for function to return true`;
             else errMsg = `Waiting for element "${selector}"`;
@@ -63,7 +63,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 const element = WendigoUtils.queryElement(q);
                 return !WendigoUtils.isVisible(element);
             }, timeout, selector);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: `Waiting for element "${selector}" to not be visible`,
                 selector: `${selector}`,
@@ -95,7 +95,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
                     return currentUrl === expectedUrl;
                 }
             }, timeout, parsedUrl);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: `Waiting for url "${url}"`,
                 timeout
@@ -120,7 +120,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 const w = window as any;
                 return Boolean(w.WendigoUtils);
             }, timeout2);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: "",
                 timeout
@@ -148,7 +148,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
             await this.waitFor((xp: string) => {
                 return Boolean(WendigoUtils.xPathQuery(xp).length > 0);
             }, timeout, xPath);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: `Waiting for text "${text}"`,
                 timeout
@@ -163,7 +163,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
         try {
             await this.waitFor(selector, timeout);
             return await this.click(selector);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: "",
                 timeout
@@ -197,7 +197,7 @@ export default abstract class BrowserWait extends BrowserNavigation {
                 const value = element.getAttribute("disabled");
                 return value === null;
             }, timeout, selector);
-        } catch (err) {
+        } catch (err: any) {
             throw this._overrideWaitError(err, {
                 timeoutMessage: `Waiting for element "${selector}" to be enabled`,
                 timeout
