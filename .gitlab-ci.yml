@@ -12,5 +12,4 @@ test:
   stage: test
   retry: 1
   script:
-    - npm run lint
     - npm test
