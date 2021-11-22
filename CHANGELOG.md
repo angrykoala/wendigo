@@ -5,6 +5,7 @@
 * Puppeteer updated to 11.0
 * Dependencies updated
 * Querystring deprecated in favor URLSearchParams
+* Travis removed from CI suite
 
 3.0.0 / 2021-03-04
 ==================
