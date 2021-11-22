@@ -111,7 +111,7 @@ describe("Wait For Request", function() {
             browser.clickText("click me");
         }, 100);
         await browser.assert.requests.url(/api/).exactly(0);
-        await browser.requests.waitForNextRequest("http://localhost:3456/api",1000);
+        await browser.requests.waitForNextRequest("http://localhost:3456/api", 1000);
         await browser.assert.requests.url(/api/);
     });
 
