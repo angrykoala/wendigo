@@ -11,8 +11,6 @@ _by @angrykoala_
 
 **Wendigo** (_/wɛndɪɡo/_) simplify your front-end and end-to-end automated testing using [Puppeteer](https://github.com/GoogleChrome/puppeteer). Install it with `npm install --save-dev wendigo`.
 
-> **WARNING:** This documentation refers to Wendigo 2, if you are using previous versions of Wendigo, go [here](https://github.com/angrykoala/wendigo/blob/1.13.1/README.md).
-
 Consider the following example using just Puppeteer:
 
 ```javascript
