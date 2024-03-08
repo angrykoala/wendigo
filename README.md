@@ -4,8 +4,6 @@
 
 _by @angrykoala_  
 [![npm](https://img.shields.io/npm/v/wendigo.svg)](https://www.npmjs.com/package/wendigo)
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/angrykoala/wendigo/master.svg?label=gitlab-ci)](https://gitlab.com/angrykoala/wendigo/pipelines)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/angrykoala/wendigo/test?label=github-actions)](https://github.com/angrykoala/wendigo/actions)
 
 > A proper monster for front-end automated testing.
 
